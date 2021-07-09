@@ -1,0 +1,104 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-agridataapp-dev-164209-authRole",
+      "UnauthRoleArn": "arn:aws:iam::467200493458:role/amplify-agridataapp-dev-164209-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::467200493458:role/amplify-agridataapp-dev-164209-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-agridataapp-dev-164209-deployment",
+      "UnauthRoleName": "amplify-agridataapp-dev-164209-unauthRole",
+      "StackName": "amplify-agridataapp-dev-164209",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:467200493458:stack/amplify-agridataapp-dev-164209/96696990-d723-11eb-b780-0aad7ca48248",
+      "AmplifyAppId": "d2u86360s37g7v",
+      "AuthTriggerTemplateURL": ""
+    }
+  },
+  "auth": {
+    "agridataapp1c4f9eeb": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/auth/agridataapp1c4f9eeb-cloudformation-template.yml",
+        "logicalId": "authagridataapp1c4f9eeb"
+      },
+      "lastPushTimeStamp": "2021-07-09T04:28:41.098Z",
+      "output": {
+        "UserPoolId": "ap-southeast-1_e3TqGI5PR",
+        "AppClientIDWeb": "1l3tf271h2qv74atcaccdm7eut",
+        "AppClientID": "38gmq37i76861n5gvgiv0qgdbc",
+        "IdentityPoolId": "ap-southeast-1:a3c020ad-32f7-403b-a75b-bff6b8ab063b",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-southeast-1:467200493458:userpool/ap-southeast-1_e3TqGI5PR",
+        "IdentityPoolName": "agridataapp1c4f9eeb_identitypool_1c4f9eeb__dev",
+        "UserPoolName": "agridataapp1c4f9eeb_userpool_1c4f9eeb"
+      },
+      "lastPushDirHash": "twtf5rxhXWTQMtBd79R9W1B4HC0="
+    }
+  },
+  "api": {
+    "agridataapp": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authagridataapp1c4f9eeb"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "4npwrqn3hrcttnxnas7ozmyj2q",
+        "GraphQLAPIEndpointOutput": "https://5m3fgl5v5rb6bjwse2tsubfgd4.appsync-api.ap-southeast-1.amazonaws.com/graphql"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiagridataapp"
+      },
+      "lastPushTimeStamp": "2021-07-09T04:28:51.033Z",
+      "lastPushDirHash": "tqwZiWOCMjZRblaR7UnI55CBVZY="
+    }
+  },
+  "storage": {
+    "imageContent": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+        "logicalId": "storageimageContent"
+      },
+      "lastPushTimeStamp": "2021-07-09T04:28:41.109Z",
+      "output": {
+        "BucketName": "agridataappimagecontentbucket164209-dev",
+        "Region": "ap-southeast-1"
+      },
+      "lastPushDirHash": "mAd/gAg/KCHz+VxxWtS7rEnjs14="
+    }
+  },
+  "notifications": {
+    "agridataappIqjhf": {
+      "service": "Pinpoint",
+      "output": {
+        "Arn": "arn:aws:mobiletargeting:us-west-2:467200493458:apps/641129bfeba2495d9d937090ecc989f7",
+        "Id": "641129bfeba2495d9d937090ecc989f7",
+        "Name": "agridataappIqjhf-dev",
+        "tags": {},
+        "Region": "us-west-2",
+        "FCM": {
+          "ApplicationId": "641129bfeba2495d9d937090ecc989f7",
+          "CreationDate": "2021-07-06T14:08:14.730Z",
+          "Enabled": true,
+          "HasCredential": true,
+          "Id": "gcm",
+          "IsArchived": false,
+          "LastModifiedDate": "2021-07-06T14:08:14.730Z",
+          "Platform": "GCM",
+          "Version": 1
+        }
+      },
+      "lastPushTimeStamp": "2021-07-06T14:07:48.514Z"
+    }
+  }
+}
