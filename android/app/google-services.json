@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "434676999649",
+    "project_id": "agridatapushnotif",
+    "storage_bucket": "agridatapushnotif.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434676999649:android:6b5d9560cda0fb08f29ea0",
+        "android_client_info": {
+          "package_name": "com.agridata_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434676999649-2lfbmotm2egbvkso5jmhf3a4cm8dicgr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIZJDfZcl9aVb5lrtgW9MjCn4zAryGArE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434676999649-2lfbmotm2egbvkso5jmhf3a4cm8dicgr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
