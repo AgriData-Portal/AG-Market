@@ -22,8 +22,10 @@ DerivedData
 *.xcuserstate
 
 # Android/IntelliJ
-android/
-*.hprof
+android/*.hprof
+android/*.keystore
+android/google-services.json
+
 
 build/
 .idea
