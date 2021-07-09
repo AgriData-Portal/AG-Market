@@ -45,7 +45,7 @@ export const OrderList = props => {
               id={item.id}
               amount={item.amount}
               company={company}
-              createdAt={item.date}
+          
               goods={item.items}
               paid={item.paid}
               amount={item.amount}

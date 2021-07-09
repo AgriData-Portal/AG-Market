@@ -15,14 +15,15 @@ import {NavBar, BackButton} from '_components';
 import {API, Storage} from 'aws-amplify';
 import {
   getSupplierCompany,
-  productListingByRetailer,
+  purchaseOrderItems,
 } from '../../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {purchaseOrderItems} from '../../../../graphql/queries';
+import {updateRetailerCompany} from '../../../../graphql/mutations';
 import Strings from '_utils';
+import {template} from '@babel/core';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid
@@ -33,7 +34,7 @@ export const Store = props => {
   console.log('retailer id:' + retailerID);
   const purchaseOrder = retailerID + itemId;
   console.log('purchase Order:' + purchaseOrder);
-
+  const [isFavourite, setIsFavourite] = useState(false);
   useEffect(() => {
     console.log('Fetching Products from ' + itemId);
     fetchProducts();
@@ -64,6 +65,36 @@ export const Store = props => {
     setProducts(supplier.data.getSupplierCompany.listings.items);
     setStoreName(supplier.data.getSupplierCompany.name);
   };
+
+  const updateFavourites = async () => {
+    try {
+      var currentFavList = props.user.retailerCompany.favouriteStores;
+      currentFavList.push({id: itemId, name: storeName});
+      const updated = await API.graphql({
+        query: updateRetailerCompany,
+        variables: {
+          input: {
+            id: props.user.retailerCompanyID,
+            favouriteStores: currentFavList,
+          },
+        },
+      });
+      setIsFavourite(true);
+      console.log('success');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const checkIsFavourite = () => {
+    var tempList = props.user.retailerCompany.favouriteStores;
+    tempList = tempList.filter(item => {
+      return item.id == itemId;
+    });
+    if (tempList.length == 0) {
+      return false;
+    } else return true;
+  };
   return (
     <SafeAreaView
       style={{
@@ -81,7 +112,17 @@ export const Store = props => {
         <BackButton navigation={props.navigation} />
       </View>
       <Text style={[Typography.header, {top: hp('4%')}]}>{storeName}</Text>
-
+      {checkIsFavourite() || isFavourite ? (
+        <View style={{position: 'absolute', right: wp('5%'), top: hp('4%')}}>
+          <Icon color="gold" name="star-outline" size={wp('7%')} />
+        </View>
+      ) : (
+        <TouchableOpacity
+          onPress={() => updateFavourites()}
+          style={{position: 'absolute', right: wp('5%'), top: hp('4%')}}>
+          <Icon name="star-outline" size={wp('7%')} />
+        </TouchableOpacity>
+      )}
       <View
         style={{
           width: wp('93%'),
@@ -118,12 +159,3 @@ export const Store = props => {
     </SafeAreaView>
   );
 };
-
-const items = [
-  {produce: 'Avacadoes', quantity: '10'},
-  {produce: 'Bananas', quantity: '10'},
-  {produce: 'Pineapple', quantity: '10'},
-  {produce: 'Mango', quantity: '10'},
-  {produce: 'Sayur Sawi', quantity: '10'},
-  {produce: 'Ginger', quantity: '10'},
-];
