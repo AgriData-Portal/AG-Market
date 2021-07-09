@@ -1,0 +1,74 @@
+1. Authentication
+    First time Registration ✔️
+    Company Registration ✔️
+    Log In ✔️
+    Verification number ❌ (manual now, with contact us button)
+    Adding Team members ❌
+    Removing Team members (send a whatsapp chat to us) ❌
+    Forget Password ❌
+2. Supplier Store: (waiting for fix on UI re-render)
+    Create listings ✔️ 
+    List listings ✔️
+    Update listings ✔️
+    Delete listings ✔️
+3. Local Marketplace:
+    Going to supplier store ✔️
+    Sending product inquiry 
+    listing products ✔️
+    product pop up
+    Creating a Group Chat if it hasnt been created
+    Searching in description and auto-capitalising search fields
+4. Favourites
+    Going to supplier store ✔️
+    List Favourites
+    Adding a supplier to favourites
+5. Store
+    Creating a Group Chat if it hasnt been created ✔️
+    Sending a product inquiry 
+    Adding items to PO ✔️
+    Removing items from PO ✔️
+    Updating item from PO 
+    Sending PO ✔️
+6. Inbox
+    Get number of unread chats
+    Unread chat badge ✔️
+    Display last sender + message + chat name ✔️
+    Display company logo ❌
+    Get subscription whenever a chat has been updated/created
+    Rerender when exiting from chat room (quick fix use navigate instead of go back?)
+7. Chat Room
+    send text messages and receive them in real time ✔️
+    send Order Quotation in real time ❌
+    inspect PO ✔️
+    create a quotation from PO ✔️
+    send quotation (yet to update UI) {not sure whether it will work might have to useContext} ✔️
+    display team members ❌
+    add/remove team members ❌
+    accept quotation => create a GoodsTask ✔️
+    update last seen on back button onPress ✔️
+    update last seen on app background
+    on decline, send an automatic message  ✔️
+     View product inquiry
+    View purchaseOrder ✔️
+    View OrderQuotation ✔️
+    approve/reject order quotation ✔️
+8. Tasks 
+    displaying goods task and payment tasks on click ✔️
+    updating goods tasks's deliveryDate ✔️
+    listing goods tasks by deliveryDate/createdAt ✔️
+    creating an invoice when supplier clicks on delivering (can add a Boolean field to goods Task so can check whether the invoice has been generated) ✔️
+    linking goodstask id to payment and invoice id ✔️ 
+    deleting the goods task once invoice is generated and completed ✔️
+    rejecting temp invoice which will alter the goods task status 
+    creating a payment Task ✔️
+    updating a payment Task ✔️
+    listing payment tasks by createdAt/status 
+9. Invoice 
+    listing Invoice ✔️
+    downloading csv and pdf of excel ✔️
+10. Updating profile
+    Company profile ❌
+    User Profile ❌
+    .
+
+    Use Context = create quotation, update quotation, CRUD Store

@@ -1,0 +1,157 @@
+sign up- Daftar
+having any trouble?- menghadapi sebarang masalah?
+already a member?- sudah menjadi ahli?
+log in- log masuk
+choose user type- pilih jenis pengguna
+create account- cipta akaun
+begin your journey with us!- mulakan perjalanan anda dengan kami!
+name-nama
+username-nama pengguna
+email address- alamat e-mel
+password-kata laluan
+
+by continuing, you agree to our terms of service and privacy policy
+
+- dengan meneruskan, anda berseteju dengan
+  terma perkhidmatan dan dasar privasi kami.
+
+welcome back- selamat kembali
+log in to your acc now- log masuk ke akaun anda sekarang
+
+username/ email address- nama pengguna/ alamat e-mel
+remember me?- ingat saya?
+forgot password?- terlupa kata laluan?
+log in using fingerprint- log masuk menggunakan cap jari
+create company- cipta syarikat anda
+company name- nama syarikat
+
+what type of company are you running?
+
+- apakah jenis syarikat yanf anda jalankan?
+
+company license number- nombor lesen syarikat
+office address- alamat pejabat
+supermarket- pasaraya
+farm-ladang
+wholesale- borong
+
+your account is being verified- akaun anda sedang disahkan.
+
+hang in there! It might take some time to verify your account.
+
+- ini mungkin mengambil masa yang lama untuk megesahkan akaun anda.
+
+For the meantime, you can try updating your company information.
+
+- Sementara itu, anda boleh cuba mengemas kini maklumat syarikat anda.
+
+Update- Kemaskini terakhir
+insert company photo- masukkan foto syarikat
+company name- nama syarikat
+type of bussiness- jenis perniagaan
+company registration no- nombor pendaftaran syarikat
+contact number-nombor telefon
+email address- alamat e-mel
+profile verification-pengesahan profil
+save changes- menyimpan perubahan
+marketplace- pasaran
+saerch for product/supplier- cari produk/ pembekal
+all results-semua keputusan
+price-harga
+available-tersedia
+sort by-atur
+low to high- harga daripada rendah ke tinggi.
+high to low- harga daripada tinggi ke rendah.
+most reviewed- populariti.
+store- kedai
+tasks-tugas
+chatbox- mesej
+records-rekod
+analytics-analisis
+variety- pelbagai
+qty available- kuantiti yang tersedia
+Min.order- order minimum
+other details-butiran lain
+continue purchasing- terus membeli
+send PO to supplier- hantar PO kepada pembekal.
+visit store- lawati kedai
+write a message- tiggalkan pesanan
+send-hantar
+purchase download- muat turun pembelian
+inspect-memeriksa
+download-muat turun
+order quotation- sebut harga pesanan
+order quotation from- sebut harga pesanan daripada
+total kos- jumlah cost
+delivery date- tarikh penghantaran
+delivery method- kaedah penghantaran
+payment method-kaedah pembayaran
+accept-terima
+decline-tolak
+attachments-lampiran
+are you sure you want to add participants?- adakah anda pasti untuk menambah ahli?
+
+make sure to finalize those you want to add before proceeding.
+
+-pastikan untuk memuktamadkan mereka yang anda mahu tambah sebelum meneruskan.
+
+add-tambah
+cancel-batal
+success-berjaya
+all changes made have been saved successfully- semua perubahan telah berjaya disimpan.
+back to home- kembali ke halaman pertama
+
+something went wrong when you were attempting to save chnages
+
+- sesuatu yang tidak kena terjadi semasa anda mencuba untuk membuat perubahan.
+
+please try again!- sila cuba lagi!
+
+payment reminder- peringatan pembayaran
+
+please be reminded to settle your payment
+
+-Sila diingatkan untuk mejelaskan pembayaran anda.
+
+payee-penerima
+account-akaun
+amount to settle- amoun untuk diselesaikan
+paid-dibayar
+thanks for your order!- Terima kasih atas pesanan anda!
+
+payment alert- makluman pembayaran
+payment from-bayaran daripada
+order-pesanan
+date of payment- tarikh pembayaran
+reference-rujukan
+received-diterima
+dlivery date- tarikh penghantaran
+pick a date- pilih tarikh
+buyer-pembeli
+create invoice- cipta invois
+product name- nama produk
+send-hantar
+claim-tuntutan
+inbox-peti masuk
+new messages-mesej baru
+company name-nama syarikat
+message sent time- masa mesej dihantar
+last message- mesej terakhir
+name of chat- nama chat
+chat participants-peserta chat
+add person-tambah ahli
+orders- pesanan
+digital invoice-invois digital
+all results- semua keputusan
+invoice number- nombor invois
+what would you like to do today?- apa yang anda mahu lakukan hari ini?
+chats-perbualan
+to do-tugas
+invoices-invois
+personal profile- butiran akaun
+human resource- sumber manusia
+logout- log keluar
+team- ahli/ pasukan
+owner- pemilik
+add new team member- tambah ahli pasukan baru
+save changes- simpan perubahan
