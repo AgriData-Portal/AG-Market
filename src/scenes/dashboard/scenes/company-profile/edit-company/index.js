@@ -105,7 +105,6 @@ export const EditCompany = props => {
                       resizeMode: 'cover',
                       width: wp('50%'),
                       height: hp('20%'),
-                      backgroundColor: 'red',
                       borderRadius: 10,
                     }}
                   />
@@ -127,8 +126,7 @@ export const EditCompany = props => {
                       resizeMode: 'cover',
                       width: wp('50%'),
                       height: hp('20%'),
-
-                      borderRadius: 0,
+                      borderRadius: 10,
                     }}
                   />
                 </View>
