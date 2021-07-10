@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -30,41 +30,73 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {SuccessfulModal} from '_components/modals';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
+  const [imageSource, setImageSource] = useState(null);
+  const getImage = async () => {
+    try {
+      const imageURL = await Storage.get(props.productPicture);
+      setImageSource({
+        uri: imageURL,
+      });
+      console.log(imageSource);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getImage();
+    console.log('Image...');
+  }, []);
   return (
     <TouchableOpacity
       onPress={() => setProductModal(true)}
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('36%'),
-        height: hp('20%'),
+        height: hp('30%'),
         margin: wp('5%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
       }}>
-      {/*<Image
+      <Image
+        source={imageSource}
         style={{
           height: Mixins.scaleHeight(70),
           width: Mixins.scaleHeight(70),
           borderRadius: 100,
           top: Mixins.scaleHeight(10),
-        }}></Image>*/}
+        }}></Image>
       <Text style={[Typography.normal, {top: hp('3%')}]}>
         {props.productName}
       </Text>
       <Text style={[Typography.small, {top: hp('4%'), width: wp('20%')}]}>
-        {Strings.price}: 3{props.priceMin} - 8{props.priceMax}
-        {'\n'}MOQ: {props.moq}
+        {Strings.price}: {props.lowPrice} - {props.highPrice} /{props.siUnit}
+        {'\n'}MOQ: {props.minimumQuantity} {props.siUnit}
         {'\n'}Grade: {props.grade}
+        {'\n'}Variety: {props.variety}
       </Text>
       <Modal isVisible={productModal}>
         <ProductPopUp
+          productName={props.productName}
+          variety={props.variety}
+          quantityAvailable={props.quantityAvailable}
+          grade={props.grade}
+          siUnit={props.siUnit}
+          productPicture={imageSource}
+          lowPrice={props.lowPrice}
+          highPrice={props.highPrice}
+          farmName={props.farmName} //need to add
+          farmLocation={props.farmLocation} //need to add
+          minimumQuantity={props.minimumQuantity}
+          supplierID={props.supplierID}
           setProductModal={setProductModal}
           purchaseOrder={props.purchaseOrder}
           POList={props.POList}
+          storeName={props.storeName}
           setPOList={props.setPOList}
           id={props.id}
           user={props.user}></ProductPopUp>
@@ -95,21 +127,22 @@ export const MarketplaceList = props => {
       renderItem={({item}) => {
         return (
           <ProductCard
-            productName={item.produce}
-            type={item.variety}
-            availableQuantity={item.quantity}
-            date={item.updatedAt}
-            image={item.image}
-            priceMin={item.listedPrice}
-            priceMax={item.listedPrice}
+            productName={item.productName}
+            variety={item.variety}
+            quantityAvailable={item.quantityAvailable}
+            grade={item.grade}
+            siUnit={item.siUnit}
+            productPicture={item.productPicture}
+            lowPrice={item.lowPrice}
+            highPrice={item.highPrice}
             farmName={item.farmName} //need to add
             farmLocation={item.farmLocation} //need to add
-            availdate={item.delivery} //need to add
-            moq={item.moq}
-            farmerID={item.farmerID}
+            minimumQuantity={item.minimumQuantity}
+            supplierID={item.supplierID}
             id={item.id}
             purchaseOrder={props.purchaseOrder}
             POList={props.POList}
+            storeName={props.storeName}
             setPOList={props.setPOList}
             user={props.user}
           />
@@ -122,7 +155,46 @@ export const MarketplaceList = props => {
 const ProductPopUp = props => {
   const [desiredQuantity, setDesiredQuantity] = useState('');
   const [inquirySuccessfulModal, setInquirySuccessfulModal] = useState(false);
+  const [successfulModal, setSuccessfulModal] = useState(false);
+
   const sendProductInquiry = async () => {
+    try {
+      const updateChat = await API.graphql({
+        query: updateChatGroup,
+        variables: {
+          input: {
+            id: props.purchaseOrder,
+            mostRecentMessage: 'Product Inquiry',
+            mostRecentMessageSender: props.user.name,
+          },
+        },
+      });
+      console.log('chat group already exist');
+    } catch (e) {
+      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+        try {
+          const chatGroup = {
+            id: props.purchaseOrder,
+            name: props.user.retailerCompany.name + '+' + props.storeName,
+            retailerID: props.user.retailerCompany.id,
+            supplierID: props.purchaseOrder.slice(36, 72),
+            mostRecentMessage: 'Product Inquiry',
+            mostRecentMessageSender: props.user.name,
+          };
+          console.log(chatGroup);
+          const createdChatGroup = await API.graphql({
+            query: createChatGroup,
+            variables: {input: chatGroup},
+          });
+          console.log(createdChatGroup);
+        } catch (e) {
+          console.log(e.errors[0].errorType);
+        }
+      } else {
+        console.log(e.errors[0].errorType);
+      }
+    }
+
     console.log('creating product inquiry');
     console.log(props.user);
     console.log(props.id);
@@ -130,7 +202,16 @@ const ProductPopUp = props => {
     const inquiry = {
       chatGroupID: props.purchaseOrder,
       type: 'inquiry',
-      content: props.id,
+      content:
+        props.productName +
+        '+' +
+        props.lowPrice +
+        '-' +
+        props.highPrice +
+        '+' +
+        props.variety +
+        '+' +
+        props.grade,
       sender: props.user.name,
       senderID: props.user.id,
     };
@@ -155,7 +236,9 @@ const ProductPopUp = props => {
             purchaseOrderID: props.purchaseOrder,
             name: props.productName,
             quantity: parseInt(desiredQuantity),
-            siUnit: 'kg',
+            siUnit: props.siUnit,
+            grade: props.grade,
+            variety: props.variety,
           },
         },
       });
@@ -165,6 +248,7 @@ const ProductPopUp = props => {
       poList.push(added.data.createProducts);
       console.log(poList);
       props.setPOList(poList);
+      setSuccessfulModal(true);
     } catch {
       e => console.log(e);
     }
@@ -173,7 +257,7 @@ const ProductPopUp = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? -120 : -180
+        Platform.OS === 'ios' ? hp('-20%') : hp('-20%')
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <View
@@ -201,7 +285,7 @@ const ProductPopUp = props => {
             flexDirection: 'row',
           }}>
           <Text style={[Typography.header, {left: wp('5%')}]}>
-            {props.productName}Ginger
+            {props.productName}
           </Text>
           <View style={{position: 'absolute', right: wp('2%')}}>
             <TouchableOpacity onPress={() => sendProductInquiry()}>
@@ -209,15 +293,15 @@ const ProductPopUp = props => {
             </TouchableOpacity>
           </View>
         </View>
-        {/** 
+
         <Image
           style={{
             top: hp('5%'),
-            height: hp('20%'),
-            width: hp('20%'),
+            height: hp('30%'),
+            width: hp('30%'),
             borderRadius: 100,
           }}
-          source={{uri: ''}}></Image>*/}
+          source={props.productPicture}></Image>
         <View
           onPress={() => console.log('navigate')}
           style={{
@@ -229,29 +313,28 @@ const ProductPopUp = props => {
             right: wp('15%'),
           }}>
           <Rating
-            imageSize={wp('7%')}
+            imageSize={wp('6%')}
             readonly={true}
             startingValue={3.5}></Rating>
           <Text
             style={[
               Typography.large,
-              {color: Colors.PALE_BLUE, left: wp('5%')},
+              {color: Colors.PALE_BLUE, left: wp('6%')},
             ]}>
-            RM 25-18/kg
+            RM {props.lowPrice}-{props.highPrice}/{props.siUnit}
           </Text>
         </View>
         <View
           style={{
-            top: hp('3%'),
             width: wp('65%'),
-            height: hp('25%'),
+            height: hp('18%'),
             backgroundColor: Colors.GRAY_LIGHT,
             borderRadius: 20,
             alignItems: 'center',
           }}>
           <Text
             style={[
-              Typography.small,
+              Typography.normal,
               {
                 lineHeight: hp('3%'),
                 top: hp('3%'),
@@ -259,13 +342,13 @@ const ProductPopUp = props => {
                 position: 'absolute',
               },
             ]}>
-            {Strings.variety}:{'\n'}
-            {Strings.available}:{'\n'}MOQ:{'\n'}
-            {Strings.otherDetails}:
+            Grade:{'\n'}
+            {Strings.variety}: {'\n'}
+            {Strings.available}: {'\n'}MOQ:
           </Text>
           <Text
             style={[
-              Typography.small,
+              Typography.normal,
               {
                 lineHeight: hp('3%'),
                 top: hp('3%'),
@@ -274,15 +357,14 @@ const ProductPopUp = props => {
                 textAlign: 'right',
               },
             ]}>
-            1{'\n'}30{'\n'}10
+            {props.grade}
+            {'\n'}
+            {props.variety}
+            {'\n'}
+            {props.quantityAvailable}
+            {'\n'}
+            {props.minimumQuantity}
           </Text>
-          <View
-            style={{
-              width: wp('60%'),
-              height: hp('7%'),
-              backgroundColor: 'white',
-              top: hp('15.5%'),
-            }}></View>
         </View>
         <View
           style={{
@@ -350,6 +432,16 @@ const ProductPopUp = props => {
         isVisible={inquirySuccessfulModal}
         onBackdropPress={() => setInquirySuccessfulModal(false)}>
         <InquirySuccessfulModal />
+      </Modal>
+      <Modal
+        isVisible={successfulModal}
+        onBackdropPress={() => [
+          setSuccessfulModal(false),
+          props.setProductModal(false),
+        ]}>
+        <SuccessfulModal
+          text={'You have successfully added the items to your purchase order'}
+        />
       </Modal>
     </KeyboardAvoidingView>
   );
@@ -425,10 +517,42 @@ export const PurchaseOrderButton = props => {
 const PurchaseOrder = props => {
   const [poSuccessfulModal, setpoSuccessfulModal] = useState(false);
   const sendPO = async () => {
-    const chatGroups = props.user.retailerCompany.chatGroups.items;
-    const chatGroupExists = chatGroups.filter(
-      item => item.id == props.purchaseOrder,
-    );
+    try {
+      const updateChat = await API.graphql({
+        query: updateChatGroup,
+        variables: {
+          input: {
+            id: props.purchaseOrder,
+            mostRecentMessage: 'Purchase Order',
+            mostRecentMessageSender: props.user.name,
+          },
+        },
+      });
+      console.log('chat group already exist');
+    } catch (e) {
+      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+        try {
+          const chatGroup = {
+            id: props.purchaseOrder,
+            name: props.user.retailerCompany.name + '+' + props.storeName,
+            retailerID: props.user.retailerCompany.id,
+            supplierID: props.purchaseOrder.slice(36, 72),
+            mostRecentMessage: 'Purchase Order',
+            mostRecentMessageSender: props.user.name,
+          };
+          console.log(chatGroup);
+          const createdChatGroup = await API.graphql({
+            query: createChatGroup,
+            variables: {input: chatGroup},
+          });
+          console.log(createdChatGroup);
+        } catch (e) {
+          console.log(e.errors[0].errorType);
+        }
+      } else {
+        console.log(e.errors[0].errorType);
+      }
+    }
 
     const inquiry = {
       chatGroupID: props.purchaseOrder,
@@ -437,45 +561,8 @@ const PurchaseOrder = props => {
       sender: props.user.name,
       senderID: props.user.id,
     };
-    if (!chatGroupExists.length) {
-      console.log(chatGroupExists + 'chat group does not exist');
-      try {
-        const chatGroup = {
-          id: props.purchaseOrder,
-          name: props.user.retailerCompany.name + '+' + props.storeName,
-          retailerID: props.user.retailerCompany.id,
-          supplierID: props.purchaseOrder.slice(36, 72),
-          mostRecentMessage: 'Purchase Order',
-          mostRecentMessageSender: props.user.name,
-        };
-        console.log(chatGroup);
-        const createdChatGroup = await API.graphql({
-          query: createChatGroup,
-          variables: {input: chatGroup},
-        });
-        console.log(createdChatGroup);
-      } catch {
-        e => console.log(e);
-      }
-    } else {
-      console.log(chatGroupExists + 'chat group already exist');
-      try {
-        const updateChat = await API.graphql({
-          query: updateChatGroup,
-          variables: {
-            input: {
-              id: props.purchaseOrder,
-              mostRecentMessage: 'Purchase Order',
-              mostRecentMessageSender: props.user.name,
-            },
-          },
-        });
-      } catch {
-        e => console.log(e);
-      }
-    }
 
-    console.log('creating product inquiry');
+    console.log('creating purchase order');
     try {
       const message = await API.graphql({
         query: createMessage,
@@ -491,7 +578,7 @@ const PurchaseOrder = props => {
   return (
     <View
       style={{
-        height: hp('70%'),
+        height: hp('80%'),
         width: wp('90%'),
         backgroundColor: Colors.GRAY_LIGHT,
         borderRadius: 10,
@@ -522,11 +609,11 @@ const PurchaseOrder = props => {
       </View>
       <View
         style={{
-          backgroundColor: Colors.GRAY_WHITE,
-          height: hp('30%'),
+          backgroundColor: Colors.GRAY_DARK,
+          height: hp('55%'),
           top: hp('5%'),
           borderRadius: 10,
-          width: wp('60%'),
+          width: wp('80%'),
         }}>
         <PurchaseOrderList
           POList={props.POList}
@@ -565,48 +652,16 @@ const PurchaseOrder = props => {
       </View>
       <Modal
         isVisible={poSuccessfulModal}
-        onBackdropPress={() => setpoSuccessfulModal(false)}>
-        <POSuccessfulModal />
-      </Modal>
-    </View>
-  );
-};
-
-const POSuccessfulModal = props => {
-  return (
-    <View
-      style={{
-        height: Mixins.scaleHeight(330),
-        width: Mixins.scaleWidth(290),
-        backgroundColor: Colors.PALE_GREEN,
-        borderRadius: 20,
-        alignItems: 'center',
-        alignSelf: 'center',
-      }}>
-      <View style={{top: Mixins.scaleWidth(30)}}>
-        <Image
-          source={require('_assets/images/Good-Vege.png')}
-          style={{
-            resizeMode: 'contain',
-            width: Mixins.scaleWidth(200),
-            height: Mixins.scaleHeight(150),
-          }}
+        onBackdropPress={() => [
+          setpoSuccessfulModal(false),
+          props.setPurchaseOrderModal(false),
+        ]}>
+        <SuccessfulModal
+          text={
+            'You have successfully sent your purchase order, wait for the supplier to get back'
+          }
         />
-      </View>
-      <View style={{top: Mixins.scaleHeight(15)}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
-      </View>
-      <View
-        style={{width: Mixins.scaleWidth(260), top: Mixins.scaleHeight(25)}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: Mixins.scaleHeight(15)},
-            Typography.small,
-          ]}>
-          You have successfully sent your purchase order, wait for the supplier
-          to get back
-        </Text>
-      </View>
+      </Modal>
     </View>
   );
 };
@@ -618,7 +673,7 @@ const PurchaseOrderList = props => {
         style={{
           height: 0,
           borderBottomWidth: 1,
-          width: wp('55%'),
+          width: wp('80%'),
           borderColor: Colors.GRAY_MEDIUM,
         }}></View>
     );
@@ -678,58 +733,52 @@ const PurchaseOrderComponent = props => {
   return (
     <View
       style={{
-        height: hp('5%'),
+        height: hp('8%'),
+        width: wp('80%'),
         justifyContent: 'center',
-        backgroundColor: Colors.GRAY_WHITE,
       }}>
       <View style={{flexDirection: 'row'}}>
         <View>
           <Text
-            style={[Typography.small, {position: 'absolute', left: wp('2%')}]}>
-            {props.name}
+            style={[
+              Typography.normal,
+              {
+                position: 'absolute',
+                left: wp('5%'),
+                width: wp('30%'),
+                bottom: hp('1%'),
+              },
+            ]}>
+            {props.name} ({props.grade})
           </Text>
+
           <Text
             style={[
               Typography.normal,
               {
                 position: 'absolute',
-                left: Mixins.scaleWidth(5),
-                top: Mixins.scaleWidth(20),
+                left: wp('5%'),
+                top: hp('1.5%'),
+                width: wp('30%'),
               },
             ]}>
-            Grade: {props.name}
+            Variety: {props.variety}
           </Text>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                position: 'absolute',
-                left: Mixins.scaleWidth(70),
-                top: Mixins.scaleWidth(20),
-              },
-            ]}>
-            Variety: {props.name}
-          </Text>
-          <Text style={[Typography.small, {left: wp('25%')}]}>
-            {props.quantity}kg
+          <Text style={[Typography.normal, {left: wp('50%')}]}>
+            {props.quantity} {props.siUnit}
           </Text>
         </View>
 
-        <TouchableOpacity style={{position: 'absolute', left: wp('28%')}}>
-          <Icon name="create-outline" size={wp('5%')} />
+        <TouchableOpacity
+          style={{position: 'absolute', right: wp('12%'), bottom: hp('0.2%')}}>
+          <Icon name="create-outline" size={wp('6%')} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => deleteItemFromPO()}
-          style={{position: 'absolute', left: wp('33%')}}>
-          <Icon name="trash-outline" size={wp('5%')} color={Colors.FAIL} />
+          style={{position: 'absolute', right: wp('5%'), bottom: hp('0.2%')}}>
+          <Icon name="trash-outline" size={wp('6%')} color={Colors.FAIL} />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-const DATA = [
-  {name: 'Ginger', quantity: '30'},
-  {name: 'Bananas', quantity: '40'},
-  {name: 'Avacadoes', quantity: '50'},
-  {name: 'Durian', quantity: '60'},
-];

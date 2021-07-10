@@ -34,6 +34,8 @@ export const ChatRoom = props => {
   console.log('chatID: ' + itemID);
   const [messages, setMessages] = useState(null);
   const [appState, setAppState] = useState(AppState.currentState);
+  const [nextToken, setNextToken] = useState(null);
+  const [refresh, setRefresh] = useState(0);
   const handleAppStateChange = state => {
     setAppState(state);
   };
@@ -43,17 +45,24 @@ export const ChatRoom = props => {
         query: messagesInChatByDate,
         variables: {
           chatGroupID: itemID,
-          sortDirection: 'ASC',
+          sortDirection: 'DESC',
+          limit: 5,
         },
       });
       console.log('fetching messages');
+      setNextToken(message.data.messagesInChatByDate.nextToken);
       var tempMessage = message.data.messagesInChatByDate.items;
-      setMessages(tempMessage.reverse());
+      setMessages(tempMessage);
     } catch (e) {
       console.log(e);
       console.log("there's a problem");
     }
   };
+  useEffect(() => {
+    if (nextToken != null) {
+      getMoreMessages();
+    }
+  }, [refresh]);
   useEffect(() => {
     fetchMessages();
     console.log('useEffect Triggered');
@@ -64,7 +73,6 @@ export const ChatRoom = props => {
       graphqlOperation(onCreateMessage),
     ).subscribe({
       next: data => {
-        console.log(data.value.data.onCreateMessage);
         const newMessage = data.value.data.onCreateMessage;
 
         if (newMessage.chatGroupID != itemID) {
@@ -149,6 +157,30 @@ export const ChatRoom = props => {
       }
     }
   };
+
+  const getMoreMessages = async () => {
+    try {
+      console.log(nextToken);
+      const message = await API.graphql({
+        query: messagesInChatByDate,
+        variables: {
+          chatGroupID: itemID,
+          sortDirection: 'DESC',
+          limit: 5,
+          nextToken: nextToken,
+        },
+      });
+      console.log('getting more messages');
+      setNextToken(message.data.messagesInChatByDate.nextToken);
+
+      var tempMessage = message.data.messagesInChatByDate.items;
+      console.log(tempMessage);
+      setMessages(oldmessages => oldmessages.concat(tempMessage));
+    } catch (e) {
+      console.log(e);
+      console.log("there's a problem");
+    }
+  };
   return (
     <SafeAreaView
       style={{
@@ -194,7 +226,20 @@ export const ChatRoom = props => {
             <Icon name="arrow-back-outline" size={wp('7%')} />
           </TouchableOpacity>
         </View>
-        <Text style={[Typography.header, {top: hp('3%')}]}>{chatName}</Text>
+        {props.user.retailerCompanyID == null ? (
+          <Text style={[Typography.header, {top: hp('3%')}]}>{chatName}</Text>
+        ) : (
+          <TouchableOpacity
+            style={{top: hp('3%')}}
+            onPress={() =>
+              props.navigation.navigate('store', {
+                itemId: itemID.slice(36, 72),
+              })
+            }>
+            <Text style={[Typography.header]}>{chatName}</Text>
+          </TouchableOpacity>
+        )}
+
         <View
           style={{
             position: 'absolute',
@@ -235,6 +280,7 @@ export const ChatRoom = props => {
             type={type}
             setMessages={setMessages}
             messages={messages}
+            setRefresh={setRefresh}
           />
         </View>
 
