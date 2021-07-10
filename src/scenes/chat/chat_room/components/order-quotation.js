@@ -28,6 +28,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 var dayjs = require('dayjs');
 
 export const OrderQuotationModal = props => {
@@ -35,6 +36,9 @@ export const OrderQuotationModal = props => {
   useEffect(() => {
     fetchQuotation();
   }, []);
+  const [succesfulModal, setSuccesfulModal] = useState(false);
+  const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
+
   console.log('quotation' + props.chatGroupID);
   const fetchQuotation = async () => {
     try {
@@ -42,6 +46,7 @@ export const OrderQuotationModal = props => {
         query: getOrderQuotation,
         variables: {id: props.chatGroupID},
       });
+      console.log(quotation.data.getOrderQuotation);
       setOrderDetails(quotation.data.getOrderQuotation);
     } catch (e) {
       console.log(e);
@@ -215,7 +220,7 @@ export const OrderQuotationModal = props => {
                 top: hp('55%'),
               }}>
               <TouchableOpacity
-                onPress={() => accept()}
+                onPress={() => [accept(), setSuccesfulModal(true)]}
                 style={{
                   backgroundColor: Colors.LIGHT_BLUE,
                   shadowColor: '#000',
@@ -236,7 +241,7 @@ export const OrderQuotationModal = props => {
                 <Text style={[Typography.small]}>{Strings.accept}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => reject()}
+                onPress={() => [reject(), setUnsuccesfulModal(true)]}
                 style={{
                   backgroundColor: Colors.LIGHT_BLUE,
                   shadowColor: '#000',
@@ -257,6 +262,26 @@ export const OrderQuotationModal = props => {
                 }}>
                 <Text style={[Typography.small]}>{Strings.decline}</Text>
               </TouchableOpacity>
+              <Modal
+                isVisible={succesfulModal}
+                onBackdropPress={() => [
+                  setSuccesfulModal(false),
+                  props.setOrderQuotationModal(false),
+                ]}>
+                <SuccessfulModal
+                  setSuccesfulModal={setSuccesfulModal}
+                  text="Succesfully accepted quotation from seller!"></SuccessfulModal>
+              </Modal>
+              <Modal
+                isVisible={unsuccesfulModal}
+                onBackdropPress={() => [
+                  setUnsuccesfulModal(false),
+                  props.setOrderQuotationModal(false),
+                ]}>
+                <UnsuccessfulModal
+                  setUnsuccesfulModal={setUnsuccesfulModal}
+                  text="Succesfully rejected quotation from seller!"></UnsuccessfulModal>
+              </Modal>
             </View>
           ) : (
             <View />
