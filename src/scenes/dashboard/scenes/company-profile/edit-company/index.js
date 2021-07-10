@@ -56,7 +56,7 @@ export const EditCompany = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('5%') : hp('5%')
+        Platform.OS === 'ios' ? hp('0%') : hp('5%')
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <DismissKeyboardView>
@@ -72,19 +72,13 @@ export const EditCompany = props => {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              top: hp('-8%'),
+              top: hp('-6%'),
             }}>
-            <Text style={[Typography.placeholderSmall]}>
-              {Strings.companyRegistrationNum}
-            </Text>
-            <TextInput
-              underlineColorAndroid="transparent"
+            <View
               style={{
-                flexDirection: 'row',
-                top: hp('2%'),
+                width: wp('100%'),
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: wp('100%'),
               }}>
               <View style={{left: wp('3%'), position: 'absolute'}}>
                 <BackButton navigation={props.navigation} />
@@ -94,6 +88,8 @@ export const EditCompany = props => {
                   Edit {Strings.companyProfile}
                 </Text>
               </View>
+            </View>
+
             <View
               style={{
                 top: hp('5%'),
