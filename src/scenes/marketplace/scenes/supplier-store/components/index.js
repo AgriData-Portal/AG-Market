@@ -462,7 +462,11 @@ export const ProductPopUp = props => {
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => setSuccessfulModal(false)}>
-        <SuccessfulModal />
+        <SuccessfulModal
+          text={
+            "You have successfully added your crops! We'll send you a notification as soon as retailers buy your produce!"
+          }
+        />
       </Modal>
     </KeyboardAvoidingView>
   );
@@ -887,7 +891,9 @@ export const ProductModal = props => {
               setSuccessfulModal(false),
               setEditMode(false),
             ]}>
-            <SuccessfulModal setSuccessfulModal={setSuccessfulModal} />
+            <SuccessfulModal
+              text={'You have successfully updated your product listing'}
+            />
           </Modal>
         </View>
       </KeyboardAvoidingView>

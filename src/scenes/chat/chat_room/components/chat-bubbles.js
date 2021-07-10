@@ -7,6 +7,7 @@ import {
   FlatList,
   Text,
   Image,
+  ScrollView,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -119,7 +120,6 @@ const ChatBubble = props => {
     );
   } else if (contentType == 'inquiry') {
     var content = props.content.split('+');
-    console.log(content);
     return (
       <View>
         <View>
@@ -215,7 +215,7 @@ const ChatBubble = props => {
                 top: hp('1%'),
               },
             ]}>
-            createdAt
+            {createdAt}
           </Text>
         </View>
       </View>
@@ -426,34 +426,52 @@ const ChatBubble = props => {
 };
 
 export const ChatBubbleList = props => {
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    console.log('refreshing');
+    setRefreshing(true);
+    props.setRefresh(state => state + 1);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
   return (
     <View>
-      <FlatList
-        inverted={true}
-        keyExtractor={item => item.id}
-        data={props.data}
-        numColumns={1}
-        renderItem={item => {
-          console.log(item);
-          return (
-            <ChatBubble
-              sender={item.item.sender}
-              content={item.item.content}
-              senderID={item.item.senderID}
-              createdAt={item.item.createdAt}
-              userID={props.userID}
-              contentType={item.item.type}
-              contentID={item.item.uniqueContentID}
-              chatName={props.chatName}
-              chatGroupID={props.chatGroupID}
-              type={props.type}
-              userName={props.userName}
-              setMessages={props.setMessages}
-              messages={props.messages}
-            />
-          );
+      <ScrollView
+        contentContainerStyle={{
+          flexDirection: 'row',
+          alignSelf: 'flex-end',
+          flexGrow: 1,
         }}
-      />
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <FlatList
+          inverted={true}
+          keyExtractor={item => item.id}
+          data={props.data}
+          numColumns={1}
+          renderItem={item => {
+            return (
+              <ChatBubble
+                sender={item.item.sender}
+                content={item.item.content}
+                senderID={item.item.senderID}
+                createdAt={item.item.createdAt}
+                userID={props.userID}
+                contentType={item.item.type}
+                contentID={item.item.uniqueContentID}
+                chatName={props.chatName}
+                chatGroupID={props.chatGroupID}
+                type={props.type}
+                userName={props.userName}
+                setMessages={props.setMessages}
+                messages={props.messages}
+              />
+            );
+          }}
+        />
+      </ScrollView>
     </View>
   );
 };

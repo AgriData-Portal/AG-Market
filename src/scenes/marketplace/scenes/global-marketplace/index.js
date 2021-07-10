@@ -18,7 +18,7 @@ import {
 import Strings from '_utils';
 
 export const Marketplace = props => {
-  const [choice, setChoice] = useState('product');
+  const [choice, setChoice] = useState('favourites');
   const [productsList, setProducts] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [initialRender, setInitialRender] = useState(true);
@@ -179,7 +179,7 @@ export const Marketplace = props => {
             height: hp('100%'),
             top: hp('10%'),
           }}>
-          <FavouritesList data={favourites} navigation={props.navigation} />
+          <FavouritesList data={props.user.retailerCompany.favouriteStores} navigation={props.navigation} />
         </View>
       ) : initialRender ? (
         <View

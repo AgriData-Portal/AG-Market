@@ -441,7 +441,7 @@ export const FavouritesList = props => {
         return (
           <StoreCard
             navigation={props.navigation}
-            storeID={item.id}
+            id={item.id}
             storeName={item.name}
           />
         );
@@ -452,7 +452,7 @@ export const FavouritesList = props => {
 
 const StoreCard = props => {
   console.log(props);
-  const image = 1;
+  const image = null;
   return (
     <TouchableOpacity
       onPress={() => props.navigation.navigate('store', {itemId: props.id})}
@@ -495,7 +495,7 @@ const StoreCard = props => {
         )}
       </View>
       <Text style={[Typography.normal, {top: hp('1%')}]}>
-        {props.storeName}SHIUN YEE
+        {props.storeName}
       </Text>
     </TouchableOpacity>
   );

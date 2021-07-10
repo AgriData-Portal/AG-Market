@@ -36,7 +36,7 @@ export const Login = props => {
       console.log('Successful sign in');
       props.updateUserID(user.attributes.sub);
       props.setUserAttributes(user.attributes);
-      props.updateAuthState('loggedIn'); //fucking weird
+      //props.updateAuthState('loggedIn'); //fucking weird
     } catch (error) {
       if (error.code == 'UserNotConfirmedException') {
         setVerified(true);
