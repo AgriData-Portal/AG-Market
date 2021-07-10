@@ -245,7 +245,7 @@ export const PurchaseOrder = props => {
         </View>
         {props.type == 'supplier' ? (
           <TouchableOpacity
-            onPress={() => setOrderQuotation(true)}
+            onPress={() => [setOrderQuotation(true)]}
             style={{
               position: 'absolute',
               borderRadius: 15,
@@ -266,6 +266,7 @@ export const PurchaseOrder = props => {
             chatName={props.chatName}
             chatGroupID={props.chatGroupID}
             setOrderQuotation={setOrderQuotation}
+            setPurchaseOrderModal={props.setPurchaseOrderModal}
             type={props.type}
             userName={props.userName}
             userID={props.userID}
@@ -573,6 +574,7 @@ const NewOrderQuotation = props => {
           onBackdropPress={() => [
             setSuccessfulModal(false),
             props.setOrderQuotation(false),
+            props.setPurchaseOrderModal(false),
           ]}>
           <SuccessfulModal setSuccessfulModal={setSuccessfulModal} />
         </Modal>
@@ -696,20 +698,10 @@ const SuccessfulModal = props => {
       <View style={{width: wp('70%'), top: hp('4%')}}>
         <Text
           style={[
-            {textAlign: 'center', lineHeight: wp('3%')},
-            Typography.small,
+            {textAlign: 'center', lineHeight: wp('5%')},
+            Typography.normal,
           ]}>
-          You have successfully added your crops! We'll send you a notification
-          as soon as retailers buy your produce!
-        </Text>
-      </View>
-      <View style={{width: wp('50%'), top: hp('8%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
-          ]}>
-          Keep adding for more!
+          You have successfully sent the order quotation to the customer!
         </Text>
       </View>
     </View>
