@@ -48,11 +48,10 @@ export const SuccessfulModal = props => {
             {textAlign: 'center', lineHeight: wp('3%')},
             Typography.small,
           ]}>
-          You have successfully added your crops! We'll send you a notification
-          as soon as retailers buy your produce!
+          {props.text}
         </Text>
       </View>
-      <View style={{width: wp('50%'), top: hp('8%')}}>
+      {/*<View style={{width: wp('50%'), top: hp('8%')}}>
         <Text
           style={[
             {textAlign: 'center', lineHeight: hp('3%')},
@@ -60,7 +59,7 @@ export const SuccessfulModal = props => {
           ]}>
           Keep adding for more!
         </Text>
-      </View>
+        </View>*/}
     </View>
   );
 };

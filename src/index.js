@@ -224,7 +224,7 @@ const AppNavigator = props => {
             </AppStack.Screen>
           </AppStack.Navigator>
         );
-      } else if (type == 'retaileremployee') {
+      } else if (type == 'retailemployee') {
         console.log('Retailer Employee \n');
         return (
           <AppStack.Navigator headerMode="none">
