@@ -64,7 +64,6 @@ export const EditCompany = props => {
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-
             width: wp('100%'),
             height: hp('100%'),
           }}>
@@ -92,7 +91,7 @@ export const EditCompany = props => {
 
             <View
               style={{
-                top: hp('5%'),
+                top: hp('3%'),
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: wp('50%'),
@@ -100,7 +99,16 @@ export const EditCompany = props => {
               }}>
               {imageSource === null ? (
                 <View>
-                  <Image source={require('_assets/images/company-logo.png')} />
+                  <Image
+                    source={require('_assets/images/company-logo.png')}
+                    style={{
+                      resizeMode: 'cover',
+                      width: wp('50%'),
+                      height: hp('20%'),
+                      backgroundColor: 'red',
+                      borderRadius: 10,
+                    }}
+                  />
                   <TouchableOpacity
                     onPress={() => {
                       selectImage();
@@ -120,7 +128,7 @@ export const EditCompany = props => {
                       width: wp('50%'),
                       height: hp('20%'),
 
-                      borderRadius: 100,
+                      borderRadius: 0,
                     }}
                   />
                 </View>
@@ -128,7 +136,7 @@ export const EditCompany = props => {
             </View>
             <View
               style={{
-                top: hp('9%'),
+                top: hp('8%'),
                 backgroundColor: Colors.GRAY_MEDIUM,
                 width: wp('85%'),
                 height: hp('50%'),
@@ -271,7 +279,7 @@ export const EditCompany = props => {
             <TouchableOpacity
               onPress={() => setSuccesfulChangesModal(true)}
               style={{
-                top: hp('12%'),
+                top: hp('10%'),
                 width: wp('50%'),
                 height: wp('11%'),
                 backgroundColor: Colors.LIGHT_BLUE,
