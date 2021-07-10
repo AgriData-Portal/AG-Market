@@ -52,6 +52,7 @@ export const ProductPopUp = props => {
   const [variety, setVariety] = useState('');
   const [grade, setGrade] = useState('');
   const [successfulModal, setSuccessfulModal] = useState(false);
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
 
   async function addListing() {
     try {
@@ -84,7 +85,6 @@ export const ProductPopUp = props => {
       });
 
       listing.productPicture = photo.uri;
-
       var products = props.productList;
       products.push(listing);
       props.setProducts(products);
@@ -432,7 +432,27 @@ export const ProductPopUp = props => {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => addListing()}
+          onPress={() => {
+            if (
+              imageSource == null ||
+              productName == '' ||
+              minPrice == '' ||
+              maxPrice == '' ||
+              grade == '' ||
+              variety == '' ||
+              quantityAvailable == '' ||
+              moq == ''
+            ) {
+              console.log('empty field');
+              setUnsuccessfulModal(true);
+            } else {
+              try {
+                addListing();
+              } catch {
+                e => console.log('error ' + e);
+              }
+            }
+          }}
           style={{
             height: hp('5%'),
             height: hp('7%'),
@@ -469,6 +489,11 @@ export const ProductPopUp = props => {
             "You have successfully added your crops! We'll send you a notification as soon as retailers buy your produce!"
           }
         />
+      </Modal>
+      <Modal
+        isVisible={unsuccessfulModal}
+        onBackdropPress={() => setUnsuccessfulModal(false)}>
+        <UnsuccessfulModal text={'Please fill in all empty spaces!'} />
       </Modal>
     </KeyboardAvoidingView>
   );

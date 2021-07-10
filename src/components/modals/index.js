@@ -92,9 +92,9 @@ export const UnsuccessfulModal = props => {
         <Text
           style={[
             {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
+            Typography.normal,
           ]}>
-          Something went wrong while you're
+          {props.text}
         </Text>
       </View>
     </View>
