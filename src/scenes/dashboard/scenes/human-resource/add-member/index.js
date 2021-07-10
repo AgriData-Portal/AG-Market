@@ -15,6 +15,7 @@ import {
   AddButton,
   SuccessfulModal,
   UnsuccessfulModal,
+  SuccesfulChangesModal,
 } from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
@@ -23,7 +24,6 @@ import {ChatButton} from '../../../components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {SuccesfulChangesModal} from '_components/modals';
 import {DismissKeyboardView} from '_components';
 import Strings from '_utils';
 
@@ -46,7 +46,7 @@ export const AddEmployeeButton = props => {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        width: wp('55%'),
+        width: wp('65%'),
         height: hp('5%'),
         bottom: hp('2%'),
         backgroundColor: Colors.GRAY_LIGHT,
@@ -54,7 +54,7 @@ export const AddEmployeeButton = props => {
       }}>
       <Icon name="add-circle-outline" size={wp('5.5%')} />
       <Text
-        style={[Typography.normal, {left: wp('4%'), color: Colors.LIME_GREEN}]}>
+        style={[Typography.normal, {left: wp('0%'), color: Colors.LIME_GREEN}]}>
         {Strings.addNewTeamMember}
       </Text>
 
@@ -69,19 +69,12 @@ export const AddEmployeeButton = props => {
           setSuccesfulChangesModal={setSuccesfulChangesModal}
         />
       </Modal>
-      <Modal
-        isVisible={succesfulChangesModal}
-        onBackdropPress={() => setSuccesfulChangesModal(false)}>
-        <SuccesfulChangesModal
-          setSuccesfulChangesModal={setSuccesfulChangesModal}
-          navigation={props.navigation}
-        />
-      </Modal>
     </TouchableOpacity>
   );
 };
 
 export const AddEmployeeButtonModal = props => {
+  const [successfulModal, setSuccessfulModal] = useState(false);
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -123,10 +116,6 @@ export const AddEmployeeButtonModal = props => {
           },
         },
       });
-      props.setSuccesfulChangesModal(true),
-        setTimeout(() => {
-          props.setAddEmployeeButtonModal(false);
-        }, 400);
     } catch (e) {
       console.log(e);
     }
@@ -264,7 +253,7 @@ export const AddEmployeeButtonModal = props => {
         </View>
 
         <TouchableOpacity
-          onPress={() => [addUser()]}
+          onPress={() => [addUser(), setSuccessfulModal(true)]}
           style={{
             top: hp('12%'),
             width: wp('30%'),
@@ -292,6 +281,18 @@ export const AddEmployeeButtonModal = props => {
             style={{left: wp('3%')}}
           />
         </TouchableOpacity>
+        <Modal
+          isVisible={successfulModal}
+          onBackdropPress={() => [
+            setSuccessfulModal(false),
+            props.setAddEmployeeButtonModal(false),
+          ]}>
+          <SuccessfulModal
+            setSuccessfulModal={setSuccessfulModal}
+            navigation={props.navigation}
+            text="You have successsfully added a new member!"
+          />
+        </Modal>
       </View>
     </KeyboardAvoidingView>
   );

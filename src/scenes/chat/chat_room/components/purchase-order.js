@@ -193,7 +193,6 @@ const OrderCard = props => {
 
 export const PurchaseOrder = props => {
   const [orderQuotation, setOrderQuotation] = useState(false);
-  const [successfulModal, setSuccessfulModal] = useState(false);
 
   return (
     <QuotationItemsProvider>
@@ -267,7 +266,6 @@ export const PurchaseOrder = props => {
             chatName={props.chatName}
             chatGroupID={props.chatGroupID}
             setOrderQuotation={setOrderQuotation}
-            setSuccessfulModal={setSuccessfulModal}
             type={props.type}
             userName={props.userName}
             userID={props.userID}
@@ -275,17 +273,13 @@ export const PurchaseOrder = props => {
             messages={props.messages}
           />
         </Modal>
-        <Modal
-          isVisible={successfulModal}
-          onBackdropPress={() => setSuccessfulModal(false)}>
-          <SuccessfulModal setSuccessfulModal={setSuccessfulModal} />
-        </Modal>
       </View>
     </QuotationItemsProvider>
   );
 };
 
 const NewOrderQuotation = props => {
+  const [successfulModal, setSuccessfulModal] = useState(false);
   const [openDelivery, setOpenDelivery] = useState(false);
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
   const [trigger, setTrigger] = useState(true);
@@ -393,9 +387,7 @@ const NewOrderQuotation = props => {
       messages.push(input);
       messages = messages.reverse();
       setMessages = {messages};*/
-
-      props.setSuccessfulModal(true);
-      props.setOrderQuotation(false);
+      setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
     }
@@ -555,7 +547,7 @@ const NewOrderQuotation = props => {
           top: hp('52%'),
         }}>
         <TouchableOpacity
-          onPress={() => sendQuotation()}
+          onPress={() => [sendQuotation()]}
           style={{
             backgroundColor: Colors.LIGHT_BLUE,
             shadowColor: '#000',
@@ -576,6 +568,14 @@ const NewOrderQuotation = props => {
           }}>
           <Text style={[Typography.small]}>Send Quotation to Retailer</Text>
         </TouchableOpacity>
+        <Modal
+          isVisible={successfulModal}
+          onBackdropPress={() => [
+            setSuccessfulModal(false),
+            props.setOrderQuotation(false),
+          ]}>
+          <SuccessfulModal setSuccessfulModal={setSuccessfulModal} />
+        </Modal>
       </View>
     </View>
   );

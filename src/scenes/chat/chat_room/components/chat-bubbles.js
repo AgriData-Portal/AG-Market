@@ -65,7 +65,7 @@ const ChatBubble = props => {
         {!isMyMessage() && (
           <View
             style={{
-              top: hp('5%'),
+              top: hp('3%'),
               borderColor: 'white',
               borderWidth: 0.2,
               width: wp('8%'),
@@ -104,7 +104,8 @@ const ChatBubble = props => {
             width: isMyMessage() ? wp('60%') : wp('50%'),
           }}>
           <View style={{marginTop: hp('2%')}}>
-            <Text style={[Typography.normal, {margin: wp('1%')}]}>
+            <Text
+              style={[Typography.normal, {margin: wp('1%'), left: wp('2%')}]}>
               {props.content}
             </Text>
             <Text
@@ -164,7 +165,7 @@ const ChatBubble = props => {
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
             marginLeft: isMyMessage() ? wp('40%') : 0,
             marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? 0 : wp('12%'),
+            left: isMyMessage() ? wp('5%') : wp('12%'),
             marginTop: hp('1%'),
             width: wp('45%'),
             height: hp('19%'),
@@ -267,7 +268,7 @@ const ChatBubble = props => {
             height: hp('13%'),
             marginLeft: isMyMessage() ? wp('40%') : 0,
             marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? 0 : wp('12%'),
+            left: isMyMessage() ? wp('5%') : wp('12%'),
             borderRadius: 15,
             marginTop: hp('1%'),
           }}>
@@ -368,7 +369,7 @@ const ChatBubble = props => {
             height: hp('13%'),
             marginLeft: isMyMessage() ? wp('40%') : 0,
             marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? 0 : wp('12%'),
+            left: isMyMessage() ? wp('5%') : wp('12%'),
             borderRadius: 15,
             marginTop: hp('1%'),
           }}>

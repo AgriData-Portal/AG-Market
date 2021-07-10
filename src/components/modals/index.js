@@ -45,8 +45,8 @@ export const SuccessfulModal = props => {
       <View style={{width: wp('70%'), top: hp('4%')}}>
         <Text
           style={[
-            {textAlign: 'center', lineHeight: wp('3%')},
-            Typography.small,
+            {textAlign: 'center', lineHeight: wp('5%')},
+            Typography.normal,
           ]}>
           {props.text}
         </Text>
@@ -92,9 +92,9 @@ export const UnsuccessfulModal = props => {
         <Text
           style={[
             {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
+            Typography.normal,
           ]}>
-          Something went wrong while you're
+          {props.text}
         </Text>
       </View>
     </View>
