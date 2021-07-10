@@ -114,10 +114,10 @@ export const EditCompany = props => {
           </View>
           <View
             style={{
-              top: hp('10%'),
+              top: hp('9%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
-              height: hp('45%'),
+              height: hp('50%'),
               borderRadius: 10,
             }}>
             <View
@@ -228,12 +228,34 @@ export const EditCompany = props => {
                   color: 'black',
                 }}></TextInput>
             </View>
+            <View
+              style={{
+                top: hp('18%'),
+                left: wp('5%'),
+                width: wp('75%'),
+                height: hp('5%'),
+                borderColor: Colors.GRAY_DARK,
+                borderBottomWidth: 1,
+                justifyContent: 'center',
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.bankDetails}
+              </Text>
+              <TextInput
+                underlineColorAndroid="transparent"
+                style={{
+                  borderBottomColor: 'transparent',
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  color: 'black',
+                }}></TextInput>
+            </View>
           </View>
 
           <TouchableOpacity
             onPress={() => setSuccesfulChangesModal(true)}
             style={{
-              top: hp('15%'),
+              top: hp('12%'),
               width: wp('50%'),
               height: wp('11%'),
               backgroundColor: Colors.LIGHT_BLUE,

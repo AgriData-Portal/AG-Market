@@ -61,12 +61,12 @@ export const CompanyProfile = props => {
           top: hp('14%'),
           backgroundColor: Colors.GRAY_MEDIUM,
           width: wp('85%'),
-          height: hp('38%'),
+          height: hp('40%'),
           borderRadius: 10,
         }}>
         <View
           style={{
-            top: hp('4%'),
+            top: hp('2%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
@@ -80,7 +80,7 @@ export const CompanyProfile = props => {
         </View>
         <View
           style={{
-            top: hp('6%'),
+            top: hp('4%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('7%'),
@@ -96,7 +96,7 @@ export const CompanyProfile = props => {
         </View>
         <View
           style={{
-            top: hp('8%'),
+            top: hp('6%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
@@ -110,7 +110,7 @@ export const CompanyProfile = props => {
         </View>
         <View
           style={{
-            top: hp('10%'),
+            top: hp('8%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
@@ -118,6 +118,20 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
           <View style={{top: hp('1%')}}>
             <Text style={[Typography.normal]}>citygrocerkk@gmail.com</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            top: hp('10%'),
+            left: wp('6%'),
+            width: wp('73%'),
+            height: hp('5%'),
+          }}>
+          <Text style={[Typography.placeholderSmall]}>
+            {Strings.bankDetails}
+          </Text>
+          <View style={{top: hp('1%')}}>
+            <Text style={[Typography.normal]}>13812641234146194672136417</Text>
           </View>
         </View>
       </View>

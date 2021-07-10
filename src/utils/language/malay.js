@@ -175,4 +175,5 @@ export default {
   productInquiry: 'Pertanyaan Produk',
   dataAnalytics: 'Analisis Data',
   analytics: 'ANALISIS',
+  bankDetails: 'Butiran Bank',
 };
