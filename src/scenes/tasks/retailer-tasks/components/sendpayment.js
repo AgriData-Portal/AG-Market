@@ -12,7 +12,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+import {CloseButton, SuccessfulModal} from '_components';
 import DatePicker from 'react-native-datepicker';
 import dayjs from 'dayjs';
 import {
@@ -20,6 +20,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {DismissKeyboard} from '_components';
+import {API} from 'aws-amplify';
+import {updatePaymentTask} from '../../../../graphql/mutations';
 import Strings from '_utils';
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -28,6 +30,19 @@ const now = () => {
 
 //Retailer upload receipt
 const UploadReceiptModal = props => {
+  const [successfulModal, setSuccessfulModal] = useState(false);
+  const sendReceipt = async () => {
+    try {
+      const updated = await API.graphql({
+        query: updatePaymentTask,
+        variables: {input: {id: props.id, receipt: 'some receipt'}},
+      });
+      console.log(updated);
+      setSuccessfulModal(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <View
       style={{
@@ -49,23 +64,12 @@ const UploadReceiptModal = props => {
           Typography.placeholder,
           {
             position: 'absolute',
-            top: hp('12%'),
-            right: wp('4%'),
+            top: hp('9%'),
+            left: wp('5%'),
           },
         ]}>
-        11:00 AM
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            right: wp('4%'),
-            top: hp('15%'),
-            fontStyle: 'italic',
-          },
-        ]}>
-        22 July, 2021
+        Send Before:{' '}
+        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
       </Text>
       <Text
         style={[
@@ -73,7 +77,7 @@ const UploadReceiptModal = props => {
           {
             position: 'absolute',
             fontFamily: 'Poppins-SemiBold',
-            top: hp('6%'),
+            top: hp('3%'),
             left: wp('5%'),
           },
         ]}>
@@ -81,10 +85,10 @@ const UploadReceiptModal = props => {
       </Text>
       <View
         style={{
-          borderBottomWidth: wp('1%'),
+          borderBottomWidth: 2,
           width: wp('80%'),
           alignSelf: 'center',
-          top: hp('18%'),
+          top: hp('15%'),
           borderColor: Colors.GRAY_MEDIUM,
           position: 'absolute',
         }}></View>
@@ -108,7 +112,7 @@ const UploadReceiptModal = props => {
             left: wp('43%'),
           },
         ]}>
-        Matthew's Farm
+        {props.supplier.name}
       </Text>
       <Text
         style={[
@@ -130,7 +134,7 @@ const UploadReceiptModal = props => {
             left: wp('43%'),
           },
         ]}>
-        #12345
+        #{props.id.slice(0, 6)}
       </Text>
       <Text
         style={[
@@ -141,7 +145,7 @@ const UploadReceiptModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.dateOfPayment}:
+        Ordered On:
       </Text>
       <Text
         style={[
@@ -152,7 +156,7 @@ const UploadReceiptModal = props => {
             left: wp('43%'),
           },
         ]}>
-        22 July, 2021
+        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM YYYY')}
       </Text>
       <Text
         style={[
@@ -163,7 +167,7 @@ const UploadReceiptModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Bank:
+        {Strings.bank}:
       </Text>
       <Text
         style={[
@@ -199,6 +203,7 @@ const UploadReceiptModal = props => {
         9065 7756 8989
       </Text>
       <TouchableOpacity
+        onPress={() => sendReceipt()}
         style={{
           backgroundColor: Colors.LIGHT_BLUE,
           width: wp('45%'),
@@ -225,9 +230,7 @@ const UploadReceiptModal = props => {
             flex: 1,
             flexDirection: 'row',
           }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.uploadReciept}
-          </Text>
+          <Text style={[Typography.normal, {textAlign: 'center'}]}>Paid</Text>
           <Icon
             name="receipt-outline"
             size={wp('5%')}
@@ -235,6 +238,14 @@ const UploadReceiptModal = props => {
           />
         </View>
       </TouchableOpacity>
+      <Modal
+        isVisible={successfulModal}
+        onBackdropPress={() => [
+          setSuccessfulModal(false),
+          props.setUploadReceiptModal(false),
+        ]}>
+        <SuccessfulModal text={'You have uploaded your payment receipt'} />
+      </Modal>
     </View>
   );
 };
@@ -281,9 +292,19 @@ const UploadReceipt = props => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <View style={{bottom: hp('0.5%')}}>
-            <Icon name="cash-outline" size={wp('11%')} />
-          </View>
+          {props.receipt != null ? (
+            <View style={{bottom: hp('0.5%')}}>
+              <Icon
+                name="cash-outline"
+                size={wp('11%')}
+                color={Colors.LIME_GREEN}
+              />
+            </View>
+          ) : (
+            <View style={{bottom: hp('0.5%')}}>
+              <Icon name="cash-outline" size={wp('11%')} />
+            </View>
+          )}
         </View>
         <Text
           style={[
@@ -295,19 +316,19 @@ const UploadReceipt = props => {
               position: 'absolute',
             },
           ]}>
-          {props.supplierName}
+          {props.supplier.name}
         </Text>
         <Text
           style={[
-            Typography.small,
+            Typography.normal,
             {
-              color: 'grey',
-              top: hp('7%'),
+              color: 'black',
+              top: hp('5%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
-          {props.items} {Strings.items}
+          Amount: {props.amount}
         </Text>
         <Text
           style={[
@@ -319,7 +340,7 @@ const UploadReceipt = props => {
               position: 'absolute',
             },
           ]}>
-          {Strings.dateCreated}:
+          Receive Before:
         </Text>
         <Text
           style={[
@@ -332,13 +353,20 @@ const UploadReceipt = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {props.createdAt}
+          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={uploadReceiptModal}>
         <UploadReceiptModal
           setUploadReceiptModal={setUploadReceiptModal}
-          uploadReceiptList={props}></UploadReceiptModal>
+          retailer={props.retailer}
+          supplier={props.supplier}
+          paid={props.paid}
+          amount={props.amount}
+          payBefore={props.payBefore}
+          receipt={props.receipt}
+          id={props.id}
+          createdAt={props.createdAt}></UploadReceiptModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -354,9 +382,14 @@ export const UploadReceiptList = props => {
         renderItem={({item}) => {
           return (
             <UploadReceipt
+              retailer={item.retailer}
+              supplier={item.supplier}
+              paid={item.paid}
+              amount={item.amount}
+              payBefore={item.payBefore}
+              receipt={item.receipt}
               createdAt={item.createdAt}
-              items={item.items}
-              supplierName={item.supplierName}
+              id={item.id}
             />
           );
         }}

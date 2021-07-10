@@ -12,7 +12,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+import {CloseButton, SuccessfulModal} from '_components';
 import DatePicker from 'react-native-datepicker';
 import dayjs from 'dayjs';
 import {
@@ -35,6 +35,7 @@ const now = () => {
 
 //Retailer receive
 const ReceiveModal = props => {
+  const [successfulModal, setSuccessfulModal] = useState(false);
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
     var product = item.price * item.quantity;
@@ -82,6 +83,7 @@ const ReceiveModal = props => {
         query: deleteGoodsTask,
         variables: {input: {id: props.taskID}},
       });
+      setSuccessfulModal(true);
       console.log('deleted!');
     } catch (e) {
       console.log(e);
@@ -270,6 +272,19 @@ const ReceiveModal = props => {
       ) : (
         <View />
       )}
+      <Modal
+        isVisible={successfulModal}
+        onBackdropPress={() => [
+          setSuccessfulModal(false),
+          props.setReceiveModal(false),
+        ]}>
+        <SuccessfulModal
+          text={
+            'You have successfully received your products from ' +
+            props.supplier.name
+          }
+        />
+      </Modal>
     </View>
   );
 };
