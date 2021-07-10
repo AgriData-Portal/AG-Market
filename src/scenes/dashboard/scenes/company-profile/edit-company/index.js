@@ -59,97 +59,20 @@ export const EditCompany = props => {
         Platform.OS === 'ios' ? hp('5%') : hp('5%')
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
-      <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
-        <View
+      <DismissKeyboardView>
+        <SafeAreaView
           style={{
-            flexDirection: 'row',
-            top: hp('2%'),
             alignItems: 'center',
             justifyContent: 'center',
+
             width: wp('100%'),
-          }}>
-          <View style={{left: wp('3%'), position: 'absolute'}}>
-            <BackButton navigation={props.navigation} />
-          </View>
-          <View>
-            <Text style={[Typography.header]}>
-              Edit {Strings.companyProfile}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('5%'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp('50%'),
-            height: hp('20%'),
-          }}>
-          {imageSource === null ? (
-            <View>
-              <Image source={require('_assets/images/company-logo.png')} />
-              <TouchableOpacity
-                onPress={() => {
-                  selectImage();
-                }}>
-                <Text style={{textAlign: 'center', top: hp('2%')}}>
-                  {Strings.changeImage}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View>
-              <Image
-                source={{uri: imageSource}}
-                style={{
-                  resizeMode: 'cover',
-                  width: wp('50%'),
-                  height: hp('20%'),
-                  borderRadius: 100,
-                }}
-              />
-            </View>
-          )}
-        </View>
-        <View
-          style={{
-            top: hp('9%'),
-            backgroundColor: Colors.GRAY_MEDIUM,
-            width: wp('85%'),
-            height: hp('50%'),
-            borderRadius: 10,
+            height: hp('100%'),
           }}>
           <View
             style={{
-              top: hp('3%'),
-              left: wp('5%'),
-              width: wp('75%'),
-              height: hp('5%'),
-              borderColor: Colors.GRAY_DARK,
-              borderBottomWidth: 1,
+              alignItems: 'center',
               justifyContent: 'center',
-            }}>
-            <Text style={[Typography.placeholderSmall]}>
-              {Strings.companyName}
-            </Text>
-            <TextInput
-              underlineColorAndroid="transparent"
-              style={{
-                borderBottomColor: 'transparent',
-                width: wp('75%'),
-                height: hp('5%'),
-                color: 'black',
-              }}></TextInput>
-          </View>
-          <View
-            style={{
-              top: hp('6%'),
-              left: wp('5%'),
-              width: wp('75%'),
-              height: hp('5%'),
-              borderColor: Colors.GRAY_DARK,
-              borderBottomWidth: 1,
-              justifyContent: 'center',
+              top: hp('-8%'),
             }}>
             <Text style={[Typography.placeholderSmall]}>
               {Strings.companyRegistrationNum}
@@ -157,137 +80,237 @@ export const EditCompany = props => {
             <TextInput
               underlineColorAndroid="transparent"
               style={{
-                borderBottomColor: 'transparent',
-                width: wp('75%'),
-                height: hp('5%'),
-                color: 'black',
-              }}></TextInput>
-          </View>
-          <View
-            style={{
-              top: hp('9%'),
-              left: wp('5%'),
-              width: wp('75%'),
-              height: hp('5%'),
-              borderColor: Colors.GRAY_DARK,
-              borderBottomWidth: 1,
-              justifyContent: 'center',
-            }}>
-            <Text style={[Typography.placeholderSmall]}>
-              {Strings.companyAddress}
-            </Text>
-            <TextInput
-              underlineColorAndroid="transparent"
+                flexDirection: 'row',
+                top: hp('2%'),
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: wp('100%'),
+              }}>
+              <View style={{left: wp('3%'), position: 'absolute'}}>
+                <BackButton navigation={props.navigation} />
+              </View>
+              <View>
+                <Text style={[Typography.header]}>
+                  Edit {Strings.companyProfile}
+                </Text>
+              </View>
+            <View
               style={{
-                borderBottomColor: 'transparent',
-                width: wp('75%'),
-                height: hp('5%'),
-                color: 'black',
-              }}></TextInput>
-          </View>
-          <View
-            style={{
-              top: hp('12%'),
-              left: wp('5%'),
-              width: wp('75%'),
-              height: hp('5%'),
-              borderColor: Colors.GRAY_DARK,
-              borderBottomWidth: 1,
-              justifyContent: 'center',
-            }}>
-            <Text style={[Typography.placeholderSmall]}>
-              {Strings.contactNumber}
-            </Text>
-            <TextInput
-              underlineColorAndroid="transparent"
-              style={{
-                borderBottomColor: 'transparent',
-                width: wp('75%'),
-                height: hp('5%'),
-                color: 'black',
-              }}></TextInput>
-          </View>
-          <View
-            style={{
-              top: hp('15%'),
-              left: wp('5%'),
-              width: wp('75%'),
-              height: hp('5%'),
-              borderColor: Colors.GRAY_DARK,
-              borderBottomWidth: 1,
-              justifyContent: 'center',
-            }}>
-            <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
-            <TextInput
-              underlineColorAndroid="transparent"
-              style={{
-                borderBottomColor: 'transparent',
-                width: wp('75%'),
-                height: hp('5%'),
-                color: 'black',
-              }}></TextInput>
-          </View>
-          <View
-            style={{
-              top: hp('18%'),
-              left: wp('5%'),
-              width: wp('75%'),
-              height: hp('5%'),
-              borderColor: Colors.GRAY_DARK,
-              borderBottomWidth: 1,
-              justifyContent: 'center',
-            }}>
-            <Text style={[Typography.placeholderSmall]}>
-              {Strings.bankDetails}
-            </Text>
-            <TextInput
-              underlineColorAndroid="transparent"
-              style={{
-                borderBottomColor: 'transparent',
-                width: wp('75%'),
-                height: hp('5%'),
-                color: 'black',
-              }}></TextInput>
-          </View>
-        </View>
+                top: hp('5%'),
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: wp('50%'),
+                height: hp('20%'),
+              }}>
+              {imageSource === null ? (
+                <View>
+                  <Image source={require('_assets/images/company-logo.png')} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      selectImage();
+                    }}
+                    style={{top: hp('2%')}}>
+                    <Text style={{textAlign: 'center'}}>
+                      {Strings.changeImage}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View>
+                  <Image
+                    source={{uri: imageSource}}
+                    style={{
+                      resizeMode: 'cover',
+                      width: wp('50%'),
+                      height: hp('20%'),
 
-        <TouchableOpacity
-          onPress={() => setSuccesfulChangesModal(true)}
-          style={{
-            top: hp('12%'),
-            width: wp('50%'),
-            height: wp('11%'),
-            backgroundColor: Colors.LIGHT_BLUE,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'row',
-            borderRadius: 10,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.23,
-            shadowRadius: 2.62,
+                      borderRadius: 100,
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+            <View
+              style={{
+                top: hp('9%'),
+                backgroundColor: Colors.GRAY_MEDIUM,
+                width: wp('85%'),
+                height: hp('50%'),
+                borderRadius: 10,
+              }}>
+              <View
+                style={{
+                  top: hp('3%'),
+                  left: wp('5%'),
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  borderBottomWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <Text style={[Typography.placeholderSmall]}>
+                  {Strings.companyName}
+                </Text>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  style={{
+                    borderBottomColor: 'transparent',
+                    width: wp('75%'),
+                    height: hp('5%'),
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View
+                style={{
+                  top: hp('6%'),
+                  left: wp('5%'),
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  borderBottomWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <Text style={[Typography.placeholderSmall]}>
+                  {Strings.companyRegistrationNum}
+                </Text>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  style={{
+                    borderBottomColor: 'transparent',
+                    width: wp('75%'),
+                    height: hp('5%'),
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View
+                style={{
+                  top: hp('9%'),
+                  left: wp('5%'),
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  borderBottomWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <Text style={[Typography.placeholderSmall]}>
+                  {Strings.companyAddress}
+                </Text>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  style={{
+                    borderBottomColor: 'transparent',
+                    width: wp('75%'),
+                    height: hp('5%'),
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View
+                style={{
+                  top: hp('12%'),
+                  left: wp('5%'),
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  borderBottomWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <Text style={[Typography.placeholderSmall]}>
+                  {Strings.contactNumber}
+                </Text>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  style={{
+                    borderBottomColor: 'transparent',
+                    width: wp('75%'),
+                    height: hp('5%'),
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View
+                style={{
+                  top: hp('15%'),
+                  left: wp('5%'),
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  borderBottomWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <Text style={[Typography.placeholderSmall]}>
+                  {Strings.email}
+                </Text>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  style={{
+                    borderBottomColor: 'transparent',
+                    width: wp('75%'),
+                    height: hp('5%'),
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View
+                style={{
+                  top: hp('18%'),
+                  left: wp('5%'),
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  borderBottomWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <Text style={[Typography.placeholderSmall]}>
+                  {Strings.bankDetails}
+                </Text>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  style={{
+                    borderBottomColor: 'transparent',
+                    width: wp('75%'),
+                    height: hp('5%'),
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+            </View>
 
-            elevation: 4,
-          }}>
-          <Text>{Strings.saveChanges}</Text>
-          <Icon
-            name="checkmark-circle-outline"
-            size={wp('5%')}
-            style={{left: wp('3%')}}
-          />
-        </TouchableOpacity>
-        <Modal
-          isVisible={succesfulChangesModal}
-          onBackdropPress={() => setSuccesfulChangesModal(false)}>
-          <SuccesfulChangesModal
-            setSuccesfulChangesModal={setSuccesfulChangesModal}
-            navigation={props.navigation}
-          />
-        </Modal>
-      </SafeAreaView>
+            <TouchableOpacity
+              onPress={() => setSuccesfulChangesModal(true)}
+              style={{
+                top: hp('12%'),
+                width: wp('50%'),
+                height: wp('11%'),
+                backgroundColor: Colors.LIGHT_BLUE,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                borderRadius: 10,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
+
+                elevation: 4,
+              }}>
+              <Text>{Strings.saveChanges}</Text>
+              <Icon
+                name="checkmark-circle-outline"
+                size={wp('5%')}
+                style={{left: wp('3%')}}
+              />
+            </TouchableOpacity>
+            <Modal
+              isVisible={succesfulChangesModal}
+              onBackdropPress={() => setSuccesfulChangesModal(false)}>
+              <SuccesfulChangesModal
+                setSuccesfulChangesModal={setSuccesfulChangesModal}
+                navigation={props.navigation}
+              />
+            </Modal>
+          </View>
+        </SafeAreaView>
+      </DismissKeyboardView>
     </KeyboardAvoidingView>
   );
 };
