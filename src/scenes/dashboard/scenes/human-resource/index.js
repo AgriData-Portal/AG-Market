@@ -19,26 +19,45 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {getUsersByRetailerCompany} from '../../../../graphql/queries';
+import {
+  getUsersByRetailerCompany,
+  getUsersBySupplierCompany,
+} from '../../../../graphql/queries';
 
 export const HumanResource = props => {
   const [teamList, setTeamList] = useState([]);
   const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
   const fetchMembers = async () => {
-    try {
-      const members = await API.graphql({
-        query: getUsersByRetailerCompany,
-        variables: {retailerCompanyID: props.user.retailerCompanyID},
-      });
-      setTeamList(members.data.getUsersByRetailerCompany.items);
-    } catch (e) {
-      console.log(e);
+    if (props.user.retailerCompanyID == null) {
+      console.log('supplier');
+      try {
+        const members = await API.graphql({
+          query: getUsersBySupplierCompany,
+          variables: {supplierCompanyID: props.user.supplierCompanyID},
+        });
+        console.log(members.data.getUsersBySupplierCompany.items);
+        setTeamList(members.data.getUsersBySupplierCompany.items);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      console.log('retailer');
+      try {
+        const members = await API.graphql({
+          query: getUsersByRetailerCompany,
+          variables: {retailerCompanyID: props.user.retailerCompanyID},
+        });
+        console.log(members.data.getUsersByRetailerCompany.items);
+        setTeamList(members.data.getUsersByRetailerCompany.items);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
   useEffect(() => {
     fetchMembers();
-    console.log('useEffect Triggered'), [];
-  });
+    console.log('useEffect Triggered');
+  }, []);
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
       <View
@@ -138,9 +157,9 @@ const Participant = props => {
           left: wp('5%'),
           alignSelf: 'flex-start',
         }}>
-        <Text style={[Typography.normal]}>Carey Beck</Text>
+        <Text style={[Typography.normal]}>{props.name}</Text>
         <Text style={[Typography.placeholderSmall, {fontStyle: 'italic'}]}>
-          {Strings.owner}
+          {props.role}
         </Text>
       </View>
       <TouchableOpacity
@@ -267,6 +286,7 @@ const ParticipantList = props => {
       data={props.data}
       ItemSeparatorComponent={Seperator}
       renderItem={({item}) => {
+        console.log(item);
         return <Participant name={item.name} role={item.role} />;
       }}></FlatList>
   );

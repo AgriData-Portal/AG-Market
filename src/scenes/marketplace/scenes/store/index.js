@@ -23,7 +23,6 @@ import {
 } from 'react-native-responsive-screen';
 import {updateRetailerCompany} from '../../../../graphql/mutations';
 import Strings from '_utils';
-import {template} from '@babel/core';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid
@@ -69,18 +68,32 @@ export const Store = props => {
   const updateFavourites = async () => {
     try {
       var currentFavList = props.user.retailerCompany.favouriteStores;
-      currentFavList.push({id: itemId, name: storeName});
-      const updated = await API.graphql({
-        query: updateRetailerCompany,
-        variables: {
-          input: {
-            id: props.user.retailerCompanyID,
-            favouriteStores: currentFavList,
+      if (currentFavList != null) {
+        currentFavList.push({id: itemId, name: storeName});
+        var updated = await API.graphql({
+          query: updateRetailerCompany,
+          variables: {
+            input: {
+              id: props.user.retailerCompanyID,
+              favouriteStores: currentFavList,
+            },
           },
-        },
-      });
-      setIsFavourite(true);
-      console.log('success');
+        });
+        setIsFavourite(true);
+        console.log('success');
+      } else {
+        var updated = await API.graphql({
+          query: updateRetailerCompany,
+          variables: {
+            input: {
+              id: props.user.retailerCompanyID,
+              favouriteStores: [{id: itemId, name: storeName}],
+            },
+          },
+        });
+        setIsFavourite(true);
+        console.log('success');
+      }
     } catch (e) {
       console.log(e);
     }
@@ -88,12 +101,16 @@ export const Store = props => {
 
   const checkIsFavourite = () => {
     var tempList = props.user.retailerCompany.favouriteStores;
-    tempList = tempList.filter(item => {
-      return item.id == itemId;
-    });
-    if (tempList.length == 0) {
-      return false;
-    } else return true;
+    if (tempList != null) {
+      tempList = tempList.filter(item => {
+        return item.id == itemId;
+      });
+      if (tempList.length == 0) {
+        return false;
+      } else return true;
+    } else {
+      return null;
+    }
   };
   return (
     <SafeAreaView
@@ -133,6 +150,7 @@ export const Store = props => {
           productList={products}
           POList={POList}
           setPOList={setPOList}
+          storeName={storeName}
           purchaseOrder={purchaseOrder}
           user={props.user}
         />

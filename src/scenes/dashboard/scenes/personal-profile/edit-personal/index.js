@@ -61,7 +61,229 @@ export const EditPersonal = props => {
       keyboardVerticalOffset={
         Platform.OS === 'ios' ? hp('0%') : hp('0%')
       } /* Keyboard Offset needs to be tested against multiple phones */
-    ></KeyboardAvoidingView>
+    >
+      <SafeAreaView
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp('100%'),
+        }}>
+        <DismissKeyboardView
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: hp('100%'),
+            top: hp('-15%'),
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              top: hp('2%'),
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: wp('100%'),
+            }}>
+            <View style={{left: wp('3%'), position: 'absolute'}}>
+              <BackButton navigation={props.navigation} />
+            </View>
+            <View>
+              <Text style={[Typography.header]}>
+                Edit {Strings.personalProfile}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              top: hp('5%'),
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: wp('50%'),
+              height: hp('20%'),
+            }}>
+            {imageSource === null ? (
+              <View>
+                <Image source={require('_assets/images/company-logo.png')} />
+                <TouchableOpacity
+                  onPress={() => {
+                    selectImage();
+                  }}
+                  style={{
+                    top: hp('2%'),
+                  }}>
+                  <Text
+                    style={[
+                      Typography.normal,
+                      {
+                        textAlign: 'center',
+                      },
+                    ]}>
+                    {Strings.changeImage}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View>
+                <Image
+                  source={{uri: imageSource}}
+                  style={{
+                    resizeMode: 'cover',
+                    width: wp('50%'),
+                    height: hp('20%'),
+                    borderRadius: 100,
+                  }}
+                />
+              </View>
+            )}
+          </View>
+          <View
+            style={{
+              top: hp('10%'),
+              backgroundColor: Colors.GRAY_MEDIUM,
+              width: wp('85%'),
+              height: hp('30%'),
+              borderRadius: 10,
+            }}>
+            <View
+              style={{
+                top: hp('3%'),
+                left: wp('5%'),
+                width: wp('75%'),
+                height: hp('5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.fullName}
+              </Text>
+              <TextInput
+                placeholderTextColor={Colors.GRAY_DARK}
+                placeholder="John Smith"
+                underlineColorAndroid="transparent"
+                style={{
+                  borderBottomColor: 'transparent',
+                  width: wp('75%'),
+                  height: hp('6%'),
+                  color: 'black',
+                }}></TextInput>
+              <View
+                style={{borderColor: Colors.GRAY_DARK, borderBottomWidth: 1}}
+              />
+            </View>
+            <View
+              style={{
+                top: hp('7%'),
+                left: wp('5%'),
+                width: wp('75%'),
+                height: hp('5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
+              <TextInput
+                placeholderTextColor={Colors.GRAY_DARK}
+                placeholder="email@gmail.com"
+                underlineColorAndroid="transparent"
+                style={{
+                  borderBottomColor: 'transparent',
+                  width: wp('75%'),
+                  height: hp('6%'),
+                  color: 'black',
+                }}></TextInput>
+              <View
+                style={{borderColor: Colors.GRAY_DARK, borderBottomWidth: 1}}
+              />
+            </View>
+            <View
+              style={{
+                top: hp('11%'),
+                left: wp('5%'),
+                width: wp('75%'),
+                height: hp('4%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.contactNumber}
+              </Text>
+              <TextInput
+                underlineColorAndroid="transparent"
+                placeholderTextColor={Colors.GRAY_DARK}
+                placeholder="+60 11 6569 1999"
+                style={{
+                  borderBottomColor: 'transparent',
+                  width: wp('75%'),
+                  height: hp('6%'),
+                  color: 'black',
+                }}></TextInput>
+              <View
+                style={{borderColor: Colors.GRAY_DARK, borderBottomWidth: 1}}
+              />
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => setChangePassword(true)}
+            style={{
+              alignSelf: 'center',
+              top: hp('15%'),
+              width: wp('40%'),
+              height: hp('5%'),
+              backgroundColor: Colors.LIGHT_BLUE,
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              borderRadius: 10,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.23,
+              shadowRadius: 2.62,
+              zIndex: 5,
+              elevation: 4,
+            }}>
+            <Text>{Strings.changePass}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setSuccesfulChangesModal(true)}
+            style={{
+              alignSelf: 'center',
+              top: hp('18%'),
+              width: wp('55%'),
+              height: hp('5%'),
+              backgroundColor: Colors.LIGHT_BLUE,
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              borderRadius: 10,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.23,
+              shadowRadius: 2.62,
+              zIndex: 5,
+              elevation: 4,
+            }}>
+            <Text>{Strings.saveChanges}</Text>
+            <Icon
+              name="checkmark-circle-outline"
+              size={wp('5.5%')}
+              style={{left: wp('4%')}}
+            />
+          </TouchableOpacity>
+          <Modal isVisible={changePassword}>
+            <ChangePassword
+              setChangePassword={setChangePassword}
+              setForgetPassword={props.setForgetPassword}
+            />
+          </Modal>
+          <Modal
+            isVisible={succesfulChangesModal}
+            onBackdropPress={() => setSuccesfulChangesModal(false)}>
+            <SuccesfulChangesModal
+              setSuccesfulChangesModal={setSuccesfulChangesModal}
+              navigation={props.navigation}
+            />
+          </Modal>
+        </DismissKeyboardView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 

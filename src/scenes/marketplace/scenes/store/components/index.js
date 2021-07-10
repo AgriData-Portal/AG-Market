@@ -30,6 +30,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {SuccessfulModal} from '_components/modals';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -55,7 +56,7 @@ const ProductCard = props => {
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('36%'),
-        height: hp('20%'),
+        height: hp('30%'),
         margin: wp('5%'),
         borderRadius: 20,
         elevation: 3,
@@ -95,6 +96,7 @@ const ProductCard = props => {
           setProductModal={setProductModal}
           purchaseOrder={props.purchaseOrder}
           POList={props.POList}
+          storeName={props.storeName}
           setPOList={props.setPOList}
           id={props.id}
           user={props.user}></ProductPopUp>
@@ -140,6 +142,7 @@ export const MarketplaceList = props => {
             id={item.id}
             purchaseOrder={props.purchaseOrder}
             POList={props.POList}
+            storeName={props.storeName}
             setPOList={props.setPOList}
             user={props.user}
           />
@@ -152,6 +155,8 @@ export const MarketplaceList = props => {
 const ProductPopUp = props => {
   const [desiredQuantity, setDesiredQuantity] = useState('');
   const [inquirySuccessfulModal, setInquirySuccessfulModal] = useState(false);
+  const [successfulModal, setSuccessfulModal] = useState(false);
+
   const sendProductInquiry = async () => {
     try {
       const updateChat = await API.graphql({
@@ -243,6 +248,7 @@ const ProductPopUp = props => {
       poList.push(added.data.createProducts);
       console.log(poList);
       props.setPOList(poList);
+      setSuccessfulModal(true);
     } catch {
       e => console.log(e);
     }
@@ -426,6 +432,16 @@ const ProductPopUp = props => {
         isVisible={inquirySuccessfulModal}
         onBackdropPress={() => setInquirySuccessfulModal(false)}>
         <InquirySuccessfulModal />
+      </Modal>
+      <Modal
+        isVisible={successfulModal}
+        onBackdropPress={() => [
+          setSuccessfulModal(false),
+          props.setProductModal(false),
+        ]}>
+        <SuccessfulModal
+          text={'You have successfully added the items to your purchase order'}
+        />
       </Modal>
     </KeyboardAvoidingView>
   );
@@ -636,48 +652,16 @@ const PurchaseOrder = props => {
       </View>
       <Modal
         isVisible={poSuccessfulModal}
-        onBackdropPress={() => setpoSuccessfulModal(false)}>
-        <POSuccessfulModal />
-      </Modal>
-    </View>
-  );
-};
-
-const POSuccessfulModal = props => {
-  return (
-    <View
-      style={{
-        height: Mixins.scaleHeight(330),
-        width: Mixins.scaleWidth(290),
-        backgroundColor: Colors.PALE_GREEN,
-        borderRadius: 20,
-        alignItems: 'center',
-        alignSelf: 'center',
-      }}>
-      <View style={{top: Mixins.scaleWidth(30)}}>
-        <Image
-          source={require('_assets/images/Good-Vege.png')}
-          style={{
-            resizeMode: 'contain',
-            width: Mixins.scaleWidth(200),
-            height: Mixins.scaleHeight(150),
-          }}
+        onBackdropPress={() => [
+          setpoSuccessfulModal(false),
+          props.setPurchaseOrderModal(false),
+        ]}>
+        <SuccessfulModal
+          text={
+            'You have successfully sent your purchase order, wait for the supplier to get back'
+          }
         />
-      </View>
-      <View style={{top: Mixins.scaleHeight(15)}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
-      </View>
-      <View
-        style={{width: Mixins.scaleWidth(260), top: Mixins.scaleHeight(25)}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: Mixins.scaleHeight(15)},
-            Typography.small,
-          ]}>
-          You have successfully sent your purchase order, wait for the supplier
-          to get back
-        </Text>
-      </View>
+      </Modal>
     </View>
   );
 };
