@@ -497,12 +497,8 @@ const App = () => {
         } else {
           console.log('no user found');
           console.log(userAttributes);
-          if (userAttributes != null) {
-            console.log('attempting to create new user');
-            createNewUser();
-          } else {
-            setRunAgain(true);
-          }
+          console.log('attempting to create new user');
+          createNewUser();
         }
       } else {
         setRunAgain(true);
