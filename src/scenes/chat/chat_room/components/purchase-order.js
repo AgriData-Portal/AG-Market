@@ -257,7 +257,7 @@ export const PurchaseOrder = props => {
         </View>
         {props.type == 'supplier' ? (
           <TouchableOpacity
-            onPress={() => setOrderQuotation(true)}
+            onPress={() => [setOrderQuotation(true)]}
             style={{
               position: 'absolute',
               borderRadius: 15,
@@ -278,6 +278,7 @@ export const PurchaseOrder = props => {
             chatName={props.chatName}
             chatGroupID={props.chatGroupID}
             setOrderQuotation={setOrderQuotation}
+            setPurchaseOrderModal={props.setPurchaseOrderModal}
             type={props.type}
             userName={props.userName}
             userID={props.userID}
@@ -585,8 +586,14 @@ const NewOrderQuotation = props => {
           onBackdropPress={() => [
             setSuccessfulModal(false),
             props.setOrderQuotation(false),
+            props.setPurchaseOrderModal(false),
           ]}>
-          <SuccessfulModal setSuccessfulModal={setSuccessfulModal} />
+          <SuccessfulModal
+            setSuccessfulModal={setSuccessfulModal}
+            text={
+              'You have successfully sent the order quotation to the customer!'
+            }
+          />
         </Modal>
       </View>
     </View>
