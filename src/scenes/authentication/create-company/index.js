@@ -132,7 +132,7 @@ export const CreateCompany = props => {
                 style={[
                   Typography.largestSize,
                   {
-                    width: wp('50%'),
+                    width: wp('60%'),
                     left: wp('8%'),
                     lineHeight: hp('5.5%'),
                   },

@@ -166,4 +166,5 @@ export default {
   productInquiry: '商品详情',
   dataAnalytics: '数据分析',
   analytics: '分析',
+  bankDetails: '银行资料',
 };

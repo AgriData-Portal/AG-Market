@@ -3800,7 +3800,7 @@ export const goodsTaskForSupplierByDate = /* GraphQL */ `
 export const paymentsTaskForRetailerByDate = /* GraphQL */ `
   query PaymentsTaskForRetailerByDate(
     $retailerID: ID
-    $createdAt: ModelStringKeyConditionInput
+    $payBeforeCreatedAt: ModelPaymentTaskPaymentTasksByRetailerCompositeKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPaymentTaskFilterInput
     $limit: Int
@@ -3808,7 +3808,7 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
   ) {
     paymentsTaskForRetailerByDate(
       retailerID: $retailerID
-      createdAt: $createdAt
+      payBeforeCreatedAt: $payBeforeCreatedAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -3903,7 +3903,7 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
 export const paymentsTaskForSupplierByDate = /* GraphQL */ `
   query PaymentsTaskForSupplierByDate(
     $supplierID: ID
-    $createdAt: ModelStringKeyConditionInput
+    $payBeforeCreatedAt: ModelPaymentTaskPaymentTasksBySupplierCompositeKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPaymentTaskFilterInput
     $limit: Int
@@ -3911,7 +3911,7 @@ export const paymentsTaskForSupplierByDate = /* GraphQL */ `
   ) {
     paymentsTaskForSupplierByDate(
       supplierID: $supplierID
-      createdAt: $createdAt
+      payBeforeCreatedAt: $payBeforeCreatedAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

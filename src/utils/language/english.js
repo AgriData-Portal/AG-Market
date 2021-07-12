@@ -174,4 +174,5 @@ export default {
   productInquiry: 'Product Inquiry',
   dataAnalytics: 'Data Analytics',
   analytics: 'ANALYTICS',
+  bankDetails: 'Bank Details',
 };

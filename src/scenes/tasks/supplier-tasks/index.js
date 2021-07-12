@@ -29,11 +29,12 @@ export const SupplierTasks = props => {
   const [claimTask, setClaimTask] = useState([]);
   const [sortModal, setSortModal] = useState(false);
   const [task, setTask] = useState('send');
+  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
-    if (task == 'send') {
+    if (task == 'send' && sendTask.length == 0) {
       getSendTask();
-    } else if (task == 'claim') {
+    } else if (task == 'claim' && claimTask.length == 0) {
       getClaimTask();
     }
   }, [task]);
@@ -169,9 +170,21 @@ export const SupplierTasks = props => {
           height: hp('56%'),
         }}>
         {task == 'claim' ? (
-          <ReceivePaymentTaskList data={claimTask} />
+          <ReceivePaymentTaskList
+            data={claimTask}
+            trigger={trigger}
+            setTrigger={setTrigger}
+            claimTask={claimTask}
+            setClaimTask={setClaimTask}
+          />
         ) : (
-          <SendTaskList data={sendTask} />
+          <SendTaskList
+            data={sendTask}
+            trigger={trigger}
+            setTrigger={setTrigger}
+            sendTask={sendTask}
+            setSendTask={setSendTask}
+          />
         )}
       </View>
 

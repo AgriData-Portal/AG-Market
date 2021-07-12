@@ -9,7 +9,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {OrderList, SortModal} from './components';
-import {NavBar} from '_components';
+import {NavBar, LoadingModal} from '_components';
 import Modal from 'react-native-modal';
 import {
   widthPercentageToDP as wp,
@@ -25,6 +25,7 @@ import Strings from '_utils';
 export const Orders = props => {
   const [sortModal, setSortModal] = useState(false);
   const [invoiceList, setInvoiceList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getInvoice();
@@ -42,7 +43,7 @@ export const Orders = props => {
         });
         console.log(invoice.data.invoiceForSupplierByDate.items);
         setInvoiceList(invoice.data.invoiceForSupplierByDate.items);
-
+        setLoading(false);
         console.log('supplierCompanyInvoices');
       } catch (e) {
         console.log(e);
@@ -58,12 +59,13 @@ export const Orders = props => {
         });
         console.log(invoice.data.invoiceForRetailerByDate.items);
         setInvoiceList(invoice.data.invoiceForRetailerByDate.items);
-
+        setLoading(false);
         console.log('retailerCompanyInvoices');
       } catch (e) {
         console.log(e);
       }
     }
+    console.log('first run');
   };
   return (
     <SafeAreaView
@@ -106,7 +108,7 @@ export const Orders = props => {
           top: hp('7%'),
           height: hp('64%'),
         }}>
-        <OrderList OrderList={invoiceList} user={props.user} />
+        <OrderList invoiceList={invoiceList} user={props.user} />
       </View>
       <View style={{position: 'absolute', top: hp('90%')}}>
         <NavBar navigation={props.navigation} />
@@ -121,6 +123,8 @@ export const Orders = props => {
         onBackdropPress={() => setSortModal(false)}>
         <SortModal />
       </Modal>
+
+      <LoadingModal isVisible={loading} />
     </SafeAreaView>
   );
 };

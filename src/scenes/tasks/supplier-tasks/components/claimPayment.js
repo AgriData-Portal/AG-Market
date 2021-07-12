@@ -12,7 +12,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+import {CloseButton, SuccessfulModal} from '_components';
 import DatePicker from 'react-native-datepicker';
 import dayjs from 'dayjs';
 import {
@@ -47,6 +47,8 @@ export const ReceivePaymentTaskList = props => {
               receipt={item.receipt}
               createdAt={item.createdAt}
               id={item.id}
+              trigger={props.trigger}
+              setTrigger={props.setTrigger}
             />
           );
         }}
@@ -97,9 +99,19 @@ const ReceivePaymentTask = props => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <View style={{bottom: hp('0.5%')}}>
-            <Icon name="cash-outline" size={wp('11%')} />
-          </View>
+          {props.receipt != null ? (
+            <View style={{bottom: hp('0.5%')}}>
+              <Icon
+                name="cash-outline"
+                size={wp('11%')}
+                color={Colors.LIME_GREEN}
+              />
+            </View>
+          ) : (
+            <View style={{bottom: hp('0.5%')}}>
+              <Icon name="cash-outline" size={wp('11%')} />
+            </View>
+          )}
         </View>
         <Text
           style={[
@@ -113,7 +125,7 @@ const ReceivePaymentTask = props => {
           ]}>
           {props.retailer.name}
         </Text>
-        {props.paid ? (
+        {/*} {props.paid ? (
           <Text
             style={[
               Typography.normal,
@@ -139,7 +151,7 @@ const ReceivePaymentTask = props => {
             ]}>
             NOT PAID
           </Text>
-        )}
+          )} */}
         <Text
           style={[
             Typography.normal,
@@ -162,7 +174,7 @@ const ReceivePaymentTask = props => {
               position: 'absolute',
             },
           ]}>
-          Pay Before:
+          Receive Before:
         </Text>
         <Text
           style={[
@@ -195,6 +207,7 @@ const ReceivePaymentTask = props => {
 };
 
 const ReceivePaymentModal = props => {
+  const [successfulModal, setSuccessfulModal] = useState(false);
   const receivedPayment = async () => {
     try {
       const removed = await API.graphql({
@@ -211,6 +224,7 @@ const ReceivePaymentModal = props => {
         variables: {input: {id: props.id, paid: true}},
       });
       console.log(updated);
+      setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
     }
@@ -240,7 +254,7 @@ const ReceivePaymentModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Pay Before:{' '}
+        Receive Before:{' '}
         {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
       </Text>
       <Text
@@ -400,6 +414,18 @@ const ReceivePaymentModal = props => {
           <Icon name="checkmark-circle-outline" size={wp('5%')}></Icon>
         </Text>
       </TouchableOpacity>
+      <Modal
+        isVisible={successfulModal}
+        onBackdropPress={() => [
+          setSuccessfulModal(false),
+          props.setReceiveTaskModal(false),
+        ]}>
+        <SuccessfulModal
+          text={
+            'You have received your payment. The payment task will now be deleted, you can find the invoice in your list of invoices'
+          }
+        />
+      </Modal>
     </View>
   );
 };

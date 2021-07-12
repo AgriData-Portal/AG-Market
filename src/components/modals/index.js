@@ -9,7 +9,9 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import {CloseButton, AddButton} from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -45,8 +47,8 @@ export const SuccessfulModal = props => {
       <View style={{width: wp('70%'), top: hp('4%')}}>
         <Text
           style={[
-            {textAlign: 'center', lineHeight: wp('3%')},
-            Typography.small,
+            {textAlign: 'center', lineHeight: wp('5%')},
+            Typography.normal,
           ]}>
           {props.text}
         </Text>
@@ -92,9 +94,9 @@ export const UnsuccessfulModal = props => {
         <Text
           style={[
             {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
+            Typography.normal,
           ]}>
-          Something went wrong while you're
+          {props.text}
         </Text>
       </View>
     </View>
@@ -164,5 +166,26 @@ export const SuccesfulChangesModal = props => {
         <Icon name="home-outline" size={wp('5.5%')} style={{left: wp('3%')}} />
       </TouchableOpacity>
     </View>
+  );
+};
+export const LoadingModal = props => {
+  return (
+    <Modal isVisible={props.isVisible}>
+      <View
+        style={{
+          height: hp('100%'),
+          width: wp('100%'),
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View style={{right: wp('3%')}}>
+          <ActivityIndicator
+            animating={true}
+            size={wp('10%')}
+            color={Colors.LIME_GREEN}
+          />
+        </View>
+      </View>
+    </Modal>
   );
 };

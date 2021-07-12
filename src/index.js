@@ -331,13 +331,9 @@ const AppNavigator = props => {
       const type = 'supplier';
       return (
         <AppStack.Navigator headerMode="none">
-          <AppStack.Screen name="dashboard">
+          <AppStack.Screen name="inbox">
             {screenProps => (
-              <SupplierDashboard
-                {...screenProps}
-                updateAuthState={props.updateAuthState}
-                user={props.user}
-              />
+              <Inbox {...screenProps} user={props.user} type={type} />
             )}
           </AppStack.Screen>
           <AppStack.Screen name="marketplace">
@@ -350,11 +346,7 @@ const AppNavigator = props => {
               <ChatRoom {...screenProps} user={props.user} type={type} />
             )}
           </AppStack.Screen>
-          <AppStack.Screen name="inbox">
-            {screenProps => (
-              <Inbox {...screenProps} user={props.user} type={type} />
-            )}
-          </AppStack.Screen>
+
           <AppStack.Screen name="tasks">
             {screenProps => (
               <SupplierTasks {...screenProps} user={props.user} />

@@ -17,6 +17,7 @@
     "@aws-amplify/pushnotification": "^4.1.2",
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/netinfo": "^6.0.0",
+    "@react-native-community/push-notification-ios": "^1.0.3",
     "@react-native-masked-view/masked-view": "^0.2.4",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",

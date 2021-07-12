@@ -11,7 +11,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+import {CloseButton, SuccessfulModal} from '_components';
 import {API} from 'aws-amplify';
 import {
   createMessage,
@@ -64,6 +64,8 @@ export const OrderList = props => {
               index={item.index}
               products={props.products}
               setProducts={props.setProducts}
+              trigger={props.trigger}
+              setTrigger={props.setTrigger}
             />
           );
         }}></FlatList>
@@ -90,6 +92,11 @@ const OrderCard = props => {
     console.log('updating Price to the list');
     setQuotationItems(tempList);
     setPrice(item2);
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
+    }
   };
   const updateQuantity = item2 => {
     var tempList = quotationItems;
@@ -102,6 +109,11 @@ const OrderCard = props => {
     console.log('updating quantity to the list');
     setQuotationItems(tempList);
     setQuantity(item2);
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
+    }
   };
   return (
     <View
@@ -193,7 +205,6 @@ const OrderCard = props => {
 
 export const PurchaseOrder = props => {
   const [orderQuotation, setOrderQuotation] = useState(false);
-  const [successfulModal, setSuccessfulModal] = useState(false);
 
   return (
     <QuotationItemsProvider>
@@ -246,7 +257,7 @@ export const PurchaseOrder = props => {
         </View>
         {props.type == 'supplier' ? (
           <TouchableOpacity
-            onPress={() => setOrderQuotation(true)}
+            onPress={() => [setOrderQuotation(true)]}
             style={{
               position: 'absolute',
               borderRadius: 15,
@@ -267,7 +278,7 @@ export const PurchaseOrder = props => {
             chatName={props.chatName}
             chatGroupID={props.chatGroupID}
             setOrderQuotation={setOrderQuotation}
-            setSuccessfulModal={setSuccessfulModal}
+            setPurchaseOrderModal={props.setPurchaseOrderModal}
             type={props.type}
             userName={props.userName}
             userID={props.userID}
@@ -275,17 +286,13 @@ export const PurchaseOrder = props => {
             messages={props.messages}
           />
         </Modal>
-        <Modal
-          isVisible={successfulModal}
-          onBackdropPress={() => setSuccessfulModal(false)}>
-          <SuccessfulModal setSuccessfulModal={setSuccessfulModal} />
-        </Modal>
       </View>
     </QuotationItemsProvider>
   );
 };
 
 const NewOrderQuotation = props => {
+  const [successfulModal, setSuccessfulModal] = useState(false);
   const [openDelivery, setOpenDelivery] = useState(false);
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
   const [trigger, setTrigger] = useState(true);
@@ -393,9 +400,7 @@ const NewOrderQuotation = props => {
       messages.push(input);
       messages = messages.reverse();
       setMessages = {messages};*/
-
-      props.setSuccessfulModal(true);
-      props.setOrderQuotation(false);
+      setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
     }
@@ -444,7 +449,7 @@ const NewOrderQuotation = props => {
           alignItems: 'center',
           position: 'absolute',
         }}>
-        <OrderList></OrderList>
+        <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
       <TouchableOpacity
         style={{position: 'absolute', left: wp('50%'), top: hp('57%')}}
@@ -555,7 +560,7 @@ const NewOrderQuotation = props => {
           top: hp('52%'),
         }}>
         <TouchableOpacity
-          onPress={() => sendQuotation()}
+          onPress={() => [sendQuotation()]}
           style={{
             backgroundColor: Colors.LIGHT_BLUE,
             shadowColor: '#000',
@@ -576,6 +581,20 @@ const NewOrderQuotation = props => {
           }}>
           <Text style={[Typography.small]}>Send Quotation to Retailer</Text>
         </TouchableOpacity>
+        <Modal
+          isVisible={successfulModal}
+          onBackdropPress={() => [
+            setSuccessfulModal(false),
+            props.setOrderQuotation(false),
+            props.setPurchaseOrderModal(false),
+          ]}>
+          <SuccessfulModal
+            setSuccessfulModal={setSuccessfulModal}
+            text={
+              'You have successfully sent the order quotation to the customer!'
+            }
+          />
+        </Modal>
       </View>
     </View>
   );
@@ -663,53 +682,6 @@ const PurchaseOrderComponent = props => {
           style={[Typography.small, {position: 'absolute', right: wp('5%')}]}>
           {props.quantity}
           {props.siUnit}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-const SuccessfulModal = props => {
-  return (
-    <View
-      style={{
-        height: hp('50%'),
-        width: wp('85%'),
-        backgroundColor: Colors.PALE_GREEN,
-        borderRadius: 20,
-        alignItems: 'center',
-        alignSelf: 'center',
-      }}>
-      <View style={{top: hp('2%')}}>
-        <Image
-          source={require('_assets/images/Good-Vege.png')}
-          style={{
-            resizeMode: 'contain',
-            width: wp('55%'),
-            height: hp('25%'),
-          }}
-        />
-      </View>
-      <View style={{top: hp('2%')}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
-      </View>
-      <View style={{width: wp('70%'), top: hp('4%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: wp('3%')},
-            Typography.small,
-          ]}>
-          You have successfully added your crops! We'll send you a notification
-          as soon as retailers buy your produce!
-        </Text>
-      </View>
-      <View style={{width: wp('50%'), top: hp('8%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
-          ]}>
-          Keep adding for more!
         </Text>
       </View>
     </View>
