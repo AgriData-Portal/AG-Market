@@ -485,7 +485,7 @@ const SendTaskModal = props => {
             borderRadius: 10,
           }}
           onPress={() => {
-            props.setInvoiceModal(true);
+            [props.setInvoiceModal(true), props.setSendTaskModal(false)];
           }}>
           <Text style={[Typography.normal, {textAlign: 'center'}]}>
             {Strings.createInvoice}
@@ -494,7 +494,7 @@ const SendTaskModal = props => {
       </View>
       <Modal
         isVisible={successfulModal}
-        onBackdropPress={() => setSuccessfulModal(false)}>
+        onBackdropPress={() => [setSuccessfulModal(false)]}>
         <SuccessfulModal />
       </Modal>
     </SafeAreaView>
@@ -510,7 +510,7 @@ const InvoiceModal = props => {
   useEffect(() => {
     console.log(itemList);
     var tempList = itemList.forEach((item, index, array) => {
-      var product = parseInt(item.price * item.quantity * 100) / 100;
+      var product = parseFloat((item.price * item.quantity).toFixed(2));
       tempSum = tempSum + product;
     });
     console.log(tempSum);
@@ -626,34 +626,26 @@ const InvoiceModal = props => {
                   siUnit={item.siUnit}
                   setItemList={setItemList}
                   itemList={itemList}
+                  toggle={toggle}
+                  setToggle={setToggle}
                 />
               );
             }}
           />
         </View>
-        <TouchableOpacity
-          style={{flexDirection: 'row', left: wp('45%')}}
-          onPress={() => {
-            if (toggle) {
-              setToggle(false);
-            } else {
-              setToggle(true);
-            }
-          }}>
-          <Icon name="refresh-outline" size={wp('4%')}></Icon>
+        <View style={{flexDirection: 'row', left: wp('45%')}}>
           <Text
             style={[
               Typography.normal,
               {
                 fontFamily: 'Poppins-SemiBold',
                 left: wp('3%'),
-
                 textAlign: 'right',
               },
             ]}>
             TOTAL: RM {sum}
           </Text>
-        </TouchableOpacity>
+        </View>
       </View>
       <TouchableOpacity
         onPress={() => sendForVerfication()}
@@ -674,7 +666,10 @@ const InvoiceModal = props => {
       </TouchableOpacity>
       <Modal
         isVisible={successfulModal}
-        onBackdropPress={() => setSuccessfulModal(false)}>
+        onBackdropPress={() => [
+          setSuccessfulModal(false),
+          props.setInvoiceModal(false),
+        ]}>
         <SuccessfulModal />
       </Modal>
     </View>
@@ -699,6 +694,11 @@ const InvoiceItem = props => {
     console.log('updating quantity to the list');
     props.setItemList(tempList);
     setQuantity(item2);
+    if (props.toggle) {
+      props.setToggle(false);
+    } else {
+      props.setToggle(true);
+    }
   };
   return (
     <View
@@ -734,7 +734,7 @@ const InvoiceItem = props => {
             right: wp('4%'),
           },
         ]}>
-        RM {parseInt(props.price * parseFloat(quantity) * 100) / 100}
+        RM {parseFloat((props.price * parseFloat(quantity)).toFixed(2))}
       </Text>
     </View>
   );
