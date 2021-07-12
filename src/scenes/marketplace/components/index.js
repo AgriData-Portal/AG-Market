@@ -48,6 +48,7 @@ export const Searchbar = props => {
         onPress={() => {
           if (props.searchValue != '') {
             props.setSearchPressed(true);
+            console.log(props.searchValue);
           }
         }}>
         <Text style={[Typography.normal, {top: hp('0.2%')}]}>Search</Text>

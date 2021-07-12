@@ -23,6 +23,7 @@ import {
   paymentsTaskForSupplierByDate,
 } from '../../../graphql/queries';
 import Strings from '_utils';
+import {MenuButton} from '_components';
 
 export const SupplierTasks = props => {
   const [sendTask, setSendTask] = useState([]);
@@ -81,7 +82,28 @@ export const SupplierTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      <Text style={[Typography.header, {top: hp('3%')}]}>{Strings.tasks}</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: wp('100%'),
+          alignItems: 'center',
+          justifyContent: 'center',
+          top: hp('2%'),
+          height: hp('5%'),
+        }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: hp('0%'),
+            left: wp('5%'),
+          }}>
+          <MenuButton
+            navigation={props.navigation}
+            updateAuthState={props.updateAuthState}
+            userType={props.user.role}></MenuButton>
+        </View>
+        <Text style={[Typography.header]}>{Strings.tasks}</Text>
+      </View>
       <View style={{flexDirection: 'row'}}>
         {task == 'send' ? (
           <View

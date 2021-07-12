@@ -464,6 +464,7 @@ const StoreCard = props => {
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
+        top: hp('3%'),
       }}>
       <View
         style={{

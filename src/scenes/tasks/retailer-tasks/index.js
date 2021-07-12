@@ -22,6 +22,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {MenuButton} from '_components';
 
 export const RetailerTasks = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -81,13 +82,32 @@ export const RetailerTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      <Text style={[Typography.header, {top: hp('3%')}]}>{Strings.tasks}</Text>
+      {/*<View
+        style={{
+          flexDirection: 'row',
+          width: wp('100%'),
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp('5%'),
+        }}>
+        <View
+          style={{
+            position: 'absolute',
+            left: wp('5%'),
+          }}>
+          <MenuButton
+            navigation={props.navigation}
+            updateAuthState={props.updateAuthState}
+            userType={props.user.role}></MenuButton>
+        </View>
+        <Text style={[Typography.header]}>{Strings.tasks}</Text>
+        </View>*/}
       <View style={{flexDirection: 'row'}}>
         {task == 'receive' ? (
           <View
             style={{
               right: wp('15%'),
-              top: hp('4%'),
+              top: hp('2%'),
             }}>
             <Text
               style={[
@@ -106,7 +126,7 @@ export const RetailerTasks = props => {
             onPress={() => setTask('receive')}
             style={{
               right: wp('15%'),
-              top: hp('4%'),
+              top: hp('2%'),
             }}>
             <Text style={[Typography.normal]}>{Strings.toRecieve}</Text>
           </TouchableOpacity>
@@ -115,7 +135,7 @@ export const RetailerTasks = props => {
           <View
             style={{
               left: wp('15%'),
-              top: hp('4%'),
+              top: hp('2%'),
             }}>
             <Text
               style={[
@@ -133,7 +153,7 @@ export const RetailerTasks = props => {
           <TouchableOpacity
             onPress={() => setTask('pay')}
             style={{
-              top: hp('4%'),
+              top: hp('2%'),
               left: wp('15%'),
             }}>
             <Text style={[Typography.normal]}>{Strings.toPay}</Text>
@@ -142,7 +162,7 @@ export const RetailerTasks = props => {
       </View>
       <View
         style={{
-          top: hp('5%'),
+          top: hp('4%'),
           width: wp('100%'),
           borderBottomWidth: wp('0.5%'),
           height: hp('0%'),
@@ -152,7 +172,7 @@ export const RetailerTasks = props => {
         style={{
           width: wp('80%'),
           height: hp('5%'),
-          top: hp('7%'),
+          top: hp('6%'),
           flexDirection: 'row',
         }}>
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
@@ -166,7 +186,7 @@ export const RetailerTasks = props => {
       </View>
       <View
         style={{
-          top: hp('7%'),
+          top: hp('5%'),
           height: hp('56%'),
         }}>
         {task == 'pay' ? (
@@ -176,7 +196,7 @@ export const RetailerTasks = props => {
         )}
       </View>
 
-      <View style={{position: 'absolute', top: hp('90%')}}>
+      <View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
       </View>
       <Modal

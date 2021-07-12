@@ -16,8 +16,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {onUpdateChatGroup} from '../../../graphql/subscriptions';
+import {MenuButton} from '_components';
 
 export const Inbox = props => {
+  console.log(props.user.role);
   const [chatRooms, setChatRooms] = useState(null);
   if (props.user.retailerCompanyID == null) {
     var companyID = props.user.supplierCompany.id;
@@ -144,21 +146,42 @@ export const Inbox = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      <Text style={[Typography.header, {top: hp('4%')}]}>{Strings.inbox}</Text>
-      <Text
-        style={[Typography.normal, {color: Colors.GRAY_DARK, top: hp('4%')}]}>
-        5 {Strings.newMessages}
-      </Text>
+      {/*<View
+        style={{
+          flexDirection: 'row',
+          width: wp('100%'),
+          height: hp('10%'),
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: hp('3%'),
+            left: wp('5%'),
+          }}>
+          <MenuButton
+            navigation={props.navigation}
+            updateAuthState={props.updateAuthState}
+            userType={props.user.role}></MenuButton>
+        </View>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={[Typography.header, {}]}>{Strings.inbox}</Text>
+          <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
+            5 {Strings.newMessages}
+          </Text>
+        </View>
+        </View>*/}
       <View
         style={{
-          top: hp('5%'),
+          top: hp('1%'),
           width: wp('85%'),
           borderBottomWidth: 1,
           height: 0,
           borderColor: Colors.GRAY_MEDIUM,
         }}></View>
       <DismissKeyboardView>
-        <View style={{top: hp('7%')}}>
+        <View style={{top: hp('2%')}}>
           <Searchbar />
         </View>
       </DismissKeyboardView>
@@ -167,7 +190,7 @@ export const Inbox = props => {
         style={{
           height: hp('62%'),
           width: wp('95%'),
-          top: hp('9%'),
+          top: hp('4%'),
         }}>
         <ChatList
           data={chatRooms}
@@ -176,7 +199,7 @@ export const Inbox = props => {
           userID={props.user.id}
         />
       </View>
-      <View style={{position: 'absolute', top: hp('90%')}}>
+      <View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
       </View>
     </SafeAreaView>

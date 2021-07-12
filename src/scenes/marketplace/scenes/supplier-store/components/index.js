@@ -1033,6 +1033,7 @@ export const SupplierplaceList = props => {
       ListEmptyComponent={
         <View
           style={{
+            top: hp('8%'),
             width: wp('80%'),
             height: hp('25%'),
             alignItems: 'center',
