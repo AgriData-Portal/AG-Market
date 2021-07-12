@@ -331,6 +331,15 @@ const AppNavigator = props => {
       const type = 'supplier';
       return (
         <AppStack.Navigator headerMode="none">
+          <AppStack.Screen name="dashboard">
+            {screenProps => (
+              <SupplierDashboard
+                {...screenProps}
+                updateAuthState={props.updateAuthState}
+                user={props.user}
+              />
+            )}
+          </AppStack.Screen>
           <AppStack.Screen name="inbox">
             {screenProps => (
               <Inbox {...screenProps} user={props.user} type={type} />

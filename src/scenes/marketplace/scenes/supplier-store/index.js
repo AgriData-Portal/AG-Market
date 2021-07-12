@@ -4,7 +4,7 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Searchbar} from '../../components';
 import {ProductPopUp, AddItemsButton, SupplierplaceList} from './components';
-import {NavBar, BackButton} from '_components';
+import {NavBar, LoadingModal} from '_components';
 import {listProductListings} from '../../../../graphql/queries';
 import {
   deleteProductListing,
@@ -21,6 +21,7 @@ import Strings from '_utils';
 export const SupplierStore = props => {
   const [productList, setProducts] = useState([]);
   const [trigger, setTrigger] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchProducts = async () => {
     try {
@@ -34,6 +35,7 @@ export const SupplierStore = props => {
         console.log(products);
         setProducts(products.data.listProductListings.items);
       }
+      setLoading(false);
       console.log(products.data.listProductListings.items);
     } catch (e) {
       console.log(e);
@@ -86,6 +88,7 @@ export const SupplierStore = props => {
       <View style={{position: 'absolute', top: hp('90%')}}>
         <NavBar navigation={props.navigation} />
       </View>
+      <LoadingModal isVisible={loading} />
     </SafeAreaView>
   );
 };

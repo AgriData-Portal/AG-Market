@@ -10,7 +10,7 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {SortModal} from '../components';
 import {SendTaskList, ReceivePaymentTaskList} from './components';
-import {NavBar} from '_components';
+import {NavBar, LoadingModal} from '_components';
 import Modal from 'react-native-modal';
 import {
   widthPercentageToDP as wp,
@@ -30,6 +30,7 @@ export const SupplierTasks = props => {
   const [sortModal, setSortModal] = useState(false);
   const [task, setTask] = useState('send');
   const [trigger, setTrigger] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (task == 'send' && sendTask.length == 0) {
@@ -39,6 +40,7 @@ export const SupplierTasks = props => {
     }
   }, [task]);
   const getSendTask = async () => {
+    setLoading(true);
     try {
       const task = await API.graphql({
         query: goodsTaskForSupplierByDate,
@@ -50,12 +52,14 @@ export const SupplierTasks = props => {
       setSendTask(task.data.goodsTaskForSupplierByDate.items);
       console.log(task.data.goodsTaskForSupplierByDate.items);
       console.log('goods task');
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
   };
 
   const getClaimTask = async () => {
+    setLoading(true);
     try {
       const task = await API.graphql({
         query: paymentsTaskForSupplierByDate,
@@ -67,6 +71,7 @@ export const SupplierTasks = props => {
       setClaimTask(task.data.paymentsTaskForSupplierByDate.items);
       console.log(task.data.paymentsTaskForSupplierByDate.items);
       console.log('payment task');
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -201,6 +206,7 @@ export const SupplierTasks = props => {
         onBackdropPress={() => setSortModal(false)}>
         <SortModal />
       </Modal>
+      <LoadingModal isVisible={loading} />
     </SafeAreaView>
   );
 };
