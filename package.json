@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "multiple-ios-mac-mini": "react-native run-ios --udid 0119210E-C743-4540-AFE1-B0F3C349DB02 && react-native run-ios --udid 28A7105B-2DD8-421C-AFA2-C2364596DA5D && react-native run-ios --udid 7EF25731-2B5E-4A1C-90FB-AB6E12A207C8 && react-native run-ios --udid 1138AB12-C0E6-4C96-8877-B97D3E54E803",
     "multiple-ios-mac-air": "react-native run-ios --udid 291ECD41-D4F5-4D9F-A058-9E14AEA6CCD0 && react-native run-ios --udid EA9DA371-C2DE-40AF-8EAA-434803B38D22 555D0B25-348E-4AEE-960B-FED53232418A",
-    "chrisiphone-ios": "react-native run-ios --udid 00008030-00016D4E0E82802E && react-native run-ios --udid 291ECD41-D4F5-4D9F-A058-9E14AEA6CCD0"
+    "chrisiphone-ios": "react-native run-ios --udid 00008030-00016D4E0E82802E && react-native run-ios --udid 291ECD41-D4F5-4D9F-A058-9E14AEA6CCD0",
+    "multiple-sexy-tits-ios": "react-native run-ios --udid 57183C94-BDB3-4ADE-B992-24E7AD60351C && react-native run-ios --udid D181104A-C6AF-4732-A0C0-9402933AFC50"
   },
   "dependencies": {
     "@aws-amplify/pushnotification": "^4.1.2",
