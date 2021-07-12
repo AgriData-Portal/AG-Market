@@ -47,6 +47,8 @@ export const ReceivePaymentTaskList = props => {
               receipt={item.receipt}
               createdAt={item.createdAt}
               id={item.id}
+              trigger={props.trigger}
+              setTrigger={props.setTrigger}
             />
           );
         }}

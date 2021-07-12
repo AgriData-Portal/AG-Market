@@ -11,7 +11,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+import {CloseButton, SuccessfulModal} from '_components';
 import {API} from 'aws-amplify';
 import {
   createMessage,
@@ -64,6 +64,8 @@ export const OrderList = props => {
               index={item.index}
               products={props.products}
               setProducts={props.setProducts}
+              trigger={props.trigger}
+              setTrigger={props.setTrigger}
             />
           );
         }}></FlatList>
@@ -90,6 +92,11 @@ const OrderCard = props => {
     console.log('updating Price to the list');
     setQuotationItems(tempList);
     setPrice(item2);
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
+    }
   };
   const updateQuantity = item2 => {
     var tempList = quotationItems;
@@ -102,6 +109,11 @@ const OrderCard = props => {
     console.log('updating quantity to the list');
     setQuotationItems(tempList);
     setQuantity(item2);
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
+    }
   };
   return (
     <View
@@ -436,7 +448,7 @@ const NewOrderQuotation = props => {
           alignItems: 'center',
           position: 'absolute',
         }}>
-        <OrderList></OrderList>
+        <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
       <TouchableOpacity
         style={{position: 'absolute', left: wp('50%'), top: hp('57%')}}
@@ -663,53 +675,6 @@ const PurchaseOrderComponent = props => {
           style={[Typography.small, {position: 'absolute', right: wp('5%')}]}>
           {props.quantity}
           {props.siUnit}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-const SuccessfulModal = props => {
-  return (
-    <View
-      style={{
-        height: hp('50%'),
-        width: wp('85%'),
-        backgroundColor: Colors.PALE_GREEN,
-        borderRadius: 20,
-        alignItems: 'center',
-        alignSelf: 'center',
-      }}>
-      <View style={{top: hp('2%')}}>
-        <Image
-          source={require('_assets/images/Good-Vege.png')}
-          style={{
-            resizeMode: 'contain',
-            width: wp('55%'),
-            height: hp('25%'),
-          }}
-        />
-      </View>
-      <View style={{top: hp('2%')}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
-      </View>
-      <View style={{width: wp('70%'), top: hp('4%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: wp('3%')},
-            Typography.small,
-          ]}>
-          You have successfully added your crops! We'll send you a notification
-          as soon as retailers buy your produce!
-        </Text>
-      </View>
-      <View style={{width: wp('50%'), top: hp('8%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
-          ]}>
-          Keep adding for more!
         </Text>
       </View>
     </View>

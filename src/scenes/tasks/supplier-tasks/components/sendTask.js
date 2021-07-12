@@ -12,7 +12,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+import {CloseButton, SuccessfulModal} from '_components';
 import DatePicker from 'react-native-datepicker';
 import dayjs from 'dayjs';
 import {
@@ -35,6 +35,7 @@ export const SendTaskList = props => {
     <View>
       <FlatList
         keyExtractor={item => item.id}
+        extraData={props.trigger}
         data={props.data}
         numColumns={1}
         renderItem={item => {
@@ -46,6 +47,10 @@ export const SendTaskList = props => {
               createdAt={item.item.createdAt}
               deliverydate={item.item.deliveryDate}
               taskID={item.item.id}
+              trigger={props.trigger}
+              setTrigger={props.setTrigger}
+              sendTask={props.sendTask}
+              setSendTask={props.setSendTask}
             />
           );
         }}
@@ -163,7 +168,11 @@ const SendTask = props => {
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
           setInvoiceModal={setInvoiceModal}
-          setSendTaskModal={setSendTaskModal}></SendTaskModal>
+          setSendTaskModal={setSendTaskModal}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          sendTask={props.sendTask}
+          setSendTask={props.setSendTask}></SendTaskModal>
       </Modal>
       <Modal isVisible={invoiceModal}>
         <InvoiceModal
@@ -172,7 +181,11 @@ const SendTask = props => {
           retailer={props.retailer}
           deliverydate={props.deliverydate}
           taskID={props.taskID}
-          invoiceList={props}></InvoiceModal>
+          invoiceList={props}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          sendTask={props.sendTask}
+          setSendTask={props.setSendTask}></InvoiceModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -182,13 +195,6 @@ const SendTaskModal = props => {
   const [deliverydate, setDate] = useState(props.deliverydate);
   const [confirmedDate, setConfirmedDate] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
-  const Switch = () => {
-    props.setInvoiceModal(true);
-
-    setTimeout(function () {
-      props.setSendTaskModal(false);
-    }, 300);
-  };
 
   const updateDeliveryDate = async () => {
     try {
@@ -204,6 +210,21 @@ const SendTaskModal = props => {
 
       setDate(deliverydate);
       setConfirmedDate(true);
+      if (props.trigger) {
+        props.setTrigger(false);
+      } else {
+        props.setTrigger(true);
+      }
+
+      var tempList = props.sendTask;
+
+      tempList.forEach((item, index, array) => {
+        if (item == props.taskID) {
+          item.deliveryDate = deliverydate;
+          array[index] = item;
+        }
+      });
+
       setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
@@ -392,10 +413,7 @@ const SendTaskModal = props => {
               }}
               onPress={item => [
                 updateDeliveryDate(),
-                //setConfirmedDate(true),
                 console.log(deliverydate),
-
-                //console.log(dayjs(deliverydate).format('DD-MM-YYYY')),
               ]}>
               <Icon name="checkmark-outline" size={wp('5%')} />
             </TouchableOpacity>
@@ -467,7 +485,7 @@ const SendTaskModal = props => {
             borderRadius: 10,
           }}
           onPress={() => {
-            Switch();
+            props.setInvoiceModal(true);
           }}>
           <Text style={[Typography.normal, {textAlign: 'center'}]}>
             {Strings.createInvoice}
@@ -826,53 +844,6 @@ const Product = props => {
         ]}>
         @ RM {props.price}/{props.siUnit}
       </Text>
-    </View>
-  );
-};
-
-const SuccessfulModal = props => {
-  return (
-    <View
-      style={{
-        height: hp('50%'),
-        width: wp('85%'),
-        backgroundColor: Colors.PALE_GREEN,
-        borderRadius: 20,
-        alignItems: 'center',
-        alignSelf: 'center',
-      }}>
-      <View style={{top: hp('2%')}}>
-        <Image
-          source={require('_assets/images/Good-Vege.png')}
-          style={{
-            resizeMode: 'contain',
-            width: wp('55%'),
-            height: hp('25%'),
-          }}
-        />
-      </View>
-      <View style={{top: hp('2%')}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
-      </View>
-      <View style={{width: wp('70%'), top: hp('4%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: wp('3%')},
-            Typography.small,
-          ]}>
-          You have successfully added your crops! We'll send you a notification
-          as soon as retailers buy your produce!
-        </Text>
-      </View>
-      <View style={{width: wp('50%'), top: hp('8%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
-          ]}>
-          Keep adding for more!
-        </Text>
-      </View>
     </View>
   );
 };

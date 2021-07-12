@@ -6,6 +6,11 @@ import {Searchbar} from '../../components';
 import {ProductPopUp, AddItemsButton, SupplierplaceList} from './components';
 import {NavBar, BackButton} from '_components';
 import {listProductListings} from '../../../../graphql/queries';
+import {
+  deleteProductListing,
+  updateProductListing,
+  createProductListing,
+} from '../../../../graphql/mutations';
 import {API} from 'aws-amplify';
 import {
   widthPercentageToDP as wp,
@@ -38,7 +43,7 @@ export const SupplierStore = props => {
   useEffect(() => {
     fetchProducts();
     console.log('Refreshing...');
-  }, [trigger]);
+  }, []);
   return (
     <SafeAreaView
       style={{
@@ -50,28 +55,19 @@ export const SupplierStore = props => {
       <Text style={[Typography.header, {top: hp('4%')}]}>
         {Strings.myStore}
       </Text>
-      <TouchableOpacity
-        onPress={() => {
-          if (trigger) {
-            setTrigger(false);
-          } else {
-            setTrigger(true);
-          }
-        }}
-        style={{right: wp('20%'), position: 'absolute', top: hp('5%')}}>
-        <Icon name="refresh-outline" size={wp('7%')}></Icon>
-      </TouchableOpacity>
 
       <View
         style={{
           width: wp('90%'),
-          height: hp('70%'),
+          height: hp('80%'),
 
           top: hp('3%'),
         }}>
         <SupplierplaceList
           productList={productList}
           setProducts={setProducts}
+          trigger={trigger}
+          setTrigger={setTrigger}
         />
       </View>
       <View
@@ -93,12 +89,3 @@ export const SupplierStore = props => {
     </SafeAreaView>
   );
 };
-
-const items = [
-  {produce: 'Ginger', quantity: '10'},
-  {produce: 'Ginger', quantity: '10'},
-  {produce: 'Ginger', quantity: '10'},
-  {produce: 'Ginger', quantity: '10'},
-  {produce: 'Ginger', quantity: '10'},
-  {produce: 'Ginger', quantity: '10'},
-];

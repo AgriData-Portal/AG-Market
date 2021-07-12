@@ -27,7 +27,7 @@ export const OrderList = props => {
     <View>
       <FlatList
         keyExtractor={item => item.id}
-        data={props.OrderList}
+        data={props.invoiceList}
         numColumns={1}
         renderItem={({item}) => {
           if (props.user.retailerCompanyID == null) {
@@ -97,9 +97,7 @@ const Order = props => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <View style={{}}>
-            <Icon name="clipboard-outline" size={wp('11%')} />
-          </View>
+          <Icon name="clipboard-outline" size={wp('11%')} />
         </View>
         <View
           style={{
@@ -184,7 +182,7 @@ const Order = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MMMM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={invoiceModal}>

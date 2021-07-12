@@ -36,7 +36,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 
-export const ProductPopUp = props => {
+const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState('kg');
   const [items2, setItems2] = useState([
@@ -65,7 +65,6 @@ export const ProductPopUp = props => {
       await Storage.put(photo.fileName, blob, {
         contentType: 'image/jpeg',
       });
-      console.log('image passed');
 
       var listing = {
         supplierID: props.user.supplierCompanyID,
@@ -84,10 +83,12 @@ export const ProductPopUp = props => {
         variables: {input: listing},
       });
 
-      listing.productPicture = photo.uri;
-      var products = props.productList;
-      products.push(listing);
-      props.setProducts(products);
+      listing.productPicture = {uri: photo.uri};
+
+      props.setProducts(products => [
+        productListing.data.createProductListing,
+        ...products,
+      ]);
       console.log('Added product');
       setSuccessfulModal(true);
     } catch (e) {
@@ -103,8 +104,6 @@ export const ProductPopUp = props => {
     };
 
     launchImageLibrary(options, response => {
-      console.log({response});
-
       if (response.didCancel) {
         console.log('User cancelled photo picker');
       } else if (response.error) {
@@ -113,8 +112,6 @@ export const ProductPopUp = props => {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         let photo = {uri: response.uri};
-        console.log(response.assets);
-        console.log(response.assets[0].uri);
         setImageSource(response.assets[0]);
       }
     });
@@ -516,17 +513,17 @@ export const AddItemsButton = props => {
         {Strings.addItems}
       </Text>
       <Modal isVisible={addItemsButton}>
-        <ProductPopUp
+        <AddItemModal
           setAddItemsButton={setAddItemsButton}
           user={props.user}
           productList={props.productList}
-          setProducts={props.setProducts}></ProductPopUp>
+          setProducts={props.setProducts}></AddItemModal>
       </Modal>
     </TouchableOpacity>
   );
 };
 
-export const ProductModal = props => {
+const ProductModal = props => {
   const [lowPrice, setLowPrice] = useState(props.lowPrice.toString());
   const [highPrice, setHighPrice] = useState(props.highPrice.toString());
   const [available, setAvailable] = useState(
@@ -553,6 +550,11 @@ export const ProductModal = props => {
     console.log(products.length);
     console.log(deletedListing);
     props.setProducts(products);
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
+    }
     setSuccessfulModal2(true);
   };
   const updateListing = async () => {
@@ -590,6 +592,11 @@ export const ProductModal = props => {
     products.push(item);
     console.log(products);
     props.setProducts(products);
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
+    }
     setSuccessfulModal(true);
   };
 
@@ -953,9 +960,9 @@ const ProductCard = props => {
         setImageSource({
           uri: imageURL,
         });
-        console.log(imageSource);
       } else {
-        setImageSource({uri: props.productPicture});
+        console.log('found a bogey');
+        setImageSource(props.productPicture);
       }
     } catch (e) {
       console.log(e);
@@ -1008,6 +1015,8 @@ const ProductCard = props => {
           minimumQuantity={props.minimumQuantity}
           siUnit={props.siUnit}
           grade={props.grade}
+          setTrigger={props.setTrigger}
+          trigger={props.trigger}
           id={props.id}></ProductModal>
       </Modal>
     </TouchableOpacity>
@@ -1019,7 +1028,7 @@ export const SupplierplaceList = props => {
     <FlatList
       keyExtractor={item => item.id}
       data={props.productList}
-      extraData={props.productList.length}
+      //extraData={props.trigger}
       numColumns={2}
       ListEmptyComponent={
         <View
@@ -1058,6 +1067,8 @@ export const SupplierplaceList = props => {
             siUnit={item.siUnit}
             grade={item.grade}
             id={item.id}
+            setTrigger={props.setTrigger}
+            trigger={props.trigger}
           />
         );
       }}
