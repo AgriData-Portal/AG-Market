@@ -49,6 +49,8 @@ export const ReceivePaymentTaskList = props => {
               id={item.id}
               trigger={props.trigger}
               setTrigger={props.setTrigger}
+              claimTask={props.claimTask}
+              setClaimTask={props.setClaimTask}
             />
           );
         }}
@@ -200,7 +202,11 @@ const ReceivePaymentTask = props => {
           payBefore={props.payBefore}
           receipt={props.receipt}
           id={props.id}
-          createdAt={props.createdAt}></ReceivePaymentModal>
+          createdAt={props.createdAt}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          claimTask={props.claimTask}
+          setClaimTask={props.setClaimTask}></ReceivePaymentModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -215,6 +221,13 @@ const ReceivePaymentModal = props => {
         variables: {input: {id: props.id}},
       });
       console.log(removed);
+      var tempList = props.claimTask;
+      for (let [i, temp] of tempList.entries()) {
+        if (temp.id == props.id) {
+          tempList.splice(i, 1);
+        }
+      }
+      props.setClaimTask(tempList);
     } catch (e) {
       console.log(e);
     }
@@ -388,9 +401,8 @@ const ReceivePaymentModal = props => {
         ]}>
         9065 7756 8989
       </Text>
-
       <TouchableOpacity
-        onPress={() => receivedPayment()}
+        onPress={() => [receivedPayment()]}
         style={{
           backgroundColor: Colors.LIGHT_BLUE,
           width: wp('30%'),
@@ -416,10 +428,15 @@ const ReceivePaymentModal = props => {
       </TouchableOpacity>
       <Modal
         isVisible={successfulModal}
-        onBackdropPress={() => [
-          setSuccessfulModal(false),
-          props.setReceiveTaskModal(false),
-        ]}>
+        onBackdropPress={() => {
+          if (props.trigger) {
+            props.setTrigger(false);
+          } else {
+            props.setTrigger(true);
+          }
+          setSuccessfulModal(false);
+          props.setReceiveTaskModal(false);
+        }}>
         <SuccessfulModal
           text={
             'You have received your payment. The payment task will now be deleted, you can find the invoice in your list of invoices'

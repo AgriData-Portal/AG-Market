@@ -71,7 +71,7 @@ export const SupplierTasks = props => {
       console.log(e);
     }
   };
-
+  console.log(sendTask);
   return (
     <SafeAreaView
       style={{

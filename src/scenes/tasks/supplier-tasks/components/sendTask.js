@@ -31,6 +31,7 @@ const now = () => {
 };
 
 export const SendTaskList = props => {
+  console.log('send task list render');
   return (
     <View>
       <FlatList
@@ -38,18 +39,19 @@ export const SendTaskList = props => {
         extraData={props.trigger}
         data={props.data}
         numColumns={1}
-        renderItem={item => {
+        renderItem={({item}) => {
           return (
             <SendTask
-              retailer={item.item.retailer}
-              supplier={item.item.supplier}
-              goods={item.item.items}
-              createdAt={item.item.createdAt}
-              deliverydate={item.item.deliveryDate}
-              taskID={item.item.id}
+              retailer={item.retailer}
+              supplier={item.supplier}
+              goods={item.items}
+              createdAt={item.createdAt}
+              deliverydate={item.deliveryDate}
+              taskID={item.id}
               trigger={props.trigger}
               setTrigger={props.setTrigger}
               sendTask={props.sendTask}
+              sentByRetailer={item.sentByRetailer}
               setSendTask={props.setSendTask}
             />
           );
@@ -106,9 +108,19 @@ const SendTask = props => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <View style={{bottom: hp('0.5%')}}>
-            <Icon name="cube-outline" size={wp('11%')} />
-          </View>
+          {props.sentByRetailer ? (
+            <View style={{bottom: hp('0.5%')}}>
+              <Icon
+                name="cube-outline"
+                size={wp('11%')}
+                color={Colors.LIME_GREEN}
+              />
+            </View>
+          ) : (
+            <View style={{bottom: hp('0.5%')}}>
+              <Icon name="cube-outline" size={wp('11%')} />
+            </View>
+          )}
         </View>
         <Text
           style={[
@@ -530,6 +542,17 @@ const InvoiceModal = props => {
         },
       });
       setSuccessfulModal(true);
+      var tempList = props.sendTask;
+      tempList.forEach((item, index, arr) => {
+        if (item.id == props.taskID) {
+          arr[index] = response.data.updateGoodsTask;
+        }
+      });
+      if (props.trigger) {
+        props.setTrigger(false);
+      } else {
+        props.setTrigger(true);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -648,7 +671,7 @@ const InvoiceModal = props => {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() => sendForVerfication()}
+        onPress={() => [sendForVerfication()]}
         style={{
           position: 'absolute',
           backgroundColor: Colors.LIGHT_BLUE,

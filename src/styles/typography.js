@@ -24,7 +24,7 @@ const divide = num => {
 };
 
 const byWidth = num => {
-  num = parseFloat(num / 3.6);
+  num = parseFloat(num / 3);
   num = num.toString() + '%';
   return wp(num);
 };

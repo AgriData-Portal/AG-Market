@@ -39,6 +39,17 @@ const UploadReceiptModal = props => {
       });
       console.log(updated);
       setSuccessfulModal(true);
+      var tempList = props.payTask;
+      tempList.forEach((item, index, arr) => {
+        if (item.id == props.id) {
+          arr[index] = updated.data.updatePaymentTask;
+        }
+      });
+      if (props.trigger) {
+        props.setTrigger(false);
+      } else {
+        props.setTrigger(true);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -366,7 +377,11 @@ const UploadReceipt = props => {
           payBefore={props.payBefore}
           receipt={props.receipt}
           id={props.id}
-          createdAt={props.createdAt}></UploadReceiptModal>
+          createdAt={props.createdAt}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          payTask={props.payTask}
+          setPayTask={props.setPayTask}></UploadReceiptModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -390,6 +405,10 @@ export const UploadReceiptList = props => {
               receipt={item.receipt}
               createdAt={item.createdAt}
               id={item.id}
+              trigger={props.trigger}
+              setTrigger={props.setTrigger}
+              payTask={props.payTask}
+              setPayTask={props.setPayTask}
             />
           );
         }}
