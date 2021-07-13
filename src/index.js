@@ -1,61 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
-import codePush from 'react-native-code-push';
-import {
-  AccountsDashboard, //done
-  RetailManagerDashboard, // done
-  GeneralManagerDashboard, //done
-  Marketplace, //done
-  Store, //done
-  Inbox, //done
-  ChatRoom, //done but no modal
-  EmployeeDashboard, //done
-  OwnerDashboard, //done
-  Orders, //Done
-  SupplierStore, // done most
-  SupplierTasks, //done
-  RetailerTasks, //done
-  //CompanyProfile, //done
-  //EditCompany, //done
-  //HumanResource, //done
-  //PersonalProfile, //done.
-  //EditPersonal, //done.
-  //DataAnalytics,
-  Registration, //done
-  SupplierDashboard, //done
-  Login, //done
-  CreateCompany, //done
-  Landing, //done
-  Verification, //done
-  ConfirmSignUp, //done
-} from './scenes';
-import {SuccessfulModal, UnsuccessfulModal} from '_components';
-import {DataAnalytics} from './scenes/data_analytics/';
+
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import config from './aws-exports';
 import {View, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
 import {getUser} from './graphql/queries';
 import {createUser} from './graphql/mutations';
 import {StatusBar} from 'react-native';
-import {Typography} from './styles';
-import {
-  MenuButton,
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
-} from '_components';
-import Strings from './utils';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {updateChatGroupUsers, createChatGroupUsers} from './graphql/mutations';
-import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import {
   GMNavigation,
   RMNavigation,
@@ -63,49 +15,12 @@ import {
   RetailEmployeeNavigation,
   AccountsNavigation,
   SupplierNavigation,
+  VerificationNavigation,
+  CreateCompanyNavigation,
+  AuthenticationNavigator,
 } from './navigation';
-var dayjs = require('dayjs');
+
 Amplify.configure(config);
-
-const TabStack = createBottomTabNavigator();
-const AuthenticationStack = createStackNavigator();
-const AppStack = createStackNavigator();
-
-const AuthenticationNavigator = props => {
-  return (
-    <AuthenticationStack.Navigator headerMode="none">
-      <AuthenticationStack.Screen name="landing">
-        {screenProps => <Landing {...screenProps} />}
-      </AuthenticationStack.Screen>
-      <AuthenticationStack.Screen name="signin">
-        {screenProps => (
-          <Login
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            updateUserID={props.updateUserID}
-            setUserAttributes={props.setUserAttributes}
-          />
-        )}
-      </AuthenticationStack.Screen>
-      <AuthenticationStack.Screen name="signup">
-        {screenProps => (
-          <Registration
-            {...screenProps}
-            setUserAttributes={props.setUserAttributes}
-          />
-        )}
-      </AuthenticationStack.Screen>
-      <AuthenticationStack.Screen name="confirmsignup">
-        {screenProps => (
-          <ConfirmSignUp
-            {...screenProps}
-            setUserAttributes={props.setUserAttributes}
-          />
-        )}
-      </AuthenticationStack.Screen>
-    </AuthenticationStack.Navigator>
-  );
-};
 
 const AppNavigator = props => {
   console.log('user:' + props.user);
@@ -173,47 +88,18 @@ const AppNavigator = props => {
       );
     } else {
       return (
-        <AppStack.Navigator headerMode="none">
-          <AppStack.Screen name="verification">
-            {screenProps => (
-              <Verification
-                {...screenProps}
-                updateAuthState={props.updateAuthState}
-                user={props.user}
-              />
-            )}
-          </AppStack.Screen>
-          <AppStack.Screen name="companyprofile">
-            {screenProps => <CompanyProfile {...screenProps} />}
-          </AppStack.Screen>
-          <AppStack.Screen name="editcompany">
-            {screenProps => <EditCompany {...screenProps} />}
-          </AppStack.Screen>
-        </AppStack.Navigator>
+        <VerificationNavigation
+          user={props.user}
+          updateAuthState={props.updateAuthState}
+        />
       );
     }
   } else {
     return (
-      <AppStack.Navigator headerMode="none">
-        <AppStack.Screen name="registercompany">
-          {screenProps => <CreateCompany {...screenProps} user={props.user} />}
-        </AppStack.Screen>
-
-        <AppStack.Screen name="verification">
-          {screenProps => (
-            <Verification
-              {...screenProps}
-              updateAuthState={props.updateAuthState}
-            />
-          )}
-        </AppStack.Screen>
-        <AppStack.Screen name="companyprofile">
-          {screenProps => <CompanyProfile {...screenProps} />}
-        </AppStack.Screen>
-        <AppStack.Screen name="editcompany">
-          {screenProps => <EditCompany {...screenProps} />}
-        </AppStack.Screen>
-      </AppStack.Navigator>
+      <CreateCompanyNavigation
+        user={props.user}
+        updateAuthState={props.updateAuthState}
+      />
     );
   }
 };
@@ -344,32 +230,3 @@ const App = () => {
 };
 
 export default App;
-
-const updateLastSeen = async (userID, chatGroupID, navigation) => {
-  const uniqueID = userID + chatGroupID;
-  try {
-    const updatedLastSeen = await API.graphql({
-      query: updateChatGroupUsers,
-      variables: {input: {id: uniqueID, lastOnline: dayjs()}},
-    });
-    console.log('updated last seen');
-    navigation.navigate('inbox');
-  } catch (e) {
-    console.log(e);
-    if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-      console.log('no special connection created, creating one now');
-      const createLastSeen = await API.graphql({
-        query: createChatGroupUsers,
-        variables: {
-          input: {
-            id: uniqueID,
-            lastOnline: dayjs(),
-            userID: userID,
-            chatGroupID: chatGroupID,
-          },
-        },
-      });
-      navigation.navigate('inbox');
-    }
-  }
-};
