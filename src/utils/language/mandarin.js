@@ -6,6 +6,7 @@ export default {
   invoices: '发票',
   invoice: '发票',
   marketplace: '市场',
+  market: '市场',
   companyProfile: '公司资料',
   personalProfile: '个人资料',
   humanResource: '人力资源',
@@ -166,5 +167,6 @@ export default {
   productInquiry: '商品详情',
   dataAnalytics: '数据分析',
   analytics: '分析',
+  analyticsSmall: '分析',
   bankDetails: '银行资料',
 };

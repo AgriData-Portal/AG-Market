@@ -26,13 +26,13 @@ export const DataAnalytics = props => {
         height: hp('100%'),
         width: wp('100%'),
       }}>
-      <Text style={[Typography.header, {top: hp('3%'), right: wp('25%')}]}>
+      {/*<Text style={[Typography.header, {top: hp('3%'), right: wp('25%')}]}>
         {Strings.analytics}
-      </Text>
+    </Text>*/}
       <View
         style={{
           height: hp('80%'),
-          top: hp('3%'),
+
           alignItems: 'center',
           justifyContent: 'center',
         }}>

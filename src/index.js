@@ -57,7 +57,7 @@ import {updateChatGroupUsers, createChatGroupUsers} from './graphql/mutations';
 import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import {GMNavigation, RMNavigation, OwnerNavigation} from './navigation';
 var dayjs = require('dayjs');
 Amplify.configure(config);
 
@@ -137,80 +137,10 @@ const AppNavigator = props => {
       if (type == 'retailmanager') {
         console.log('Retail Manager \n');
         return (
-          <AppStack.Navigator>
-            <AppStack.Screen
-              name="inbox"
-              options={{
-                title: 'Inbox',
-                headerTitleStyle: [Typography.header],
-                headerLeft: () => (
-                  <MenuButton
-                    navigation={props.navigation}
-                    updateAuthState={props.updateAuthState}
-                    userType={props.user.role}
-                  />
-                ),
-              }}>
-              {screenProps => (
-                <Inbox
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="marketplace">
-              {screenProps => (
-                <Marketplace
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-
-            <AppStack.Screen name="store">
-              {screenProps => (
-                <Store
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-
-            <AppStack.Screen name="chatroom">
-              {screenProps => <ChatRoom {...screenProps} user={props.user} />}
-            </AppStack.Screen>
-            <AppStack.Screen name="orders">
-              {screenProps => (
-                <Orders
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="tasks">
-              {screenProps => (
-                <RetailerTasks
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="personalprofile">
-              {screenProps => (
-                <PersonalProfile {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="editprofile">
-              {screenProps => (
-                <EditPersonal {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-          </AppStack.Navigator>
+          <RMNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+          />
         );
       } else if (type == 'accounts') {
         console.log('Accounts \n');
@@ -275,55 +205,10 @@ const AppNavigator = props => {
       } else if (type == 'owner') {
         console.log('Owner \n');
         return (
-          <AppStack.Navigator headerMode="none">
-            <AppStack.Screen
-              name="orders"
-              options={{
-                title: 'Orders',
-                headerTitleStyle: [Typography.header],
-                headerLeft: () => (
-                  <MenuButton
-                    navigation={props.navigation}
-                    updateAuthState={props.updateAuthState}
-                    userType={props.user.role}
-                  />
-                ),
-              }}>
-              {screenProps => (
-                <Orders
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-
-            <AppStack.Screen name="companyprofile">
-              {screenProps => (
-                <CompanyProfile {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="editcompany">
-              {screenProps => (
-                <EditCompany {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="humanresource">
-              {screenProps => (
-                <HumanResource {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="personalprofile">
-              {screenProps => (
-                <PersonalProfile {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="editprofile">
-              {screenProps => (
-                <EditPersonal {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-          </AppStack.Navigator>
+          <OwnerNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+          />
         );
       } else if (type == 'retailemployee') {
         console.log('Retailer Employee \n');
@@ -366,251 +251,10 @@ const AppNavigator = props => {
       } else if (type == 'generalmanager') {
         console.log('General Manager \n');
         return (
-          <AppStack.Navigator>
-            <AppStack.Screen
-              name="inbox"
-              options={({route, navigation}) => ({
-                title: Strings.inbox,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <MenuButton
-                    navigation={navigation}
-                    updateAuthState={props.updateAuthState}
-                    userType={props.user.role}
-                  />
-                ),
-              })}>
-              {screenProps => (
-                <Inbox
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-
-            <AppStack.Screen
-              name="chatroom"
-              options={({route, navigation}) => ({
-                headerTitle: () => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('store', {
-                        itemId: route.params.itemID.slice(36, 72),
-                        storeName: route.params.chatName,
-                      })
-                    }>
-                    <Text style={[Typography.header]}>
-                      {route.params.chatName}
-                    </Text>
-                  </TouchableOpacity>
-                ),
-                headerTitleAlign: 'center',
-                headerRight: () => <ChatInfo />,
-                headerLeft: () => (
-                  <HeaderBackButton
-                    onPress={() => [
-                      updateLastSeen(
-                        (userID = props.user.id),
-                        (chatGroupID = route.params.itemID),
-                        (navigation = navigation),
-                      ),
-                    ]}
-                  />
-                ),
-              })}>
-              {screenProps => <ChatRoom {...screenProps} user={props.user} />}
-            </AppStack.Screen>
-            <AppStack.Screen
-              name="orders"
-              options={({route, navigation}) => ({
-                title: Strings.orders,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <MenuButton
-                    navigation={navigation}
-                    updateAuthState={props.updateAuthState}
-                    userType={props.user.role}
-                  />
-                ),
-              })}>
-              {screenProps => (
-                <Orders
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen
-              name="marketplace"
-              options={({route, navigation}) => ({
-                title: Strings.marketplace,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <MenuButton
-                    navigation={navigation}
-                    updateAuthState={props.updateAuthState}
-                    userType={props.user.role}
-                  />
-                ),
-              })}>
-              {screenProps => (
-                <Marketplace
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen
-              name="store"
-              options={({route, navigation}) => ({
-                title: route.params.storeName,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <HeaderBackButton onPress={() => navigation.goBack()} />
-                ),
-              })}>
-              {screenProps => (
-                <Store
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-
-            <AppStack.Screen
-              name="tasks"
-              options={({route, navigation}) => ({
-                title: Strings.tasks,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <MenuButton
-                    navigation={navigation}
-                    updateAuthState={props.updateAuthState}
-                    userType={props.user.role}
-                  />
-                ),
-              })}>
-              {screenProps => (
-                <RetailerTasks
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="dataanalytics">
-              {screenProps => (
-                <DataAnalytics
-                  {...screenProps}
-                  updateAuthState={props.updateAuthState}
-                  user={props.user}
-                />
-              )}
-            </AppStack.Screen>
-
-            <AppStack.Screen
-              name="companyprofile"
-              options={({route, navigation}) => ({
-                title: Strings.companyProfile,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <HeaderBackButton onPress={() => navigation.goBack()} />
-                ),
-                headerRight: () => (
-                  <TouchableOpacity
-                    style={{
-                      right: wp('4%'),
-                      position: 'absolute',
-                    }}>
-                    <Icon
-                      name="create-outline"
-                      size={wp('6%')}
-                      onPress={() => navigation.navigate('editcompany')}
-                    />
-                  </TouchableOpacity>
-                ),
-              })}>
-              {screenProps => (
-                <CompanyProfile {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen
-              name="editcompany"
-              options={({route, navigation}) => ({
-                title: 'Edit ' + Strings.companyProfile,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <HeaderBackButton onPress={() => navigation.goBack()} />
-                ),
-              })}>
-              {screenProps => (
-                <EditCompany {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen
-              name="humanresource"
-              options={({route, navigation}) => ({
-                title: Strings.humanResource,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <HeaderBackButton onPress={() => navigation.goBack()} />
-                ),
-              })}>
-              {screenProps => (
-                <HumanResource {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen
-              name="personalprofile"
-              options={({route, navigation}) => ({
-                title: Strings.personalProfile,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <HeaderBackButton onPress={() => navigation.goBack()} />
-                ),
-                headerRight: () => (
-                  <TouchableOpacity
-                    style={{
-                      right: wp('4%'),
-                      position: 'absolute',
-                    }}>
-                    <Icon
-                      name="create-outline"
-                      size={wp('6%')}
-                      onPress={() => navigation.navigate('editprofile')}
-                    />
-                  </TouchableOpacity>
-                ),
-              })}>
-              {screenProps => (
-                <PersonalProfile {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen
-              name="editprofile"
-              options={({route, navigation}) => ({
-                title: 'Edit ' + Strings.personalProfile,
-                headerTitleStyle: [Typography.header],
-                headerTitleAlign: 'center',
-              })}>
-              {screenProps => (
-                <EditPersonal {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-          </AppStack.Navigator>
+          <GMNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+          />
         );
       }
     } else if (
