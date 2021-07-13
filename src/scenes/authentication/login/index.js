@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {BackButton} from '_components';
+import {BackButton, UnsuccessfulModal} from '_components';
 import {Auth} from 'aws-amplify';
-import {DismissKeyboardView} from '_components';
+import {DismissKeyboardView, LoadingModal} from '_components';
 import {ForgetPassword} from './components';
 import Modal from 'react-native-modal';
 import {
@@ -30,16 +30,31 @@ export const Login = props => {
   const [verified, setVerified] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const [errorText, setErrorText] = useState('');
+  const [loading, setLoading] = useState(false);
   const signIn = async () => {
     try {
+      setLoading(true);
       const user = await Auth.signIn(email, password);
       console.log('Successful sign in');
       props.updateUserID(user.attributes.sub);
       props.setUserAttributes(user.attributes);
+
       //props.updateAuthState('loggedIn'); //fucking weird
     } catch (error) {
       if (error.code == 'UserNotConfirmedException') {
         setVerified(true);
+      } else if (error.code == 'UserNotFoundException') {
+        setUnsuccessfulModal(true);
+        setErrorText(
+          "Sorry you don't have an account associated with this number. Please register.",
+        );
+      } else if (error.code == 'NotAuthorizedException') {
+        setUnsuccessfulModal(true);
+        setErrorText(
+          'Sorry the password you entered is invalid. Please try again.',
+        );
       }
       console.log('Error signing in...', error);
     }
@@ -185,11 +200,13 @@ export const Login = props => {
             top: hp('23%'),
           }}>
           <TouchableOpacity
-            onPress={async () => {
+            onPress={() => {
               if (password == '' || email == '') {
                 console.log('empty input');
+                setUnsuccessfulModal(true);
+                setErrorText('Please fill in all empty spaces!');
               } else {
-                const user = await signIn();
+                signIn();
               }
             }}
             style={{
@@ -251,6 +268,12 @@ export const Login = props => {
           setVerified={setVerified}
         />
       </Modal>
+      <Modal
+        isVisible={unsuccessfulModal}
+        onBackdropPress={() => setUnsuccessfulModal(false)}>
+        <UnsuccessfulModal text={errorText} />
+      </Modal>
+      <LoadingModal isVisible={loading} />
     </KeyboardAvoidingView>
   );
 };

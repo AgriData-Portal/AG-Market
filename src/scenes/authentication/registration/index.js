@@ -12,7 +12,7 @@ import {
   Platform,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import {BackButton} from '_components';
+import {BackButton, UnsuccessfulModal} from '_components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {createUser} from '../../../graphql/mutations';
@@ -23,6 +23,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {DismissKeyboardView} from '_components';
+import Modal from 'react-native-modal';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -31,11 +32,14 @@ export const Registration = props => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [secure, setSecure] = useState(true);
   const [items, setItems] = useState([
     {label: Strings.generalManager, value: 'generalmanager'},
     {label: Strings.owner, value: 'owner'},
     {label: Strings.retailManager, value: 'retailmanager'},
   ]);
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const [errorText, setErrorText] = useState('');
   const signUp = async () => {
     try {
       const user = await Auth.signUp({
@@ -52,9 +56,25 @@ export const Registration = props => {
       props.navigation.navigate('confirmsignup');
       return user.userSub;
     } catch (error) {
+      if (error.message == 'Invalid phone number format.') {
+        setErrorText(
+          'Sorry you have entered an invalid phone number. Please try again.',
+        );
+        setUnsuccessfulModal(true);
+      }
+      if (
+        error.message ==
+        'An account with the given phone_number already exists.'
+      ) {
+        setErrorText(
+          'Sorry an account with the given number already exist. Please contact us for support.',
+        );
+        setUnsuccessfulModal(true);
+      }
       console.log('❌ Error signing up...', error);
     }
   };
+  var hasNumber = /\d/;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
@@ -195,6 +215,7 @@ export const Registration = props => {
                 placeholderTextColor={Colors.GRAY_DARK}
                 keyboardType="default"
                 placeholder="password"
+                secureTextEntry={secure}
                 underlineColorAndroid="transparent"
                 onChangeText={item => setPassword(item)}
                 value={password}
@@ -204,6 +225,21 @@ export const Registration = props => {
                   color: 'black',
                   borderBottomColor: 'transparent',
                 }}></TextInput>
+              <TouchableOpacity
+                onPress={() => {
+                  if (secure) {
+                    setSecure(false);
+                  } else {
+                    setSecure(true);
+                  }
+                }}
+                style={{
+                  right: wp('15%'),
+                  position: 'absolute',
+                  bottom: hp('2%'),
+                }}>
+                <Icon name="eye-outline" size={wp('6%')}></Icon>
+              </TouchableOpacity>
               <View
                 style={{
                   bottom: hp('1.5%'),
@@ -308,12 +344,35 @@ export const Registration = props => {
                 password == ''
               ) {
                 console.log('error');
+                setUnsuccessfulModal(true);
+                setErrorText('Please fill in all empty spaces!');
+              } else if (
+                !phone.startsWith('+') ||
+                !phone.length > 5 ||
+                isNaN(phone.slice(1))
+              ) {
+                setUnsuccessfulModal(true);
+                setErrorText(
+                  'Sorry you have entered an invalid phone number. Please try again.',
+                );
+              } else if (!email.includes('@')) {
+                setUnsuccessfulModal(true);
+                setErrorText(
+                  'Sorry you have entered an invalid email address. Please try again.',
+                );
+              } else if (password.length < 8) {
+                setUnsuccessfulModal(true);
+                setErrorText(
+                  'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+                );
+              } else if (!hasNumber.test(password)) {
+                setUnsuccessfulModal(true);
+                setErrorText(
+                  'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+                );
               } else {
-                try {
-                  const userID = await signUp();
-                } catch {
-                  e => console.log('error ' + e);
-                }
+                console.log('succes');
+                signUp();
               }
             }}
             style={{
@@ -351,6 +410,11 @@ export const Registration = props => {
               style={{left: wp('10%')}}
             />
           </TouchableOpacity>
+          <Modal
+            isVisible={unsuccessfulModal}
+            onBackdropPress={() => setUnsuccessfulModal(false)}>
+            <UnsuccessfulModal text={errorText} />
+          </Modal>
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>

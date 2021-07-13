@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
+import PushNotification from '@aws-amplify/pushnotification';
 import config from './aws-exports';
 import {View, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
 import {getUser} from './graphql/queries';
@@ -21,6 +22,28 @@ import {
 } from './navigation';
 
 Amplify.configure(config);
+
+// PushNotification.onRegister(token => {
+//   console.log('onRegister', token);
+// });
+// PushNotification.onNotification(notification => {
+//   if (notification.foreground) {
+//     console.log('onNotification foreground', notification);
+//   } else {
+//     console.log('onNotification background or closed', notification);
+//   }
+//   // extract the data passed in the push notification
+//   const data = JSON.parse(notification.data['pinpoint.jsonBody']);
+//   console.log('onNotification data', data);
+//   // iOS only
+//   notification.finish(PushNotificationIOS.FetchResult.NoData);
+// });
+// PushNotification.onNotificationOpened(notification => {
+//   console.log('onNotificationOpened', notification);
+//   // extract the data passed in the push notification
+//   const data = JSON.parse(notification['pinpoint.jsonBody']);
+//   console.log('onNotificationOpened data', data);
+// });
 
 const AppNavigator = props => {
   console.log('user:' + props.user);

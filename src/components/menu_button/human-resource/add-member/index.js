@@ -79,6 +79,7 @@ export const AddEmployeeButtonModal = props => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
+  const [errorText, setErrorText] = useState('');
   const [role, setRole] = useState('retailemployee');
   const [items, setItems] = useState([
     {label: 'Retail Employee', value: 'retailemployee'},
@@ -86,6 +87,7 @@ export const AddEmployeeButtonModal = props => {
     {label: 'General Manager', value: 'generalmanager'},
     {label: 'Accounts', value: 'accounts'},
   ]);
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const addUser = async () => {
     var user = null;
     try {
@@ -116,6 +118,7 @@ export const AddEmployeeButtonModal = props => {
           },
         },
       });
+      setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
     }
@@ -253,7 +256,29 @@ export const AddEmployeeButtonModal = props => {
         </View>
 
         <TouchableOpacity
-          onPress={() => [addUser(), setSuccessfulModal(true)]}
+          onPress={() => {
+            if (name == '' || email == '' || phone == '') {
+              console.log('empty field');
+              setUnsuccessfulModal(true);
+              setErrorText('Please fill in all empty spaces!');
+            } else if (
+              !phone.startsWith('+') ||
+              !phone.length > 5 ||
+              isNaN(phone.slice(1))
+            ) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid phone number. Please try again.',
+              );
+            } else if (!email.includes('@')) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid email address. Please try again.',
+              );
+            } else {
+              addUser();
+            }
+          }}
           style={{
             top: hp('12%'),
             width: wp('30%'),
@@ -281,6 +306,11 @@ export const AddEmployeeButtonModal = props => {
             style={{left: wp('3%')}}
           />
         </TouchableOpacity>
+        <Modal
+          isVisible={unsuccessfulModal}
+          onBackdropPress={() => setUnsuccessfulModal(false)}>
+          <UnsuccessfulModal text={errorText} />
+        </Modal>
         <Modal
           isVisible={successfulModal}
           onBackdropPress={() => [

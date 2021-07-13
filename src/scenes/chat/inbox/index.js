@@ -172,14 +172,14 @@ export const Inbox = props => {
           </Text>
         </View>
         </View>*/}
-      <View
+      {/* <View
         style={{
           top: hp('1%'),
           width: wp('85%'),
           borderBottomWidth: 1,
           height: 0,
           borderColor: Colors.GRAY_MEDIUM,
-        }}></View>
+        }}></View> */}
       <DismissKeyboardView>
         <View style={{top: hp('2%')}}>
           <Searchbar />
