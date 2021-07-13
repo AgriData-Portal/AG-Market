@@ -319,7 +319,7 @@ const Receive = props => {
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
-          height: hp('12.5%'),
+          height: hp('12%'),
           elevation: 5,
           shadowColor: '#000',
           shadowOffset: {
@@ -332,16 +332,15 @@ const Receive = props => {
         <View
           style={{
             backgroundColor: Colors.GRAY_BLACK,
-            height: hp('12.5%'),
-            width: wp('4.5%'),
+            height: hp('12%'),
+            width: wp('2%'),
             borderRadius: 10,
           }}></View>
         <View
           style={{
             backgroundColor: Colors.GRAY_LIGHT,
-            height: hp('12.5%'),
-            width: wp('23%'),
-            right: wp('2%'),
+            height: hp('12%'),
+            width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
