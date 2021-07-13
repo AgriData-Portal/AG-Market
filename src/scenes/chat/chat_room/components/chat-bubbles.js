@@ -438,7 +438,7 @@ export const ChatBubbleList = props => {
   };
   return (
     <View>
-      <ScrollView
+      {/* <ScrollView
         contentContainerStyle={{
           flexDirection: 'row',
           alignSelf: 'flex-end',
@@ -446,33 +446,38 @@ export const ChatBubbleList = props => {
         }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <FlatList
-          inverted={true}
-          keyExtractor={item => item.id}
-          data={props.data}
-          numColumns={1}
-          renderItem={item => {
-            return (
-              <ChatBubble
-                sender={item.item.sender}
-                content={item.item.content}
-                senderID={item.item.senderID}
-                createdAt={item.item.createdAt}
-                userID={props.userID}
-                contentType={item.item.type}
-                contentID={item.item.uniqueContentID}
-                chatName={props.chatName}
-                chatGroupID={props.chatGroupID}
-                type={props.type}
-                userName={props.userName}
-                setMessages={props.setMessages}
-                messages={props.messages}
-              />
-            );
-          }}
-        />
-      </ScrollView>
+        }> */}
+      <FlatList
+        inverted={true}
+        keyExtractor={item => item.id}
+        data={props.data}
+        numColumns={1}
+        onEndReached={() => {
+          props.setRefresh(state => state + 1);
+          console.log('endReached');
+        }}
+        onEndReachedThreshold={0.4}
+        renderItem={item => {
+          return (
+            <ChatBubble
+              sender={item.item.sender}
+              content={item.item.content}
+              senderID={item.item.senderID}
+              createdAt={item.item.createdAt}
+              userID={props.userID}
+              contentType={item.item.type}
+              contentID={item.item.uniqueContentID}
+              chatName={props.chatName}
+              chatGroupID={props.chatGroupID}
+              type={props.type}
+              userName={props.userName}
+              setMessages={props.setMessages}
+              messages={props.messages}
+            />
+          );
+        }}
+      />
+      {/* </ScrollView> */}
     </View>
   );
 };

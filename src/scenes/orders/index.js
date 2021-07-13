@@ -21,6 +21,7 @@ import {
   invoiceForSupplierByDate,
 } from '../../graphql/queries';
 import Strings from '_utils';
+import {MenuButton} from '_components';
 
 export const Orders = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -74,24 +75,35 @@ export const Orders = props => {
         flex: 1,
         alignItems: 'center',
       }}>
-      <Text style={[Typography.header, {top: hp('4%')}]}>{Strings.orders}</Text>
-      <Text
-        style={[Typography.normal, {color: Colors.GRAY_DARK, top: hp('4%')}]}>
-        {Strings.digitalInvoices}
-      </Text>
-      <View
+      {/*<View
         style={{
-          top: hp('5%'),
+          alignItems: 'center',
+          justifyContent: 'center',
           width: wp('100%'),
-          borderBottomWidth: 1,
-          height: 0,
-          borderColor: Colors.GRAY_MEDIUM,
-        }}></View>
+          top: hp('2%'),
+        }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: hp('1%'),
+            left: wp('5%'),
+          }}>
+          <MenuButton
+            navigation={props.navigation}
+            updateAuthState={props.updateAuthState}
+            userType={props.user.role}></MenuButton>
+        </View>
+        <Text style={[Typography.header]}>{Strings.orders}</Text>
+        <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
+          {Strings.digitalInvoices}
+        </Text>
+        </View>*/}
+
       <View
         style={{
           width: wp('80%'),
           height: hp('5%'),
-          top: hp('7%'),
+          top: hp('3%'),
           flexDirection: 'row',
         }}>
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
@@ -105,12 +117,12 @@ export const Orders = props => {
       </View>
       <View
         style={{
-          top: hp('7%'),
+          top: hp('5%'),
           height: hp('64%'),
         }}>
         <OrderList invoiceList={invoiceList} user={props.user} />
       </View>
-      <View style={{position: 'absolute', top: hp('90%')}}>
+      <View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
       </View>
       <Modal

@@ -16,6 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {MenuButton} from '_components';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -63,7 +64,6 @@ export const Marketplace = props => {
     if (searchPressed && choice == 'product') {
       console.log('useEffectTriggered');
       console.log('searching for ' + searchValue);
-      setInitialRender(false);
       setSearchPressed(false);
       fetchProducts();
     }
@@ -87,10 +87,28 @@ export const Marketplace = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      <Text style={[Typography.header, {top: hp('5%')}]}>
-        {Strings.localMarketplace}
-      </Text>
-      <View style={{top: hp('6%')}}>
+      {/*<View
+        style={{
+          flexDirection: 'row',
+          width: wp('100%'),
+          height: hp('6%'),
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: hp('1%'),
+            left: wp('5%'),
+          }}>
+          <MenuButton
+            navigation={props.navigation}
+            updateAuthState={props.updateAuthState}
+            userType={props.user.role}></MenuButton>
+        </View>
+        <Text style={[Typography.header, {}]}>{Strings.localMarketplace}</Text>
+        </View>*/}
+      <View style={{top: hp('1%')}}>
         <Searchbar
           setSearchPressed={setSearchPressed}
           searchValue={searchValue}
@@ -99,7 +117,7 @@ export const Marketplace = props => {
       </View>
       <View
         style={{
-          top: hp('7%'),
+          top: hp('3%'),
           width: wp('100%'),
           height: hp('4%'),
           flexDirection: 'row',
@@ -177,35 +195,19 @@ export const Marketplace = props => {
           style={{
             width: wp('90%'),
             height: hp('100%'),
-            top: hp('10%'),
+            top: hp('1%'),
           }}>
-          <FavouritesList data={props.user.retailerCompany.favouriteStores} navigation={props.navigation} />
-        </View>
-      ) : initialRender ? (
-        <View
-          style={{
-            width: Mixins.scaleWidth(330),
-            height: Mixins.scaleHeight(425),
-            top: Mixins.scaleHeight(70),
-          }}>
-          <View
-            style={{
-              width: Mixins.scaleWidth(330),
-              height: Mixins.scaleHeight(420),
-              top: Mixins.scaleHeight(30),
-              alignItems: 'center',
-            }}>
-            <Image
-              style={{resizeMode: 'cover', width: Mixins.scaleWidth(340)}}
-              source={require('_assets/images/produce.png')}></Image>
-          </View>
+          <FavouritesList
+            data={props.user.retailerCompany.favouriteStores}
+            navigation={props.navigation}
+          />
         </View>
       ) : (
         <View
           style={{
             width: wp('93%'),
             height: hp('80%'),
-            top: hp('10%'),
+            top: hp('1%'),
           }}>
           <MarketplaceList
             chatGroups={props.user.retailerCompany.chatGroups.items}
@@ -216,7 +218,7 @@ export const Marketplace = props => {
         </View>
       )}
 
-      <View style={{position: 'absolute', top: hp('90%')}}>
+      <View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
       </View>
     </SafeAreaView>

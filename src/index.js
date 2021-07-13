@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import codePush from 'react-native-code-push';
 import {
   AccountsDashboard, //done
@@ -16,11 +16,11 @@ import {
   SupplierStore, // done most
   SupplierTasks, //done
   RetailerTasks, //done
-  CompanyProfile, //done
-  EditCompany, //done
-  HumanResource, //done
-  PersonalProfile, //done.
-  EditPersonal, //done.
+  //CompanyProfile, //done
+  //EditCompany, //done
+  //HumanResource, //done
+  //PersonalProfile, //done.
+  //EditPersonal, //done.
   //DataAnalytics,
   Registration, //done
   SupplierDashboard, //done
@@ -35,35 +35,55 @@ import {DataAnalytics} from './scenes/data_analytics/';
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import config from './aws-exports';
-import {View, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
 import {getUser} from './graphql/queries';
 import {createUser} from './graphql/mutations';
 import {StatusBar} from 'react-native';
+import {Typography} from './styles';
+import {
+  MenuButton,
+  CompanyProfile,
+  EditCompany,
+  HumanResource,
+  PersonalProfile,
+  EditPersonal,
+} from '_components';
+import Strings from './utils';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {updateChatGroupUsers, createChatGroupUsers} from './graphql/mutations';
+import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+var dayjs = require('dayjs');
 Amplify.configure(config);
 
-PushNotification.onRegister(token => {
-  console.log('onRegister', token);
-});
-PushNotification.onNotification(notification => {
-  if (notification.foreground) {
-    console.log('onNotification foreground', notification);
-  } else {
-    console.log('onNotification background or closed', notification);
-  }
-  // extract the data passed in the push notification
-  const data = JSON.parse(notification.data['pinpoint.jsonBody']);
-  console.log('onNotification data', data);
-  // iOS only
-  notification.finish(PushNotificationIOS.FetchResult.NoData);
-});
-PushNotification.onNotificationOpened(notification => {
-  console.log('onNotificationOpened', notification);
-  // extract the data passed in the push notification
-  const data = JSON.parse(notification['pinpoint.jsonBody']);
-  console.log('onNotificationOpened data', data);
-});
+// PushNotification.onRegister(token => {
+//   console.log('onRegister', token);
+// });
+// PushNotification.onNotification(notification => {
+//   if (notification.foreground) {
+//     console.log('onNotification foreground', notification);
+//   } else {
+//     console.log('onNotification background or closed', notification);
+//   }
+//   // extract the data passed in the push notification
+//   const data = JSON.parse(notification.data['pinpoint.jsonBody']);
+//   console.log('onNotification data', data);
+//   // iOS only
+//   notification.finish(PushNotificationIOS.FetchResult.NoData);
+// });
+// PushNotification.onNotificationOpened(notification => {
+//   console.log('onNotificationOpened', notification);
+//   // extract the data passed in the push notification
+//   const data = JSON.parse(notification['pinpoint.jsonBody']);
+//   console.log('onNotificationOpened data', data);
+// });
 
+const Tab = createBottomTabNavigator();
 const AuthenticationStack = createStackNavigator();
 const AppStack = createStackNavigator();
 
@@ -117,39 +137,67 @@ const AppNavigator = props => {
       if (type == 'retailmanager') {
         console.log('Retail Manager \n');
         return (
-          <AppStack.Navigator headerMode="none">
-            <AppStack.Screen name="dashboard">
+          <AppStack.Navigator>
+            <AppStack.Screen
+              name="inbox"
+              options={{
+                title: 'Inbox',
+                headerTitleStyle: [Typography.header],
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={props.navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              }}>
               {screenProps => (
-                <RetailManagerDashboard
+                <Inbox
                   {...screenProps}
-                  user={props.user}
                   updateAuthState={props.updateAuthState}
+                  user={props.user}
                 />
               )}
             </AppStack.Screen>
             <AppStack.Screen name="marketplace">
               {screenProps => (
-                <Marketplace {...screenProps} user={props.user} />
+                <Marketplace
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
               )}
             </AppStack.Screen>
 
             <AppStack.Screen name="store">
-              {screenProps => <Store {...screenProps} user={props.user} />}
-            </AppStack.Screen>
-
-            <AppStack.Screen name="inbox">
-              {screenProps => <Inbox {...screenProps} user={props.user} />}
+              {screenProps => (
+                <Store
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
+              )}
             </AppStack.Screen>
 
             <AppStack.Screen name="chatroom">
               {screenProps => <ChatRoom {...screenProps} user={props.user} />}
             </AppStack.Screen>
             <AppStack.Screen name="orders">
-              {screenProps => <Orders {...screenProps} user={props.user} />}
+              {screenProps => (
+                <Orders
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
+              )}
             </AppStack.Screen>
             <AppStack.Screen name="tasks">
               {screenProps => (
-                <RetailerTasks {...screenProps} user={props.user} />
+                <RetailerTasks
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
               )}
             </AppStack.Screen>
             <AppStack.Screen name="personalprofile">
@@ -167,29 +215,49 @@ const AppNavigator = props => {
       } else if (type == 'accounts') {
         console.log('Accounts \n');
         return (
-          <AppStack.Navigator headerMode="none">
-            <AppStack.Screen name="dashboard">
+          <AppStack.Navigator>
+            <AppStack.Screen
+              name="inbox"
+              options={{
+                title: 'Inbox',
+                headerTitleStyle: [Typography.header],
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={props.navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              }}>
               {screenProps => (
-                <AccountsDashboard
+                <Inbox
                   {...screenProps}
-                  user={props.user}
                   updateAuthState={props.updateAuthState}
+                  user={props.user}
                 />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="inbox">
-              {screenProps => <Inbox {...screenProps} user={props.user} />}
-            </AppStack.Screen>
+
             <AppStack.Screen name="chatroom">
               {screenProps => <ChatRoom {...screenProps} user={props.user} />}
             </AppStack.Screen>
             <AppStack.Screen name="tasks">
               {screenProps => (
-                <SupplierTasks {...screenProps} user={props.user} />
+                <SupplierTasks
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
               )}
             </AppStack.Screen>
             <AppStack.Screen name="orders">
-              {screenProps => <Orders {...screenProps} user={props.user} />}
+              {screenProps => (
+                <Orders
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
+              )}
             </AppStack.Screen>
 
             <AppStack.Screen name="personalprofile">
@@ -208,18 +276,28 @@ const AppNavigator = props => {
         console.log('Owner \n');
         return (
           <AppStack.Navigator headerMode="none">
-            <AppStack.Screen name="dashboard">
+            <AppStack.Screen
+              name="orders"
+              options={{
+                title: 'Orders',
+                headerTitleStyle: [Typography.header],
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={props.navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              }}>
               {screenProps => (
-                <OwnerDashboard
+                <Orders
                   {...screenProps}
-                  user={props.user}
                   updateAuthState={props.updateAuthState}
+                  user={props.user}
                 />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="orders">
-              {screenProps => <Orders {...screenProps} user={props.user} />}
-            </AppStack.Screen>
+
             <AppStack.Screen name="companyprofile">
               {screenProps => (
                 <CompanyProfile {...screenProps} user={props.user} />
@@ -250,21 +328,29 @@ const AppNavigator = props => {
       } else if (type == 'retailemployee') {
         console.log('Retailer Employee \n');
         return (
-          <AppStack.Navigator headerMode="none">
-            <AppStack.Screen name="dashboard">
+          <AppStack.Navigator>
+            <AppStack.Screen
+              name="tasks"
+              options={{
+                title: 'Tasks',
+                headerTitleStyle: [Typography.header],
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={props.navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              }}>
               {screenProps => (
-                <EmployeeDashboard
+                <RetailerTasks
                   {...screenProps}
                   updateAuthState={props.updateAuthState}
                   user={props.user}
                 />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="tasks">
-              {screenProps => (
-                <RetailerTasks {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
+
             <AppStack.Screen name="personalprofile">
               {screenProps => (
                 <PersonalProfile {...screenProps} user={props.user} />
@@ -280,65 +366,246 @@ const AppNavigator = props => {
       } else if (type == 'generalmanager') {
         console.log('General Manager \n');
         return (
-          <AppStack.Navigator headerMode="none">
-            <AppStack.Screen name="dashboard">
+          <AppStack.Navigator>
+            <AppStack.Screen
+              name="inbox"
+              options={({route, navigation}) => ({
+                title: Strings.inbox,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              })}>
               {screenProps => (
-                <GeneralManagerDashboard
+                <Inbox
                   {...screenProps}
                   updateAuthState={props.updateAuthState}
                   user={props.user}
                 />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="orders">
-              {screenProps => <Orders {...screenProps} user={props.user} />}
-            </AppStack.Screen>
-            <AppStack.Screen name="marketplace">
-              {screenProps => (
-                <Marketplace {...screenProps} user={props.user} />
-              )}
-            </AppStack.Screen>
-            <AppStack.Screen name="store">
-              {screenProps => <Store {...screenProps} user={props.user} />}
-            </AppStack.Screen>
-            <AppStack.Screen name="chatroom">
+
+            <AppStack.Screen
+              name="chatroom"
+              options={({route, navigation}) => ({
+                headerTitle: () => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('store', {
+                        itemId: route.params.itemID.slice(36, 72),
+                        storeName: route.params.chatName,
+                      })
+                    }>
+                    <Text style={[Typography.header]}>
+                      {route.params.chatName}
+                    </Text>
+                  </TouchableOpacity>
+                ),
+                headerTitleAlign: 'center',
+                headerRight: () => <ChatInfo />,
+                headerLeft: () => (
+                  <HeaderBackButton
+                    onPress={() => [
+                      updateLastSeen(
+                        (userID = props.user.id),
+                        (chatGroupID = route.params.itemID),
+                        (navigation = navigation),
+                      ),
+                    ]}
+                  />
+                ),
+              })}>
               {screenProps => <ChatRoom {...screenProps} user={props.user} />}
             </AppStack.Screen>
-            <AppStack.Screen name="inbox">
-              {screenProps => <Inbox {...screenProps} user={props.user} />}
-            </AppStack.Screen>
-            <AppStack.Screen name="tasks">
+            <AppStack.Screen
+              name="orders"
+              options={({route, navigation}) => ({
+                title: Strings.orders,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              })}>
               {screenProps => (
-                <RetailerTasks {...screenProps} user={props.user} />
+                <Orders
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
+              )}
+            </AppStack.Screen>
+            <AppStack.Screen
+              name="marketplace"
+              options={({route, navigation}) => ({
+                title: Strings.marketplace,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              })}>
+              {screenProps => (
+                <Marketplace
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
+              )}
+            </AppStack.Screen>
+            <AppStack.Screen
+              name="store"
+              options={({route, navigation}) => ({
+                title: route.params.storeName,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+              })}>
+              {screenProps => (
+                <Store
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
+              )}
+            </AppStack.Screen>
+
+            <AppStack.Screen
+              name="tasks"
+              options={({route, navigation}) => ({
+                title: Strings.tasks,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <MenuButton
+                    navigation={navigation}
+                    updateAuthState={props.updateAuthState}
+                    userType={props.user.role}
+                  />
+                ),
+              })}>
+              {screenProps => (
+                <RetailerTasks
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
               )}
             </AppStack.Screen>
             <AppStack.Screen name="dataanalytics">
               {screenProps => (
-                <DataAnalytics {...screenProps} user={props.user} />
+                <DataAnalytics
+                  {...screenProps}
+                  updateAuthState={props.updateAuthState}
+                  user={props.user}
+                />
               )}
             </AppStack.Screen>
 
-            <AppStack.Screen name="companyprofile">
+            <AppStack.Screen
+              name="companyprofile"
+              options={({route, navigation}) => ({
+                title: Strings.companyProfile,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+                headerRight: () => (
+                  <TouchableOpacity
+                    style={{
+                      right: wp('4%'),
+                      position: 'absolute',
+                    }}>
+                    <Icon
+                      name="create-outline"
+                      size={wp('6%')}
+                      onPress={() => navigation.navigate('editcompany')}
+                    />
+                  </TouchableOpacity>
+                ),
+              })}>
               {screenProps => (
                 <CompanyProfile {...screenProps} user={props.user} />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="editcompany">
+            <AppStack.Screen
+              name="editcompany"
+              options={({route, navigation}) => ({
+                title: 'Edit ' + Strings.companyProfile,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+              })}>
               {screenProps => (
                 <EditCompany {...screenProps} user={props.user} />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="humanresource">
+            <AppStack.Screen
+              name="humanresource"
+              options={({route, navigation}) => ({
+                title: Strings.humanResource,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+              })}>
               {screenProps => (
                 <HumanResource {...screenProps} user={props.user} />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="personalprofile">
+            <AppStack.Screen
+              name="personalprofile"
+              options={({route, navigation}) => ({
+                title: Strings.personalProfile,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+                headerRight: () => (
+                  <TouchableOpacity
+                    style={{
+                      right: wp('4%'),
+                      position: 'absolute',
+                    }}>
+                    <Icon
+                      name="create-outline"
+                      size={wp('6%')}
+                      onPress={() => navigation.navigate('editprofile')}
+                    />
+                  </TouchableOpacity>
+                ),
+              })}>
               {screenProps => (
                 <PersonalProfile {...screenProps} user={props.user} />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="editprofile">
+            <AppStack.Screen
+              name="editprofile"
+              options={({route, navigation}) => ({
+                title: 'Edit ' + Strings.personalProfile,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+              })}>
               {screenProps => (
                 <EditPersonal {...screenProps} user={props.user} />
               )}
@@ -353,19 +620,48 @@ const AppNavigator = props => {
       console.log('Supplier \n');
       const type = 'supplier';
       return (
-        <AppStack.Navigator headerMode="none">
-          <AppStack.Screen name="dashboard">
+        <AppStack.Navigator>
+          <AppStack.Screen
+            name="inbox"
+            options={({route, navigation}) => ({
+              title: 'Inbox',
+              headerTitleStyle: [Typography.header],
+              headerLeft: () => (
+                <MenuButton
+                  navigation={navigation}
+                  updateAuthState={props.updateAuthState}
+                  userType={props.user.role}
+                />
+              ),
+            })}>
             {screenProps => (
-              <SupplierDashboard
+              <Inbox
+                {...screenProps}
+                user={props.user}
+                updateAuthState={props.updateAuthState}
+                type={type}
+              />
+            )}
+          </AppStack.Screen>
+          <AppStack.Screen
+            name="marketplace"
+            options={{
+              title: 'My Store',
+              headerTitleStyle: [Typography.header],
+              headerLeft: () => (
+                <MenuButton
+                  navigation={props.navigation}
+                  updateAuthState={props.updateAuthState}
+                  userType={props.user.role}
+                />
+              ),
+            }}>
+            {screenProps => (
+              <SupplierStore
                 {...screenProps}
                 updateAuthState={props.updateAuthState}
                 user={props.user}
               />
-            )}
-          </AppStack.Screen>
-          <AppStack.Screen name="marketplace">
-            {screenProps => (
-              <SupplierStore {...screenProps} user={props.user} />
             )}
           </AppStack.Screen>
           <AppStack.Screen name="chatroom">
@@ -380,12 +676,20 @@ const AppNavigator = props => {
           </AppStack.Screen>
           <AppStack.Screen name="tasks">
             {screenProps => (
-              <SupplierTasks {...screenProps} user={props.user} />
+              <SupplierTasks
+                {...screenProps}
+                updateAuthState={props.updateAuthState}
+                user={props.user}
+              />
             )}
           </AppStack.Screen>
           <AppStack.Screen name="dataanalytics">
             {screenProps => (
-              <DataAnalytics {...screenProps} user={props.user} />
+              <DataAnalytics
+                {...screenProps}
+                updateAuthState={props.updateAuthState}
+                user={props.user}
+              />
             )}
           </AppStack.Screen>
           <AppStack.Screen name="companyprofile">
@@ -402,7 +706,13 @@ const AppNavigator = props => {
             )}
           </AppStack.Screen>
           <AppStack.Screen name="orders">
-            {screenProps => <Orders {...screenProps} user={props.user} />}
+            {screenProps => (
+              <Orders
+                {...screenProps}
+                updateAuthState={props.updateAuthState}
+                user={props.user}
+              />
+            )}
           </AppStack.Screen>
           <AppStack.Screen name="personalprofile">
             {screenProps => (
@@ -520,6 +830,7 @@ const App = () => {
         } else {
           console.log('no user found');
           console.log(userAttributes);
+
           console.log('attempting to create new user');
           createNewUser();
         }
@@ -586,3 +897,32 @@ const App = () => {
 };
 
 export default App;
+
+const updateLastSeen = async (userID, chatGroupID, navigation) => {
+  const uniqueID = userID + chatGroupID;
+  try {
+    const updatedLastSeen = await API.graphql({
+      query: updateChatGroupUsers,
+      variables: {input: {id: uniqueID, lastOnline: dayjs()}},
+    });
+    console.log('updated last seen');
+    navigation.navigate('inbox');
+  } catch (e) {
+    console.log(e);
+    if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+      console.log('no special connection created, creating one now');
+      const createLastSeen = await API.graphql({
+        query: createChatGroupUsers,
+        variables: {
+          input: {
+            id: uniqueID,
+            lastOnline: dayjs(),
+            userID: userID,
+            chatGroupID: chatGroupID,
+          },
+        },
+      });
+      navigation.navigate('inbox');
+    }
+  }
+};

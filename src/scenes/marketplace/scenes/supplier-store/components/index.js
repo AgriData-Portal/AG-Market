@@ -15,6 +15,7 @@ import {
   AddButton,
   SuccessfulModal,
   UnsuccessfulModal,
+  LoadingModal,
 } from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
@@ -534,70 +535,81 @@ const ProductModal = props => {
   const [successfulModal2, setSuccessfulModal2] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const deleteListing = async () => {
-    const deletedListing = await API.graphql({
-      query: deleteProductListing,
-      variables: {input: {id: props.id}},
-    });
-    var products = props.productList;
-    console.log(products.length);
-    for (let [i, product] of products.entries()) {
-      if (product.id == props.id) {
-        products.splice(i, 1);
+    try {
+      setLoading(true);
+      const deletedListing = await API.graphql({
+        query: deleteProductListing,
+        variables: {input: {id: props.id}},
+      });
+      var products = props.productList;
+      console.log(products.length);
+      for (let [i, product] of products.entries()) {
+        if (product.id == props.id) {
+          products.splice(i, 1);
+        }
       }
+      console.log(products.length);
+      console.log(deletedListing);
+      props.setProducts(products);
+      if (props.trigger) {
+        props.setTrigger(false);
+      } else {
+        props.setTrigger(true);
+      }
+      setSuccessfulModal2(true);
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
     }
-    console.log(products.length);
-    console.log(deletedListing);
-    props.setProducts(products);
-    if (props.trigger) {
-      props.setTrigger(false);
-    } else {
-      props.setTrigger(true);
-    }
-    setSuccessfulModal2(true);
   };
   const updateListing = async () => {
-    console.log(props);
-    const updatedListing = await API.graphql({
-      query: updateProductListing,
-      variables: {
-        input: {
-          id: props.id,
-          lowPrice: parseFloat(lowPrice),
-          highPrice: parseFloat(highPrice),
-          quantityAvailable: parseInt(available),
-          minimumQuantity: parseInt(moq),
+    try {
+      const updatedListing = await API.graphql({
+        query: updateProductListing,
+        variables: {
+          input: {
+            id: props.id,
+            lowPrice: parseFloat(lowPrice),
+            highPrice: parseFloat(highPrice),
+            quantityAvailable: parseInt(available),
+            minimumQuantity: parseInt(moq),
+          },
         },
-      },
-    });
-    var products = props.productList;
-    console.log(products);
-    for (let [i, product] of products.entries()) {
-      if (product.id == props.id) {
-        products.splice(i, 1);
+      });
+      var products = props.productList;
+      console.log(products);
+      for (let [i, product] of products.entries()) {
+        if (product.id == props.id) {
+          products.splice(i, 1);
+        }
       }
+
+      var item = {
+        id: props.id,
+        lowPrice: parseFloat(lowPrice),
+        highPrice: parseFloat(highPrice),
+        quantityAvailable: parseInt(available),
+        minimumQuantity: parseInt(moq),
+        grade: props.grade,
+        variety: props.variety,
+        productPicture: props.productPicture,
+        siUnit: props.siUnit,
+      };
+      products.push(item);
+      console.log(products);
+      props.setProducts(products);
+      if (props.trigger) {
+        props.setTrigger(false);
+      } else {
+        props.setTrigger(true);
+      }
+      setSuccessfulModal(true);
+    } catch (e) {
+      console.log(e);
     }
-    var item = {
-      id: props.id,
-      lowPrice: parseFloat(lowPrice),
-      highPrice: parseFloat(highPrice),
-      quantityAvailable: parseInt(available),
-      minimumQuantity: parseInt(moq),
-      grade: props.grade,
-      variety: props.variety,
-      productPicture: props.productPicture,
-      siUnit: props.siUnit,
-    };
-    products.push(item);
-    console.log(products);
-    props.setProducts(products);
-    if (props.trigger) {
-      props.setTrigger(false);
-    } else {
-      props.setTrigger(true);
-    }
-    setSuccessfulModal(true);
   };
 
   return (
@@ -834,7 +846,23 @@ const ProductModal = props => {
           </View>
           {editMode ? (
             <TouchableOpacity
-              onPress={() => updateListing()}
+              onPress={() => {
+                if (
+                  lowPrice == '' ||
+                  highPrice == '' ||
+                  available == '' ||
+                  moq == ''
+                ) {
+                  console.log('empty field');
+                  setUnsuccessfulModal(true);
+                } else {
+                  try {
+                    updateListing();
+                  } catch {
+                    e => console.log('error ' + e);
+                  }
+                }
+              }}
               style={{
                 backgroundColor: Colors.LIGHT_BLUE,
                 width: wp('45%'),
@@ -919,7 +947,7 @@ const ProductModal = props => {
           <Modal
             isVisible={unsuccessfulModal}
             onBackdropPress={() => setUnsuccessfulModal(false)}>
-            <UnsuccessfulModal setUnsuccessfulModal={setUnsuccessfulModal} />
+            <UnsuccessfulModal text={'Please fill in all empty spaces!'} />
           </Modal>
           <Modal
             isVisible={successfulModal}
@@ -945,6 +973,7 @@ const ProductModal = props => {
           </Modal>
         </View>
       </KeyboardAvoidingView>
+      <LoadingModal isVisible={loading} />
     </View>
   );
 };
@@ -1033,6 +1062,7 @@ export const SupplierplaceList = props => {
       ListEmptyComponent={
         <View
           style={{
+            top: hp('8%'),
             width: wp('80%'),
             height: hp('25%'),
             alignItems: 'center',

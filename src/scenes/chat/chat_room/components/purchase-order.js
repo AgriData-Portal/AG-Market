@@ -102,7 +102,7 @@ const OrderCard = props => {
     var tempList = quotationItems;
     tempList.forEach((item, index, array) => {
       if (index == props.index) {
-        item['quantity'] = parseInt(item2);
+        item['quantity'] = parseFloat(item2);
         array[index] = item;
       }
     });
@@ -197,7 +197,7 @@ const OrderCard = props => {
             position: 'absolute',
           },
         ]}>
-        RM {parseInt(parseInt(quantity) * parseFloat(price) * 100) / 100}
+        RM {parseFloat((price * quantity).toFixed(2))}
       </Text>
     </View>
   );
@@ -296,7 +296,7 @@ const NewOrderQuotation = props => {
   const [openDelivery, setOpenDelivery] = useState(false);
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
   const [trigger, setTrigger] = useState(true);
-  const [sum, setSum] = useState('');
+  const [sum, setSum] = useState(0);
   const [deliveryValue, setDeliveryValue] = useState(true);
   const [deliveryMethod, setDeliveryMethod] = useState([
     {label: 'No', value: false},
@@ -317,15 +317,17 @@ const NewOrderQuotation = props => {
   });
   setQuotationItems(productsWIndex);
   console.log('printing productsWIndex');
-
+  var tempSum = 0;
   useEffect(() => {
     console.log('useEffect to calculate sum Triggered');
-    var tempSum = 0;
     quotationItems.forEach((item, index, arr) => {
-      tempSum = tempSum + item.price * item.quantity;
+      var product = parseFloat(
+        (parseFloat(item.price) * parseFloat(item.quantity)).toFixed(2),
+      );
+      tempSum = tempSum + product;
     });
-    tempSum = parseInt(tempSum * 100) / 100;
     setSum(tempSum);
+    console.log(tempSum);
   }, [trigger, quotationItems]);
 
   const sendQuotation = async () => {
@@ -345,7 +347,7 @@ const NewOrderQuotation = props => {
           input: {
             id: props.chatGroupID,
             items: tempList,
-            sum: parseFloat(sum),
+            sum: sum,
             logisticsProvided: deliveryValue,
             paymentTerms: paymentValue,
           },
@@ -451,15 +453,7 @@ const NewOrderQuotation = props => {
         }}>
         <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
-      <TouchableOpacity
-        style={{position: 'absolute', left: wp('50%'), top: hp('57%')}}
-        onPress={() => {
-          if (trigger) {
-            setTrigger(false);
-          } else {
-            setTrigger(true);
-          }
-        }}>
+      <View style={{position: 'absolute', left: wp('50%'), top: hp('57%')}}>
         <Text
           style={[
             Typography.normal,
@@ -469,7 +463,7 @@ const NewOrderQuotation = props => {
           ]}>
           {Strings.totalCost}: RM {sum}
         </Text>
-      </TouchableOpacity>
+      </View>
       <View
         style={{
           top: hp('50%'),
@@ -482,9 +476,7 @@ const NewOrderQuotation = props => {
         <View
           style={{
             flexDirection: 'row',
-
             height: wp('20%'),
-
             width: wp('70%'),
             top: hp('2%'),
           }}>
@@ -501,7 +493,6 @@ const NewOrderQuotation = props => {
             style={{
               width: wp('25%'),
               left: wp('17%'),
-
               height: hp('4%'),
               borderColor: 'white',
               borderRadius: 3,
@@ -522,7 +513,6 @@ const NewOrderQuotation = props => {
           style={{
             flexDirection: 'row',
             height: wp('20%'),
-
             width: wp('70%'),
             top: hp('1%'),
           }}>
@@ -570,9 +560,7 @@ const NewOrderQuotation = props => {
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
-
             elevation: 5,
-
             width: wp('55%'),
             height: hp('4%'),
             alignItems: 'center',

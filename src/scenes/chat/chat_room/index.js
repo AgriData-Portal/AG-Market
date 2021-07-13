@@ -46,7 +46,7 @@ export const ChatRoom = props => {
         variables: {
           chatGroupID: itemID,
           sortDirection: 'DESC',
-          limit: 5,
+          limit: 10,
         },
       });
       console.log('fetching messages');
@@ -130,6 +130,7 @@ export const ChatRoom = props => {
       }
     }
   }, [appState]);
+
   const updateLastSeen = async () => {
     const uniqueID = props.user.id + itemID;
     try {
@@ -166,7 +167,7 @@ export const ChatRoom = props => {
         variables: {
           chatGroupID: itemID,
           sortDirection: 'DESC',
-          limit: 5,
+          limit: 10,
           nextToken: nextToken,
         },
       });
@@ -188,7 +189,7 @@ export const ChatRoom = props => {
         backgroundColor: 'white',
         alignItems: 'center',
       }}>
-      {/* This is the Immovable chat name */}
+      {/* This is the Immovable chat name 
       {Platform.OS == 'ios' ? (
         <View // This is for status bar on ios chat
           style={{
@@ -218,7 +219,7 @@ export const ChatRoom = props => {
             top: hp('3.5%'),
           }}>
           <TouchableOpacity
-            onPress={() => updateLastSeen()}
+            onPress={() => [updateLastSeen(), console.log('test123')]}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -243,7 +244,7 @@ export const ChatRoom = props => {
         <View
           style={{
             position: 'absolute',
-            top: hp('3%'),
+            top: hp('-1%'),
             right: wp('5%'),
           }}>
           <ChatInfo chatGroupID={itemID} />
@@ -257,14 +258,14 @@ export const ChatRoom = props => {
             height: 0,
             borderColor: Colors.GRAY_MEDIUM,
           }}></View>
-      </View>
+      </View>*/}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
           Platform.OS === 'ios' ? hp('3%') : Mixins.scaleHeight(40)
         } /* Keyboard Offset needs to be tested against multiple phones */
         style={{
-          top: hp('4%'),
+          top: hp('6%'),
           width: wp('95%'),
         }}>
         <View
@@ -284,7 +285,7 @@ export const ChatRoom = props => {
           />
         </View>
 
-        <View style={{top: hp('0%')}}>
+        <View style={{top: hp('3%')}}>
           <MessageInput
             userID={props.user.id}
             chatGroupID={itemID}

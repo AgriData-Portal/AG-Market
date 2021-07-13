@@ -53,7 +53,8 @@ export const ChatInfo = props => {
       onPress={async () => {
         await fetchChatParticipants();
         setChatInfoModal(true);
-      }}>
+      }}
+      style={{right: hp('2%')}}>
       <Icon
         color={Colors.GRAY_DARK}
         name="information-circle-outline"
