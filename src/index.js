@@ -33,6 +33,7 @@ import {
 import {SuccessfulModal, UnsuccessfulModal} from '_components';
 import {DataAnalytics} from './scenes/data_analytics/';
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
+import PushNotification from '@aws-amplify/pushnotification';
 import config from './aws-exports';
 import {View, ActivityIndicator} from 'react-native';
 import {getUser} from './graphql/queries';
@@ -40,6 +41,28 @@ import {createUser} from './graphql/mutations';
 import {StatusBar} from 'react-native';
 
 Amplify.configure(config);
+
+PushNotification.onRegister(token => {
+  console.log('onRegister', token);
+});
+PushNotification.onNotification(notification => {
+  if (notification.foreground) {
+    console.log('onNotification foreground', notification);
+  } else {
+    console.log('onNotification background or closed', notification);
+  }
+  // extract the data passed in the push notification
+  const data = JSON.parse(notification.data['pinpoint.jsonBody']);
+  console.log('onNotification data', data);
+  // iOS only
+  notification.finish(PushNotificationIOS.FetchResult.NoData);
+});
+PushNotification.onNotificationOpened(notification => {
+  console.log('onNotificationOpened', notification);
+  // extract the data passed in the push notification
+  const data = JSON.parse(notification['pinpoint.jsonBody']);
+  console.log('onNotificationOpened data', data);
+});
 
 const AuthenticationStack = createStackNavigator();
 const AppStack = createStackNavigator();
@@ -331,9 +354,13 @@ const AppNavigator = props => {
       const type = 'supplier';
       return (
         <AppStack.Navigator headerMode="none">
-          <AppStack.Screen name="inbox">
+          <AppStack.Screen name="dashboard">
             {screenProps => (
-              <Inbox {...screenProps} user={props.user} type={type} />
+              <SupplierDashboard
+                {...screenProps}
+                updateAuthState={props.updateAuthState}
+                user={props.user}
+              />
             )}
           </AppStack.Screen>
           <AppStack.Screen name="marketplace">
@@ -346,7 +373,11 @@ const AppNavigator = props => {
               <ChatRoom {...screenProps} user={props.user} type={type} />
             )}
           </AppStack.Screen>
-
+          <AppStack.Screen name="inbox">
+            {screenProps => (
+              <Inbox {...screenProps} user={props.user} type={type} />
+            )}
+          </AppStack.Screen>
           <AppStack.Screen name="tasks">
             {screenProps => (
               <SupplierTasks {...screenProps} user={props.user} />

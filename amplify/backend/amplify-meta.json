@@ -23,7 +23,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/auth/agridataapp1c4f9eeb-cloudformation-template.yml",
         "logicalId": "authagridataapp1c4f9eeb"
       },
-      "lastPushTimeStamp": "2021-07-12T01:59:30.740Z",
+      "lastPushTimeStamp": "2021-07-12T14:16:22.170Z",
       "output": {
         "UserPoolId": "ap-southeast-1_e3TqGI5PR",
         "AppClientIDWeb": "1l3tf271h2qv74atcaccdm7eut",
@@ -57,7 +57,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiagridataapp"
       },
-      "lastPushTimeStamp": "2021-07-12T02:19:56.974Z",
+      "lastPushTimeStamp": "2021-07-12T14:16:22.174Z",
       "lastPushDirHash": "BSrostzYBimq23V3WGPNuHAiIpc="
     }
   },
@@ -69,7 +69,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
         "logicalId": "storageimageContent"
       },
-      "lastPushTimeStamp": "2021-07-12T01:59:30.749Z",
+      "lastPushTimeStamp": "2021-07-12T14:16:22.177Z",
       "output": {
         "BucketName": "agridataappimagecontentbucket164209-dev",
         "Region": "ap-southeast-1"
@@ -78,27 +78,28 @@
     }
   },
   "notifications": {
-    "agridataappIqjhf": {
+    "AgriDataPinpoint": {
       "service": "Pinpoint",
       "output": {
-        "Arn": "arn:aws:mobiletargeting:us-west-2:467200493458:apps/641129bfeba2495d9d937090ecc989f7",
-        "Id": "641129bfeba2495d9d937090ecc989f7",
-        "Name": "agridataappIqjhf-dev",
+        "Arn": "arn:aws:mobiletargeting:us-west-2:467200493458:apps/ccc9423938c049b5b128eccbd11176fc",
+        "Id": "ccc9423938c049b5b128eccbd11176fc",
+        "Name": "AgriDataPinpoint-dev",
         "tags": {},
         "Region": "us-west-2",
         "FCM": {
-          "ApplicationId": "641129bfeba2495d9d937090ecc989f7",
-          "CreationDate": "2021-07-06T14:08:14.730Z",
+          "ApplicationId": "ccc9423938c049b5b128eccbd11176fc",
+          "CreationDate": "2021-07-12T14:15:52.281Z",
           "Enabled": true,
           "HasCredential": true,
           "Id": "gcm",
           "IsArchived": false,
-          "LastModifiedDate": "2021-07-06T14:08:14.730Z",
+          "LastModifiedDate": "2021-07-12T14:15:52.281Z",
           "Platform": "GCM",
           "Version": 1
         }
       },
-      "lastPushTimeStamp": "2021-07-06T14:07:48.514Z"
+      "lastPushTimeStamp": "2021-07-12T14:15:20.283Z"
     }
-  }
+  },
+  "analytics": {}
 }
