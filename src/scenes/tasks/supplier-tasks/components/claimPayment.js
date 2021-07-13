@@ -49,6 +49,8 @@ export const ReceivePaymentTaskList = props => {
               id={item.id}
               trigger={props.trigger}
               setTrigger={props.setTrigger}
+              claimTask={props.claimTask}
+              setClaimTask={props.setClaimTask}
             />
           );
         }}
@@ -73,7 +75,7 @@ const ReceivePaymentTask = props => {
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
-          height: hp('12.5%'),
+          height: hp('12%'),
           elevation: 5,
           shadowColor: '#000',
           shadowOffset: {
@@ -86,16 +88,15 @@ const ReceivePaymentTask = props => {
         <View
           style={{
             backgroundColor: Colors.GRAY_BLACK,
-            height: hp('12.5%'),
-            width: wp('4.5%'),
+            height: hp('12%'),
+            width: wp('2%'),
             borderRadius: 10,
           }}></View>
         <View
           style={{
             backgroundColor: Colors.GRAY_LIGHT,
             height: hp('12.5%'),
-            width: wp('23%'),
-            right: wp('2%'),
+            width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -200,7 +201,11 @@ const ReceivePaymentTask = props => {
           payBefore={props.payBefore}
           receipt={props.receipt}
           id={props.id}
-          createdAt={props.createdAt}></ReceivePaymentModal>
+          createdAt={props.createdAt}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          claimTask={props.claimTask}
+          setClaimTask={props.setClaimTask}></ReceivePaymentModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -215,6 +220,13 @@ const ReceivePaymentModal = props => {
         variables: {input: {id: props.id}},
       });
       console.log(removed);
+      var tempList = props.claimTask;
+      for (let [i, temp] of tempList.entries()) {
+        if (temp.id == props.id) {
+          tempList.splice(i, 1);
+        }
+      }
+      props.setClaimTask(tempList);
     } catch (e) {
       console.log(e);
     }
@@ -388,9 +400,8 @@ const ReceivePaymentModal = props => {
         ]}>
         9065 7756 8989
       </Text>
-
       <TouchableOpacity
-        onPress={() => receivedPayment()}
+        onPress={() => [receivedPayment()]}
         style={{
           backgroundColor: Colors.LIGHT_BLUE,
           width: wp('30%'),
@@ -416,10 +427,15 @@ const ReceivePaymentModal = props => {
       </TouchableOpacity>
       <Modal
         isVisible={successfulModal}
-        onBackdropPress={() => [
-          setSuccessfulModal(false),
-          props.setReceiveTaskModal(false),
-        ]}>
+        onBackdropPress={() => {
+          if (props.trigger) {
+            props.setTrigger(false);
+          } else {
+            props.setTrigger(true);
+          }
+          setSuccessfulModal(false);
+          props.setReceiveTaskModal(false);
+        }}>
         <SuccessfulModal
           text={
             'You have received your payment. The payment task will now be deleted, you can find the invoice in your list of invoices'

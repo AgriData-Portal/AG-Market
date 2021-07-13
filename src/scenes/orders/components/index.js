@@ -93,28 +93,18 @@ const Order = props => {
             backgroundColor: Colors.GRAY_LIGHT,
             height: hp('12%'),
             width: wp('24%'),
-
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <Icon name="clipboard-outline" size={wp('11%')} />
         </View>
-        <View
-          style={{
-            alignSelf: 'center',
-            width: 0,
-            height: hp('8%'),
-            borderRightWidth: 1,
-            borderColor: Colors.GRAY_DARK,
-          }}></View>
-
         <Text
           style={[
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
               top: hp('2%'),
-              left: wp('35%'),
+              left: wp('25%'),
               position: 'absolute',
             },
           ]}>
@@ -126,7 +116,7 @@ const Order = props => {
             {
               color: 'black',
               top: hp('5%'),
-              left: wp('35%'),
+              left: wp('25%'),
               position: 'absolute',
             },
           ]}>
@@ -169,7 +159,7 @@ const Order = props => {
               position: 'absolute',
             },
           ]}>
-          Invoice Created:
+          Invoice Date:
         </Text>
         <Text
           style={[
