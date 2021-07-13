@@ -37,7 +37,7 @@ export const MenuButton = props => {
 
   return (
     <TouchableOpacity
-      onPress={() => setMenuButtonModal(true)}
+      onPress={() => [setMenuButtonModal(true), console.log(props.userType)]}
       style={{left: wp('5%')}}>
       <Icon
         color={Colors.GRAY_DARK}
