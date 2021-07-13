@@ -19,7 +19,7 @@ import {onUpdateChatGroup} from '../../../graphql/subscriptions';
 import {MenuButton} from '_components';
 
 export const Inbox = props => {
-  console.log(props.user.role);
+  //console.log(props.user.role);
   const [chatRooms, setChatRooms] = useState(null);
   if (props.user.retailerCompanyID == null) {
     var companyID = props.user.supplierCompany.id;
@@ -172,14 +172,14 @@ export const Inbox = props => {
           </Text>
         </View>
         </View>*/}
-      <View
+      {/* <View
         style={{
           top: hp('1%'),
           width: wp('85%'),
           borderBottomWidth: 1,
           height: 0,
           borderColor: Colors.GRAY_MEDIUM,
-        }}></View>
+        }}></View> */}
       <DismissKeyboardView>
         <View style={{top: hp('2%')}}>
           <Searchbar />
@@ -199,9 +199,9 @@ export const Inbox = props => {
           userID={props.user.id}
         />
       </View>
-      <View style={{position: 'absolute', top: hp('80%')}}>
+      {/*<View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
-      </View>
+      </View>*/}
     </SafeAreaView>
   );
 };

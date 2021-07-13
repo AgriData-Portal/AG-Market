@@ -87,7 +87,7 @@ export const SupplierTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      <View
+      {/*<View
         style={{
           flexDirection: 'row',
           width: wp('100%'),
@@ -108,13 +108,13 @@ export const SupplierTasks = props => {
             userType={props.user.role}></MenuButton>
         </View>
         <Text style={[Typography.header]}>{Strings.tasks}</Text>
-      </View>
+        </View>*/}
       <View style={{flexDirection: 'row'}}>
         {task == 'send' ? (
           <View
             style={{
               right: wp('15%'),
-              top: hp('4%'),
+              top: hp('2%'),
             }}>
             <Text
               style={[
@@ -133,7 +133,7 @@ export const SupplierTasks = props => {
             onPress={() => setTask('send')}
             style={{
               right: wp('15%'),
-              top: hp('4%'),
+              top: hp('2%'),
             }}>
             <Text style={[Typography.normal]}>{Strings.send}</Text>
           </TouchableOpacity>
@@ -142,7 +142,7 @@ export const SupplierTasks = props => {
           <View
             style={{
               left: wp('15%'),
-              top: hp('4%'),
+              top: hp('2%'),
             }}>
             <Text
               style={[
@@ -160,7 +160,7 @@ export const SupplierTasks = props => {
           <TouchableOpacity
             onPress={() => setTask('claim')}
             style={{
-              top: hp('4%'),
+              top: hp('2%'),
               left: wp('15%'),
             }}>
             <Text style={[Typography.normal]}>{Strings.claim}</Text>
@@ -169,7 +169,7 @@ export const SupplierTasks = props => {
       </View>
       <View
         style={{
-          top: hp('5%'),
+          top: hp('3%'),
           width: wp('100%'),
           borderBottomWidth: wp('0.5%'),
           height: hp('0%'),
@@ -179,7 +179,7 @@ export const SupplierTasks = props => {
         style={{
           width: wp('80%'),
           height: hp('5%'),
-          top: hp('7%'),
+          top: hp('5%'),
           flexDirection: 'row',
         }}>
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
@@ -193,7 +193,7 @@ export const SupplierTasks = props => {
       </View>
       <View
         style={{
-          top: hp('7%'),
+          top: hp('6%'),
           height: hp('56%'),
         }}>
         {task == 'claim' ? (
@@ -215,9 +215,9 @@ export const SupplierTasks = props => {
         )}
       </View>
 
-      <View style={{position: 'absolute', top: hp('90%')}}>
+      {/*<View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
-      </View>
+        </View>*/}
       <Modal
         animationIn="fadeIn"
         animationInTiming={100}

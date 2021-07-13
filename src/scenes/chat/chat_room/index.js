@@ -46,7 +46,7 @@ export const ChatRoom = props => {
         variables: {
           chatGroupID: itemID,
           sortDirection: 'DESC',
-          limit: 5,
+          limit: 10,
         },
       });
       console.log('fetching messages');
@@ -167,7 +167,7 @@ export const ChatRoom = props => {
         variables: {
           chatGroupID: itemID,
           sortDirection: 'DESC',
-          limit: 5,
+          limit: 10,
           nextToken: nextToken,
         },
       });

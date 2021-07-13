@@ -31,11 +31,12 @@
         }
     },
     "notifications": {
-        "agridataappIqjhf": {
+        "AgriDataPinpoint": {
             "service": "Pinpoint",
             "channels": [
                 "FCM"
             ]
         }
-    }
+    },
+    "analytics": {}
 }

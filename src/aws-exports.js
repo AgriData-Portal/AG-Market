@@ -13,7 +13,7 @@ const awsmobile = {
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
     "aws_user_files_s3_bucket": "agridataappimagecontentbucket164209-dev",
     "aws_user_files_s3_bucket_region": "ap-southeast-1",
-    "aws_mobile_analytics_app_id": "641129bfeba2495d9d937090ecc989f7",
+    "aws_mobile_analytics_app_id": "ccc9423938c049b5b128eccbd11176fc",
     "aws_mobile_analytics_app_region": "us-west-2"
 };
 

@@ -11,7 +11,10 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import dayjs from 'dayjs';
-import {useEffect} from 'react/cjs/react.development';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -33,14 +36,21 @@ export const Searchbar = props => {
     <View
       style={{
         backgroundColor: Colors.GRAY_MEDIUM,
-        width: Mixins.scaleWidth(310),
-        height: Mixins.scaleHeight(35),
+        width: wp('80%'),
+        height: hp('6%'),
         borderRadius: 30,
         elevation: 2,
         justifyContent: 'center',
       }}>
       {/* Add searchable dropdown */}
-      <TextInput style={{left: Mixins.scaleWidth(40)}}></TextInput>
+      <TextInput
+        style={{
+          left: wp('12%'),
+          top: hp('0.5%'),
+          height: hp('6%'),
+          borderBottomColor: 'transparent',
+        }}
+        underlineColorAndroid="transparent"></TextInput>
       <View style={{position: 'absolute', left: Mixins.scaleWidth(10)}}>
         <Icon
           name="search"

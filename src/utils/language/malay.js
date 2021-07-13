@@ -6,6 +6,7 @@ export default {
   invoices: 'Invois',
   invoice: 'Invois',
   marketplace: 'Pasaran',
+  market: 'Pasaran',
   companyProfile: 'Profil Syarikat',
   personalProfile: 'Profil Peribadi',
   humanResource: 'Sumber Manusia',
@@ -175,5 +176,6 @@ export default {
   productInquiry: 'Pertanyaan Produk',
   dataAnalytics: 'Analisis Data',
   analytics: 'ANALISIS',
+  analyticsSmall: 'Analisis',
   bankDetails: 'Butiran Bank',
 };

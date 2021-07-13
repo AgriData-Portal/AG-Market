@@ -141,7 +141,7 @@
             ]
           },
           "S3DeploymentBucket": "amplify-agridataapp-dev-164209-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/a98950dafe481711032107419617334de2d020ef",
+          "S3DeploymentRootKey": "amplify-appsync-files/0e5e1bb58a598798ac02c6c3792fb63fc0c10138",
           "env": "dev"
         }
       }
