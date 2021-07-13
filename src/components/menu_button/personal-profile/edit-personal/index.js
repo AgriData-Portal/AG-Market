@@ -73,9 +73,9 @@ export const EditPersonal = props => {
             alignItems: 'center',
             justifyContent: 'center',
             height: hp('100%'),
-            top: hp('-15%'),
+            top: hp('-20%'),
           }}>
-          <View
+          {/*<View
             style={{
               flexDirection: 'row',
               top: hp('2%'),
@@ -91,7 +91,7 @@ export const EditPersonal = props => {
                 Edit {Strings.personalProfile}
               </Text>
             </View>
-          </View>
+          </View>*/}
           <View
             style={{
               top: hp('5%'),
@@ -140,7 +140,7 @@ export const EditPersonal = props => {
               top: hp('10%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
-              height: hp('30%'),
+              height: hp('33%'),
               borderRadius: 10,
             }}>
             <View

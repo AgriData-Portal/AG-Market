@@ -120,7 +120,7 @@ export const Store = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      <View
+      {/*<View
         style={{
           position: 'absolute',
           left: wp('5%'),
@@ -139,12 +139,11 @@ export const Store = props => {
           style={{position: 'absolute', right: wp('5%'), top: hp('4%')}}>
           <Icon name="star-outline" size={wp('7%')} />
         </TouchableOpacity>
-      )}
+      )}*/}
       <View
         style={{
           width: wp('93%'),
           height: hp('70%'),
-          top: hp('10%'),
         }}>
         <MarketplaceList
           productList={products}
@@ -159,7 +158,7 @@ export const Store = props => {
         style={{
           position: 'absolute',
           right: wp('5%'),
-          bottom: hp('13%'),
+          bottom: hp('23%'),
         }}>
         <PurchaseOrderButton
           purchaseOrder={purchaseOrder}
@@ -171,7 +170,7 @@ export const Store = props => {
         />
       </View>
 
-      <View style={{position: 'absolute', top: hp('90%')}}>
+      <View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
       </View>
     </SafeAreaView>

@@ -60,7 +60,7 @@ export const HumanResource = props => {
   }, []);
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
-      <View
+      {/*<View
         style={{
           flexDirection: 'row',
           top: hp('3%'),
@@ -74,8 +74,8 @@ export const HumanResource = props => {
         <View>
           <Text style={[Typography.header]}>{Strings.humanResource}</Text>
         </View>
-      </View>
-      <View style={{top: hp('6%')}}>
+      </View>*/}
+      <View style={{top: hp('0%')}}>
         <View
           style={{
             alignItems: 'center',

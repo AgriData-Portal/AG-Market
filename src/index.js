@@ -34,7 +34,7 @@ import {SuccessfulModal, UnsuccessfulModal} from '_components';
 import {DataAnalytics} from './scenes/data_analytics/';
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import config from './aws-exports';
-import {View, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
 import {getUser} from './graphql/queries';
 import {createUser} from './graphql/mutations';
 import {StatusBar} from 'react-native';
@@ -55,10 +55,12 @@ import {
 import {updateChatGroupUsers, createChatGroupUsers} from './graphql/mutations';
 import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 var dayjs = require('dayjs');
 Amplify.configure(config);
 
+const Tab = createBottomTabNavigator();
 const AuthenticationStack = createStackNavigator();
 const AppStack = createStackNavigator();
 
@@ -368,8 +370,19 @@ const AppNavigator = props => {
             <AppStack.Screen
               name="chatroom"
               options={({route, navigation}) => ({
-                title: route.params.chatName,
-                headerTitleStyle: [Typography.header],
+                headerTitle: () => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('store', {
+                        itemId: route.params.itemID.slice(36, 72),
+                        storeName: route.params.chatName,
+                      })
+                    }>
+                    <Text style={[Typography.header]}>
+                      {route.params.chatName}
+                    </Text>
+                  </TouchableOpacity>
+                ),
                 headerTitleAlign: 'center',
                 headerRight: () => <ChatInfo />,
                 headerLeft: () => (
@@ -416,7 +429,7 @@ const AppNavigator = props => {
                 headerTitleAlign: 'center',
                 headerLeft: () => (
                   <MenuButton
-                    navigation={props.navigation}
+                    navigation={navigation}
                     updateAuthState={props.updateAuthState}
                     userType={props.user.role}
                   />
@@ -430,7 +443,16 @@ const AppNavigator = props => {
                 />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="store">
+            <AppStack.Screen
+              name="store"
+              options={({route, navigation}) => ({
+                title: route.params.storeName,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+              })}>
               {screenProps => (
                 <Store
                   {...screenProps}
@@ -513,17 +535,54 @@ const AppNavigator = props => {
                 <EditCompany {...screenProps} user={props.user} />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="humanresource">
+            <AppStack.Screen
+              name="humanresource"
+              options={({route, navigation}) => ({
+                title: Strings.humanResource,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+              })}>
               {screenProps => (
                 <HumanResource {...screenProps} user={props.user} />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="personalprofile">
+            <AppStack.Screen
+              name="personalprofile"
+              options={({route, navigation}) => ({
+                title: Strings.personalProfile,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+                headerLeft: () => (
+                  <HeaderBackButton onPress={() => navigation.goBack()} />
+                ),
+                headerRight: () => (
+                  <TouchableOpacity
+                    style={{
+                      right: wp('4%'),
+                      position: 'absolute',
+                    }}>
+                    <Icon
+                      name="create-outline"
+                      size={wp('6%')}
+                      onPress={() => navigation.navigate('editprofile')}
+                    />
+                  </TouchableOpacity>
+                ),
+              })}>
               {screenProps => (
                 <PersonalProfile {...screenProps} user={props.user} />
               )}
             </AppStack.Screen>
-            <AppStack.Screen name="editprofile">
+            <AppStack.Screen
+              name="editprofile"
+              options={({route, navigation}) => ({
+                title: 'Edit ' + Strings.personalProfile,
+                headerTitleStyle: [Typography.header],
+                headerTitleAlign: 'center',
+              })}>
               {screenProps => (
                 <EditPersonal {...screenProps} user={props.user} />
               )}

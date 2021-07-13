@@ -22,7 +22,7 @@ export {EditPersonal};
 export const PersonalProfile = props => {
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
-      <View
+      {/*<View
         style={{
           flexDirection: 'row',
           top: hp('3%'),
@@ -47,10 +47,10 @@ export const PersonalProfile = props => {
             onPress={() => props.navigation.navigate('editprofile')}
           />
         </TouchableOpacity>
-      </View>
+        </View>*/}
       <View
         style={{
-          top: hp('8%'),
+          top: hp('3%'),
           alignItems: 'center',
           justifyContent: 'center',
           width: wp('80%'),
@@ -68,7 +68,7 @@ export const PersonalProfile = props => {
       </View>
       <View
         style={{
-          top: hp('14%'),
+          top: hp('8%'),
           backgroundColor: Colors.GRAY_MEDIUM,
           width: wp('85%'),
           height: hp('38%'),
