@@ -17,7 +17,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
 import {SuccesfulChangesModal} from '_components/modals';
-import {DismissKeyboardView} from '_components';
+import {DismissKeyboardView, UnsuccessfulModal} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,6 +29,11 @@ export const EditPersonal = props => {
   const [imageSource, setImageSource] = useState(null);
   const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [number, setNumber] = useState('');
+  const [errorText, setErrorText] = useState('');
 
   function selectImage() {
     let options = {
@@ -157,6 +162,8 @@ export const EditPersonal = props => {
                 placeholderTextColor={Colors.GRAY_DARK}
                 placeholder="John Smith"
                 underlineColorAndroid="transparent"
+                value={name}
+                onChangeText={item => setName(item)}
                 style={{
                   borderBottomColor: 'transparent',
                   width: wp('75%'),
@@ -179,6 +186,8 @@ export const EditPersonal = props => {
                 placeholderTextColor={Colors.GRAY_DARK}
                 placeholder="email@gmail.com"
                 underlineColorAndroid="transparent"
+                value={email}
+                onChangeText={item => setEmail(item)}
                 style={{
                   borderBottomColor: 'transparent',
                   width: wp('75%'),
@@ -203,6 +212,8 @@ export const EditPersonal = props => {
                 underlineColorAndroid="transparent"
                 placeholderTextColor={Colors.GRAY_DARK}
                 placeholder="+60 11 6569 1999"
+                value={number}
+                onChangeText={item => setNumber(item)}
                 style={{
                   borderBottomColor: 'transparent',
                   width: wp('75%'),
@@ -239,7 +250,32 @@ export const EditPersonal = props => {
             <Text>{Strings.changePass}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setSuccesfulChangesModal(true)}
+            onPress={() => {
+              if (name == '' || email == '' || number == '') {
+                console.log('empty field');
+                setErrorText('Please fill in all empty spaces!');
+              } else if (
+                !number.startsWith('+') ||
+                !number.length > 5 ||
+                isNaN(number.slice(1))
+              ) {
+                setUnsuccessfulModal(true);
+                setErrorText(
+                  'Sorry you have entered an invalid phone number. Please try again.',
+                );
+              } else if (!email.includes('@')) {
+                setUnsuccessfulModal(true);
+                setErrorText(
+                  'Sorry you have entered an invalid email address. Please try again.',
+                );
+              } else {
+                try {
+                  setSuccesfulChangesModal(true);
+                } catch {
+                  e => console.log('error ' + e);
+                }
+              }
+            }}
             style={{
               alignSelf: 'center',
               top: hp('18%'),
@@ -272,6 +308,11 @@ export const EditPersonal = props => {
               setChangePassword={setChangePassword}
               setForgetPassword={props.setForgetPassword}
             />
+          </Modal>
+          <Modal
+            isVisible={unsuccessfulModal}
+            onBackdropPress={() => setUnsuccessfulModal(false)}>
+            <UnsuccessfulModal text={errorText} />
           </Modal>
           <Modal
             isVisible={succesfulChangesModal}

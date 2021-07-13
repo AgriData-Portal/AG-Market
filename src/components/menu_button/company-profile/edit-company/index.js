@@ -17,7 +17,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {SuccesfulChangesModal} from '_components/modals';
 import Modal from 'react-native-modal';
-import {DismissKeyboardView} from '_components';
+import {DismissKeyboardView, UnsuccessfulModal} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -27,6 +27,12 @@ import Strings from '_utils';
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(null);
   const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const [address, setAddress] = useState('');
+  const [number, setNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [bankDetails, setBankDetails] = useState('');
+  const [errorText, setErrorText] = useState('');
 
   function selectImage() {
     let options = {
@@ -137,31 +143,9 @@ export const EditCompany = props => {
                 top: hp('4%'),
                 backgroundColor: Colors.GRAY_MEDIUM,
                 width: wp('85%'),
-                height: hp('50%'),
+                height: hp('40%'),
                 borderRadius: 10,
               }}>
-              <View
-                style={{
-                  top: hp('3%'),
-                  left: wp('5%'),
-                  width: wp('75%'),
-                  height: hp('5%'),
-                  borderColor: Colors.GRAY_DARK,
-                  borderBottomWidth: 1,
-                  justifyContent: 'center',
-                }}>
-                <Text style={[Typography.placeholderSmall]}>
-                  {Strings.companyName}
-                </Text>
-                <TextInput
-                  underlineColorAndroid="transparent"
-                  style={{
-                    borderBottomColor: 'transparent',
-                    width: wp('75%'),
-                    height: hp('5%'),
-                    color: 'black',
-                  }}></TextInput>
-              </View>
               <View
                 style={{
                   top: hp('6%'),
@@ -173,10 +157,12 @@ export const EditCompany = props => {
                   justifyContent: 'center',
                 }}>
                 <Text style={[Typography.placeholderSmall]}>
-                  {Strings.companyRegistrationNum}
+                  {Strings.companyAddress}
                 </Text>
                 <TextInput
                   underlineColorAndroid="transparent"
+                  value={address}
+                  onChangeText={item => setAddress(item)}
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
@@ -195,10 +181,12 @@ export const EditCompany = props => {
                   justifyContent: 'center',
                 }}>
                 <Text style={[Typography.placeholderSmall]}>
-                  {Strings.companyAddress}
+                  {Strings.contactNumber}
                 </Text>
                 <TextInput
                   underlineColorAndroid="transparent"
+                  value={number}
+                  onChangeText={item => setNumber(item)}
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
@@ -217,10 +205,12 @@ export const EditCompany = props => {
                   justifyContent: 'center',
                 }}>
                 <Text style={[Typography.placeholderSmall]}>
-                  {Strings.contactNumber}
+                  {Strings.email}
                 </Text>
                 <TextInput
                   underlineColorAndroid="transparent"
+                  value={email}
+                  onChangeText={item => setEmail(item)}
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
@@ -239,32 +229,12 @@ export const EditCompany = props => {
                   justifyContent: 'center',
                 }}>
                 <Text style={[Typography.placeholderSmall]}>
-                  {Strings.email}
-                </Text>
-                <TextInput
-                  underlineColorAndroid="transparent"
-                  style={{
-                    borderBottomColor: 'transparent',
-                    width: wp('75%'),
-                    height: hp('5%'),
-                    color: 'black',
-                  }}></TextInput>
-              </View>
-              <View
-                style={{
-                  top: hp('18%'),
-                  left: wp('5%'),
-                  width: wp('75%'),
-                  height: hp('5%'),
-                  borderColor: Colors.GRAY_DARK,
-                  borderBottomWidth: 1,
-                  justifyContent: 'center',
-                }}>
-                <Text style={[Typography.placeholderSmall]}>
                   {Strings.bankDetails}
                 </Text>
                 <TextInput
                   underlineColorAndroid="transparent"
+                  value={bankDetails}
+                  onChangeText={item => setBankDetails(item)}
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
@@ -275,9 +245,45 @@ export const EditCompany = props => {
             </View>
 
             <TouchableOpacity
-              onPress={() => setSuccesfulChangesModal(true)}
+              onPress={() => {
+                if (
+                  email == '' ||
+                  number == '' ||
+                  address == '' ||
+                  bankDetails == ''
+                ) {
+                  console.log('empty field');
+                  setErrorText('Please fill in all empty spaces!');
+                  setUnsuccessfulModal(true);
+                } else if (
+                  !number.startsWith('+') ||
+                  !number.length > 5 ||
+                  isNaN(number.slice(1))
+                ) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid phone number. Please try again.',
+                  );
+                } else if (!email.includes('@')) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid email address. Please try again.',
+                  );
+                } else if (isNaN(bankDetails)) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid bank detail . Please try again.',
+                  );
+                } else {
+                  try {
+                    setSuccesfulChangesModal(true);
+                  } catch {
+                    e => console.log('error ' + e);
+                  }
+                }
+              }}
               style={{
-                top: hp('6%'),
+                top: hp('8%'),
                 width: wp('50%'),
                 height: wp('11%'),
                 backgroundColor: Colors.LIGHT_BLUE,
@@ -302,6 +308,11 @@ export const EditCompany = props => {
                 style={{left: wp('3%')}}
               />
             </TouchableOpacity>
+            <Modal
+              isVisible={unsuccessfulModal}
+              onBackdropPress={() => setUnsuccessfulModal(false)}>
+              <UnsuccessfulModal text={errorText} />
+            </Modal>
             <Modal
               isVisible={succesfulChangesModal}
               onBackdropPress={() => setSuccesfulChangesModal(false)}>
