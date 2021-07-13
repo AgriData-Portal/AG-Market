@@ -6,6 +6,7 @@ export default {
   invoices: 'Invoices',
   invoice: 'Invoice',
   marketplace: 'Marketplace',
+  market: 'Market',
   companyProfile: 'Company Profile',
   personalProfile: 'Personal Profile',
   humanResource: 'Human Resource',
@@ -174,5 +175,6 @@ export default {
   productInquiry: 'Product Inquiry',
   dataAnalytics: 'Data Analytics',
   analytics: 'ANALYTICS',
+  analyticsSmall: 'Analytics',
   bankDetails: 'Bank Details',
 };

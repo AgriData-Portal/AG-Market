@@ -215,9 +215,9 @@ export const SupplierTasks = props => {
         )}
       </View>
 
-      <View style={{position: 'absolute', top: hp('90%')}}>
+      {/*<View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
-      </View>
+        </View>*/}
       <Modal
         animationIn="fadeIn"
         animationInTiming={100}
