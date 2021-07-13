@@ -79,10 +79,17 @@ const ReceiveModal = props => {
       console.log(e);
     }
     try {
-      const invoiceResponse = API.graphql({
+      const invoiceResponse = await API.graphql({
         query: deleteGoodsTask,
         variables: {input: {id: props.taskID}},
       });
+      var tempList = props.receiveTask;
+      for (let [i, temp] of tempList.entries()) {
+        if (temp.id == props.taskID) {
+          tempList.splice(i, 1);
+        }
+      }
+      props.setReceiveTask(tempList);
       setSuccessfulModal(true);
       console.log('deleted!');
     } catch (e) {
@@ -241,7 +248,14 @@ const ReceiveModal = props => {
       </Text>
       {props.sentByRetailer ? (
         <TouchableOpacity
-          onPress={() => received()}
+          onPress={() => {
+            if (props.trigger) {
+              props.setTrigger(false);
+            } else {
+              props.setTrigger(true);
+            }
+            received();
+          }}
           style={{
             backgroundColor: Colors.LIGHT_BLUE,
             width: wp('40%'),
@@ -305,7 +319,7 @@ const Receive = props => {
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
-          height: hp('12.5%'),
+          height: hp('12%'),
           elevation: 5,
           shadowColor: '#000',
           shadowOffset: {
@@ -318,16 +332,15 @@ const Receive = props => {
         <View
           style={{
             backgroundColor: Colors.GRAY_BLACK,
-            height: hp('12.5%'),
-            width: wp('4.5%'),
+            height: hp('12%'),
+            width: wp('2%'),
             borderRadius: 10,
           }}></View>
         <View
           style={{
             backgroundColor: Colors.GRAY_LIGHT,
-            height: hp('12.5%'),
-            width: wp('23%'),
-            right: wp('2%'),
+            height: hp('12%'),
+            width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -406,7 +419,11 @@ const Receive = props => {
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
           user={props.user}
-          receiveList={props}></ReceiveModal>
+          receiveList={props}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          receiveTask={props.receiveTask}
+          setReceiveTask={props.setReceiveTask}></ReceiveModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -417,7 +434,8 @@ export const ReceiveList = props => {
     <View>
       <FlatList
         keyExtractor={item => item.id}
-        data={props.ReceiveList}
+        data={props.receiveTask}
+        extraData={props.trigger}
         numColumns={1}
         renderItem={({item}) => {
           return (
@@ -432,6 +450,10 @@ export const ReceiveList = props => {
               taskID={item.id}
               sentByRetailer={item.sentByRetailer}
               user={props.user}
+              trigger={props.trigger}
+              setTrigger={props.setTrigger}
+              receiveTask={props.receiveTask}
+              setReceiveTask={props.setReceiveTask}
             />
           );
         }}
@@ -456,6 +478,12 @@ const ProductList = props => {
       <FlatList
         numColumns={1}
         data={props.data}
+        keyExtractor={item => {
+          console.log('productss;' + item);
+          return (
+            item.name + item.grade + item.variety + item.quantity.toString()
+          );
+        }}
         ItemSeparatorComponent={Seperator}
         renderItem={({item}) => {
           return (

@@ -29,6 +29,7 @@ export const RetailerTasks = props => {
   const [task, setTask] = useState('receive');
   const [receiveTask, setReceiveTask] = useState([]);
   const [payTask, setPayTask] = useState([]);
+  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
     if (task == 'pay') {
@@ -190,9 +191,21 @@ export const RetailerTasks = props => {
           height: hp('56%'),
         }}>
         {task == 'pay' ? (
-          <UploadReceiptList UploadReceiptList={payTask} />
+          <UploadReceiptList
+            UploadReceiptList={payTask}
+            trigger={trigger}
+            setTrigger={setTrigger}
+            payTask={payTask}
+            setPayTask={setPayTask}
+          />
         ) : (
-          <ReceiveList ReceiveList={receiveTask} user={props.user} />
+          <ReceiveList
+            user={props.user}
+            trigger={trigger}
+            setTrigger={setTrigger}
+            receiveTask={receiveTask}
+            setReceiveTask={setReceiveTask}
+          />
         )}
       </View>
 
