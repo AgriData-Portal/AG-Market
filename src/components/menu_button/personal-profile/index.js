@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -16,7 +16,12 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {EditPersonal} from './edit-personal';
-
+import {API} from 'aws-amplify';
+import {
+  getUser,
+  getUsersBySupplierCompany,
+  getUsersByRetailerCompany,
+} from '../../../graphql/queries';
 export {EditPersonal};
 
 export const PersonalProfile = props => {
@@ -64,7 +69,9 @@ export const PersonalProfile = props => {
             height: hp('20%'),
           }}
         />
-        <Text style={[Typography.header, {top: hp('2%')}]}>NAME</Text>
+        <Text style={[Typography.header, {top: hp('2%')}]}>
+          {props.user.name}
+        </Text>
       </View>
       <View
         style={{
@@ -85,7 +92,7 @@ export const PersonalProfile = props => {
             {Strings.companyRole}
           </Text>
           <View style={{top: hp('1%')}}>
-            <Text style={[Typography.normal]}>General Manager</Text>
+            <Text style={[Typography.normal]}>{props.user.role}</Text>
           </View>
         </View>
         <View
@@ -123,7 +130,7 @@ export const PersonalProfile = props => {
             {Strings.contactNumber}
           </Text>
           <View style={{top: hp('1%')}}>
-            <Text style={[Typography.normal]}>+60 11 6569 1999 </Text>
+            <Text style={[Typography.normal]}>{props.user.contactNumber} </Text>
           </View>
         </View>
       </View>

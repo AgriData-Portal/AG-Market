@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, View, Image, TouchableOpacity} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BackButton} from '_components/buttons';
@@ -9,10 +9,48 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {EditCompany} from './edit-company';
+import {API} from 'aws-amplify';
+import {getSupplierCompany, getRetailerCompany} from '../../../graphql/queries';
 
 export {EditCompany};
 
 export const CompanyProfile = props => {
+  const [company, setCompany] = useState([]);
+  useEffect(() => {
+    getCompanyProfile();
+  }, []);
+  const getCompanyProfile = async () => {
+    if (props.user.retailerCompanyID == null) {
+      try {
+        var companyProfile = await API.graphql({
+          query: getSupplierCompany,
+          variables: {
+            id: props.user.supplierCompanyID,
+          },
+        });
+        setCompany(companyProfile.data.getSupplierCompany);
+        console.log('Get suppplier company profile');
+      } catch (e) {
+        console.log('fail');
+        console.log(props.user.supplierCompanyID);
+        console.log(e);
+      }
+    } else {
+      try {
+        var companyProfile = await API.graphql({
+          query: getRetailerCompany,
+          variables: {
+            id: props.user.retailerCompanyID,
+          },
+        });
+        setCompany(companyProfile.data.getRetailerCompany);
+        console.log('Get retailer company profile');
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    console.log(companyProfile.data);
+  };
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
       {/*<View
@@ -58,7 +96,7 @@ export const CompanyProfile = props => {
             height: hp('20%'),
           }}
         />
-        <Text style={[Typography.header, {top: hp('2%')}]}>City Grocer</Text>
+        <Text style={[Typography.header, {top: hp('2%')}]}>{company.name}</Text>
       </View>
       <View
         style={{
@@ -79,7 +117,9 @@ export const CompanyProfile = props => {
             {Strings.companyRegistrationNum}
           </Text>
           <View style={{top: hp('1%')}}>
-            <Text style={[Typography.normal]}>1010100101010101R</Text>
+            <Text style={[Typography.normal]}>
+              {company.registrationNumber}
+            </Text>
           </View>
         </View>
         <View
@@ -93,9 +133,7 @@ export const CompanyProfile = props => {
             {Strings.companyAddress}
           </Text>
           <View style={{top: hp('1%')}}>
-            <Text style={[Typography.normal]}>
-              T1 Bundusan, Jalan Bundusan, Penampang, Sabah
-            </Text>
+            <Text style={[Typography.normal]}>{company.address}</Text>
           </View>
         </View>
         <View
