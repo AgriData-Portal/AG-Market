@@ -66,24 +66,21 @@ const TabStack = createBottomTabNavigator();
 const AppStack = createStackNavigator();
 
 function getHeaderTitle(route) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'orders';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'tasks';
 
   switch (routeName) {
-    case 'orders':
-      return Strings.orders;
-
-    case 'dataanalytics':
-      return Strings.analytics;
+    case 'tasks':
+      return Strings.tasks;
   }
 }
 
-export {OwnerNavigation};
+export {RetailEmployeeNavigation};
 
-const OwnerNavigation = props => {
+const RetailEmployeeNavigation = props => {
   return (
     <AppStack.Navigator>
       <AppStack.Screen
-        name={Strings.orders}
+        name={Strings.tasks}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
           headerTitleStyle: [Typography.header],
@@ -104,55 +101,7 @@ const OwnerNavigation = props => {
           />
         )}
       </AppStack.Screen>
-      <AppStack.Screen
-        name="companyprofile"
-        options={({route, navigation}) => ({
-          title: Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
-          headerTitleAlign: 'center',
-          headerLeft: () => (
-            <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                right: wp('4%'),
-                position: 'absolute',
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                onPress={() => navigation.navigate('editcompany')}
-              />
-            </TouchableOpacity>
-          ),
-        })}>
-        {screenProps => <CompanyProfile {...screenProps} user={props.user} />}
-      </AppStack.Screen>
-      <AppStack.Screen
-        name="editcompany"
-        options={({route, navigation}) => ({
-          title: 'Edit ' + Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
-          headerTitleAlign: 'center',
-          headerLeft: () => (
-            <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-        })}>
-        {screenProps => <EditCompany {...screenProps} user={props.user} />}
-      </AppStack.Screen>
-      <AppStack.Screen
-        name="humanresource"
-        options={({route, navigation}) => ({
-          title: Strings.humanResource,
-          headerTitleStyle: [Typography.header],
-          headerTitleAlign: 'center',
-          headerLeft: () => (
-            <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-        })}>
-        {screenProps => <HumanResource {...screenProps} user={props.user} />}
-      </AppStack.Screen>
+
       <AppStack.Screen
         name="personalprofile"
         options={({route, navigation}) => ({
@@ -203,7 +152,7 @@ const TabbedNavigator = props => {
         },
       }}>
       <TabStack.Screen
-        name="orders"
+        name="tasks"
         options={{
           tabBarIcon: ({focused}) =>
             focused ? (
@@ -216,7 +165,7 @@ const TabbedNavigator = props => {
                   bottom: hp('0.5%'),
                 }}>
                 <Icon
-                  name="clipboard-outline"
+                  name="checkmark-done-outline"
                   size={wp('7%')}
                   style={{
                     color: Colors.LIME_GREEN,
@@ -228,7 +177,7 @@ const TabbedNavigator = props => {
                       color: Colors.LIME_GREEN,
                     },
                   ]}>
-                  {Strings.orders}
+                  {Strings.tasks}
                 </Text>
               </View>
             ) : (
@@ -240,7 +189,7 @@ const TabbedNavigator = props => {
                   top: hp('0.5%'),
                 }}>
                 <Icon
-                  name="clipboard-outline"
+                  name="checkmark-done-outline"
                   size={wp('7%')}
                   style={{
                     color: 'black',
@@ -252,7 +201,7 @@ const TabbedNavigator = props => {
                       color: 'black',
                     },
                   ]}>
-                  {Strings.orders}
+                  {Strings.tasks}
                 </Text>
               </View>
             ),
@@ -261,73 +210,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            user={props.user}
-          />
-        )}
-      </TabStack.Screen>
-      <TabStack.Screen
-        name="dataanalytics"
-        options={{
-          tabBarIcon: ({focused}) =>
-            focused ? (
-              <View
-                style={{
-                  width: wp('15%'),
-                  height: wp('15%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  bottom: hp('0.5%'),
-                }}>
-                <Icon
-                  name="stats-chart-outline"
-                  size={wp('7%')}
-                  style={{
-                    color: Colors.LIME_GREEN,
-                  }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
-                  {Strings.analyticsSmall}
-                </Text>
-              </View>
-            ) : (
-              <View
-                style={{
-                  height: hp('5%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  top: hp('0.5%'),
-                }}>
-                <Icon
-                  name="stats-chart-outline"
-                  size={wp('7%')}
-                  style={{
-                    color: 'black',
-                  }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
-                  {Strings.analyticsSmall}
-                </Text>
-              </View>
-            ),
-          tabBarLabel: () => {
-            return null;
-          },
-        }}>
-        {screenProps => (
-          <DataAnalytics
+          <RetailerTasks
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}

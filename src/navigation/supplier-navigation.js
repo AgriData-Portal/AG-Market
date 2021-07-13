@@ -66,24 +66,29 @@ const TabStack = createBottomTabNavigator();
 const AppStack = createStackNavigator();
 
 function getHeaderTitle(route) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'orders';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
 
   switch (routeName) {
+    case 'inbox':
+      return Strings.inbox;
+    case 'marketplace':
+      return Strings.myStore;
     case 'orders':
       return Strings.orders;
-
+    case 'tasks':
+      return Strings.tasks;
     case 'dataanalytics':
       return Strings.analytics;
   }
 }
 
-export {OwnerNavigation};
+export {SupplierNavigation};
 
-const OwnerNavigation = props => {
+const SupplierNavigation = props => {
   return (
     <AppStack.Navigator>
       <AppStack.Screen
-        name={Strings.orders}
+        name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
           headerTitleStyle: [Typography.header],
@@ -104,6 +109,56 @@ const OwnerNavigation = props => {
           />
         )}
       </AppStack.Screen>
+
+      <AppStack.Screen
+        name="chatroom"
+        options={({route, navigation}) => ({
+          headerTitle: () => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('store', {
+                  itemId: route.params.itemID.slice(36, 72),
+                  storeName: route.params.chatName,
+                })
+              }>
+              <Text style={[Typography.header]}>{route.params.chatName}</Text>
+            </TouchableOpacity>
+          ),
+          headerTitleAlign: 'center',
+          headerRight: () => <ChatInfo />,
+          headerLeft: () => (
+            <HeaderBackButton
+              onPress={() => [
+                updateLastSeen(
+                  (userID = props.user.id),
+                  (chatGroupID = route.params.itemID),
+                  (navigation = navigation),
+                ),
+              ]}
+            />
+          ),
+        })}>
+        {screenProps => <ChatRoom {...screenProps} user={props.user} />}
+      </AppStack.Screen>
+      <AppStack.Screen
+        name="store"
+        options={({route, navigation}) => ({
+          title: route.params.storeName,
+          headerTitleStyle: [Typography.header],
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <HeaderBackButton onPress={() => navigation.goBack()} />
+          ),
+        })}>
+        {screenProps => (
+          <Store
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+          />
+        )}
+      </AppStack.Screen>
+
       <AppStack.Screen
         name="companyprofile"
         options={({route, navigation}) => ({
@@ -203,6 +258,73 @@ const TabbedNavigator = props => {
         },
       }}>
       <TabStack.Screen
+        name="inbox"
+        options={{
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <View
+                style={{
+                  width: wp('20%'),
+                  height: wp('15%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  bottom: hp('0.5%'),
+                }}>
+                <Icon
+                  name="chatbubbles-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: Colors.LIME_GREEN,
+                    },
+                  ]}>
+                  {Strings.chats}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  height: hp('5%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  top: hp('0.5%'),
+                }}>
+                <Icon
+                  name="chatbubbles-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: 'black',
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: 'black',
+                    },
+                  ]}>
+                  {Strings.chats}
+                </Text>
+              </View>
+            ),
+          tabBarLabel: () => {
+            return null;
+          },
+        }}>
+        {screenProps => (
+          <Inbox
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+          />
+        )}
+      </TabStack.Screen>
+
+      <TabStack.Screen
         name="orders"
         options={{
           tabBarIcon: ({focused}) =>
@@ -262,6 +384,145 @@ const TabbedNavigator = props => {
         }}>
         {screenProps => (
           <Orders
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+          />
+        )}
+      </TabStack.Screen>
+
+      <TabStack.Screen
+        name="marketplace"
+        options={{
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <View
+                style={{
+                  width: wp('15%'),
+                  height: wp('15%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  bottom: hp('0.5%'),
+                }}>
+                <Image
+                  source={require('_assets/images/online-store.png')}
+                  style={{
+                    width: wp('7.5%'),
+                    height: hp('4%'),
+                    resizeMode: 'contain',
+                    tintColor: Colors.LIME_GREEN,
+                  }}
+                />
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: Colors.LIME_GREEN,
+                    },
+                  ]}>
+                  {Strings.myStore}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  height: hp('5%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  top: hp('0.5%'),
+                }}>
+                <Image
+                  source={require('_assets/images/online-store.png')}
+                  style={{
+                    width: wp('7.5%'),
+                    height: hp('4.2%'),
+                    resizeMode: 'contain',
+                    tintColor: 'black',
+                  }}
+                />
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: 'black',
+                    },
+                  ]}>
+                  {Strings.myStore}
+                </Text>
+              </View>
+            ),
+          tabBarLabel: () => {
+            return null;
+          },
+        }}>
+        {screenProps => (
+          <SupplierStore
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+          />
+        )}
+      </TabStack.Screen>
+      <TabStack.Screen
+        name="tasks"
+        options={{
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <View
+                style={{
+                  width: wp('15%'),
+                  height: wp('15%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  bottom: hp('0.5%'),
+                }}>
+                <Icon
+                  name="checkmark-done-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: Colors.LIME_GREEN,
+                    },
+                  ]}>
+                  {Strings.tasks}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  height: hp('5%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  top: hp('0.5%'),
+                }}>
+                <Icon
+                  name="checkmark-done-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: 'black',
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: 'black',
+                    },
+                  ]}>
+                  {Strings.tasks}
+                </Text>
+              </View>
+            ),
+          tabBarLabel: () => {
+            return null;
+          },
+        }}>
+        {screenProps => (
+          <SupplierTasks
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
@@ -336,4 +597,33 @@ const TabbedNavigator = props => {
       </TabStack.Screen>
     </TabStack.Navigator>
   );
+};
+
+const updateLastSeen = async (userID, chatGroupID, navigation) => {
+  const uniqueID = userID + chatGroupID;
+  try {
+    const updatedLastSeen = await API.graphql({
+      query: updateChatGroupUsers,
+      variables: {input: {id: uniqueID, lastOnline: dayjs()}},
+    });
+    console.log('updated last seen');
+    navigation.navigate('inbox');
+  } catch (e) {
+    console.log(e);
+    if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+      console.log('no special connection created, creating one now');
+      const createLastSeen = await API.graphql({
+        query: createChatGroupUsers,
+        variables: {
+          input: {
+            id: uniqueID,
+            lastOnline: dayjs(),
+            userID: userID,
+            chatGroupID: chatGroupID,
+          },
+        },
+      });
+      navigation.navigate('inbox');
+    }
+  }
 };

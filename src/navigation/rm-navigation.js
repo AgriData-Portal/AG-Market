@@ -484,3 +484,32 @@ const TabbedNavigator = props => {
     </TabStack.Navigator>
   );
 };
+
+const updateLastSeen = async (userID, chatGroupID, navigation) => {
+  const uniqueID = userID + chatGroupID;
+  try {
+    const updatedLastSeen = await API.graphql({
+      query: updateChatGroupUsers,
+      variables: {input: {id: uniqueID, lastOnline: dayjs()}},
+    });
+    console.log('updated last seen');
+    navigation.navigate('inbox');
+  } catch (e) {
+    console.log(e);
+    if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+      console.log('no special connection created, creating one now');
+      const createLastSeen = await API.graphql({
+        query: createChatGroupUsers,
+        variables: {
+          input: {
+            id: uniqueID,
+            lastOnline: dayjs(),
+            userID: userID,
+            chatGroupID: chatGroupID,
+          },
+        },
+      });
+      navigation.navigate('inbox');
+    }
+  }
+};

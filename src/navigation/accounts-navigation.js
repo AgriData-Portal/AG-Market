@@ -66,24 +66,26 @@ const TabStack = createBottomTabNavigator();
 const AppStack = createStackNavigator();
 
 function getHeaderTitle(route) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'orders';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
 
   switch (routeName) {
+    case 'inbox':
+      return Strings.inbox;
+
     case 'orders':
       return Strings.orders;
-
-    case 'dataanalytics':
-      return Strings.analytics;
+    case 'tasks':
+      return Strings.tasks;
   }
 }
 
-export {OwnerNavigation};
+export {AccountsNavigation};
 
-const OwnerNavigation = props => {
+const AccountsNavigation = props => {
   return (
     <AppStack.Navigator>
       <AppStack.Screen
-        name={Strings.orders}
+        name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
           headerTitleStyle: [Typography.header],
@@ -104,54 +106,36 @@ const OwnerNavigation = props => {
           />
         )}
       </AppStack.Screen>
+
       <AppStack.Screen
-        name="companyprofile"
+        name="chatroom"
         options={({route, navigation}) => ({
-          title: Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
-          headerTitleAlign: 'center',
-          headerLeft: () => (
-            <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-          headerRight: () => (
+          headerTitle: () => (
             <TouchableOpacity
-              style={{
-                right: wp('4%'),
-                position: 'absolute',
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                onPress={() => navigation.navigate('editcompany')}
-              />
+              onPress={() =>
+                navigation.navigate('store', {
+                  itemId: route.params.itemID.slice(36, 72),
+                  storeName: route.params.chatName,
+                })
+              }>
+              <Text style={[Typography.header]}>{route.params.chatName}</Text>
             </TouchableOpacity>
           ),
-        })}>
-        {screenProps => <CompanyProfile {...screenProps} user={props.user} />}
-      </AppStack.Screen>
-      <AppStack.Screen
-        name="editcompany"
-        options={({route, navigation}) => ({
-          title: 'Edit ' + Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
           headerTitleAlign: 'center',
+          headerRight: () => <ChatInfo />,
           headerLeft: () => (
-            <HeaderBackButton onPress={() => navigation.goBack()} />
+            <HeaderBackButton
+              onPress={() => [
+                updateLastSeen(
+                  (userID = props.user.id),
+                  (chatGroupID = route.params.itemID),
+                  (navigation = navigation),
+                ),
+              ]}
+            />
           ),
         })}>
-        {screenProps => <EditCompany {...screenProps} user={props.user} />}
-      </AppStack.Screen>
-      <AppStack.Screen
-        name="humanresource"
-        options={({route, navigation}) => ({
-          title: Strings.humanResource,
-          headerTitleStyle: [Typography.header],
-          headerTitleAlign: 'center',
-          headerLeft: () => (
-            <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-        })}>
-        {screenProps => <HumanResource {...screenProps} user={props.user} />}
+        {screenProps => <ChatRoom {...screenProps} user={props.user} />}
       </AppStack.Screen>
       <AppStack.Screen
         name="personalprofile"
@@ -202,6 +186,73 @@ const TabbedNavigator = props => {
           height: hp('11%'),
         },
       }}>
+      <TabStack.Screen
+        name="inbox"
+        options={{
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <View
+                style={{
+                  width: wp('20%'),
+                  height: wp('15%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  bottom: hp('0.5%'),
+                }}>
+                <Icon
+                  name="chatbubbles-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: Colors.LIME_GREEN,
+                    },
+                  ]}>
+                  {Strings.chats}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  height: hp('5%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  top: hp('0.5%'),
+                }}>
+                <Icon
+                  name="chatbubbles-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: 'black',
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: 'black',
+                    },
+                  ]}>
+                  {Strings.chats}
+                </Text>
+              </View>
+            ),
+          tabBarLabel: () => {
+            return null;
+          },
+        }}>
+        {screenProps => (
+          <Inbox
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+          />
+        )}
+      </TabStack.Screen>
+
       <TabStack.Screen
         name="orders"
         options={{
@@ -268,8 +319,9 @@ const TabbedNavigator = props => {
           />
         )}
       </TabStack.Screen>
+
       <TabStack.Screen
-        name="dataanalytics"
+        name="tasks"
         options={{
           tabBarIcon: ({focused}) =>
             focused ? (
@@ -282,7 +334,7 @@ const TabbedNavigator = props => {
                   bottom: hp('0.5%'),
                 }}>
                 <Icon
-                  name="stats-chart-outline"
+                  name="checkmark-done-outline"
                   size={wp('7%')}
                   style={{
                     color: Colors.LIME_GREEN,
@@ -294,7 +346,7 @@ const TabbedNavigator = props => {
                       color: Colors.LIME_GREEN,
                     },
                   ]}>
-                  {Strings.analyticsSmall}
+                  {Strings.tasks}
                 </Text>
               </View>
             ) : (
@@ -306,7 +358,7 @@ const TabbedNavigator = props => {
                   top: hp('0.5%'),
                 }}>
                 <Icon
-                  name="stats-chart-outline"
+                  name="checkmark-done-outline"
                   size={wp('7%')}
                   style={{
                     color: 'black',
@@ -318,7 +370,7 @@ const TabbedNavigator = props => {
                       color: 'black',
                     },
                   ]}>
-                  {Strings.analyticsSmall}
+                  {Strings.tasks}
                 </Text>
               </View>
             ),
@@ -327,7 +379,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <DataAnalytics
+          <RetailerTasks
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
@@ -336,4 +388,33 @@ const TabbedNavigator = props => {
       </TabStack.Screen>
     </TabStack.Navigator>
   );
+};
+
+const updateLastSeen = async (userID, chatGroupID, navigation) => {
+  const uniqueID = userID + chatGroupID;
+  try {
+    const updatedLastSeen = await API.graphql({
+      query: updateChatGroupUsers,
+      variables: {input: {id: uniqueID, lastOnline: dayjs()}},
+    });
+    console.log('updated last seen');
+    navigation.navigate('inbox');
+  } catch (e) {
+    console.log(e);
+    if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+      console.log('no special connection created, creating one now');
+      const createLastSeen = await API.graphql({
+        query: createChatGroupUsers,
+        variables: {
+          input: {
+            id: uniqueID,
+            lastOnline: dayjs(),
+            userID: userID,
+            chatGroupID: chatGroupID,
+          },
+        },
+      });
+      navigation.navigate('inbox');
+    }
+  }
 };
