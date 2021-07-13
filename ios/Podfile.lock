@@ -344,14 +344,14 @@ PODS:
     - React-perflogger (= 0.64.2)
   - ReactNativeLocalization (2.1.7):
     - React-Core
-  - RNAWSCognito (5.0.3):
+  - RNAWSCognito (5.0.4):
     - React-Core
   - RNCAsyncStorage (1.15.5):
     - React-Core
   - RNCMaskedView (0.2.5):
     - React-Core
-  - RNCPushNotificationIOS (1.0.3):
-    - React
+  - RNCPushNotificationIOS (1.8.0):
+    - React-Core
   - RNFS (2.18.0):
     - React
   - RNGestureHandler (1.10.3):
@@ -392,7 +392,7 @@ PODS:
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
-  - RNShare (6.2.2):
+  - RNShare (6.2.3):
     - React-Core
   - RNSVG (7.2.1):
     - React
@@ -642,17 +642,17 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
-  RNAWSCognito: a89946398b7fe2a387ad6af326fb69d82203f6db
+  RNAWSCognito: 14872bf41aca1a7f48114e7f4f470c00b45bef4d
   RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
   RNCMaskedView: b7a3b119b1d738734a9d761e4220c6850bb248a3
-  RNCPushNotificationIOS: 83ec11fe19d4ea9e32cc339d8e7d2cc3c88f543e
+  RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
   RNReactNativePdfLib: 73633bcab7d415850e8bd2d7d2c05098f68a5d4e
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
-  RNShare: 1a049e096cc7239fb790892cd0bee1d31498269d
+  RNShare: 16c78aeb7a78d19e8f5597e405e87f90d91f8eb9
   RNSVG: 6c8e8c6f9e5a0caf910dd25aa6e4216045426e1d
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9

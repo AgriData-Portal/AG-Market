@@ -455,7 +455,12 @@ const StoreCard = props => {
   const image = null;
   return (
     <TouchableOpacity
-      onPress={() => props.navigation.navigate('store', {itemId: props.id})}
+      onPress={() =>
+        props.navigation.navigate('store', {
+          itemId: props.id,
+          storeName: props.storeName,
+        })
+      }
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('40%'),
@@ -464,6 +469,7 @@ const StoreCard = props => {
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
+        top: hp('3%'),
       }}>
       <View
         style={{
