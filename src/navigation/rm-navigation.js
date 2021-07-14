@@ -169,19 +169,6 @@ const RMNavigation = props => {
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
           ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                right: wp('4%'),
-                position: 'absolute',
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                onPress={() => navigation.navigate('editprofile')}
-              />
-            </TouchableOpacity>
-          ),
         })}>
         {screenProps => <PersonalProfile {...screenProps} user={props.user} />}
       </AppStack.Screen>

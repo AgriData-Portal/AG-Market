@@ -177,6 +177,27 @@ export const CompanyProfile = props => {
           </View>
         </View>
       </View>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('editcompany')}
+        style={{
+          backgroundColor: Colors.LIGHT_BLUE,
+          width: wp('45%'),
+          height: hp('4%'),
+          alignItems: 'center',
+          justifyContent: 'center',
+          top: hp('13%'),
+          borderRadius: 10,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>
+        <Text style={[Typography.normal]}>Edit {Strings.companyProfile}</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
