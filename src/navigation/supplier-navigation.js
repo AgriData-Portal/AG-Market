@@ -240,7 +240,13 @@ const SupplierNavigation = props => {
           headerTitleStyle: [Typography.header],
           headerTitleAlign: 'center',
         })}>
-        {screenProps => <EditPersonal {...screenProps} user={props.user} />}
+        {screenProps => (
+          <EditPersonal
+            {...screenProps}
+            user={props.user}
+            setUserDetails={props.setUserDetails}
+          />
+        )}
       </AppStack.Screen>
     </AppStack.Navigator>
   );

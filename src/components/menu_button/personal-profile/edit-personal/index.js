@@ -16,18 +16,22 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from 'react-native-modal';
-import {SuccesfulChangesModal} from '_components/modals';
-import {DismissKeyboardView, UnsuccessfulModal} from '_components';
+import {
+  DismissKeyboardView,
+  UnsuccessfulModal,
+  SuccessfulModal,
+} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {API, Auth} from 'aws-amplify';
 import Strings from '_utils';
+import {updateUser} from '../../../../graphql/mutations';
 
 export const EditPersonal = props => {
   const [imageSource, setImageSource] = useState(null);
-  const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
+  const [successfulModal, setSuccessfulModal] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [name, setName] = useState('');
@@ -44,7 +48,6 @@ export const EditPersonal = props => {
 
     launchImageLibrary(options, response => {
       console.log({response});
-
       if (response.didCancel) {
         console.log('User cancelled photo picker');
       } else if (response.error) {
@@ -59,12 +62,34 @@ export const EditPersonal = props => {
       }
     });
   }
+  const saveChanges = async () => {
+    try {
+      const editPersonal = await API.graphql({
+        query: updateUser,
+        variables: {
+          input: {
+            id: props.user.id,
+            name: name,
+            contactNumber: number,
+          },
+        },
+      });
+      console.log('success');
+      var temp = props.user;
+      temp.name = name;
+      temp.contactNumber = number;
+      props.setUserDetails(temp);
+      setSuccessfulModal(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('0%') : hp('0%')
+        Platform.OS === 'ios' ? hp('0%') : hp('-20%')
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <SafeAreaView
@@ -270,7 +295,7 @@ export const EditPersonal = props => {
                 );
               } else {
                 try {
-                  setSuccesfulChangesModal(true);
+                  saveChanges();
                 } catch {
                   e => console.log('error ' + e);
                 }
@@ -315,11 +340,13 @@ export const EditPersonal = props => {
             <UnsuccessfulModal text={errorText} />
           </Modal>
           <Modal
-            isVisible={succesfulChangesModal}
-            onBackdropPress={() => setSuccesfulChangesModal(false)}>
-            <SuccesfulChangesModal
-              setSuccesfulChangesModal={setSuccesfulChangesModal}
-              navigation={props.navigation}
+            isVisible={successfulModal}
+            onBackdropPress={() => setSuccessfulModal(false)}>
+            <SuccessfulModal
+              setSuccessfulModal={setSuccessfulModal}
+              text={
+                'Your account will be updated in a few minutes. Please refresh the app to check on the changes'
+              }
             />
           </Modal>
         </DismissKeyboardView>
@@ -408,7 +435,7 @@ export const ChangePassword = props => {
                   placeholderTextColor={Colors.GRAY_DARK}
                   placeholder={Strings.oldPassword}
                   style={{
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                     borderBottomColor: 'transparent',
                   }}></TextInput>
@@ -432,7 +459,7 @@ export const ChangePassword = props => {
                   placeholderTextColor={Colors.GRAY_DARK}
                   placeholder={Strings.newPassword}
                   style={{
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                     borderBottomColor: 'transparent',
                   }}></TextInput>
@@ -455,7 +482,7 @@ export const ChangePassword = props => {
                   placeholderTextColor={Colors.GRAY_DARK}
                   placeholder={Strings.reEnterNewPassword}
                   style={{
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                     borderBottomColor: 'transparent',
                   }}></TextInput>
@@ -472,7 +499,7 @@ export const ChangePassword = props => {
                   updatePassword();
                 }
               }}
-              style={{top: hp('13%')}}>
+              style={{top: hp('11%')}}>
               <Text
                 style={[Typography.small, {textDecorationLine: 'underline'}]}>
                 {Strings.changePass}
