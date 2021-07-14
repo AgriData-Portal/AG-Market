@@ -178,4 +178,5 @@ export default {
   analytics: 'ANALISIS',
   analyticsSmall: 'Analisis',
   bankDetails: 'Butiran Bank',
+  rating: 'Penilaian',
 };

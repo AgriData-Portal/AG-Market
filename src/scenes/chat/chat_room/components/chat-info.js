@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -74,12 +74,44 @@ export const ChatInfo = props => {
 };
 
 const ChatInfoModal = props => {
-  const [addPersonModal, setAddPersonModal] = useState(false);
+  const [teamList, setTeamList] = useState([]);
+  const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
+  const fetchMembers = async () => {
+    if (props.user.retailerCompanyID == null) {
+      console.log('supplier');
+      try {
+        const members = await API.graphql({
+          query: getUsersBySupplierCompany,
+          variables: {supplierCompanyID: props.user.supplierCompanyID},
+        });
+        console.log(members.data.getUsersBySupplierCompany.items);
+        setTeamList(members.data.getUsersBySupplierCompany.items);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      console.log('retailer');
+      try {
+        const members = await API.graphql({
+          query: getUsersByRetailerCompany,
+          variables: {retailerCompanyID: props.user.retailerCompanyID},
+        });
+        console.log(members.data.getUsersByRetailerCompany.items);
+        setTeamList(members.data.getUsersByRetailerCompany.items);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchMembers();
+    console.log('useEffect Triggered');
+  }, []);
 
   return (
     <View
       style={{
-        left: wp('32%'),
+        left: wp('27%'),
         width: wp('70%'),
         height: hp('100%'),
         backgroundColor: Colors.PALE_GREEN,
@@ -108,6 +140,7 @@ const ChatInfoModal = props => {
           {Strings.member}
         </Text>
       </View>
+
       <View
         style={{
           top: hp('5%'),
@@ -115,8 +148,10 @@ const ChatInfoModal = props => {
         }}>
         <View
           style={{
-            maxHeight: hp('25%'),
             width: wp('70%'),
+            height: hp('45%'),
+
+            top: hp('2%'),
           }}>
           <ChatParticipantList
             data={props.chatParticipants}
@@ -125,38 +160,9 @@ const ChatInfoModal = props => {
             chatParticipants={props.chatParticipants}
           />
         </View>
-
-        <TouchableOpacity
-          onPress={() => [
-            setAddPersonModal(true),
-            console.log('addperson: ', addPersonModal),
-          ]}
-          style={{
-            backgroundColor: Colors.GRAY_MEDIUM,
-            height: hp('6%'),
-            width: wp('45%'),
-            top: hp('9%'),
-            flexDirection: 'row',
-            borderRadius: 30,
-            alignItems: 'center',
-            justifyContent: 'center',
-            elevation: 2,
-            left: wp('5%'),
-          }}>
-          <Icon name="add" size={wp('6%')} />
-          <Text
-            style={[
-              Typography.normal,
-              {
-                color: Colors.LIME_GREEN,
-              },
-            ]}>
-            {Strings.addMembers}
-          </Text>
-        </TouchableOpacity>
       </View>
 
-      <View
+      {/*<View
         style={{
           top: hp('78%'),
           width: wp('70%'),
@@ -175,28 +181,22 @@ const ChatInfoModal = props => {
           }}>
           <AttachmentList />
         </View>
-      </View>
-
-      <Modal
-        isVisible={addPersonModal}
-        onBackdropPress={() => setAddPersonModal(false)}>
-        <AddPersonModal
-          setAddPersonModal={setAddPersonModal}
-          addPersonModal={addPersonModal}
-        />
-      </Modal>
+      </View>*/}
     </View>
   );
 };
 
 const ChatParticipantList = props => {
+  const [addPersonModal, setAddPersonModal] = useState(false);
   const Seperator = () => {
     return (
       <View
         style={{
-          height: 0,
+          height: hp('0%'),
           alignSelf: 'center',
-          width: wp('70%'),
+          width: wp('60%'),
+          borderBottomWidth: 0.3,
+
           top: hp('1%'),
         }}></View>
     );
@@ -204,17 +204,59 @@ const ChatParticipantList = props => {
   return (
     <View>
       <FlatList
+        ListHeaderComponent={() => {
+          return (
+            <View>
+              <TouchableOpacity
+                onPress={() => [
+                  setAddPersonModal(true),
+                  console.log('addperson: ', addPersonModal),
+                ]}
+                style={{
+                  backgroundColor: Colors.GRAY_MEDIUM,
+                  height: hp('4%'),
+                  width: wp('43%'),
+
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  elevation: 2,
+                  alignSelf: 'center',
+                }}>
+                <Icon name="add" size={wp('6%')} />
+                <Text
+                  style={[
+                    Typography.normal,
+                    {
+                      color: Colors.LIME_GREEN,
+                    },
+                  ]}>
+                  {Strings.addMembers}
+                </Text>
+              </TouchableOpacity>
+              <Modal
+                isVisible={addPersonModal}
+                onBackdropPress={() => setAddPersonModal(false)}>
+                <AddPersonModal
+                  setAddPersonModal={setAddPersonModal}
+                  addPersonModal={addPersonModal}
+                />
+              </Modal>
+            </View>
+          );
+        }}
         numColumns={1}
-        keyExtractor={item => item.user.id}
-        data={props.data}
-        ItemSeparatorComponent={Seperator}
+        keyExtractor={item => item.id}
+        data={[{}, {}, {}, {}]} //{props.data}
+        // ItemSeparatorComponent={Seperator}
         renderItem={({item}) => {
           return (
             <ChatParticipantCard
               setChatParticipants={props.setChatParticipants}
               chatParticipants={props.chatParticipants}
-              user={item.user.name}
-              userID={item.user.id}
+              user={item.name}
+              userID={item.id}
               chatGroupID={props.chatGroupID}
             />
           );
@@ -230,33 +272,29 @@ const ChatParticipantCard = props => {
     <View
       style={{
         alignSelf: 'center',
-        height: Mixins.scaleHeight(30),
-        width: Mixins.scaleWidth(240),
+        height: hp('5%'),
+        width: wp('70%'),
         borderRadius: 30,
       }}>
       <View
         style={{
-          left: Mixins.scaleWidth(20),
-          height: Mixins.scaleHeight(40),
+          left: wp('5%'),
+          height: hp('6%'),
           justifyContent: 'center',
         }}>
-        <Text style={Typography.normal}>{props.user}</Text>
+        <Text style={Typography.normal}>{props.user}Heyo</Text>
       </View>
 
       <TouchableOpacity
         onPress={() => setRemovePersonModal(true)}
         style={{
-          height: Mixins.scaleHeight(40),
+          height: hp('6%'),
           position: 'absolute',
-          right: Mixins.scaleWidth(20),
+          right: wp('12%'),
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Icon
-          name="person-remove-outline"
-          size={Mixins.scaleWidth(20)}
-          color="black"
-        />
+        <Icon name="person-remove-outline" size={wp('5.5%')} color="black" />
       </TouchableOpacity>
       <Modal
         isVisible={removePersonModal}
@@ -297,46 +335,84 @@ const RemovePersonModal = props => {
   return (
     <View
       style={{
-        backgroundColor: Colors.GRAY_MEDIUM,
+        height: hp('48%'),
+        width: wp('85%'),
+        backgroundColor: Colors.LIGHT_RED,
         borderRadius: 20,
-        height: Mixins.scaleHeight(190),
-        width: Mixins.scaleWidth(300),
-        left: Mixins.scaleWidth(10),
+        alignItems: 'center',
+        alignSelf: 'center',
       }}>
-      <View style={{alignSelf: 'center', top: Mixins.scaleHeight(10)}}>
-        <Icon
-          name="alert-circle-outline"
-          size={Mixins.scaleWidth(70)}
-          color={Colors.ALERT}
+      <View style={{top: hp('3%')}}>
+        <Image
+          source={require('_assets/images/Good-Vege.png')}
+          style={{
+            resizeMode: 'contain',
+            width: wp('55%'),
+            height: hp('25%'),
+          }}
         />
       </View>
-      <Text
-        style={[
-          Typography.normal,
-          {alignSelf: 'center', top: Mixins.scaleHeight(20)},
-        ]}>
-        Are you sure you want to remove {props.name}?
-      </Text>
-      <TouchableOpacity
-        onPress={() => removePerson}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: Mixins.scaleWidth(80),
-          alignSelf: 'center',
-          borderRadius: 20,
-          height: Mixins.scaleHeight(25),
-          justifyContent: 'center',
-          top: Mixins.scaleHeight(40),
-        }}>
-        <Text style={[Typography.normal, {alignSelf: 'center'}]}>Confirm</Text>
-      </TouchableOpacity>
       <View
         style={{
-          position: 'absolute',
-          right: Mixins.scaleWidth(-8),
-          top: Mixins.scaleHeight(-8),
+          top: hp('3%'),
         }}>
-        <CloseButton setModal={props.setRemovePersonModal} />
+        <Text style={[Typography.large, {textAlign: 'center'}]}>
+          {Strings.removeMemberConfirm1}
+        </Text>
+        <Text
+          style={[
+            Typography.large,
+            {fontFamily: 'Poppins-Bold', textAlign: 'center'},
+          ]}>
+          {Strings.removeMemberConfirm2}
+        </Text>
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity
+          style={{
+            top: hp('7%'),
+            backgroundColor: Colors.LIGHT_BLUE,
+            width: wp('28%'),
+            height: hp('5%'),
+            justifyContent: 'center',
+            borderRadius: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+            right: wp('3%'),
+          }}>
+          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+            {Strings.cancel}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => removePerson}
+          style={{
+            top: hp('7%'),
+            backgroundColor: Colors.LIGHT_BLUE,
+            width: wp('28%'),
+            height: hp('5%'),
+            justifyContent: 'center',
+            borderRadius: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+            left: wp('3%'),
+          }}>
+          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+            {Strings.confirm}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -364,6 +440,18 @@ const AddPersonModal = props => {
     </View>
   );
 };
+
+const EmployeeList = props => {
+  const [groupParticipants, setGroupParticipants] = useState();
+
+  const addEmployee = async () => {};
+  return (
+    <View>
+      <Text>hi</Text>
+    </View>
+  );
+};
+
 const AttachmentList = props => {
   return (
     <View>

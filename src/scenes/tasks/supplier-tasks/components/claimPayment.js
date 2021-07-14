@@ -23,6 +23,11 @@ import {DismissKeyboard} from '_components';
 import {API} from 'aws-amplify';
 import {deletePaymentTask, updateInvoice} from '../../../../graphql/mutations';
 import Strings from '_utils';
+import {
+  listGoodsTasks,
+  goodsTaskForSupplierByDate,
+  paymentsTaskForSupplierByDate,
+} from '../../../../graphql/queries';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -30,12 +35,43 @@ const now = () => {
 };
 
 export const ReceivePaymentTaskList = props => {
+  const [refreshing, setRefreshing] = useState(false);
   return (
     <View>
       <FlatList
         keyExtractor={item => item.id}
         data={props.data}
         numColumns={1}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={async () => {
+              setRefreshing(true);
+              try {
+                const task = await API.graphql({
+                  query: paymentsTaskForSupplierByDate,
+                  variables: {
+                    supplierID: props.user.supplierCompanyID,
+                    sortDirection: 'ASC',
+                  },
+                });
+                props.setClaimTask(
+                  task.data.paymentsTaskForSupplierByDate.items,
+                );
+                console.log(task.data.paymentsTaskForSupplierByDate.items);
+                console.log('payment task');
+              } catch (e) {
+                console.log(e);
+              }
+              if (props.trigger) {
+                props.setTrigger(false);
+              } else {
+                props.setTrigger(true);
+              }
+              setRefreshing(false);
+            }}
+          />
+        }
         renderItem={({item}) => {
           return (
             <ReceivePaymentTask

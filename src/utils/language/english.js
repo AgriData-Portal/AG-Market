@@ -177,4 +177,5 @@ export default {
   analytics: 'ANALYTICS',
   analyticsSmall: 'Analytics',
   bankDetails: 'Bank Details',
+  rating: 'Ratings',
 };

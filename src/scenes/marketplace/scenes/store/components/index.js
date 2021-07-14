@@ -31,6 +31,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {SuccessfulModal} from '_components/modals';
+import {getSupplierCompany} from '../../../../../graphql/queries';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -778,6 +779,76 @@ const PurchaseOrderComponent = props => {
           style={{position: 'absolute', right: wp('5%'), bottom: hp('0.2%')}}>
           <Icon name="trash-outline" size={wp('6%')} color={Colors.FAIL} />
         </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+export const DetailsModal = props => {
+  const [companyDetails, setCompanyDetails] = useState([]);
+  const getStoreDetails = async () => {
+    try {
+      var storeDetails = await API.graphql({
+        query: getSupplierCompany,
+        variables: {id: props.id},
+      });
+
+      setCompanyDetails(storeDetails.data.getSupplierCompany);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getStoreDetails();
+    console.log('Fetching Details');
+  }, []);
+  return (
+    <View
+      style={{
+        backgroundColor: 'white',
+        width: wp('90%'),
+        height: hp('70%'),
+        borderRadius: 10,
+        alignSelf: 'center',
+        alignItems: 'center',
+      }}>
+      <Text style={[Typography.header, {top: hp('1%')}]}>{props.name} </Text>
+
+      <View
+        style={{
+          alignItems: 'flex-start',
+          backgroundColor: Colors.GRAY_LIGHT,
+          width: wp('80%'),
+          height: hp('30%'),
+          top: hp('30%'),
+          borderRadius: 10,
+        }}>
+        <View style={{alignItems: 'flex-start', top: hp('2%'), left: wp('5%')}}>
+          <View>
+            <Text style={[Typography.placeholder]}>
+              {Strings.companyRegistrationNum}
+            </Text>
+            <Text style={[Typography.normal]}>
+              {companyDetails.registrationNumber}28391038291
+            </Text>
+          </View>
+          <View style={{top: hp('1%')}}>
+            <Text style={[Typography.placeholder]}>
+              {Strings.companyAddress}
+            </Text>
+            <Text style={[Typography.normal]}>{companyDetails.address}</Text>
+          </View>
+          <View style={{top: hp('2%')}}>
+            <Text style={[Typography.placeholder]}>
+              {Strings.contactNumber}
+            </Text>
+            <Text style={[Typography.normal]}>{companyDetails.address}</Text>
+          </View>
+          <View style={{top: hp('3%')}}>
+            <Text style={[Typography.placeholder]}>{Strings.rating}</Text>
+            <Text style={[Typography.normal]}>{companyDetails.address}</Text>
+          </View>
+        </View>
       </View>
     </View>
   );

@@ -49,7 +49,6 @@ export const RetailerTasks = props => {
       });
       console.log(task.data.goodsTaskForRetailerByDate.items);
       setReceiveTask(task.data.goodsTaskForRetailerByDate.items);
-
       console.log('goods task');
     } catch (e) {
       console.log(e);
@@ -67,7 +66,6 @@ export const RetailerTasks = props => {
       });
       console.log(task.data.paymentsTaskForRetailerByDate.items);
       setPayTask(task.data.paymentsTaskForRetailerByDate.items);
-
       console.log('payment task');
     } catch (e) {
       console.log(e);
@@ -197,6 +195,8 @@ export const RetailerTasks = props => {
             setTrigger={setTrigger}
             payTask={payTask}
             setPayTask={setPayTask}
+            getPayTask={getPayTask}
+            user={props.user}
           />
         ) : (
           <ReceiveList
@@ -205,6 +205,7 @@ export const RetailerTasks = props => {
             setTrigger={setTrigger}
             receiveTask={receiveTask}
             setReceiveTask={setReceiveTask}
+            getReceiveTask={getReceiveTask}
           />
         )}
       </View>

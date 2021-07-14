@@ -60,6 +60,8 @@ import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import Modal from 'react-native-modal';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -83,6 +85,7 @@ function getHeaderTitle(route) {
 }
 
 const GMNavigation = props => {
+  const [detailsModal, setDetailsModal] = useState(false);
   return (
     <AppStack.Navigator>
       <AppStack.Screen
@@ -107,7 +110,6 @@ const GMNavigation = props => {
           />
         )}
       </AppStack.Screen>
-
       <AppStack.Screen
         name="chatroom"
         options={({route, navigation}) => ({
@@ -119,7 +121,7 @@ const GMNavigation = props => {
                   storeName: route.params.chatName,
                 })
               }>
-              <Text style={[Typography.header]}>{route.params.chatName}</Text>
+              <Text style={[Typography.large]}>{route.params.chatName}</Text>
             </TouchableOpacity>
           ),
           headerTitleAlign: 'center',
@@ -141,11 +143,23 @@ const GMNavigation = props => {
       <AppStack.Screen
         name="store"
         options={({route, navigation}) => ({
-          title: route.params.storeName,
-          headerTitleStyle: [Typography.header],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
+          ),
+          headerTitle: () => (
+            <View>
+              <TouchableOpacity onPress={() => setDetailsModal(true)}>
+                <Text style={[Typography.large]}>{route.params.storeName}</Text>
+              </TouchableOpacity>
+              <Modal
+                isVisible={detailsModal}
+                onBackdropPress={() => setDetailsModal(false)}>
+                <DetailsModal
+                  name={route.params.storeName}
+                  id={route.params.itemId}></DetailsModal>
+              </Modal>
+            </View>
           ),
         })}>
         {screenProps => (
@@ -156,28 +170,14 @@ const GMNavigation = props => {
           />
         )}
       </AppStack.Screen>
-
       <AppStack.Screen
         name="companyprofile"
         options={({route, navigation}) => ({
           title: Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                right: wp('4%'),
-                position: 'absolute',
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                onPress={() => navigation.navigate('editcompany')}
-              />
-            </TouchableOpacity>
           ),
         })}>
         {screenProps => <CompanyProfile {...screenProps} user={props.user} />}
@@ -186,7 +186,7 @@ const GMNavigation = props => {
         name="editcompany"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -198,7 +198,7 @@ const GMNavigation = props => {
         name="humanresource"
         options={({route, navigation}) => ({
           title: Strings.humanResource,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -210,23 +210,10 @@ const GMNavigation = props => {
         name="personalprofile"
         options={({route, navigation}) => ({
           title: Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                right: wp('4%'),
-                position: 'absolute',
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                onPress={() => navigation.navigate('editprofile')}
-              />
-            </TouchableOpacity>
           ),
         })}>
         {screenProps => <PersonalProfile {...screenProps} user={props.user} />}
@@ -235,7 +222,7 @@ const GMNavigation = props => {
         name="editprofile"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
         })}>
         {screenProps => <EditPersonal {...screenProps} user={props.user} />}
@@ -321,7 +308,6 @@ const TabbedNavigator = props => {
           />
         )}
       </TabStack.Screen>
-
       <TabStack.Screen
         name="orders"
         options={{
@@ -388,7 +374,6 @@ const TabbedNavigator = props => {
           />
         )}
       </TabStack.Screen>
-
       <TabStack.Screen
         name="marketplace"
         options={{

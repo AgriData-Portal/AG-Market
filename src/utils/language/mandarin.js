@@ -169,4 +169,5 @@ export default {
   analytics: '分析',
   analyticsSmall: '分析',
   bankDetails: '银行资料',
+  rating: '评分',
 };

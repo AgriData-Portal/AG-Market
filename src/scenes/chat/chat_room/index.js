@@ -262,7 +262,7 @@ export const ChatRoom = props => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
-          Platform.OS === 'ios' ? hp('3%') : Mixins.scaleHeight(40)
+          Platform.OS === 'ios' ? hp('3%') : hp('3%')
         } /* Keyboard Offset needs to be tested against multiple phones */
         style={{
           top: hp('6%'),

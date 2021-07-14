@@ -31,6 +31,7 @@ const now = () => {
 };
 
 export const SendTaskList = props => {
+  const [refreshing, setRefreshing] = useState(false);
   console.log('send task list render');
   return (
     <View>
@@ -39,6 +40,35 @@ export const SendTaskList = props => {
         extraData={props.trigger}
         data={props.data}
         numColumns={1}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={async () => {
+              setRefreshing(true);
+              try {
+                const task = await API.graphql({
+                  query: goodsTaskForSupplierByDate,
+                  variables: {
+                    supplierID: props.user.supplierCompanyID,
+                    sortDirection: 'ASC',
+                  },
+                });
+                props.setSendTask(task.data.goodsTaskForSupplierByDate.items);
+                console.log(task.data.goodsTaskForSupplierByDate.items);
+                console.log('goods task');
+                setLoading(false);
+              } catch (e) {
+                console.log(e);
+              }
+              if (props.trigger) {
+                props.setTrigger(false);
+              } else {
+                props.setTrigger(true);
+              }
+              setRefreshing(false);
+            }}
+          />
+        }
         renderItem={({item}) => {
           return (
             <SendTask
