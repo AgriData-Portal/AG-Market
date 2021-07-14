@@ -62,6 +62,7 @@ const AppNavigator = props => {
           <RMNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
           />
         );
       } else if (type == 'accounts') {
@@ -70,6 +71,7 @@ const AppNavigator = props => {
           <AccountsNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
           />
         );
       } else if (type == 'owner') {
@@ -78,6 +80,7 @@ const AppNavigator = props => {
           <OwnerNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
           />
         );
       } else if (type == 'retailemployee') {
@@ -86,6 +89,7 @@ const AppNavigator = props => {
           <RetailEmployeeNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
           />
         );
       } else if (type == 'generalmanager') {
@@ -94,6 +98,7 @@ const AppNavigator = props => {
           <GMNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
           />
         );
       }
@@ -107,6 +112,7 @@ const AppNavigator = props => {
         <SupplierNavigation
           user={props.user}
           updateAuthState={props.updateAuthState}
+          setUserDetails={props.setUserDetails}
         />
       );
     } else {
@@ -114,6 +120,7 @@ const AppNavigator = props => {
         <VerificationNavigation
           user={props.user}
           updateAuthState={props.updateAuthState}
+          setUserDetails={props.setUserDetails}
         />
       );
     }
@@ -122,6 +129,7 @@ const AppNavigator = props => {
       <CreateCompanyNavigation
         user={props.user}
         updateAuthState={props.updateAuthState}
+        setUserDetails={props.setUserDetails}
       />
     );
   }
@@ -231,16 +239,17 @@ const App = () => {
   function updateUserID(userID) {
     setUserID(userID);
   }
-  function updateUserAttributes(attributes) {
-    setUserAttributes(attributes);
-  }
 
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
       {isUserLoggedIn === 'initializing' && <Initializing />}
       {isUserLoggedIn === 'loggedIn' && (
-        <AppNavigator updateAuthState={updateAuthState} user={userDetails} />
+        <AppNavigator
+          updateAuthState={updateAuthState}
+          user={userDetails}
+          setUserDetails={setUserDetails}
+        />
       )}
       {isUserLoggedIn === 'loggedOut' && (
         <AuthenticationNavigator
