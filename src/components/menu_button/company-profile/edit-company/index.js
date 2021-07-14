@@ -17,13 +17,17 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {SuccesfulChangesModal} from '_components/modals';
 import Modal from 'react-native-modal';
-import {DismissKeyboardView, UnsuccessfulModal} from '_components';
+import {
+  DismissKeyboardView,
+  UnsuccessfulModal,
+  SuccessfulModal,
+} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {API} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 import {
   updateRetailerCompany,
   updateSupplierCompany,
@@ -31,7 +35,7 @@ import {
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(null);
-  const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
+  const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [address, setAddress] = useState('');
   const [number, setNumber] = useState('');
@@ -47,8 +51,7 @@ export const EditCompany = props => {
     };
 
     launchImageLibrary(options, response => {
-      console.log({response});
-
+      console.log(response.assets[0]);
       if (response.didCancel) {
         console.log('User cancelled photo picker');
       } else if (response.error) {
@@ -56,10 +59,8 @@ export const EditCompany = props => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        let photo = {uri: response.uri};
-        console.log({photo});
-        console.log(response.uri);
-        setImageSource(response.uri);
+        let photo = {uri: response.assets[0].uri};
+        setImageSource(photo);
       }
     });
   }
@@ -82,12 +83,11 @@ export const EditCompany = props => {
             input: {
               id: props.user.supplierCompanyID,
               address: address,
-              logo: photo.filename,
+              logo: photo.fileName,
             },
           },
         });
-        logo = {uri: photo.uri};
-        setSuccesfulChangesModal(true);
+        setSuccessfulModal(true);
       } catch (e) {
         console.log(e);
         console.log(props.user.supplierCompanyID);
@@ -109,12 +109,12 @@ export const EditCompany = props => {
             input: {
               id: props.user.retailerCompanyID,
               address: address,
-              logo: photo.filename,
+              logo: photo.fileName,
             },
           },
         });
-        logo = {uri: photo.uri};
-        setSuccesfulChangesModal(true);
+
+        setSuccessfulModal(true);
       } catch (e) {
         console.log(e);
         console.log(props.user.retailerCompanyID);
@@ -126,7 +126,7 @@ export const EditCompany = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('0%') : hp('5%')
+        Platform.OS === 'ios' ? hp('0%') : hp('-10%')
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <DismissKeyboardView>
@@ -191,7 +191,7 @@ export const EditCompany = props => {
               ) : (
                 <View>
                   <Image
-                    source={{uri: imageSource}}
+                    source={imageSource}
                     style={{
                       resizeMode: 'cover',
                       width: wp('50%'),
@@ -379,11 +379,13 @@ export const EditCompany = props => {
               <UnsuccessfulModal text={errorText} />
             </Modal>
             <Modal
-              isVisible={succesfulChangesModal}
-              onBackdropPress={() => setSuccesfulChangesModal(false)}>
-              <SuccesfulChangesModal
-                setSuccesfulChangesModal={setSuccesfulChangesModal}
-                navigation={props.navigation}
+              isVisible={successfulModal}
+              onBackdropPress={() => setSuccessfulModal(false)}>
+              <SuccessfulModal
+                setSuccessfulModal={setSuccessfulModal}
+                text={
+                  'Your account will be updated in a few minutes. Please refresh the app to check on the changes'
+                }
               />
             </Modal>
           </View>

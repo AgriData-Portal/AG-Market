@@ -9,16 +9,29 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {EditCompany} from './edit-company';
-import {API} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 import {getSupplierCompany, getRetailerCompany} from '../../../graphql/queries';
 
 export {EditCompany};
 
 export const CompanyProfile = props => {
-  const [company, setCompany] = useState([]);
+  const [company, setCompany] = useState('');
+  const [imageSource, setImageSource] = useState(null);
   useEffect(() => {
     getCompanyProfile();
   }, []);
+  useEffect(async () => {
+    if (company.logo) {
+      try {
+        const imageURL = await Storage.get(company.logo);
+        setImageSource({
+          uri: imageURL,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [company]);
   const getCompanyProfile = async () => {
     if (props.user.retailerCompanyID == null) {
       try {
@@ -88,14 +101,25 @@ export const CompanyProfile = props => {
           width: wp('80%'),
           height: hp('25%'),
         }}>
-        <Image
-          source={require('_assets/images/company-logo.png')}
-          style={{
-            resizeMode: 'contain',
-            width: wp('80%'),
-            height: hp('20%'),
-          }}
-        />
+        {imageSource == null ? (
+          <Image
+            source={require('_assets/images/company-logo.png')}
+            style={{
+              resizeMode: 'contain',
+              width: wp('80%'),
+              height: hp('20%'),
+            }}
+          />
+        ) : (
+          <Image
+            source={imageSource}
+            style={{
+              resizeMode: 'contain',
+              width: wp('80%'),
+              height: hp('20%'),
+            }}
+          />
+        )}
         <Text style={[Typography.header, {top: hp('2%')}]}>{company.name}</Text>
       </View>
       <View
@@ -116,7 +140,7 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.companyRegistrationNum}
           </Text>
-          <View style={{top: hp('1%')}}>
+          <View>
             <Text style={[Typography.normal]}>
               {company.registrationNumber}
             </Text>
@@ -127,12 +151,12 @@ export const CompanyProfile = props => {
             top: hp('4%'),
             left: wp('6%'),
             width: wp('73%'),
-            height: hp('7%'),
+            height: hp('5%'),
           }}>
           <Text style={[Typography.placeholderSmall]}>
             {Strings.companyAddress}
           </Text>
-          <View style={{top: hp('1%')}}>
+          <View>
             <Text style={[Typography.normal]}>{company.address}</Text>
           </View>
         </View>
@@ -146,7 +170,7 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.contactNumber}
           </Text>
-          <View style={{top: hp('1%')}}>
+          <View>
             <Text style={[Typography.normal]}>+60 11 6569 1999 </Text>
           </View>
         </View>
@@ -158,7 +182,7 @@ export const CompanyProfile = props => {
             height: hp('5%'),
           }}>
           <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
-          <View style={{top: hp('1%')}}>
+          <View>
             <Text style={[Typography.normal]}>citygrocerkk@gmail.com</Text>
           </View>
         </View>
@@ -172,7 +196,7 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.bankDetails}
           </Text>
-          <View style={{top: hp('1%')}}>
+          <View>
             <Text style={[Typography.normal]}>13812641234146194672136417</Text>
           </View>
         </View>

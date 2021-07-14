@@ -27,6 +27,7 @@ import {
 import {API} from 'aws-amplify';
 import {DismissKeyboard} from '_components';
 import Strings from '_utils';
+import {goodsTaskForRetailerByDate} from '../../../../graphql/queries';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -430,6 +431,8 @@ const Receive = props => {
 };
 
 export const ReceiveList = props => {
+  const [refreshing, setRefreshing] = useState(false);
+  console.log('render flatlist');
   return (
     <View>
       <FlatList
@@ -437,6 +440,36 @@ export const ReceiveList = props => {
         data={props.receiveTask}
         extraData={props.trigger}
         numColumns={1}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={async () => {
+              setRefreshing(true);
+              try {
+                const task = await API.graphql({
+                  query: goodsTaskForRetailerByDate,
+                  variables: {
+                    retailerID: props.user.retailerCompanyID,
+                    sortDirection: 'ASC',
+                  },
+                });
+                console.log(task.data.goodsTaskForRetailerByDate.items);
+                props.setReceiveTask(
+                  task.data.goodsTaskForRetailerByDate.items,
+                );
+                console.log('goods task');
+              } catch (e) {
+                console.log(e);
+              }
+              if (props.trigger) {
+                props.setTrigger(false);
+              } else {
+                props.setTrigger(true);
+              }
+              setRefreshing(false);
+            }}
+          />
+        }
         renderItem={({item}) => {
           return (
             <Receive

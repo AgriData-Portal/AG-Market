@@ -27,6 +27,7 @@ const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
   return now;
 };
+import {paymentsTaskForRetailerByDate} from '../../../../graphql/queries';
 
 //Retailer upload receipt
 const UploadReceiptModal = props => {
@@ -387,12 +388,41 @@ const UploadReceipt = props => {
 };
 
 export const UploadReceiptList = props => {
+  const [refreshing, setRefreshing] = useState(false);
   return (
     <View>
       <FlatList
         keyExtractor={item => item.id}
         data={props.UploadReceiptList}
         numColumns={1}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={async () => {
+              setRefreshing(true);
+              try {
+                const task = await API.graphql({
+                  query: paymentsTaskForRetailerByDate,
+                  variables: {
+                    retailerID: props.user.retailerCompanyID,
+                    sortDirection: 'ASC',
+                  },
+                });
+                console.log(task.data.paymentsTaskForRetailerByDate.items);
+                props.setPayTask(task.data.paymentsTaskForRetailerByDate.items);
+                console.log('payment task');
+              } catch (e) {
+                console.log(e);
+              }
+              if (props.trigger) {
+                props.setTrigger(false);
+              } else {
+                props.setTrigger(true);
+              }
+              setRefreshing(false);
+            }}
+          />
+        }
         renderItem={({item}) => {
           return (
             <UploadReceipt
