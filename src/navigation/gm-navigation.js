@@ -161,23 +161,10 @@ const GMNavigation = props => {
         name="companyprofile"
         options={({route, navigation}) => ({
           title: Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                right: wp('4%'),
-                position: 'absolute',
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                onPress={() => navigation.navigate('editcompany')}
-              />
-            </TouchableOpacity>
           ),
         })}>
         {screenProps => <CompanyProfile {...screenProps} user={props.user} />}
@@ -186,7 +173,7 @@ const GMNavigation = props => {
         name="editcompany"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -198,7 +185,7 @@ const GMNavigation = props => {
         name="humanresource"
         options={({route, navigation}) => ({
           title: Strings.humanResource,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -210,23 +197,10 @@ const GMNavigation = props => {
         name="personalprofile"
         options={({route, navigation}) => ({
           title: Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{
-                right: wp('4%'),
-                position: 'absolute',
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                onPress={() => navigation.navigate('editprofile')}
-              />
-            </TouchableOpacity>
           ),
         })}>
         {screenProps => <PersonalProfile {...screenProps} user={props.user} />}
@@ -235,7 +209,7 @@ const GMNavigation = props => {
         name="editprofile"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
         })}>
         {screenProps => <EditPersonal {...screenProps} user={props.user} />}

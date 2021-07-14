@@ -142,6 +142,7 @@ const Initializing = () => {
     </View>
   );
 };
+
 const App = () => {
   const [isUserLoggedIn, setUserLoggedIn] = useState('initializing');
   const [userID, setUserID] = useState(null);
