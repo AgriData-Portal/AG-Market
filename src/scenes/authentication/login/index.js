@@ -96,7 +96,7 @@ export const Login = props => {
                   width: wp('50%'),
                   left: wp('8%'),
                   top: hp('4%'),
-                  lineHeight: hp('5.5%'),
+                  lineHeight: hp('5.8%'),
                 },
               ]}>
               {Strings.welcome}
@@ -232,7 +232,7 @@ export const Login = props => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
+        {/*<TouchableOpacity
           style={{
             alignItems: 'center',
             position: 'absolute',
@@ -248,7 +248,7 @@ export const Login = props => {
           </View>
 
           <Text style={[Typography.normal]}>{Strings.logInFinger}</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>*/}
 
         <TouchableOpacity
           style={{

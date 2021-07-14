@@ -170,9 +170,9 @@ export const Store = props => {
         />
       </View>
 
-      <View style={{position: 'absolute', top: hp('80%')}}>
+      {/* <View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };
