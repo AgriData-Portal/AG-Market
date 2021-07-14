@@ -254,7 +254,7 @@ const TabbedNavigator = props => {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
           bottom: hp('0%'),
-          height: hp('11%'),
+          height: hp('9%'),
         },
       }}>
       <TabStack.Screen
