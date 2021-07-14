@@ -198,11 +198,13 @@ export const SupplierTasks = props => {
         }}>
         {task == 'claim' ? (
           <ReceivePaymentTaskList
+            user={props.user}
             data={claimTask}
             trigger={trigger}
             setTrigger={setTrigger}
             claimTask={claimTask}
             setClaimTask={setClaimTask}
+            getClaimTask={getClaimTask}
           />
         ) : (
           <SendTaskList
@@ -211,6 +213,8 @@ export const SupplierTasks = props => {
             setTrigger={setTrigger}
             sendTask={sendTask}
             setSendTask={setSendTask}
+            user={props.user}
+            getSendTask={getSendTask}
           />
         )}
       </View>
