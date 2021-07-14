@@ -23,6 +23,11 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {API} from 'aws-amplify';
+import {
+  updateRetailerCompany,
+  updateSupplierCompany,
+} from '../../../../graphql/mutations';
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -58,6 +63,65 @@ export const EditCompany = props => {
       }
     });
   }
+
+  const saveChanges = async () => {
+    if (props.user.retailerCompanyID == null) {
+      try {
+        let photo = imageSource;
+        const response = await fetch(photo.uri);
+        const blob = await response.blob();
+        console.log('FileName: \n');
+        photo.fileName = props.user.supplierCompany.name + '_logo';
+        await Storage.put(photo.fileName, blob, {
+          contentType: 'image/jpeg',
+        });
+
+        var companyProfile = await API.graphql({
+          query: updateSupplierCompany,
+          variables: {
+            input: {
+              id: props.user.supplierCompanyID,
+              address: address,
+              logo: photo.filename,
+            },
+          },
+        });
+        logo = {uri: photo.uri};
+        setSuccesfulChangesModal(true);
+      } catch (e) {
+        console.log(e);
+        console.log(props.user.supplierCompanyID);
+      }
+    } else if (props.user.supplierCompanyID == null) {
+      try {
+        let photo = imageSource;
+        const response = await fetch(photo.uri);
+        const blob = await response.blob();
+        console.log('FileName: \n');
+        photo.fileName = props.user.retailerCompany.name + '_logo';
+        await Storage.put(photo.fileName, blob, {
+          contentType: 'image/jpeg',
+        });
+
+        var companyProfile = await API.graphql({
+          query: updateRetailerCompany,
+          variables: {
+            input: {
+              id: props.user.retailerCompanyID,
+              address: address,
+              logo: photo.filename,
+            },
+          },
+        });
+        logo = {uri: photo.uri};
+        setSuccesfulChangesModal(true);
+      } catch (e) {
+        console.log(e);
+        console.log(props.user.retailerCompanyID);
+      }
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
@@ -77,7 +141,7 @@ export const EditCompany = props => {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              top: hp('-10%'),
+              top: hp('-14%'),
             }}>
             {/*<View
               style={{
@@ -276,7 +340,8 @@ export const EditCompany = props => {
                   );
                 } else {
                   try {
-                    setSuccesfulChangesModal(true);
+                    console.log('saved');
+                    saveChanges();
                   } catch {
                     e => console.log('error ' + e);
                   }

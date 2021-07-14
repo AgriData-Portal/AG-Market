@@ -107,7 +107,6 @@ const GMNavigation = props => {
           />
         )}
       </AppStack.Screen>
-
       <AppStack.Screen
         name="chatroom"
         options={({route, navigation}) => ({
@@ -156,7 +155,6 @@ const GMNavigation = props => {
           />
         )}
       </AppStack.Screen>
-
       <AppStack.Screen
         name="companyprofile"
         options={({route, navigation}) => ({
@@ -295,7 +293,6 @@ const TabbedNavigator = props => {
           />
         )}
       </TabStack.Screen>
-
       <TabStack.Screen
         name="orders"
         options={{
@@ -362,7 +359,6 @@ const TabbedNavigator = props => {
           />
         )}
       </TabStack.Screen>
-
       <TabStack.Screen
         name="marketplace"
         options={{
