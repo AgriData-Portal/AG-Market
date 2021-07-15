@@ -66,6 +66,54 @@ function getHeaderTitle(route) {
 
 const GMNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(false);
+  const updateFavourites = async (userDetails, itemId, storeName) => {
+    try {
+      var currentFavList = userDetails.retailerCompany.favouriteStores;
+      if (currentFavList != null) {
+        currentFavList.push({id: itemId, name: storeName});
+        var updated = await API.graphql({
+          query: updateRetailerCompany,
+          variables: {
+            input: {
+              id: userDetails.retailerCompanyID,
+              favouriteStores: currentFavList,
+            },
+          },
+        });
+        setIsFavourite(true);
+        console.log('success');
+      } else {
+        var updated = await API.graphql({
+          query: updateRetailerCompany,
+          variables: {
+            input: {
+              id: userDetails.retailerCompanyID,
+              favouriteStores: [{id: itemId, name: storeName}],
+            },
+          },
+        });
+        setIsFavourite(true);
+        console.log('success');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const checkIsFavourite = (userDetails, itemId) => {
+    var tempList = userDetails.retailerCompany.favouriteStores;
+
+    if (tempList != null) {
+      tempList = tempList.filter(item => {
+        return item.id == itemId;
+      });
+      if (tempList.length == 0) {
+        return false;
+      } else return true;
+    } else {
+      return null;
+    }
+  };
   return (
     <AppStack.Navigator>
       <AppStack.Screen
@@ -105,7 +153,7 @@ const GMNavigation = props => {
             </TouchableOpacity>
           ),
           headerTitleAlign: 'center',
-          headerRight: () => <ChatInfo />,
+          // headerRight: () => <ChatInfo />,
           headerLeft: () => (
             <HeaderBackButton
               onPress={() => [
@@ -139,6 +187,40 @@ const GMNavigation = props => {
                   name={route.params.storeName}
                   id={route.params.itemId}></DetailsModal>
               </Modal>
+            </View>
+          ),
+          headerRight: () => (
+            <View>
+              {checkIsFavourite(
+                (userDetails = props.user),
+                (itemId = route.params.itemId),
+              ) || isFavourite ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    right: wp('5%'),
+                    top: hp('4%'),
+                  }}>
+                  <Icon color="gold" name="star-outline" size={wp('7%')} />
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    updateFavourites(
+                      (userDetails = props.user),
+                      (itemId = route.params.itemId),
+                      (storeName = route.params.storeName),
+                      (setIsFavourite = setIsFavourite()),
+                    )
+                  }
+                  style={{
+                    position: 'absolute',
+                    right: wp('5%'),
+                    top: hp('4%'),
+                  }}>
+                  <Icon name="star-outline" size={wp('7%')} />
+                </TouchableOpacity>
+              )}
             </View>
           ),
         })}>

@@ -3,7 +3,7 @@ import {SafeAreaView, Text, View, TouchableOpacity, Image} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Searchbar} from '../../components';
-import {NavBar} from '_components';
+import {LoadingModal} from '_components';
 import {MarketplaceList, FavouritesList} from './components';
 import {API} from 'aws-amplify';
 import {
@@ -16,7 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {MenuButton} from '_components';
+import Modal from 'react-native-modal';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -24,24 +24,15 @@ export const Marketplace = props => {
   const [searchValue, setSearchValue] = useState('');
   const [initialRender, setInitialRender] = useState(true);
   const [searchPressed, setSearchPressed] = useState(false);
-  const [favourites, setFavourites] = useState(
-    props.user.retailerCompany.favouriteStores,
-  );
-  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
   console.log('marketplace initial render' + props.user);
-  const fetchFavourites = async () => {
-    const favourites = await API.graphql({
-      query: getRetailerCompany,
-      variables: {id: props.user.retailerCompanyID},
-    });
-  };
-
   const fetchProducts = async () => {
+    setLoading(true);
     try {
       const products = await API.graphql({
         query: productListingByNameStartingWithLowestPrice,
         variables: {
-          productName: searchValue.toUpperCase(),
+          productName: searchValue.toUpperCase().trim(),
           sortDirection: 'ASC',
         },
       });
@@ -59,6 +50,7 @@ export const Marketplace = props => {
       console.log(e);
       console.log("there's a problem");
     }
+    setLoading(false);
   };
   useEffect(() => {
     if (searchPressed && choice == 'product') {
@@ -74,11 +66,6 @@ export const Marketplace = props => {
     setSearchValue('');
   }, [choice]);
 
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await fetchProducts();
-    setRefreshing(false);
-  };
   return (
     <SafeAreaView
       style={{
@@ -87,27 +74,6 @@ export const Marketplace = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      {/*<View
-        style={{
-          flexDirection: 'row',
-          width: wp('100%'),
-          height: hp('6%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            top: hp('1%'),
-            left: wp('5%'),
-          }}>
-          <MenuButton
-            navigation={props.navigation}
-            updateAuthState={props.updateAuthState}
-            userType={props.user.role}></MenuButton>
-        </View>
-        <Text style={[Typography.header, {}]}>{Strings.localMarketplace}</Text>
-        </View>*/}
       <View style={{top: hp('1%')}}>
         <Searchbar
           setSearchPressed={setSearchPressed}
@@ -218,10 +184,9 @@ export const Marketplace = props => {
           />
         </View>
       )}
-
-      {/*<View style={{position: 'absolute', top: hp('80%')}}>
-        <NavBar navigation={props.navigation} />
-        </View>*/}
+      <Modal isVisible={loading}>
+        <LoadingModal />
+      </Modal>
     </SafeAreaView>
   );
 };
