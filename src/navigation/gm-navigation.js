@@ -338,6 +338,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -379,7 +380,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -404,6 +405,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -445,7 +447,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -473,6 +475,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -517,7 +520,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -542,6 +545,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -583,7 +587,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -608,6 +612,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',

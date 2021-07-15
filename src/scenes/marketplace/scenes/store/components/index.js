@@ -631,7 +631,7 @@ const PurchaseOrder = props => {
         style={{
           bottom: hp('2%'),
           backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('65%'),
+          width: wp('70%'),
           alignItems: 'center',
           justifyContent: 'center',
           height: hp('5%'),
@@ -645,7 +645,7 @@ const PurchaseOrder = props => {
         onPress={() => sendPO()}>
         <View style={{flexDirection: 'row'}}>
           <Text style={[Typography.normal]}>{Strings.sendPOtoSupplier}</Text>
-          <View style={{right: wp('-2%')}}>
+          <View style={{right: wp('-1%')}}>
             <Icon name="paper-plane-outline" size={wp('5%')}></Icon>
           </View>
         </View>

@@ -178,4 +178,9 @@ export default {
   analyticsSmall: 'Analytics',
   bankDetails: 'Bank Details',
   rating: 'Ratings',
+  orderCreated: 'Order Created',
+  supplierHasNot: 'Supplier has not indicated a delivery date yet.',
+  seller: 'Seller',
+  sendBefore: 'Send Before',
+  orderedOn: 'Ordered On',
 };

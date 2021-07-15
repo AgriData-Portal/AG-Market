@@ -179,4 +179,9 @@ export default {
   analyticsSmall: 'Analisis',
   bankDetails: 'Butiran Bank',
   rating: 'Penilaian',
+  orderCreated: 'Pesanan Dicipta',
+  supplierHasNot: 'Pembekal belum menunjukkan tarikh penghantaran.',
+  seller: 'Penjual',
+  sendBefore: 'Hantar Sebelum',
+  orderedOn: '',
 };
