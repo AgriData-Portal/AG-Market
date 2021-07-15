@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BackButton} from '_components/buttons';
@@ -27,6 +28,7 @@ import {
 export const HumanResource = props => {
   const [teamList, setTeamList] = useState([]);
   const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
+  const [trigger, setTrigger] = useState(false);
   const fetchMembers = async () => {
     if (props.user.retailerCompanyID == null) {
       console.log('supplier');
@@ -98,10 +100,16 @@ export const HumanResource = props => {
             <Text style={[Typography.placeholderSmall]}>{Strings.team}</Text>
           </View>
           <View style={{height: hp('30%'), top: hp('3%')}}>
-            <ParticipantList data={teamList} />
+            <ParticipantList
+              data={teamList}
+              trigger={trigger}
+              setTrigger={setTrigger}
+              user={props.user}
+              setTeamList={setTeamList}
+            />
           </View>
           <View style={{top: hp('8%'), width: wp('85%'), alignItems: 'center'}}>
-            <AddEmployeeButton user={props.user} />
+            <AddEmployeeButton user={props.user} setTeamList={setTeamList} />
           </View>
         </View>
         <TouchableOpacity
@@ -134,7 +142,7 @@ export const HumanResource = props => {
         </TouchableOpacity>
         <Modal
           isVisible={succesfulChangesModal}
-          onBackdropPress={() => setSuccesfulChangesModal(false)}>
+          onBackdropPress={() => [setSuccesfulChangesModal(false)]}>
           <SuccesfulChangesModal
             setSuccesfulChangesModal={setSuccesfulChangesModal}
             navigation={props.navigation}
@@ -271,6 +279,7 @@ const ConfirmRemoveModal = props => {
 
 const ParticipantList = props => {
   const [confirmRemoveModal, setConfirmRemoveModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const Seperator = () => {
     return (
       <View
@@ -284,7 +293,47 @@ const ParticipantList = props => {
     <FlatList
       numColumns={1}
       data={props.data}
+      extraData={props.trigger}
       ItemSeparatorComponent={Seperator}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={async () => {
+            setRefreshing(true);
+            if (props.user.retailerCompanyID == null) {
+              console.log('supplier');
+              try {
+                const members = await API.graphql({
+                  query: getUsersBySupplierCompany,
+                  variables: {supplierCompanyID: props.user.supplierCompanyID},
+                });
+                console.log(members.data.getUsersBySupplierCompany.items);
+                props.setTeamList(members.data.getUsersBySupplierCompany.items);
+              } catch (e) {
+                console.log(e);
+              }
+            } else {
+              console.log('retailer');
+              try {
+                const members = await API.graphql({
+                  query: getUsersByRetailerCompany,
+                  variables: {retailerCompanyID: props.user.retailerCompanyID},
+                });
+                console.log(members.data.getUsersByRetailerCompany.items);
+                props.setTeamList(members.data.getUsersByRetailerCompany.items);
+              } catch (e) {
+                console.log(e);
+              }
+            }
+            if (props.trigger) {
+              props.setTrigger(false);
+            } else {
+              props.setTrigger(true);
+            }
+            setRefreshing(false);
+          }}
+        />
+      }
       renderItem={({item}) => {
         console.log(item);
         return <Participant name={item.name} role={item.role} />;

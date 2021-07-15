@@ -53,7 +53,7 @@ export const ForgetPassword = props => {
 
           <View
             style={{
-              height: hp('32%'),
+              height: hp('35%'),
               width: wp('80%'),
               backgroundColor: 'white',
               borderRadius: 20,
@@ -89,7 +89,7 @@ export const ForgetPassword = props => {
                   }}
                   placeholderTextColor={Colors.GRAY_DARK}
                   placeholder={Strings.phoneNumber}
-                  style={{height: hp('5%')}}></TextInput>
+                  style={{height: hp('6%')}}></TextInput>
               </View>
             </View>
             <TouchableOpacity

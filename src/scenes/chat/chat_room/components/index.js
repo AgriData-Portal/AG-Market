@@ -32,7 +32,7 @@ import {
 } from '../../../../graphql/queries';
 
 var dayjs = require('dayjs');
-import {DismissKeyboardView} from '_components';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -42,7 +42,6 @@ import Strings from '_utils';
 import {ChatBubbleList} from './chat-bubbles';
 import {ChatInfo} from './chat-info';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {HomeButton} from '_components';
 
 export {ChatBubbleList, ChatInfo};
 
@@ -54,8 +53,8 @@ export const MessageInput = props => {
   function selectImage() {
     let options = {
       mediaType: 'photo',
-      maxWidth: 256,
-      maxHeight: 256,
+      maxWidth: 512,
+      maxHeight: 512,
     };
 
     launchImageLibrary(options, response => {
@@ -92,7 +91,7 @@ export const MessageInput = props => {
           input: {
             id: props.chatGroupID,
             mostRecentMessage: message,
-            mostRecentMessageSender: props.user,
+            mostRecentMessageSender: props.userName,
           },
         },
       });
@@ -113,7 +112,6 @@ export const MessageInput = props => {
           height: hp('7%'),
           borderRadius: 40,
           backgroundColor: Colors.GRAY_LIGHT,
-
           alignItems: 'center',
           width: wp('80%'),
         }}>
@@ -130,7 +128,6 @@ export const MessageInput = props => {
             borderBottomColor: 'transparent',
             marginHorizontal: wp('3%'),
             color: 'black',
-            top: hp('1%'),
           }}
         />
         <TouchableOpacity
@@ -207,7 +204,7 @@ const PreviewImageModal = props => {
       const response = await fetch(photo);
       const blob = await response.blob();
       console.log('FileName: \n');
-      fileName = props.chatGroupID + dayjs().format('YYYYMMDDhhmmss');
+      var fileName = props.chatGroupID + dayjs().format('YYYYMMDDhhmmss');
       await Storage.put(fileName, blob, {
         contentType: 'image/jpeg',
       });
@@ -230,7 +227,7 @@ const PreviewImageModal = props => {
           input: {
             id: props.chatGroupID,
             mostRecentMessage: 'Image',
-            mostRecentMessageSender: props.user,
+            mostRecentMessageSender: props.userName,
           },
         },
       });
@@ -239,7 +236,8 @@ const PreviewImageModal = props => {
       messages.push(newMessage.data.createMessage);
       messages = messages.reverse();
       props.setMessages(messages); */
-      setMessage('');
+
+      props.setImageModal(false);
     } catch (e) {
       console.log(e);
     }

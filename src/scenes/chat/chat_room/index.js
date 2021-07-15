@@ -8,16 +8,14 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+
+import {LoadingModal} from '_components';
 import {ChatBubbleList, MessageInput, ChatInfo} from './components';
 import BackgroundTimer from 'react-native-background-timer';
 import {messagesInChatByDate} from '../../../graphql/queries';
 import {onCreateMessage} from '../../../graphql/subscriptions';
-import {
-  createChatGroupUsers,
-  updateChatGroupUsers,
-} from '../../../graphql/mutations';
+import Modal from 'react-native-modal';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -26,16 +24,20 @@ import Strings from '_utils';
 
 import {API, graphqlOperation} from 'aws-amplify';
 
-var dayjs = require('dayjs');
-
 export const ChatRoom = props => {
-  const type = props.type;
+  if (props.user.retailerCompanyID == null) {
+    var type = 'supplier';
+  } else {
+    var type = 'retailer';
+  }
+
   const {itemID, chatName} = props.route.params; //props.route.params; //chatgroupid
   console.log('chatID: ' + itemID);
   const [messages, setMessages] = useState(null);
   const [appState, setAppState] = useState(AppState.currentState);
   const [nextToken, setNextToken] = useState(null);
   const [refresh, setRefresh] = useState(0);
+  const [loading, setLoading] = useState(false);
   const handleAppStateChange = state => {
     setAppState(state);
   };
@@ -82,12 +84,6 @@ export const ChatRoom = props => {
         console.log(newMessage.senderID, props.user.id);
 
         setMessages(messages => [newMessage, ...messages]);
-        /*var messageList = messages;
-
-        messageList = messageList.reverse();
-        messageList.push(newMessage);
-        messageList = messageList.reverse();
-        setMessages(messageList);*/
       },
     });
 
@@ -131,35 +127,8 @@ export const ChatRoom = props => {
     }
   }, [appState]);
 
-  const updateLastSeen = async () => {
-    const uniqueID = props.user.id + itemID;
-    try {
-      const updatedLastSeen = await API.graphql({
-        query: updateChatGroupUsers,
-        variables: {input: {id: uniqueID, lastOnline: dayjs()}},
-      });
-      console.log('updated last seen');
-      props.navigation.navigate('inbox');
-    } catch (e) {
-      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        console.log('no special connection created, creating one now');
-        const createLastSeen = await API.graphql({
-          query: createChatGroupUsers,
-          variables: {
-            input: {
-              id: uniqueID,
-              lastOnline: dayjs(),
-              userID: props.user.id,
-              chatGroupID: itemID,
-            },
-          },
-        });
-        props.navigation.navigate('inbox');
-      }
-    }
-  };
-
   const getMoreMessages = async () => {
+    setLoading(true);
     try {
       console.log(nextToken);
       const message = await API.graphql({
@@ -181,6 +150,7 @@ export const ChatRoom = props => {
       console.log(e);
       console.log("there's a problem");
     }
+    setLoading(false);
   };
   return (
     <SafeAreaView
@@ -284,7 +254,6 @@ export const ChatRoom = props => {
             setRefresh={setRefresh}
           />
         </View>
-
         <View style={{top: hp('3%')}}>
           <MessageInput
             userID={props.user.id}
@@ -294,6 +263,9 @@ export const ChatRoom = props => {
             messages={messages}></MessageInput>
         </View>
       </KeyboardAvoidingView>
+      <Modal isVisible={loading}>
+        <LoadingModal />
+      </Modal>
     </SafeAreaView>
   );
 };

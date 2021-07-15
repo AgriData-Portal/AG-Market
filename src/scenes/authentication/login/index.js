@@ -43,6 +43,7 @@ export const Login = props => {
 
       //props.updateAuthState('loggedIn'); //fucking weird
     } catch (error) {
+      setLoading(false);
       if (error.code == 'UserNotConfirmedException') {
         setVerified(true);
       } else if (error.code == 'UserNotFoundException') {

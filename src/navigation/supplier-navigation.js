@@ -133,7 +133,7 @@ const SupplierNavigation = props => {
             </View>
           ),
           headerTitleAlign: 'center',
-          headerRight: () => <ChatInfo />,
+          // headerRight: () => <ChatInfo />,
           headerLeft: () => (
             <HeaderBackButton
               onPress={() => [

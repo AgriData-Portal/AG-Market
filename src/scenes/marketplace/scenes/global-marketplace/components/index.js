@@ -13,7 +13,7 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Rating} from 'react-native-ratings';
-import {ChatButton} from '../../../components';
+
 import {API, Storage} from 'aws-amplify';
 import {
   createMessage,
@@ -50,7 +50,7 @@ export const ProductCard = props => {
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('36%'),
-        height: hp('20%'),
+        height: hp('25%'),
         margin: wp('5%'),
         borderRadius: 20,
         elevation: 3,
@@ -204,6 +204,7 @@ export const ProductPopUp = props => {
       });
       console.log('chat group already exist');
     } catch (e) {
+      console.log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
           const chatGroup = {
@@ -372,9 +373,12 @@ export const ProductPopUp = props => {
               left: wp('25%'),
               top: hp('2%'),
             }}>
-            <ChatButton
-              size={wp('8%')}
-              onPress={() => sendProductInquiry()}></ChatButton>
+            <TouchableOpacity>
+              <Icon
+                name="chatbox-outline"
+                size={wp('8%')}
+                onPress={() => sendProductInquiry()}></Icon>
+            </TouchableOpacity>
           </View>
           <Text
             style={[

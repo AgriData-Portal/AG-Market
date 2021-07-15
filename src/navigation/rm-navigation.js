@@ -108,7 +108,7 @@ const RMNavigation = props => {
             </TouchableOpacity>
           ),
           headerTitleAlign: 'center',
-          headerRight: () => <ChatInfo />,
+          // headerRight: () => <ChatInfo />,
           headerLeft: () => (
             <HeaderBackButton
               onPress={() => [

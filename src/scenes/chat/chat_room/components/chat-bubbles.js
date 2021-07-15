@@ -540,26 +540,8 @@ const ChatBubble = props => {
 };
 
 export const ChatBubbleList = props => {
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = () => {
-    console.log('refreshing');
-    setRefreshing(true);
-    props.setRefresh(state => state + 1);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  };
   return (
     <View>
-      {/* <ScrollView
-        contentContainerStyle={{
-          flexDirection: 'row',
-          alignSelf: 'flex-end',
-          flexGrow: 1,
-        }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }> */}
       <FlatList
         inverted={true}
         keyExtractor={item => item.id}
@@ -569,7 +551,7 @@ export const ChatBubbleList = props => {
           props.setRefresh(state => state + 1);
           console.log('endReached');
         }}
-        onEndReachedThreshold={0.4}
+        onEndReachedThreshold={0.6}
         renderItem={item => {
           return (
             <ChatBubble
