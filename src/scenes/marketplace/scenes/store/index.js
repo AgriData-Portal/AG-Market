@@ -158,7 +158,7 @@ export const Store = props => {
         style={{
           position: 'absolute',
           right: wp('5%'),
-          bottom: hp('23%'),
+          bottom: hp('18%'),
         }}>
         <PurchaseOrderButton
           purchaseOrder={purchaseOrder}

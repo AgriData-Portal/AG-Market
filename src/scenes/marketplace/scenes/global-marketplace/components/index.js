@@ -8,7 +8,7 @@ import {
   Linking,
   RefreshControl,
 } from 'react-native';
-import {CloseButton} from '_components';
+import {CloseButton, SuccessfulModal} from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -100,7 +100,9 @@ export const ProductCard = props => {
 export const MarketplaceList = props => {
   const OpenWhatsapp = () => {
     let url =
-      'https://wa.me/60128388188?text=Hi%20I%20am%20interested%20to%20purchase%20xxx%20but%20your%20platform%20does%20not%20currently%20have%20it.%20Please%20help%20me%20source%20it.%20Thank%20you';
+      'https://wa.me/601165691998?text=Hi%20I%20am%20interested%20to%20purchase%20' +
+      props.searchValue +
+      '%20but%20your%20platform%20does%20not%20currently%20have%20it.%20Please%20help%20me%20source%20it.%20Thank%20you';
     Linking.openURL(url)
       .then(data => {
         console.log('WhatsApp Opened successfully ' + data); //<---Success
@@ -187,26 +189,25 @@ export const MarketplaceList = props => {
 };
 
 export const ProductPopUp = props => {
-  const createProductInquiry = async item => {
-    console.log('here');
-    //try to send a chat to the chatroom
-    {
-      const chatGroups = props.chatGroups;
-      const chatGroup = props.user.retailerCompanyID + props.supplierID;
-      const chatGroupExists = chatGroups.filter(item => item.id == chatGroup);
-
-      const inquiry = {
-        chatGroupID: chatGroup,
-        type: 'inquiry',
-        content: JSON.stringify(item),
-        sender: props.user.name,
-        senderID: props.user.id,
-      };
-      if (!chatGroupExists.length) {
-        console.log(chatGroupExists + 'chat group does not exist');
+  const [successfulModal, setSuccessfulModal] = useState(false);
+  const sendProductInquiry = async () => {
+    try {
+      const updateChat = await API.graphql({
+        query: updateChatGroup,
+        variables: {
+          input: {
+            id: props.user.retailerCompanyID + props.supplierID,
+            mostRecentMessage: 'Product Inquiry',
+            mostRecentMessageSender: props.user.name,
+          },
+        },
+      });
+      console.log('chat group already exist');
+    } catch (e) {
+      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
           const chatGroup = {
-            id: chatGroup,
+            id: props.user.retailerCompanyID + props.supplierID,
             name: props.user.retailerCompany.name + '+' + props.supplier.name,
             retailerID: props.user.retailerCompanyID,
             supplierID: props.supplierID,
@@ -219,39 +220,41 @@ export const ProductPopUp = props => {
             variables: {input: chatGroup},
           });
           console.log(createdChatGroup);
-        } catch {
-          e => console.log(e);
+        } catch (e) {
+          console.log(e.errors[0].errorType);
         }
       } else {
-        console.log(chatGroupExists + 'chat group already exist');
-        try {
-          const updateChat = await API.graphql({
-            query: updateChatGroup,
-            variables: {
-              input: {
-                id: chatGroup,
-                mostRecentMessage: 'Purchase Order',
-                mostRecentMessageSender: props.user.name,
-              },
-            },
-          });
-        } catch {
-          e => console.log(e);
-        }
+        console.log(e.errors[0].errorType);
       }
+    }
 
-      console.log('creating product inquiry');
-      try {
-        const message = await API.graphql({
-          query: createMessage,
-          variables: {input: inquiry},
-        });
-        console.log(message.data.createMessage);
+    console.log('creating product inquiry');
 
-        setpoSuccessfulModal(true);
-      } catch {
-        e => console.log(e);
-      }
+    const inquiry = {
+      chatGroupID: props.user.retailerCompanyID + props.supplierID,
+      type: 'inquiry',
+      content:
+        props.productName +
+        '+' +
+        props.lowPrice +
+        '-' +
+        props.highPrice +
+        '+' +
+        props.variety +
+        '+' +
+        props.grade,
+      sender: props.user.name,
+      senderID: props.user.id,
+    };
+    try {
+      const message = await API.graphql({
+        query: createMessage,
+        variables: {input: inquiry},
+      });
+      console.log(message.data.createMessage);
+      setSuccessfulModal(true);
+    } catch {
+      e => console.log(e);
     }
   };
   return (
@@ -316,6 +319,7 @@ export const ProductPopUp = props => {
               onPress={() =>
                 props.navigation.navigate('store', {
                   itemId: props.supplierID,
+                  storeName: props.supplier.name,
                 })
               }
               style={{
@@ -370,17 +374,7 @@ export const ProductPopUp = props => {
             }}>
             <ChatButton
               size={wp('8%')}
-              onPress={() =>
-                createProductInquiry({
-                  productName: props.productName,
-                  priceRange:
-                    props.lowPrice.toString() +
-                    ' - ' +
-                    props.highPrice.toString(),
-                  variety: props.variety,
-                  grade: props.grade,
-                })
-              }></ChatButton>
+              onPress={() => sendProductInquiry()}></ChatButton>
           </View>
           <Text
             style={[
@@ -403,6 +397,11 @@ export const ProductPopUp = props => {
           </Text>
         </View>
       </View>
+      <Modal
+        isVisible={successfulModal}
+        onBackdropPress={() => setSuccessfulModal(false)}>
+        <SuccessfulModal text="You have successfully sent an inquiry to the supplier. Go to chats to continue your conversation" />
+      </Modal>
     </View>
   );
 };

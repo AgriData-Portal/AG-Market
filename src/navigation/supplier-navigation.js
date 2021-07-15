@@ -114,13 +114,7 @@ const SupplierNavigation = props => {
         name="chatroom"
         options={({route, navigation}) => ({
           headerTitle: () => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('store', {
-                  itemId: route.params.itemID.slice(36, 72),
-                  storeName: route.params.chatName,
-                })
-              }>
+            <TouchableOpacity onPress={() => console.log('i am supplier')}>
               <Text style={[Typography.header]}>{route.params.chatName}</Text>
             </TouchableOpacity>
           ),

@@ -126,11 +126,11 @@ export const MessageInput = props => {
           value={message}
           style={{
             width: wp('74%'),
-            height: hp('5%'),
+            height: hp('6%'),
             borderBottomColor: 'transparent',
             marginHorizontal: wp('3%'),
             color: 'black',
-            top: hp('2%'),
+            top: hp('1%'),
           }}
         />
         <TouchableOpacity
@@ -142,7 +142,7 @@ export const MessageInput = props => {
             width: hp('8%'),
 
             left: wp('35%'),
-            bottom: hp('3%'),
+            bottom: hp('4.5%'),
 
             shadowColor: '#000',
             shadowOffset: {

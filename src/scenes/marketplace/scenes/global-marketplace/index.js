@@ -193,8 +193,8 @@ export const Marketplace = props => {
       {choice == 'favourites' ? (
         <View
           style={{
-            width: wp('90%'),
-            height: hp('100%'),
+            width: wp('95%'),
+            height: hp('90%'),
             top: hp('1%'),
           }}>
           <FavouritesList
@@ -205,8 +205,8 @@ export const Marketplace = props => {
       ) : (
         <View
           style={{
-            width: wp('93%'),
-            height: hp('80%'),
+            width: wp('95%'),
+            height: hp('90%'),
             top: hp('1%'),
           }}>
           <MarketplaceList
@@ -214,6 +214,7 @@ export const Marketplace = props => {
             productList={productsList}
             navigation={props.navigation}
             user={props.user}
+            searchValue={searchValue}
           />
         </View>
       )}

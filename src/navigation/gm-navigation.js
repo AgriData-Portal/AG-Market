@@ -1,34 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
-  AccountsDashboard, //done
-  RetailManagerDashboard, // done
-  GeneralManagerDashboard, //done
   Marketplace, //done
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  EmployeeDashboard, //done
-  OwnerDashboard, //done
   Orders, //Done
-  SupplierStore, // done most
-  SupplierTasks, //done
   RetailerTasks, //done
-  //CompanyProfile, //done
-  //EditCompany, //done
-  //HumanResource, //done
-  //PersonalProfile, //done.
-  //EditPersonal, //done.
-  //DataAnalytics,
-  Registration, //done
-  SupplierDashboard, //done
-  Login, //done
-  CreateCompany, //done
-  Landing, //done
-  Verification, //done
-  ConfirmSignUp, //done
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -115,12 +95,12 @@ const GMNavigation = props => {
         options={({route, navigation}) => ({
           headerTitle: () => (
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
                 navigation.navigate('store', {
                   itemId: route.params.itemID.slice(36, 72),
                   storeName: route.params.chatName,
-                })
-              }>
+                });
+              }}>
               <Text style={[Typography.large]}>{route.params.chatName}</Text>
             </TouchableOpacity>
           ),

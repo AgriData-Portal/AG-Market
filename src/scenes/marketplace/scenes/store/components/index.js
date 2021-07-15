@@ -71,10 +71,14 @@ const ProductCard = props => {
           borderRadius: 100,
           top: Mixins.scaleHeight(10),
         }}></Image>
-      <Text style={[Typography.normal, {top: hp('3%')}]}>
+      <Text style={[Typography.normal, {top: hp('2%')}]}>
         {props.productName}
       </Text>
-      <Text style={[Typography.small, {top: hp('4%'), width: wp('20%')}]}>
+      <Text
+        style={[
+          Typography.small,
+          {top: hp('2%'), width: wp('33%'), alignSelf: 'center'},
+        ]}>
         {Strings.price}: {props.lowPrice} - {props.highPrice} /{props.siUnit}
         {'\n'}MOQ: {props.minimumQuantity} {props.siUnit}
         {'\n'}Grade: {props.grade}

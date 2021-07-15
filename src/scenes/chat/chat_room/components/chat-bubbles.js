@@ -13,7 +13,7 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {CloseButton} from '_components';
-import {API} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 import {
   createMessage,
   deleteChatGroupUsers,
@@ -36,7 +36,7 @@ var dayjs = require('dayjs');
 const ChatBubble = props => {
   const [orderQuotationModal, setOrderQuotationModal] = useState(false);
   const [purchaseOrderModal, setPurchaseOrderModal] = useState(false);
-  const [inquiryModal, setInquiryModal] = useState(false);
+  const [imageModal, setImageModal] = useState(false);
   const getInitials = name => {
     if (name) {
       let initials = name.split(' ');
@@ -420,6 +420,119 @@ const ChatBubble = props => {
             userName={props.userName}
             setOrderQuotationModal={setOrderQuotationModal}
             chatGroupID={props.chatGroupID}></OrderQuotationModal>
+        </Modal>
+      </View>
+    );
+  } else if (contentType == 'image') {
+    const [imageSource, setImageSource] = useState('');
+    const getImage = async () => {
+      try {
+        const imageURL = await Storage.get(props.content);
+        setImageSource({
+          uri: imageURL,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    useEffect(() => {
+      getImage();
+      console.log('Image...');
+    }, []);
+    return (
+      <View>
+        <View>
+          {!isMyMessage() && (
+            <View
+              style={{
+                left: wp('1%'),
+                top: hp('8%'),
+                borderColor: 'white',
+                borderWidth: 0.2,
+                width: wp('8%'),
+                height: wp('8%'),
+                position: 'absolute',
+                borderRadius: 100,
+                justifyContent: 'center',
+                backgroundColor: Colors.GRAY_WHITE,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+              }}>
+              <Text
+                style={{
+                  color: Colors.GRAY_DARK,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}>
+                {getInitials(props.sender)}
+              </Text>
+            </View>
+          )}
+        </View>
+        <View
+          style={{
+            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
+            width: wp('50%'),
+            height: hp('15%'),
+            marginLeft: isMyMessage() ? wp('40%') : 0,
+            marginRight: isMyMessage() ? 0 : wp('33%'),
+            left: isMyMessage() ? wp('5%') : wp('12%'),
+            borderRadius: 15,
+            marginTop: hp('1%'),
+          }}>
+          <TouchableOpacity
+            style={{
+              height: wp('20%'),
+              width: wp('20%'),
+            }}
+            onPress={() => {
+              setImageModal(true);
+            }}>
+            <Image
+              resizeMode="cover"
+              style={{
+                height: wp('20%'),
+                width: wp('20%'),
+                position: 'absolute',
+                top: hp('1%'),
+                left: wp('5%'),
+              }}
+              source={imageSource}
+            />
+          </TouchableOpacity>
+          <Text
+            style={[
+              Typography.small,
+              {
+                right: wp('2%'),
+                bottom: hp('0.5%'),
+                position: 'absolute',
+              },
+            ]}>
+            {createdAt}
+          </Text>
+        </View>
+        <Modal
+          isVisible={imageModal}
+          animationIn="fadeIn"
+          animationOut="fadeOut"
+          onBackdropPress={() => setImageModal(false)}>
+          <Image
+            source={imageSource}
+            resizeMode="cover"
+            style={{
+              alignSelf: 'center',
+              height: hp('75%'),
+              width: wp('75%'),
+            }}
+          />
         </Modal>
       </View>
     );
