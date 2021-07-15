@@ -284,7 +284,6 @@ export const ChatRoom = props => {
             setRefresh={setRefresh}
           />
         </View>
-
         <View style={{top: hp('3%')}}>
           <MessageInput
             userID={props.user.id}

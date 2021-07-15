@@ -50,7 +50,7 @@ export const ProductCard = props => {
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('36%'),
-        height: hp('20%'),
+        height: hp('25%'),
         margin: wp('5%'),
         borderRadius: 20,
         elevation: 3,

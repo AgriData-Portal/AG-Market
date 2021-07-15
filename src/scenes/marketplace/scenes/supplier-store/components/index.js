@@ -593,6 +593,7 @@ const ProductModal = props => {
         highPrice: parseFloat(highPrice),
         quantityAvailable: parseInt(available),
         minimumQuantity: parseInt(moq),
+        productName: props.productName,
         grade: props.grade,
         variety: props.variety,
         productPicture: props.productPicture,

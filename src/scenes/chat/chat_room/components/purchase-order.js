@@ -255,7 +255,7 @@ export const PurchaseOrder = props => {
           }}>
           <CloseButton setModal={props.setPurchaseOrderModal} />
         </View>
-        {props.type == 'supplier' ? (
+        {true ? (
           <TouchableOpacity
             onPress={() => [setOrderQuotation(true)]}
             style={{
