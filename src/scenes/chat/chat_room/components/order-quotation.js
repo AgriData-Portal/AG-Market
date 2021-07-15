@@ -29,7 +29,6 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
-var dayjs = require('dayjs');
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -144,8 +143,9 @@ export const OrderQuotationModal = props => {
         <View
           style={{
             flexDirection: 'column',
-            width: wp('90%'),
+            width: wp('100%'),
             height: hp('95%'),
+            right: wp('5%'),
             backgroundColor: Colors.GRAY_LIGHT,
             borderRadius: 15,
             alignItems: 'center',
@@ -179,7 +179,7 @@ export const OrderQuotationModal = props => {
               alignItems: 'center',
               position: 'absolute',
 
-              height: hp('40%'),
+              height: hp('45%'),
             }}>
             <QuotationList data={orderDetails.items}></QuotationList>
           </View>
@@ -331,14 +331,14 @@ const QuotationCard = props => {
     <View
       style={{
         height: hp('8%'),
-        width: wp('80%'),
+        width: wp('95%'),
         marginBottom: hp('0.5%'),
         borderBottomColor: Colors.GRAY_DARK,
         borderBottomWidth: 1,
         alignItems: 'center',
         flexDirection: 'row',
       }}>
-      <View style={{left: wp('1%'), width: wp('32%')}}>
+      <View style={{left: wp('1%'), width: wp('47%')}}>
         <Text style={[Typography.normal, {}]}>
           {props.name}
           {'\t'}
@@ -347,7 +347,13 @@ const QuotationCard = props => {
 
         <Text style={[Typography.small]}>{props.variety}</Text>
       </View>
-      <View style={{flexDirection: 'row', left: wp('5%')}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          left: wp('50%'),
+          position: 'absolute',
+          bottom: hp('4.5%'),
+        }}>
         <Text
           style={[
             Typography.normal,
@@ -360,7 +366,13 @@ const QuotationCard = props => {
           {props.siUnit}
         </Text>
       </View>
-      <View style={{flexDirection: 'row', left: wp('8%')}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          left: wp('50%'),
+          position: 'absolute',
+          bottom: hp('1.5%'),
+        }}>
         <Text
           style={[
             Typography.normal,
@@ -381,21 +393,21 @@ const QuotationCard = props => {
           ]}>
           {props.price}/{props.siUnit}
         </Text>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              textAlign: 'right',
-              top: hp('1%'),
-              left: wp('18%'),
-              position: 'absolute',
-            },
-          ]}>
-          RM
-          {parseInt(parseInt(props.quantity) * parseFloat(props.price) * 100) /
-            100}
-        </Text>
       </View>
+      <Text
+        style={[
+          Typography.normal,
+          {
+            textAlign: 'right',
+            bottom: hp('2.5%'),
+            left: wp('75%'),
+            position: 'absolute',
+          },
+        ]}>
+        RM
+        {parseInt(parseInt(props.quantity) * parseFloat(props.price) * 100) /
+          100}
+      </Text>
     </View>
   );
 };

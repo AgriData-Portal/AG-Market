@@ -33,7 +33,6 @@ import {
 } from 'react-native-responsive-screen';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Strings from '_utils';
-var dayjs = require('dayjs');
 
 export const OrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
@@ -411,7 +410,8 @@ const NewOrderQuotation = props => {
     <View
       style={{
         flexDirection: 'column',
-        width: wp('90%'),
+        width: wp('95%'),
+        right: wp('2%'),
         height: hp('95%'),
         backgroundColor: Colors.GRAY_LIGHT,
         borderRadius: 15,
@@ -466,7 +466,7 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('50%'),
+          top: hp('45%'),
           alignItems: 'center',
           height: hp('24%'),
           width: wp('80%'),
@@ -547,7 +547,7 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('52%'),
+          top: hp('48%'),
         }}>
         <TouchableOpacity
           onPress={() => [sendQuotation()]}
