@@ -31,7 +31,10 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {SuccessfulModal} from '_components/modals';
-import {getSupplierCompany} from '../../../../../graphql/queries';
+import {
+  getSupplierCompany,
+  getRetailerCompany,
+} from '../../../../../graphql/queries';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -790,50 +793,109 @@ const PurchaseOrderComponent = props => {
 
 export const DetailsModal = props => {
   const [companyDetails, setCompanyDetails] = useState([]);
-  const getStoreDetails = async () => {
-    try {
-      var storeDetails = await API.graphql({
-        query: getSupplierCompany,
-        variables: {id: props.id},
-      });
+  const [imageSource, setImageSource] = useState(null);
 
-      setCompanyDetails(storeDetails.data.getSupplierCompany);
-    } catch (e) {
-      console.log(e);
+  const getStoreDetails = async () => {
+    if (props.companyType == 'retailer') {
+      try {
+        var storeDetails = await API.graphql({
+          query: getSupplierCompany,
+          variables: {id: props.id},
+        });
+        console.log('retailer');
+        setCompanyDetails(storeDetails.data.getSupplierCompany);
+      } catch (e) {
+        console.log(e);
+      }
+    } else if (props.companyType == 'supplier') {
+      try {
+        var storeDetails = await API.graphql({
+          query: getRetailerCompany,
+          variables: {id: props.id},
+        });
+        console.log('supplier');
+        setCompanyDetails(storeDetails.data.getRetailerCompany);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
   useEffect(() => {
     getStoreDetails();
     console.log('Fetching Details');
   }, []);
+  useEffect(async () => {
+    if (companyDetails.logo) {
+      try {
+        const imageURL = await Storage.get(companyDetails.logo);
+        setImageSource({
+          uri: imageURL,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [companyDetails]);
   return (
     <View
       style={{
         backgroundColor: 'white',
         width: wp('90%'),
-        height: hp('70%'),
+        height: hp('80%'),
         borderRadius: 10,
         alignSelf: 'center',
         alignItems: 'center',
       }}>
-      <Text style={[Typography.header, {top: hp('1%')}]}>{props.name} </Text>
+      <View style={{position: 'absolute', right: hp('1%'), top: hp('1%')}}>
+        <CloseButton setModal={props.setDetailsModal} />
+      </View>
 
+      <Text style={[Typography.header, {top: hp('2%')}]}>{props.name}</Text>
+
+      <View
+        style={{
+          top: hp('4%'),
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: wp('80%'),
+          height: hp('25%'),
+        }}>
+        {imageSource == null ? (
+          <Image
+            source={require('_assets/images/company-logo.png')}
+            style={{
+              resizeMode: 'contain',
+              width: wp('80%'),
+              height: hp('20%'),
+            }}
+          />
+        ) : (
+          <Image
+            source={imageSource}
+            style={{
+              resizeMode: 'contain',
+              width: wp('80%'),
+              height: hp('20%'),
+            }}
+          />
+        )}
+      </View>
       <View
         style={{
           alignItems: 'flex-start',
           backgroundColor: Colors.GRAY_LIGHT,
           width: wp('80%'),
-          height: hp('30%'),
-          top: hp('30%'),
+          height: hp('40%'),
+          top: hp('5%'),
           borderRadius: 10,
         }}>
-        <View style={{alignItems: 'flex-start', top: hp('2%'), left: wp('5%')}}>
+        <View style={{alignItems: 'flex-start', top: hp('5%'), left: wp('5%')}}>
           <View>
             <Text style={[Typography.placeholder]}>
               {Strings.companyRegistrationNum}
             </Text>
             <Text style={[Typography.normal]}>
-              {companyDetails.registrationNumber}28391038291
+              {companyDetails.registrationNumber} 100200
             </Text>
           </View>
           <View style={{top: hp('1%')}}>

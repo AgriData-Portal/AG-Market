@@ -76,7 +76,7 @@ export const ChatList = props => {
   };
   const Footer = () => {
     return (
-      <View style={{width: Mixins.scaleWidth(340), alignItems: 'center'}}>
+      <View style={{width: wp('100%'), alignItems: 'center'}}>
         <Image source={require('_assets/images/agridata.png')}></Image>
       </View>
     );

@@ -136,8 +136,10 @@ const GMNavigation = props => {
                 isVisible={detailsModal}
                 onBackdropPress={() => setDetailsModal(false)}>
                 <DetailsModal
+                  companyType={'retailer'}
                   name={route.params.storeName}
-                  id={route.params.itemId}></DetailsModal>
+                  id={route.params.itemId}
+                  setDetailsModal={setDetailsModal}></DetailsModal>
               </Modal>
             </View>
           ),

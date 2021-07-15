@@ -40,6 +40,8 @@ import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import Modal from 'react-native-modal';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -65,6 +67,7 @@ function getHeaderTitle(route) {
 export {RMNavigation};
 
 const RMNavigation = props => {
+  const [detailsModal, setDetailsModal] = useState(false);
   return (
     <AppStack.Navigator>
       <AppStack.Screen
@@ -124,11 +127,25 @@ const RMNavigation = props => {
       <AppStack.Screen
         name="store"
         options={({route, navigation}) => ({
-          title: route.params.storeName,
-          headerTitleStyle: [Typography.header],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
+          ),
+          headerTitle: () => (
+            <View>
+              <TouchableOpacity onPress={() => setDetailsModal(true)}>
+                <Text style={[Typography.large]}>{route.params.storeName}</Text>
+              </TouchableOpacity>
+              <Modal
+                isVisible={detailsModal}
+                onBackdropPress={() => setDetailsModal(false)}>
+                <DetailsModal
+                  companyType={'retailer'}
+                  name={route.params.storeName}
+                  id={route.params.itemId}
+                  setDetailsModal={setDetailsModal}></DetailsModal>
+              </Modal>
+            </View>
           ),
         })}>
         {screenProps => (
