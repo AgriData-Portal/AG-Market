@@ -28,6 +28,7 @@ import {
   goodsTaskForSupplierByDate,
   paymentsTaskForSupplierByDate,
 } from '../../../../graphql/queries';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
