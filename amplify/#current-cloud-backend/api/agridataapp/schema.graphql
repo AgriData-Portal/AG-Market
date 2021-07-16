@@ -83,7 +83,7 @@ to add a chatgroup list per company so that we have a base truth to query/check 
 """
 type Rating {
   numberOfRatings: Int
-  CurrentRating: Float
+  currentRating: Float
 }
 
 type Address {
