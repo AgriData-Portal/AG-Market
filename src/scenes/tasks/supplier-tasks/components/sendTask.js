@@ -23,6 +23,7 @@ import {DismissKeyboard} from '_components';
 import Strings from '_utils';
 import {API} from 'aws-amplify';
 import {updateGoodsTask} from '../../../../graphql/mutations';
+import {goodsTaskForSupplierByDate} from '../../../../graphql/queries';
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 const now = () => {
@@ -56,7 +57,6 @@ export const SendTaskList = props => {
                 props.setSendTask(task.data.goodsTaskForSupplierByDate.items);
                 console.log(task.data.goodsTaskForSupplierByDate.items);
                 console.log('goods task');
-                setLoading(false);
               } catch (e) {
                 console.log(e);
               }

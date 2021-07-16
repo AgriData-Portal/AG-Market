@@ -125,7 +125,7 @@ export const MessageInput = props => {
             value={message}
             style={{
               width: wp('74%'),
-              height: hp('6%'),
+              height: hp('7%'),
               borderBottomColor: 'transparent',
               marginHorizontal: wp('3%'),
               color: 'black',

@@ -264,15 +264,17 @@ export const ChatRoom = props => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
-          Platform.OS === 'ios' ? hp('14%') : hp('17%')
+          Platform.OS === 'ios' ? hp('14%') : hp('12%')
         } /* Keyboard Offset needs to be tested against multiple phones */
         style={{
           top: hp('3%'),
+          height: hp('85%'),
           width: wp('95%'),
+          backgroundColor: 'red',
         }}>
         <View
           style={{
-            height: hp('72%'),
+            height: hp('75%'),
           }}>
           <ChatBubbleList
             data={messages}
@@ -286,7 +288,7 @@ export const ChatRoom = props => {
             setRefresh={setRefresh}
           />
         </View>
-        <View style={{top: hp('3%')}}>
+        <View style={{top: hp('2.5%')}}>
           <MessageInput
             userID={props.user.id}
             chatGroupID={itemID}

@@ -40,7 +40,7 @@ const now = () => {
 const ReceiveModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [ratingModal, setRatingModal] = useState(false);
-  const [rating, setRating] = useState(0);
+
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
     var product = item.price * item.quantity;
@@ -319,9 +319,7 @@ const ReceiveModal = props => {
       </Modal>
       <Modal isVisible={ratingModal}>
         <RatingModal
-          setRating={setRating}
           setRatingModal={setRatingModal}
-          rating={rating}
           setSuccessfulModal={setSuccessfulModal}
           supplier={props.supplier}
         />
@@ -497,6 +495,7 @@ export const ReceiveList = props => {
           />
         }
         renderItem={({item}) => {
+          console.log(item.supplier);
           return (
             <Receive
               retailer={item.retailer}
@@ -633,31 +632,40 @@ const Product = props => {
 };
 
 const RatingModal = props => {
-  if (props.supplier.rating == null) {
-    var rating = {
-      numberOfRating: 0,
-      currentRating: 0,
-    };
-  } else {
-    var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
-    var newRating =
-      (props.supplier.rating.CurrentRating *
-        props.supplier.rating.numberOfRatings +
-        props.rating) /
-      newNumberOfRating;
-  }
+  const [rating, setRating] = useState(2.5);
+
   const updateRating = async () => {
     try {
+      if (props.supplier.rating == null) {
+        var sendRating = {
+          numberOfRatings: 1,
+          currentRating: rating,
+        };
+      } else {
+        var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
+        var newRating =
+          (props.supplier.rating.currentRating *
+            props.supplier.rating.numberOfRatings +
+            rating) /
+          newNumberOfRating;
+        var sendRating = {
+          numberOfRatings: newNumberOfRating,
+          currentRating: newRating,
+        };
+      }
+      console.log(props.supplier, sendRating);
       const update = await API.graphql({
         query: updateSupplierCompany,
         variables: {
           input: {
-            id: props.supplier.supplierID,
-            numberOfRatings: newNumberOfRating,
-            currentRating: newRating,
+            id: props.supplier.id,
+            rating: sendRating,
           },
         },
       });
+      props.setRatingModal(false);
+      console.log(rating);
+      props.setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
     }
@@ -693,17 +701,12 @@ const RatingModal = props => {
           size={wp('15%')}
           reviews={['']}
           fractions={1}
-          onSwipeRating={item => [props.setRating(item), console.log(item)]}
+          onSwipeRating={item => [setRating(item)]}
           tintColor={Colors.PALE_GREEN}
         />
       </View>
       <TouchableOpacity
-        onPress={() => [
-          props.setRatingModal(false),
-          console.log(props.rating),
-          props.setSuccessfulModal(true),
-          updateRating(),
-        ]}
+        onPress={() => [updateRating()]}
         style={{
           backgroundColor: Colors.LIGHT_BLUE,
           width: wp('30%'),
