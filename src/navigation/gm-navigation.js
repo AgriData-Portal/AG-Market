@@ -120,7 +120,7 @@ const GMNavigation = props => {
         name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <MenuButton

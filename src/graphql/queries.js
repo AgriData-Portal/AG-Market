@@ -61,7 +61,7 @@ export const getUser = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         registrationNumber
         favouriteStores {
@@ -145,7 +145,7 @@ export const getUser = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         bankAccount {
           bankName
@@ -267,7 +267,7 @@ export const listUsers = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -301,7 +301,7 @@ export const listUsers = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -382,7 +382,7 @@ export const getRetailerCompany = /* GraphQL */ `
       address
       rating {
         numberOfRatings
-        CurrentRating
+        currentRating
       }
       registrationNumber
       favouriteStores {
@@ -589,7 +589,7 @@ export const listRetailerCompanys = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         registrationNumber
         favouriteStores {
@@ -704,7 +704,7 @@ export const getSupplierCompany = /* GraphQL */ `
       address
       rating {
         numberOfRatings
-        CurrentRating
+        currentRating
       }
       bankAccount {
         bankName
@@ -940,7 +940,7 @@ export const listSupplierCompanys = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         bankAccount {
           bankName
@@ -1052,7 +1052,7 @@ export const getChatGroup = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         registrationNumber
         favouriteStores {
@@ -1137,7 +1137,7 @@ export const getChatGroup = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         bankAccount {
           bankName
@@ -1291,7 +1291,7 @@ export const listChatGroups = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -1326,7 +1326,7 @@ export const listChatGroups = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -1442,7 +1442,7 @@ export const getChatGroupUsers = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -1477,7 +1477,7 @@ export const getChatGroupUsers = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -1561,7 +1561,7 @@ export const getChatGroupUsers = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -1595,7 +1595,7 @@ export const getChatGroupUsers = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -1746,7 +1746,7 @@ export const getProductListing = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         bankAccount {
           bankName
@@ -1862,7 +1862,7 @@ export const listProductListings = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -2014,7 +2014,7 @@ export const getGoodsTask = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         registrationNumber
         favouriteStores {
@@ -2099,7 +2099,7 @@ export const getGoodsTask = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         bankAccount {
           bankName
@@ -2216,7 +2216,7 @@ export const listGoodsTasks = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -2251,7 +2251,7 @@ export const listGoodsTasks = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -2320,7 +2320,7 @@ export const getPaymentTask = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         registrationNumber
         favouriteStores {
@@ -2405,7 +2405,7 @@ export const getPaymentTask = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         bankAccount {
           bankName
@@ -2516,7 +2516,7 @@ export const listPaymentTasks = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -2551,7 +2551,7 @@ export const listPaymentTasks = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -2614,7 +2614,7 @@ export const getInvoice = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         registrationNumber
         favouriteStores {
@@ -2699,7 +2699,7 @@ export const getInvoice = /* GraphQL */ `
         address
         rating {
           numberOfRatings
-          CurrentRating
+          currentRating
         }
         bankAccount {
           bankName
@@ -2817,7 +2817,7 @@ export const listInvoices = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -2852,7 +2852,7 @@ export const listInvoices = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -2941,7 +2941,7 @@ export const getUsersByRetailerCompany = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -2975,7 +2975,7 @@ export const getUsersByRetailerCompany = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3052,7 +3052,7 @@ export const getUsersBySupplierCompany = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -3086,7 +3086,7 @@ export const getUsersBySupplierCompany = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3151,7 +3151,7 @@ export const getChatGroupsContainingRetailersByUpdatedAt = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -3186,7 +3186,7 @@ export const getChatGroupsContainingRetailersByUpdatedAt = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3277,7 +3277,7 @@ export const getChatGroupsContainingSuppliersByUpdatedAt = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -3312,7 +3312,7 @@ export const getChatGroupsContainingSuppliersByUpdatedAt = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3432,7 +3432,7 @@ export const productListingByRetailer = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3505,7 +3505,7 @@ export const productListingByNameStartingWithLowestPrice = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3608,7 +3608,7 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -3643,7 +3643,7 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3717,7 +3717,7 @@ export const goodsTaskForSupplierByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -3752,7 +3752,7 @@ export const goodsTaskForSupplierByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3800,7 +3800,7 @@ export const goodsTaskForSupplierByDate = /* GraphQL */ `
 export const paymentsTaskForRetailerByDate = /* GraphQL */ `
   query PaymentsTaskForRetailerByDate(
     $retailerID: ID
-    $payBeforeCreatedAt: ModelPaymentTaskPaymentTasksByRetailerCompositeKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPaymentTaskFilterInput
     $limit: Int
@@ -3808,7 +3808,7 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
   ) {
     paymentsTaskForRetailerByDate(
       retailerID: $retailerID
-      payBeforeCreatedAt: $payBeforeCreatedAt
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -3826,7 +3826,7 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -3861,7 +3861,7 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -3903,7 +3903,7 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
 export const paymentsTaskForSupplierByDate = /* GraphQL */ `
   query PaymentsTaskForSupplierByDate(
     $supplierID: ID
-    $payBeforeCreatedAt: ModelPaymentTaskPaymentTasksBySupplierCompositeKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPaymentTaskFilterInput
     $limit: Int
@@ -3911,7 +3911,7 @@ export const paymentsTaskForSupplierByDate = /* GraphQL */ `
   ) {
     paymentsTaskForSupplierByDate(
       supplierID: $supplierID
-      payBeforeCreatedAt: $payBeforeCreatedAt
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -3929,7 +3929,7 @@ export const paymentsTaskForSupplierByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -3964,7 +3964,7 @@ export const paymentsTaskForSupplierByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -4032,7 +4032,7 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -4067,7 +4067,7 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName
@@ -4142,7 +4142,7 @@ export const invoiceForSupplierByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           registrationNumber
           favouriteStores {
@@ -4177,7 +4177,7 @@ export const invoiceForSupplierByDate = /* GraphQL */ `
           address
           rating {
             numberOfRatings
-            CurrentRating
+            currentRating
           }
           bankAccount {
             bankName

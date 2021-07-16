@@ -71,36 +71,37 @@ const UploadReceiptModal = props => {
         }}>
         <CloseButton setModal={props.setUploadReceiptModal} />
       </View>
+
+      <Text
+        style={[
+          Typography.header,
+          {
+            position: 'absolute',
+            fontFamily: 'Poppins-SemiBold',
+            top: hp('5%'),
+            left: wp('5%'),
+          },
+        ]}>
+        {Strings.paymentAlert}
+      </Text>
       <Text
         style={[
           Typography.placeholder,
           {
             position: 'absolute',
-            top: hp('9%'),
+            top: hp('11%'),
             left: wp('5%'),
           },
         ]}>
-        {Strings.sendBefore}:
+        {Strings.sendBefore}: {''}
         {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
-      </Text>
-      <Text
-        style={[
-          Typography.welcome,
-          {
-            position: 'absolute',
-            fontFamily: 'Poppins-SemiBold',
-            top: hp('3%'),
-            left: wp('5%'),
-          },
-        ]}>
-        {Strings.paymentAlert}
       </Text>
       <View
         style={{
           borderBottomWidth: 2,
           width: wp('80%'),
           alignSelf: 'center',
-          top: hp('15%'),
+          top: hp('17%'),
           borderColor: Colors.GRAY_MEDIUM,
           position: 'absolute',
         }}></View>
@@ -117,7 +118,7 @@ const UploadReceiptModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('23%'),
@@ -139,7 +140,7 @@ const UploadReceiptModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('28%'),
@@ -157,11 +158,11 @@ const UploadReceiptModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Ordered On:
+        {Strings.orderedOn}:
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('33%'),
@@ -183,7 +184,7 @@ const UploadReceiptModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('38%'),
@@ -205,7 +206,7 @@ const UploadReceiptModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('43%'),
@@ -242,7 +243,9 @@ const UploadReceiptModal = props => {
             flex: 1,
             flexDirection: 'row',
           }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>Paid</Text>
+          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+            {Strings.paid}
+          </Text>
           <Icon
             name="receipt-outline"
             size={wp('5%')}
@@ -256,7 +259,7 @@ const UploadReceiptModal = props => {
           setSuccessfulModal(false),
           props.setUploadReceiptModal(false),
         ]}>
-        <SuccessfulModal text={'You have uploaded your payment receipt'} />
+        <SuccessfulModal text={Strings.successfullyUploaded} />
       </Modal>
     </View>
   );
@@ -339,7 +342,7 @@ const UploadReceipt = props => {
               position: 'absolute',
             },
           ]}>
-          Amount: {props.amount}
+          {Strings.amount}: {props.amount}
         </Text>
         <Text
           style={[
@@ -351,7 +354,7 @@ const UploadReceipt = props => {
               position: 'absolute',
             },
           ]}>
-          Receive Before:
+          {Strings.recieveBefore}:
         </Text>
         <Text
           style={[
