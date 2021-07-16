@@ -113,7 +113,8 @@ export const MessageInput = props => {
             height: hp('7%'),
             borderRadius: 40,
             backgroundColor: Colors.GRAY_LIGHT,
-            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
             width: wp('80%'),
           }}>
           <TextInput
@@ -124,12 +125,12 @@ export const MessageInput = props => {
             onChangeText={text => setMessage(text)}
             value={message}
             style={{
-              width: wp('74%'),
+              width: wp('65%'),
               height: hp('7%'),
               borderBottomColor: 'transparent',
-              marginHorizontal: wp('3%'),
+              left: wp('2%'),
               color: 'black',
-              top: hp('2%'),
+              top: hp('0%'),
             }}
           />
           <TouchableOpacity
@@ -140,8 +141,8 @@ export const MessageInput = props => {
               height: hp('8%'),
               width: hp('8%'),
 
-              left: wp('35%'),
-              bottom: hp('4.5%'),
+              left: wp('2.5%'),
+              top: hp('1.5%'),
 
               shadowColor: '#000',
               shadowOffset: {

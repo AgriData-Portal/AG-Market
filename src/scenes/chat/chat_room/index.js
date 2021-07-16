@@ -271,7 +271,6 @@ export const ChatRoom = props => {
           top: hp('3%'),
           height: hp('85%'),
           width: wp('95%'),
-          backgroundColor: 'red',
         }}>
         <View
           style={{
