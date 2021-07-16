@@ -23,11 +23,13 @@ import {
   createInvoice,
   createPaymentTask,
   deleteGoodsTask,
+  updateSupplierCompany,
 } from '../../../../graphql/mutations';
 import {API} from 'aws-amplify';
 import {DismissKeyboard} from '_components';
 import Strings from '_utils';
 import {goodsTaskForRetailerByDate} from '../../../../graphql/queries';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -37,6 +39,8 @@ const now = () => {
 //Retailer receive
 const ReceiveModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
+  const [ratingModal, setRatingModal] = useState(false);
+  const [rating, setRating] = useState(0);
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
     var product = item.price * item.quantity;
@@ -91,7 +95,7 @@ const ReceiveModal = props => {
         }
       }
       props.setReceiveTask(tempList);
-      setSuccessfulModal(true);
+      setRatingModal(true);
       console.log('deleted!');
     } catch (e) {
       console.log(e);
@@ -267,7 +271,7 @@ const ReceiveModal = props => {
             justifyContent: 'center',
             elevation: 5,
             position: 'absolute',
-            bottom: hp('8%'),
+            bottom: hp('5%'),
             borderRadius: 10,
             shadowColor: '#000',
             shadowOffset: {
@@ -288,6 +292,18 @@ const ReceiveModal = props => {
       ) : (
         <View />
       )}
+      <TouchableOpacity
+        onPress={() => {
+          setRatingModal(true);
+        }}
+        style={{
+          backgroundColor: Colors.LIGHT_BLUE,
+          width: wp('10%'),
+          top: hp('50%'),
+          left: wp('20%'),
+        }}>
+        <Text style={[Typography.normal, {}]}>Test</Text>
+      </TouchableOpacity>
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [
@@ -299,6 +315,15 @@ const ReceiveModal = props => {
             'You have successfully received your products from ' +
             props.supplier.name
           }
+        />
+      </Modal>
+      <Modal isVisible={ratingModal}>
+        <RatingModal
+          setRating={setRating}
+          setRatingModal={setRatingModal}
+          rating={rating}
+          setSuccessfulModal={setSuccessfulModal}
+          supplier={props.supplier}
         />
       </Modal>
     </View>
@@ -602,6 +627,103 @@ const Product = props => {
         ]}>
         @ RM {props.price}/{props.siUnit}
       </Text>
+    </View>
+  );
+};
+
+const RatingModal = props => {
+  if (props.supplier.rating == null) {
+    var rating = {
+      numberOfRating: 0,
+      currentRating: 0,
+    };
+  } else {
+    var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
+    var newRating =
+      (props.supplier.rating.CurrentRating *
+        props.supplier.rating.numberOfRatings +
+        props.rating) /
+      newNumberOfRating;
+  }
+  const updateRating = async () => {
+    try {
+      const update = await API.graphql({
+        query: updateSupplierCompany,
+        variables: {
+          input: {
+            id: props.supplier.supplierID,
+            numberOfRatings: newNumberOfRating,
+            currentRating: newRating,
+          },
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return (
+    <View
+      style={{
+        width: wp('80%'),
+        height: wp('70%'),
+        backgroundColor: Colors.PALE_GREEN,
+        borderRadius: 10,
+        alignSelf: 'center',
+      }}>
+      <View>
+        <Text
+          style={[
+            Typography.large,
+            {
+              justifyContent: 'center',
+              alignSelf: 'center',
+              top: hp('5%'),
+              marginRight: wp('5%'),
+              marginLeft: wp('5%'),
+            },
+          ]}>
+          Transaction completed. Please give the supplier a rating.
+        </Text>
+      </View>
+      <View style={{top: hp('4%')}}>
+        <Rating
+          showRating
+          count={5}
+          size={wp('15%')}
+          reviews={['']}
+          fractions={1}
+          onSwipeRating={item => [props.setRating(item), console.log(item)]}
+          tintColor={Colors.PALE_GREEN}
+        />
+      </View>
+      <TouchableOpacity
+        onPress={() => [
+          props.setRatingModal(false),
+          console.log(props.rating),
+          props.setSuccessfulModal(true),
+          updateRating(),
+        ]}
+        style={{
+          backgroundColor: Colors.LIGHT_BLUE,
+          width: wp('30%'),
+          height: hp('5%'),
+          alignSelf: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+          elevation: 5,
+          position: 'absolute',
+          bottom: hp('5%'),
+          borderRadius: 10,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 1,
+          },
+          shadowOpacity: 0.22,
+          shadowRadius: 2.22,
+        }}>
+        <Text style={[Typography.normal, {}]}>Submit rating</Text>
+      </TouchableOpacity>
     </View>
   );
 };
