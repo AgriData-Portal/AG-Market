@@ -94,7 +94,7 @@ const SupplierNavigation = props => {
         name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <MenuButton
@@ -152,7 +152,7 @@ const SupplierNavigation = props => {
         name="store"
         options={({route, navigation}) => ({
           title: route.params.storeName,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -171,7 +171,7 @@ const SupplierNavigation = props => {
         name="companyprofile"
         options={({route, navigation}) => ({
           title: Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -183,7 +183,7 @@ const SupplierNavigation = props => {
         name="editcompany"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -195,7 +195,7 @@ const SupplierNavigation = props => {
         name="humanresource"
         options={({route, navigation}) => ({
           title: Strings.humanResource,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -207,7 +207,7 @@ const SupplierNavigation = props => {
         name="personalprofile"
         options={({route, navigation}) => ({
           title: Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -219,7 +219,7 @@ const SupplierNavigation = props => {
         name="editprofile"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
         })}>
         {screenProps => (

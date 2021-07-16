@@ -120,7 +120,7 @@ const Order = props => {
               position: 'absolute',
             },
           ]}>
-          Amount: {props.amount}
+          {Strings.amount}: {props.amount}
         </Text>
         {props.paid ? (
           <Text
@@ -128,12 +128,12 @@ const Order = props => {
               Typography.normal,
               {
                 color: Colors.LIME_GREEN,
-                top: hp('1%'),
+                top: hp('0%'),
                 right: wp('2%'),
                 position: 'absolute',
               },
             ]}>
-            PAID
+            {Strings.paid}
           </Text>
         ) : (
           <Text
@@ -141,12 +141,12 @@ const Order = props => {
               Typography.normal,
               {
                 color: 'red',
-                top: hp('1%'),
+                top: hp('0%'),
                 right: wp('2%'),
                 position: 'absolute',
               },
             ]}>
-            NOT PAID
+            {Strings.notPaid}
           </Text>
         )}
         <Text
@@ -159,7 +159,7 @@ const Order = props => {
               position: 'absolute',
             },
           ]}>
-          Invoice Date:
+          {Strings.invoiceDate}:
         </Text>
         <Text
           style={[
@@ -259,12 +259,12 @@ const InvoiceModal = props => {
             {
               position: 'absolute',
               textAlign: 'right',
-              top: hp('10%'),
+              top: hp('11%'),
               right: wp('5%'),
               color: Colors.LIME_GREEN,
             },
           ]}>
-          PAID
+          {Strings.paid}
         </Text>
       ) : (
         <Text
@@ -273,12 +273,12 @@ const InvoiceModal = props => {
             {
               position: 'absolute',
               textAlign: 'right',
-              top: hp('10%'),
+              top: hp('11%'),
               right: wp('5%'),
-              color: Colors.LIGHT_RED,
+              color: 'red',
             },
           ]}>
-          NOT PAID
+          {Strings.notPaid}
         </Text>
       )}
       <View
@@ -344,7 +344,7 @@ const InvoiceModal = props => {
             right: wp('5%'),
           },
         ]}>
-        Received By: {props.receivedBy}
+        {Strings.recievedBy}: {props.receivedBy}
       </Text>
 
       <TouchableOpacity

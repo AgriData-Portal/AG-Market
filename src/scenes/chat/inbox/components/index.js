@@ -15,6 +15,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Strings from '_utils';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -51,12 +52,8 @@ export const Searchbar = props => {
           borderBottomColor: 'transparent',
         }}
         underlineColorAndroid="transparent"></TextInput>
-      <View style={{position: 'absolute', left: Mixins.scaleWidth(10)}}>
-        <Icon
-          name="search"
-          size={Mixins.scaleWidth(25)}
-          color={Colors.GRAY_DARK}
-        />
+      <View style={{position: 'absolute', left: wp('3%')}}>
+        <Icon name="search" size={wp('6.5%')} color={Colors.GRAY_DARK} />
       </View>
     </View>
   );
@@ -69,7 +66,7 @@ export const ChatList = props => {
         style={{
           height: 0,
           borderBottomWidth: 1,
-          width: Mixins.scaleWidth(340),
+          width: wp('95%'),
           borderColor: Colors.GRAY_MEDIUM,
         }}></View>
     );
@@ -91,23 +88,22 @@ export const ChatList = props => {
       ListEmptyComponent={
         <View
           style={{
-            height: Mixins.scaleHeight(420),
-            width: Mixins.scaleWidth(340),
+            height: hp('70%'),
+            width: wp('95%'),
           }}>
           <View
             style={{
-              left: Mixins.scaleWidth(30),
-              width: Mixins.scaleWidth(280),
-              height: Mixins.scaleHeight(100),
-              top: Mixins.scaleHeight(30),
+              alignSelf: 'center',
+              width: wp('80%'),
+              height: hp('15%'),
+              top: hp('5%'),
               alignItems: 'center',
               backgroundColor: Colors.PALE_BLUE,
               borderRadius: 20,
               justifyContent: 'center',
             }}>
             <Text style={Typography.normal}>
-              You currently don't have any chats
-              {'\n'}Look for a retailer to start chatting
+              {Strings.youCurrentlyDontHave}
             </Text>
           </View>
         </View>
@@ -169,16 +165,16 @@ const ChatRoom = props => {
         });
       }}
       style={{
-        height: Mixins.scaleHeight(60),
-        width: Mixins.scaleWidth(340),
+        height: hp('11%'),
+        width: wp('95%'),
         flexDirection: 'row',
       }}>
       <View
         style={{
-          width: Mixins.scaleWidth(50),
-          height: Mixins.scaleWidth(50),
-          top: Mixins.scaleWidth(10),
-          left: Mixins.scaleWidth(10),
+          width: wp('15%'),
+          height: wp('15%'),
+          top: hp('1.5%'),
+          left: wp('2%'),
           backgroundColor: Colors.LIGHT_BLUE,
           borderRadius: 100,
           justifyContent: 'center',
@@ -187,23 +183,30 @@ const ChatRoom = props => {
         <Image
           style={{
             resizeMode: 'center',
-            width: Mixins.scaleWidth(50),
-            height: Mixins.scaleWidth(50),
+            width: wp('15%'),
+            height: wp('15%'),
           }}
           source={require('_assets/images/agridata.png')}
         />
       </View>
-      <View style={{left: Mixins.scaleWidth(25), top: Mixins.scaleHeight(10)}}>
+      <View style={{left: wp('7%'), top: hp('1.5%'), width: wp('60%')}}>
         <Text style={Typography.normal}>{props.chatName}</Text>
-        <Text style={Typography.small}>
-          {props.mostRecentMessageSender} : {props.mostRecentMessage}
-        </Text>
+        {props.mostRecentMessage.length > 48 ? (
+          <Text style={Typography.small}>
+            {props.mostRecentMessageSender} :
+            {props.mostRecentMessage.slice(0, 48) + '...'}
+          </Text>
+        ) : (
+          <Text style={Typography.small}>
+            {props.mostRecentMessageSender} : {props.mostRecentMessage}
+          </Text>
+        )}
       </View>
       <View
         style={{
           position: 'absolute',
-          top: Mixins.scaleHeight(10),
-          right: Mixins.scaleWidth(20),
+          top: hp('1.5%'),
+          right: wp('5%'),
         }}>
         {lastUpdated.fromNow().includes('day') ||
         lastUpdated.fromNow().includes('days') ||
@@ -224,12 +227,12 @@ const ChatRoom = props => {
         <View
           style={{
             position: 'absolute',
-            width: Mixins.scaleWidth(20),
-            height: Mixins.scaleWidth(20),
+            width: wp('5%'),
+            height: wp('5%'),
             backgroundColor: Colors.PALE_GREEN,
             borderRadius: 100,
-            right: Mixins.scaleWidth(30),
-            top: Mixins.scaleHeight(30),
+            right: wp('7%'),
+            top: hp('5%'),
           }}></View>
       ) : (
         <View></View>

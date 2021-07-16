@@ -42,7 +42,7 @@ const AccountsNavigation = props => {
         name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <MenuButton
@@ -65,7 +65,7 @@ const AccountsNavigation = props => {
         name="personalprofile"
         options={({route, navigation}) => ({
           title: Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -77,7 +77,7 @@ const AccountsNavigation = props => {
         name="editprofile"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
         })}>
         {screenProps => <EditPersonal {...screenProps} user={props.user} />}

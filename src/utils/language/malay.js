@@ -183,5 +183,28 @@ export default {
   supplierHasNot: 'Pembekal belum menunjukkan tarikh penghantaran.',
   seller: 'Penjual',
   sendBefore: 'Hantar Sebelum',
-  orderedOn: '',
+
+  youCurrentlyDontHave:
+    'Anda tidak mempunyai sebarang mesej. Sila cari peruncit untuk memulakan pembelian.',
+  amount: 'Jumlah',
+  recieveBefore: 'Terima Sebelum',
+  orderedOn: 'Dipesan pada',
+  recievedPayment:
+    'Anda telah menerima pembayaran anda. Tugas pembayaran sekarang akan dipadam. Sila dapatkan invois dalam senarai invois anda.',
+  orderCreated: 'Pesanan Dicipta',
+  pleaseAddDeliveryDate: 'Sila tambahkan tarikh penghantaran',
+  editProductDetails: 'Edit Butiran Produk',
+  productDetails: 'Butiran Produk',
+  priceRange: 'Julat Harga',
+  editListing: 'Edit Penyenaraian ', //not sure
+  removeListing: 'Padam Penyenarian',
+  paid: 'DIBAYAR',
+  notPaid: 'BELUM DIBAYAR',
+  invoiceDate: 'Tarikh Invoice',
+  recievedBy: 'Diterima Oleh',
+  pleaseFillIn: 'Sila isikan semua ruangan kosong!',
+  successfullyAddedCrops:
+    'Anda berjaya menambahkan tanaman anda! Kami akan kirimkan notis kepada anda sebaik sahaja peruncit membeli hasil anda!',
+  successfullyUpdated: 'Anda berjaya mengemas kini senarai produk anda!',
+  successfullyDeleted: 'Anda berjaya padamkan produk anda!',
 };

@@ -579,6 +579,18 @@ const Product = props => {
         ]}>
         {props.variety}
       </Text>
+
+      <Text
+        style={[
+          Typography.small,
+          {
+            textAlign: 'left',
+            left: wp('40%'),
+            position: 'absolute',
+          },
+        ]}>
+        @ RM {props.price}/{props.siUnit}
+      </Text>
       <Text
         style={[
           Typography.small,
@@ -590,17 +602,6 @@ const Product = props => {
         ]}>
         | {props.quantity}
         {props.siUnit}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'left',
-            left: wp('40%'),
-            position: 'absolute',
-          },
-        ]}>
-        @ RM {props.price}/{props.siUnit}
       </Text>
     </View>
   );

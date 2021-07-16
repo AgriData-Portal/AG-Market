@@ -84,8 +84,10 @@ const ProductCard = props => {
         ]}>
         {Strings.price}: {props.lowPrice} - {props.highPrice} /{props.siUnit}
         {'\n'}MOQ: {props.minimumQuantity} {props.siUnit}
-        {'\n'}Grade: {props.grade}
-        {'\n'}Variety: {props.variety}
+        {'\n'}
+        {Strings.grade}: {props.grade}
+        {'\n'}
+        {Strings.variety}: {props.variety}
       </Text>
       <Modal isVisible={productModal}>
         <ProductPopUp
@@ -770,7 +772,7 @@ const PurchaseOrderComponent = props => {
                 width: wp('30%'),
               },
             ]}>
-            Variety: {props.variety}
+            {Strings.variety}: {props.variety}
           </Text>
           <Text style={[Typography.normal, {left: wp('50%')}]}>
             {props.quantity} {props.siUnit}
