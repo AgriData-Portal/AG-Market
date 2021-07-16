@@ -206,4 +206,8 @@ export default {
   successfullyUpdated: 'You have successfully updated your product listing',
   successfullyDeleted: 'You have successfully deleted your product listing',
   successfullyUploaded: 'You have uploaded your payment receipt',
+  logisticsProvided: 'Logistics Provided',
+  paymentTerms: 'Payment Terms',
+  creditTerm: 'Credit Terms',
+  sendQuotationToRetailer: 'Send Quotation To Retailer',
 };
