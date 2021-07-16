@@ -127,7 +127,9 @@ const OrderCard = props => {
       }}>
       <View style={{left: wp('1%'), width: wp('22%')}}>
         <Text style={[Typography.normal, {}]}>{props.name} </Text>
-        <Text style={[Typography.small]}>Grade: {props.grade}</Text>
+        <Text style={[Typography.small]}>
+          {Strings.grade}: {props.grade}
+        </Text>
 
         <Text style={[Typography.small]}>{props.variety}</Text>
       </View>
@@ -141,6 +143,7 @@ const OrderCard = props => {
             width: wp('10%'),
             top: hp('0.5%'),
             borderBottomColor: 'transparent',
+            color: 'black',
           }}></TextInput>
         <Text
           style={[
@@ -174,6 +177,7 @@ const OrderCard = props => {
             left: wp('1%'),
             width: wp('9%'),
             borderBottomColor: 'transparent',
+            color: 'black',
           }}></TextInput>
         <Text
           style={[
@@ -412,7 +416,7 @@ const NewOrderQuotation = props => {
         flexDirection: 'column',
         width: wp('95%'),
         right: wp('2%'),
-        height: hp('95%'),
+        height: hp('80%'),
         backgroundColor: Colors.GRAY_LIGHT,
         borderRadius: 15,
         alignItems: 'center',
@@ -453,7 +457,7 @@ const NewOrderQuotation = props => {
         }}>
         <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
-      <View style={{position: 'absolute', left: wp('50%'), top: hp('57%')}}>
+      <View style={{position: 'absolute', left: wp('50%'), top: hp('37%')}}>
         <Text
           style={[
             Typography.normal,
@@ -466,10 +470,10 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('45%'),
+          top: hp('32%'),
           alignItems: 'center',
           height: hp('24%'),
-          width: wp('80%'),
+          width: wp('85%'),
           backgroundColor: 'white',
           borderRadius: 10,
         }}>
@@ -480,22 +484,25 @@ const NewOrderQuotation = props => {
             width: wp('70%'),
             top: hp('2%'),
           }}>
-          <Text style={[Typography.small]}>Logistics Provided:</Text>
+          <Text style={[Typography.normal, {top: hp('0.5%'), right: wp('3%')}]}>
+            {Strings.logisticsProvided}:
+          </Text>
           <DropDownPicker
             open={openDelivery}
             value={deliveryValue}
             items={deliveryMethod}
             placeholderTextColor={Colors.GRAY_DARK}
-            placeholder={'Yes'}
+            placeholder={Strings.yes}
             setOpen={setOpenDelivery}
             setValue={setDeliveryValue}
             setItems={setDeliveryMethod}
             style={{
+              position: 'absolute',
               width: wp('25%'),
-              left: wp('17%'),
+              right: wp('45%'),
               height: hp('4%'),
               borderColor: 'white',
-              borderRadius: 3,
+              borderRadius: 5,
               backgroundColor: Colors.GRAY_LIGHT,
             }}
             text
@@ -503,6 +510,7 @@ const NewOrderQuotation = props => {
             listItemContainerStyle={{height: hp('3%')}}
             dropDownContainerStyle={{
               borderWidth: 1,
+              position: 'absolute',
               left: wp('17%'),
               width: wp('25%'),
               backgroundColor: Colors.GRAY_LIGHT,
@@ -514,31 +522,35 @@ const NewOrderQuotation = props => {
             flexDirection: 'row',
             height: wp('20%'),
             width: wp('70%'),
-            top: hp('1%'),
+            top: hp('3%'),
           }}>
-          <Text style={[Typography.small]}>Payment Terms:</Text>
+          <Text style={[Typography.normal, {top: hp('0.5%'), right: wp('3%')}]}>
+            {Strings.paymentTerms}:
+          </Text>
           <DropDownPicker
             open={openPayment}
             value={paymentValue}
             items={paymentMethod}
             placeholderTextColor={Colors.GRAY_DARK}
-            placeholder={'Credit Term'}
+            placeholder={Strings.creditTerm}
             setOpen={setOpenPayment}
             setValue={setPaymentValue}
             setItems={setPaymentMethod}
             style={{
+              position: 'absolute',
               width: wp('35%'),
-              left: wp('10%'),
+              left: wp('0%'),
               height: hp('4%'),
               borderColor: 'white',
-              borderRadius: 3,
+              borderRadius: 5,
               backgroundColor: Colors.GRAY_LIGHT,
             }}
             dropDownDirection="BOTTOM"
             listItemContainerStyle={{height: hp('3%')}}
             dropDownContainerStyle={{
+              position: 'absolute',
               borderWidth: 1,
-              left: wp('10%'),
+              left: wp('0%'),
               width: wp('35%'),
               backgroundColor: Colors.GRAY_LIGHT,
             }}
@@ -547,7 +559,7 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('48%'),
+          top: hp('35%'),
         }}>
         <TouchableOpacity
           onPress={() => [sendQuotation()]}
@@ -561,13 +573,15 @@ const NewOrderQuotation = props => {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
-            width: wp('55%'),
+            width: wp('75%'),
             height: hp('4%'),
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 10,
           }}>
-          <Text style={[Typography.small]}>Send Quotation to Retailer</Text>
+          <Text style={[Typography.normal]}>
+            {Strings.sendQuotationToRetailer}
+          </Text>
         </TouchableOpacity>
         <Modal
           isVisible={successfulModal}

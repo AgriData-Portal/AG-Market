@@ -134,11 +134,11 @@ export const ChatRoom = props => {
         BackgroundTimer.runBackgroundTimer(() => {
           console.log('3 seconds');
           updateLastSeen();
-        }, 3000);
+        }, 100);
         setTimeout(() => {
           BackgroundTimer.stopBackgroundTimer();
           console.log('stop');
-        }, 4000);
+        }, 150);
       }
     }
     if (Platform.OS === 'android') {
@@ -147,9 +147,10 @@ export const ChatRoom = props => {
           BackgroundTimer.runBackgroundTimer(() => {
             if (a == 0) {
               console.log('3seconds');
+              updateLastSeen();
             }
             a = 1;
-          }, 3000);
+          }, 100);
           if (a == 1) {
             BackgroundTimer.stopBackgroundTimer();
             console.log('stop');

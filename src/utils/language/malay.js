@@ -208,4 +208,8 @@ export default {
   successfullyUpdated: 'Anda berjaya mengemas kini senarai produk anda!',
   successfullyDeleted: 'Anda berjaya padamkan produk anda!',
   successfullyUploaded: 'Anda telah memuat naik resit pembayaran anda',
+  logisticsProvided: 'Sediakan Logistik',
+  paymentTerms: 'Terma Pembayaran',
+  creditTerm: 'Terma Credit',
+  sendQuotationToRetailer: 'Hantar sebut harga kepada peruncit',
 };
