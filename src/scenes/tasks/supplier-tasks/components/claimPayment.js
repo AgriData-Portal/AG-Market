@@ -199,7 +199,7 @@ const ReceivePaymentTask = props => {
               position: 'absolute',
             },
           ]}>
-          Amount: {props.amount}
+          {Strings.amount}: {props.amount}
         </Text>
         <Text
           style={[
@@ -211,7 +211,7 @@ const ReceivePaymentTask = props => {
               position: 'absolute',
             },
           ]}>
-          Receive Before:
+          {Strings.recieveBefore}:
         </Text>
         <Text
           style={[
@@ -293,36 +293,37 @@ const ReceivePaymentModal = props => {
         }}>
         <CloseButton setModal={props.setReceiveTaskModal} />
       </View>
+
+      <Text
+        style={[
+          Typography.header,
+          {
+            position: 'absolute',
+            fontFamily: 'Poppins-SemiBold',
+            top: hp('5%'),
+            left: wp('5%'),
+          },
+        ]}>
+        {Strings.paymentAlert}
+      </Text>
       <Text
         style={[
           Typography.placeholder,
           {
             position: 'absolute',
-            top: hp('9%'),
+            top: hp('11%'),
             left: wp('5%'),
           },
         ]}>
-        Receive Before:{' '}
+        {Strings.recieveBefore}:{' '}
         {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
-      </Text>
-      <Text
-        style={[
-          Typography.welcome,
-          {
-            position: 'absolute',
-            fontFamily: 'Poppins-SemiBold',
-            top: hp('3%'),
-            left: wp('5%'),
-          },
-        ]}>
-        {Strings.paymentAlert}
       </Text>
       <View
         style={{
           borderBottomWidth: 2,
           width: wp('80%'),
           alignSelf: 'center',
-          top: hp('15%'),
+          top: hp('17%'),
           borderColor: Colors.GRAY_MEDIUM,
           position: 'absolute',
         }}></View>
@@ -339,11 +340,11 @@ const ReceivePaymentModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('23%'),
-            left: wp('41%'),
+            left: wp('45%'),
           },
         ]}>
         {props.retailer.name}
@@ -361,11 +362,11 @@ const ReceivePaymentModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('28%'),
-            left: wp('41%'),
+            left: wp('45%'),
           },
         ]}>
         #{props.id.slice(0, 6)}
@@ -379,15 +380,15 @@ const ReceivePaymentModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Ordered On:
+        {Strings.orderedOn}:
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('33%'),
-            left: wp('41%'),
+            left: wp('45%'),
           },
         ]}>
         {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM YYYY')}
@@ -405,11 +406,11 @@ const ReceivePaymentModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('38%'),
-            left: wp('41%'),
+            left: wp('45%'),
           },
         ]}>
         Bank
@@ -427,11 +428,11 @@ const ReceivePaymentModal = props => {
       </Text>
       <Text
         style={[
-          Typography.small,
+          Typography.normal,
           {
             position: 'absolute',
             top: hp('43%'),
-            left: wp('41%'),
+            left: wp('45%'),
           },
         ]}>
         9065 7756 8989
@@ -456,10 +457,20 @@ const ReceivePaymentModal = props => {
           bottom: hp('10%'),
           borderRadius: 10,
         }}>
-        <Text style={[Typography.normal, {textAlign: 'center'}]}>
-          Received{'\t\t'}
-          <Icon name="checkmark-circle-outline" size={wp('5%')}></Icon>
-        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+            {Strings.recieved}
+          </Text>
+          <Icon
+            name="checkmark-circle-outline"
+            size={wp('5%')}
+            style={{left: wp('2%')}}></Icon>
+        </View>
       </TouchableOpacity>
       <Modal
         isVisible={successfulModal}
@@ -472,11 +483,7 @@ const ReceivePaymentModal = props => {
           setSuccessfulModal(false);
           props.setReceiveTaskModal(false);
         }}>
-        <SuccessfulModal
-          text={
-            'You have received your payment. The payment task will now be deleted, you can find the invoice in your list of invoices'
-          }
-        />
+        <SuccessfulModal text={Strings.recievedPayment} />
       </Modal>
     </View>
   );

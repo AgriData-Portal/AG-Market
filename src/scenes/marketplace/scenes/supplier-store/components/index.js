@@ -121,7 +121,7 @@ const AddItemModal = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? 100 : -180
+        Platform.OS === 'ios' ? hp('0%') : -180
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <View
@@ -167,7 +167,7 @@ const AddItemModal = props => {
                 <Text
                   style={[
                     Typography.large,
-                    {width: wp('40%'), textAlign: 'center'},
+                    {width: wp('50%'), textAlign: 'center'},
                   ]}>
                   {Strings.addPhoto}
                 </Text>
@@ -240,194 +240,203 @@ const AddItemModal = props => {
             shadowColor: 'grey',
           }}>
           <Text
-            style={([Typography.normal], {left: wp('6%'), top: hp('1.5%')})}>
+            style={
+              ([Typography.normal],
+              {
+                left: wp('6%'),
+                top: hp('1.5%'),
+                width: wp('40%'),
+              })
+            }>
             {Strings.enterProductDetails}
           </Text>
-          <View
-            style={{
-              left: wp('5%'),
-              top: hp('2%'),
-            }}>
-            <TextInput
-              keyboardType="default"
-              placeholderTextColor={Colors.GRAY_DARK}
-              placeholder={Strings.productName}
-              value={productName}
-              onChangeText={item => setProductName(item)}
-              underlineColorAndroid="transparent"
-              style={{
-                left: wp('1%'),
-                backgroundColor: 'white',
-                width: wp('65%'),
-                height: hp('7%'),
-                borderRadius: 3,
-                justifyContent: 'center',
-                marginBottom: hp('1%'),
-                marginTop: hp('0.5%'),
-                borderBottomColor: 'transparent',
-                color: 'black',
-              }}></TextInput>
+          <DismissKeyboardView>
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
+                left: wp('5%'),
+                top: hp('2%'),
               }}>
-              <Text
-                style={[
-                  Typography.large,
-                  {bottom: hp('0.5%'), marginRight: wp('1%'), left: wp('1%')},
-                ]}>
-                RM
-              </Text>
               <TextInput
-                keyboardType="numeric"
+                keyboardType="default"
                 placeholderTextColor={Colors.GRAY_DARK}
-                placeholder={Strings.minPrice}
+                placeholder={Strings.productName}
+                value={productName}
+                onChangeText={item => setProductName(item)}
                 underlineColorAndroid="transparent"
-                value={minPrice}
-                onChangeText={item => setMinPrice(item)}
                 style={{
-                  left: wp('3%'),
+                  left: wp('1%'),
                   backgroundColor: 'white',
-                  width: wp('22.3%'),
+                  width: wp('65%'),
                   height: hp('7%'),
                   borderRadius: 3,
                   justifyContent: 'center',
                   marginBottom: hp('1%'),
+                  marginTop: hp('0.5%'),
                   borderBottomColor: 'transparent',
                   color: 'black',
                 }}></TextInput>
               <View
                 style={{
-                  width: wp('3%'),
-                  borderWidth: wp('0.2%'),
-                  borderColor: 'black',
-                  bottom: hp('1%'),
-                  left: wp('7%'),
-                  zIndex: 10,
-                }}></View>
-              <TextInput
-                keyboardType="numeric"
-                placeholderTextColor={Colors.GRAY_DARK}
-                placeholder={Strings.maxPrice}
-                underlineColorAndroid="transparent"
-                value={maxPrice}
-                onChangeText={item => setMaxPrice(item)}
-                style={{
-                  left: wp('11%'),
-                  backgroundColor: 'white',
-                  width: wp('22.3%'),
-                  height: hp('7%'),
-                  borderRadius: 3,
-                  justifyContent: 'center',
-                  marginBottom: hp('1%'),
-                  borderBottomColor: 'transparent',
-                  color: 'black',
-                }}></TextInput>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <TextInput
-                keyboardType="default"
-                placeholderTextColor={Colors.GRAY_DARK}
-                placeholder="Grade"
-                underlineColorAndroid="transparent"
-                value={grade}
-                onChangeText={item => setGrade(item)}
-                style={{
-                  backgroundColor: 'white',
-                  width: wp('20%'),
-                  height: hp('7%'),
-                  borderRadius: 3,
-                  justifyContent: 'center',
-                  marginBottom: hp('1%'),
-                  left: wp('1%'),
-                  borderBottomColor: 'transparent',
-                  color: 'black',
-                }}></TextInput>
-              <TextInput
-                keyboardType="default"
-                placeholderTextColor={Colors.GRAY_DARK}
-                placeholder={Strings.variety}
-                underlineColorAndroid="transparent"
-                value={variety}
-                onChangeText={item => setVariety(item)}
-                style={{
-                  left: wp('7%'),
-                  backgroundColor: 'white',
-                  width: wp('40%'),
-                  height: hp('7%'),
-                  borderRadius: 3,
-                  justifyContent: 'center',
-                  marginBottom: hp('1%'),
-
-                  borderBottomColor: 'transparent',
-                  color: 'black',
-                }}></TextInput>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-              }}>
-              <TextInput
-                keyboardType="numeric"
-                placeholderTextColor={Colors.GRAY_DARK}
-                placeholder={Strings.quantityAvailable}
-                underlineColorAndroid="transparent"
-                value={quantityAvailable}
-                onChangeText={item => setQuantityAvailable(item)}
-                style={{
-                  left: wp('1%'),
-                  backgroundColor: 'white',
-                  width: wp('35%'),
-                  height: hp('7%'),
-                  borderRadius: 3,
-                  justifyContent: 'center',
-                  marginBottom: hp('1%'),
-                  borderBottomColor: 'transparent',
-                  color: 'black',
-                }}></TextInput>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <TextInput
-                keyboardType="numeric"
-                placeholderTextColor={Colors.GRAY_DARK}
-                placeholder={Strings.minimumOrder}
-                underlineColorAndroid="transparent"
-                value={moq}
-                onChangeText={item => setMOQ(item)}
-                style={{
-                  left: wp('1%'),
-                  backgroundColor: 'white',
-                  width: wp('35%'),
-                  height: hp('7%'),
-                  borderRadius: 3,
-                  justifyContent: 'center',
-                  marginBottom: hp('1%'),
-                  borderBottomColor: 'transparent',
-                  color: 'black',
-                }}></TextInput>
-              <View style={{marginLeft: wp('3%'), bottom: hp('3%')}}>
-                <DropDownPicker
-                  open={open2}
-                  value={value2}
-                  items={items2}
-                  setOpen={setOpen2}
-                  setValue={setValue2}
-                  setItems={setItems2}
-                  defaultValue="kg"
-                  style={{
-                    width: wp('26%'),
-                    height: hp('5%'),
-                    borderRadius: 3,
-                    borderColor: 'white',
-                  }}
-                  dropDownContainerStyle={{borderWidth: 0}}
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={[
+                    Typography.large,
+                    {bottom: hp('0.5%'), marginRight: wp('1%'), left: wp('1%')},
+                  ]}>
+                  RM
+                </Text>
+                <TextInput
+                  keyboardType="numeric"
                   placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder="kg"
-                />
+                  placeholder={Strings.minPrice}
+                  underlineColorAndroid="transparent"
+                  value={minPrice}
+                  onChangeText={item => setMinPrice(item)}
+                  style={{
+                    left: wp('3%'),
+                    backgroundColor: 'white',
+                    width: wp('22.3%'),
+                    height: hp('7%'),
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    marginBottom: hp('1%'),
+                    borderBottomColor: 'transparent',
+                    color: 'black',
+                  }}></TextInput>
+                <View
+                  style={{
+                    width: wp('3%'),
+                    borderWidth: wp('0.2%'),
+                    borderColor: 'black',
+                    bottom: hp('1%'),
+                    left: wp('7%'),
+                    zIndex: 10,
+                  }}></View>
+                <TextInput
+                  keyboardType="numeric"
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder={Strings.maxPrice}
+                  underlineColorAndroid="transparent"
+                  value={maxPrice}
+                  onChangeText={item => setMaxPrice(item)}
+                  style={{
+                    left: wp('11%'),
+                    backgroundColor: 'white',
+                    width: wp('22.3%'),
+                    height: hp('7%'),
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    marginBottom: hp('1%'),
+                    borderBottomColor: 'transparent',
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <TextInput
+                  keyboardType="default"
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder="Grade"
+                  underlineColorAndroid="transparent"
+                  value={grade}
+                  onChangeText={item => setGrade(item)}
+                  style={{
+                    backgroundColor: 'white',
+                    width: wp('20%'),
+                    height: hp('7%'),
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    marginBottom: hp('1%'),
+                    left: wp('1%'),
+                    borderBottomColor: 'transparent',
+                    color: 'black',
+                  }}></TextInput>
+                <TextInput
+                  keyboardType="default"
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder={Strings.variety}
+                  underlineColorAndroid="transparent"
+                  value={variety}
+                  onChangeText={item => setVariety(item)}
+                  style={{
+                    left: wp('7%'),
+                    backgroundColor: 'white',
+                    width: wp('40%'),
+                    height: hp('7%'),
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    marginBottom: hp('1%'),
+
+                    borderBottomColor: 'transparent',
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <TextInput
+                  keyboardType="numeric"
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder={Strings.quantityAvailable}
+                  underlineColorAndroid="transparent"
+                  value={quantityAvailable}
+                  onChangeText={item => setQuantityAvailable(item)}
+                  style={{
+                    left: wp('1%'),
+                    backgroundColor: 'white',
+                    width: wp('35%'),
+                    height: hp('7%'),
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    marginBottom: hp('1%'),
+                    borderBottomColor: 'transparent',
+                    color: 'black',
+                  }}></TextInput>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <TextInput
+                  keyboardType="numeric"
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder={Strings.minimumOrder}
+                  underlineColorAndroid="transparent"
+                  value={moq}
+                  onChangeText={item => setMOQ(item)}
+                  style={{
+                    left: wp('1%'),
+                    backgroundColor: 'white',
+                    width: wp('35%'),
+                    height: hp('7%'),
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    marginBottom: hp('1%'),
+                    borderBottomColor: 'transparent',
+                    color: 'black',
+                  }}></TextInput>
+                <View style={{marginLeft: wp('3%'), bottom: hp('3%')}}>
+                  <DropDownPicker
+                    open={open2}
+                    value={value2}
+                    items={items2}
+                    setOpen={setOpen2}
+                    setValue={setValue2}
+                    setItems={setItems2}
+                    defaultValue="kg"
+                    style={{
+                      width: wp('26%'),
+                      height: hp('5%'),
+                      borderRadius: 3,
+                      borderColor: 'white',
+                    }}
+                    dropDownContainerStyle={{borderWidth: 0}}
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder="kg"
+                  />
+                </View>
               </View>
             </View>
-          </View>
+          </DismissKeyboardView>
         </View>
         <TouchableOpacity
           onPress={() => {
@@ -454,7 +463,7 @@ const AddItemModal = props => {
           style={{
             height: hp('5%'),
             height: hp('7%'),
-            width: wp('37%'),
+            width: wp('40%'),
             backgroundColor: Colors.LIGHT_BLUE,
             borderRadius: 10,
             shadowOffset: {
@@ -469,11 +478,12 @@ const AddItemModal = props => {
             top: hp('15%'),
             flexDirection: 'row',
           }}>
-          <Text style={[Typography.normal]}>
-            {Strings.addProduct}
-            {'\t'}
-          </Text>
-          <Icon name="add-circle-outline" size={wp('5%')} />
+          <Text style={[Typography.normal]}>{Strings.addProduct}</Text>
+          <Icon
+            name="add-circle-outline"
+            size={wp('5%')}
+            style={{left: hp('1%')}}
+          />
         </TouchableOpacity>
       </View>
       <Modal
@@ -482,16 +492,12 @@ const AddItemModal = props => {
           setSuccessfulModal(false),
           props.setAddItemsButton(false),
         ]}>
-        <SuccessfulModal
-          text={
-            "You have successfully added your crops! We'll send you a notification as soon as retailers buy your produce!"
-          }
-        />
+        <SuccessfulModal text={Strings.successfullyAddedCrops} />
       </Modal>
       <Modal
         isVisible={unsuccessfulModal}
         onBackdropPress={() => setUnsuccessfulModal(false)}>
-        <UnsuccessfulModal text={'Please fill in all empty spaces!'} />
+        <UnsuccessfulModal text={Strings.pleaseFillIn} />
       </Modal>
     </KeyboardAvoidingView>
   );
@@ -559,6 +565,7 @@ const ProductModal = props => {
       } else {
         props.setTrigger(true);
       }
+      console.log('test');
       setSuccessfulModal2(true);
       setLoading(false);
     } catch (e) {
@@ -593,6 +600,7 @@ const ProductModal = props => {
         highPrice: parseFloat(highPrice),
         quantityAvailable: parseInt(available),
         minimumQuantity: parseInt(moq),
+        productName: props.productName,
         grade: props.grade,
         variety: props.variety,
         productPicture: props.productPicture,
@@ -617,7 +625,7 @@ const ProductModal = props => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
-          Platform.OS === 'ios' ? Mixins.scaleHeight(-230) : -180
+          Platform.OS === 'ios' ? hp('-8%') : hp('-8%')
         } /* Keyboard Offset needs to be tested against multiple phones */
       >
         <View
@@ -647,13 +655,13 @@ const ProductModal = props => {
               style={{
                 resizeMode: 'contain',
                 width: wp('70%'),
-                height: hp('30%'),
+                height: hp('25%'),
               }}
             />
           </View>
           <View
             style={{
-              top: hp('5%'),
+              top: hp('7%'),
               backgroundColor: Colors.GRAY_LIGHT,
               borderRadius: 15,
               width: wp('80%'),
@@ -677,20 +685,22 @@ const ProductModal = props => {
                   margin: wp('1%'),
                 }}>
                 <Text style={[Typography.large, {margin: wp('1%')}]}>
-                  Edit Product Details
+                  {Strings.editProductDetails}
                 </Text>
                 <Text style={[Typography.normal, {margin: wp('1%')}]}>
-                  Grade: {props.grade}
+                  {Strings.grade}: {props.grade}
                 </Text>
                 <Text style={[Typography.normal, {margin: wp('1%')}]}>
-                  Variety: {props.variety}
+                  {Strings.variety}: {props.variety}
                 </Text>
                 <View
                   style={{
                     margin: wp('1%'),
                     flexDirection: 'row',
                   }}>
-                  <Text style={[Typography.normal]}>Price Range: RM</Text>
+                  <Text style={[Typography.normal]}>
+                    {Strings.priceRange}: RM
+                  </Text>
                   <View
                     style={{
                       backgroundColor: 'white',
@@ -712,7 +722,7 @@ const ProductModal = props => {
                       value={lowPrice}
                       onChangeText={item => setLowPrice(item)}></TextInput>
                   </View>
-                  <Text style={{top: hp('1%')}}>-</Text>
+                  <Text style={{top: hp('0.5%')}}>-</Text>
                   <View
                     style={{
                       backgroundColor: 'white',
@@ -743,7 +753,7 @@ const ProductModal = props => {
                   }}>
                   <Text
                     style={[Typography.normal, {marginHorizontal: wp('1%')}]}>
-                    Available:
+                    {Strings.available}:
                   </Text>
                   <View
                     style={{
@@ -783,7 +793,7 @@ const ProductModal = props => {
                   }}>
                   <Text
                     style={[Typography.normal, {marginHorizontal: wp('1%')}]}>
-                    MOQ
+                    MOQ:
                   </Text>
                   <View
                     style={{
@@ -822,21 +832,22 @@ const ProductModal = props => {
                   alignItems: 'flex-start',
                   justifyContent: 'center',
                   margin: wp('1%'),
+                  top: hp('1%'),
                 }}>
                 <Text style={[Typography.large, {margin: wp('1%')}]}>
-                  Product Details
+                  {Strings.productDetails}
                 </Text>
                 <Text style={[Typography.normal, {margin: wp('1%')}]}>
-                  Grade: {props.grade}
+                  {Strings.grade}: {props.grade}
                 </Text>
                 <Text style={[Typography.normal, {margin: wp('1%')}]}>
-                  Variety: {props.variety}
+                  {Strings.variety}: {props.variety}
                 </Text>
                 <Text style={[Typography.normal, {margin: wp('1%')}]}>
-                  Price Range: RM {lowPrice} - {highPrice}
+                  {Strings.priceRange}: RM {lowPrice} - {highPrice}
                 </Text>
                 <Text style={[Typography.normal, {margin: wp('1%')}]}>
-                  Available: {available} {props.siUnit}
+                  {Strings.available}: {available} {props.siUnit}
                 </Text>
                 <Text style={[Typography.normal, {margin: wp('1%')}]}>
                   MOQ: {moq} {props.siUnit}
@@ -865,10 +876,10 @@ const ProductModal = props => {
               }}
               style={{
                 backgroundColor: Colors.LIGHT_BLUE,
-                width: wp('45%'),
+                width: wp('50%'),
                 height: hp('5%'),
                 borderRadius: 10,
-                top: hp('9%'),
+                top: hp('12%'),
                 zIndex: 0,
                 shadowColor: '#000',
                 shadowOffset: {
@@ -882,7 +893,7 @@ const ProductModal = props => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text style={[Typography.normal]}>Save Changes</Text>
+              <Text style={[Typography.normal]}>{Strings.saveChanges}</Text>
             </TouchableOpacity>
           ) : (
             <View style={{alignItems: 'center'}}>
@@ -890,7 +901,7 @@ const ProductModal = props => {
                 onPress={() => setEditMode(true)}
                 style={{
                   backgroundColor: Colors.LIGHT_BLUE,
-                  width: wp('45%'),
+                  width: wp('50%'),
                   height: hp('5%'),
                   borderRadius: 10,
                   top: hp('9%'),
@@ -908,7 +919,7 @@ const ProductModal = props => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text style={[Typography.normal]}>Edit Listing</Text>
+                <Text style={[Typography.normal]}>{Strings.editListing}</Text>
                 <Icon
                   name="create-outline"
                   size={wp('5%')}
@@ -936,7 +947,7 @@ const ProductModal = props => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text style={[Typography.normal]}>Remove Listing</Text>
+                <Text style={[Typography.normal]}>{Strings.removeListing}</Text>
                 <Icon
                   name="remove-circle-outline"
                   size={wp('5%')}
@@ -947,7 +958,7 @@ const ProductModal = props => {
           <Modal
             isVisible={unsuccessfulModal}
             onBackdropPress={() => setUnsuccessfulModal(false)}>
-            <UnsuccessfulModal text={'Please fill in all empty spaces!'} />
+            <UnsuccessfulModal text={Strings.pleaseFillIn} />
           </Modal>
           <Modal
             isVisible={successfulModal}
@@ -956,9 +967,7 @@ const ProductModal = props => {
               setEditMode(false),
               props.setProductModal(false),
             ]}>
-            <SuccessfulModal
-              text={'You have successfully updated your product listing'}
-            />
+            <SuccessfulModal text={Strings.successfullyUpdated} />
           </Modal>
           <Modal
             isVisible={successfulModal2}
@@ -967,9 +976,7 @@ const ProductModal = props => {
               setEditMode(false),
               props.setProductModal(false),
             ]}>
-            <SuccessfulModal
-              text={'You have successfully delete your product listing'}
-            />
+            <SuccessfulModal text={Strings.successfullyDeleted} />
           </Modal>
         </View>
       </KeyboardAvoidingView>
@@ -1025,10 +1032,12 @@ const ProductCard = props => {
         {props.productName}
       </Text>
       <Text style={[Typography.small, {top: hp('3%'), width: wp('30%')}]}>
-        Price: {props.lowPrice} - {props.highPrice}
+        {Strings.price}: {props.lowPrice} - {props.highPrice}
         {'\n'}MOQ: {props.minimumQuantity}
-        {'\n'}Grade: {props.grade}
-        {'\n'}Variety: {props.variety}
+        {'\n'}
+        {Strings.grade}: {props.grade}
+        {'\n'}
+        {Strings.variety}: {props.variety}
       </Text>
       <Modal isVisible={productModal}>
         <ProductModal

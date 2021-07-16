@@ -41,7 +41,7 @@ export const AddEmployeeButton = props => {
 
   return (
     <TouchableOpacity
-      onPress={() => setAddEmployeeButtonModal(true)}
+      onPress={() => [setAddEmployeeButtonModal(true)]}
       style={{
         alignItems: 'center',
         justifyContent: 'center',
@@ -67,6 +67,7 @@ export const AddEmployeeButton = props => {
           navigation={props.navigation}
           user={props.user}
           setSuccesfulChangesModal={setSuccesfulChangesModal}
+          setTeamList={props.setTeamList}
         />
       </Modal>
     </TouchableOpacity>
@@ -86,6 +87,7 @@ export const AddEmployeeButtonModal = props => {
     {label: 'Retail Manager', value: 'retailmanager'},
     {label: 'General Manager', value: 'generalmanager'},
     {label: 'Accounts', value: 'accounts'},
+    {label: 'Owner', value: 'owner'},
   ]);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const addUser = async () => {
@@ -122,6 +124,7 @@ export const AddEmployeeButtonModal = props => {
     } catch (e) {
       console.log(e);
     }
+    //props.setTeamList(list => [...list, user]);
   };
   return (
     <KeyboardAvoidingView
@@ -132,10 +135,9 @@ export const AddEmployeeButtonModal = props => {
     >
       <View
         style={{
-          height: hp('70%'),
+          height: hp('85%'),
           width: wp('90%'),
           backgroundColor: 'white',
-
           borderRadius: 10,
           alignSelf: 'center',
           alignItems: 'center',
@@ -248,7 +250,6 @@ export const AddEmployeeButtonModal = props => {
               listItemContainerStyle={{height: hp('4%')}}
               dropDownContainerStyle={{
                 borderWidth: 1,
-
                 width: wp('60%'),
                 backgroundColor: Colors.GRAY_LIGHT,
               }}></DropDownPicker>
@@ -280,7 +281,7 @@ export const AddEmployeeButtonModal = props => {
             }
           }}
           style={{
-            top: hp('12%'),
+            top: hp('22%'),
             width: wp('30%'),
             height: hp('5%'),
             backgroundColor: Colors.LIGHT_BLUE,

@@ -170,4 +170,8 @@ export default {
   analyticsSmall: '分析',
   bankDetails: '银行资料',
   rating: '评分',
+  orderCreated: '订单已创建',
+  supplierHasNot: '供应商尚未指明交货日期。',
+  seller: '卖方',
+  sendBefore: '最后发送日期',
 };

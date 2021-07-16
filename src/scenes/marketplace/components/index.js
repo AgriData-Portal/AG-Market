@@ -42,7 +42,6 @@ export const Searchbar = props => {
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: hp('1.5%'),
           left: wp('70%'),
         }}
         onPress={() => {

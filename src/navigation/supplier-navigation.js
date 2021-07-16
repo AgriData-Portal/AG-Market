@@ -60,6 +60,8 @@ import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import Modal from 'react-native-modal';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -85,13 +87,14 @@ function getHeaderTitle(route) {
 export {SupplierNavigation};
 
 const SupplierNavigation = props => {
+  const [detailsModal, setDetailsModal] = useState(false);
   return (
     <AppStack.Navigator>
       <AppStack.Screen
         name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <MenuButton
@@ -114,9 +117,20 @@ const SupplierNavigation = props => {
         name="chatroom"
         options={({route, navigation}) => ({
           headerTitle: () => (
-            <TouchableOpacity onPress={() => console.log('i am supplier')}>
-              <Text style={[Typography.header]}>{route.params.chatName}</Text>
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity onPress={() => setDetailsModal(true)}>
+                <Text style={[Typography.large]}>{route.params.chatName}</Text>
+              </TouchableOpacity>
+              <Modal
+                isVisible={detailsModal}
+                onBackdropPress={() => setDetailsModal(false)}>
+                <DetailsModal
+                  companyType={'supplier'}
+                  name={route.params.chatName}
+                  id={route.params.itemID.slice(0, 36)}
+                  setDetailsModal={setDetailsModal}></DetailsModal>
+              </Modal>
+            </View>
           ),
           headerTitleAlign: 'center',
           // headerRight: () => <ChatInfo />,
@@ -138,7 +152,7 @@ const SupplierNavigation = props => {
         name="store"
         options={({route, navigation}) => ({
           title: route.params.storeName,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -157,7 +171,7 @@ const SupplierNavigation = props => {
         name="companyprofile"
         options={({route, navigation}) => ({
           title: Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -169,7 +183,7 @@ const SupplierNavigation = props => {
         name="editcompany"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.companyProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -181,7 +195,7 @@ const SupplierNavigation = props => {
         name="humanresource"
         options={({route, navigation}) => ({
           title: Strings.humanResource,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -193,7 +207,7 @@ const SupplierNavigation = props => {
         name="personalprofile"
         options={({route, navigation}) => ({
           title: Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -205,7 +219,7 @@ const SupplierNavigation = props => {
         name="editprofile"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
         })}>
         {screenProps => (
@@ -263,6 +277,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -305,7 +320,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -330,6 +345,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -372,7 +388,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -381,7 +397,7 @@ const TabbedNavigator = props => {
                 <Image
                   source={require('_assets/images/online-store.png')}
                   style={{
-                    width: wp('7.5%'),
+                    width: wp('11%'),
                     height: hp('4%'),
                     resizeMode: 'contain',
                     tintColor: Colors.LIME_GREEN,
@@ -408,7 +424,7 @@ const TabbedNavigator = props => {
                 <Image
                   source={require('_assets/images/online-store.png')}
                   style={{
-                    width: wp('7.5%'),
+                    width: wp('20%'),
                     height: hp('4.2%'),
                     resizeMode: 'contain',
                     tintColor: 'black',
@@ -444,7 +460,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -469,6 +485,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -510,7 +527,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -535,6 +552,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',

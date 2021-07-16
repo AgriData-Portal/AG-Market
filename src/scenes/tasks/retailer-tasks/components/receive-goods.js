@@ -122,7 +122,7 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        Order Created
+        {Strings.orderCreated}
       </Text>
       <Text
         style={[
@@ -134,7 +134,7 @@ const ReceiveModal = props => {
             fontStyle: 'italic',
           },
         ]}>
-        Order #{props.taskID.slice(0, 6)}
+        {Strings.order} #{props.taskID.slice(0, 6)}
       </Text>
       <Text
         style={[
@@ -183,10 +183,10 @@ const ReceiveModal = props => {
           {
             position: 'absolute',
             top: hp('50%'),
-            left: wp('55%'),
+            left: wp('50%'),
           },
         ]}>
-        Total: RM {sum}
+        {Strings.total}: RM {sum}
       </Text>
       <Text
         style={[
@@ -219,9 +219,10 @@ const ReceiveModal = props => {
               position: 'absolute',
               top: hp('55%'),
               left: wp('40%'),
+              width: wp('50%'),
             },
           ]}>
-          Supplier has not indicated delivery date yet
+          {Strings.supplierHasNot}
         </Text>
       )}
 
@@ -230,18 +231,18 @@ const ReceiveModal = props => {
           Typography.placeholder,
           {
             position: 'absolute',
-            top: hp('60%'),
+            top: hp('65%'),
             left: wp('8%'),
           },
         ]}>
-        Seller:
+        {Strings.seller}:
       </Text>
       <Text
         style={[
           Typography.small,
           {
             position: 'absolute',
-            top: hp('60%'),
+            top: hp('65%'),
             left: wp('40%'),
           },
         ]}>
@@ -578,6 +579,18 @@ const Product = props => {
         ]}>
         {props.variety}
       </Text>
+
+      <Text
+        style={[
+          Typography.small,
+          {
+            textAlign: 'left',
+            left: wp('40%'),
+            position: 'absolute',
+          },
+        ]}>
+        @ RM {props.price}/{props.siUnit}
+      </Text>
       <Text
         style={[
           Typography.small,
@@ -589,17 +602,6 @@ const Product = props => {
         ]}>
         | {props.quantity}
         {props.siUnit}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'left',
-            left: wp('40%'),
-            position: 'absolute',
-          },
-        ]}>
-        @ RM {props.price}/{props.siUnit}
       </Text>
     </View>
   );

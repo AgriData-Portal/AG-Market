@@ -306,7 +306,7 @@ const SendTaskModal = props => {
               left: wp('8%'),
             },
           ]}>
-          Order Created
+          {Strings.orderCreated}
         </Text>
         <Text
           style={[
@@ -318,7 +318,7 @@ const SendTaskModal = props => {
               fontStyle: 'italic',
             },
           ]}>
-          Order #{props.taskID.slice(0, 6)}
+          {Strings.order} #{props.taskID.slice(0, 6)}
         </Text>
         <Text
           style={[
@@ -370,7 +370,7 @@ const SendTaskModal = props => {
               left: wp('55%'),
             },
           ]}>
-          Total: RM {sum}
+          {Strings.total}: RM {sum}
         </Text>
         <Text
           style={[
@@ -394,7 +394,7 @@ const SendTaskModal = props => {
                   left: wp('35%'),
                 },
               ]}>
-              Please add a delivery date
+              {Strings.pleaseAddDeliveryDate}
             </Text>
             <TouchableOpacity
               style={{
@@ -497,7 +497,7 @@ const SendTaskModal = props => {
         </Text>
         <Text
           style={[
-            Typography.small,
+            Typography.normal,
             {
               position: 'absolute',
               top: hp('60%'),
@@ -797,7 +797,6 @@ const ProductList = props => {
     return (
       <View
         style={{
-          height: 0,
           alignSelf: 'center',
           width: wp('70%'),
         }}></View>
@@ -873,18 +872,7 @@ const Product = props => {
         ]}>
         {props.variety}
       </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'left',
-            left: wp('60%'),
-            position: 'absolute',
-          },
-        ]}>
-        | {props.quantity}
-        {props.siUnit}
-      </Text>
+
       <Text
         style={[
           Typography.small,
@@ -892,10 +880,29 @@ const Product = props => {
             textAlign: 'left',
             left: wp('40%'),
             position: 'absolute',
+            bottom: hp('2.5%'),
           },
         ]}>
         @ RM {props.price}/{props.siUnit}
       </Text>
+      <View style={{top: hp('3%'), left: wp('2%')}}>
+        <Text
+          style={[
+            Typography.small,
+            {
+              textAlign: 'left',
+              left: wp('60%'),
+              position: 'absolute',
+              bottom: hp('2.5%'),
+              right: wp('1%'),
+
+              width: wp('12%'),
+            },
+          ]}>
+          | {props.quantity}
+          {props.siUnit}
+        </Text>
+      </View>
     </View>
   );
 };

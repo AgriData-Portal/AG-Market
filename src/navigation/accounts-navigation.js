@@ -42,7 +42,7 @@ const AccountsNavigation = props => {
         name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <MenuButton
@@ -65,7 +65,7 @@ const AccountsNavigation = props => {
         name="personalprofile"
         options={({route, navigation}) => ({
           title: Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton onPress={() => navigation.goBack()} />
@@ -77,7 +77,7 @@ const AccountsNavigation = props => {
         name="editprofile"
         options={({route, navigation}) => ({
           title: 'Edit ' + Strings.personalProfile,
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
         })}>
         {screenProps => <EditPersonal {...screenProps} user={props.user} />}
@@ -104,7 +104,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -129,6 +129,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -170,7 +171,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -195,6 +196,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',

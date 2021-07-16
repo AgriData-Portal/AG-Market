@@ -12,22 +12,22 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1EA299D1BE904796BE538B4D /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B04297CCA3C46E396017C81 /* Poppins-BlackItalic.ttf */; };
+		25746A0241C29C3066D7E436 /* libPods-agridata_app-agridata_appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5ED946F48493911F9679DF /* libPods-agridata_app-agridata_appTests.a */; };
 		28F7B5AC7B2440C7AE5B88CB /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBC38FE2E8104ED7A0181F1B /* Poppins-SemiBoldItalic.ttf */; };
 		30DDF3D578AB4B0DB4A2E207 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D42B475ED124C84B6CD5389 /* Poppins-Light.ttf */; };
 		4CEAB2431E4F49FD8E0ECD9D /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA8D02041FAB457E96ACDDDB /* Poppins-Bold.ttf */; };
 		6120A6C3263F4922945D6403 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0347006E6F5C4C32A8C975A9 /* Poppins-BoldItalic.ttf */; };
 		6226334F2C244CA8ABBE6366 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB763923E31B4F5BA3660724 /* Poppins-Thin.ttf */; };
+		669E5FB3D2C1B6C02836B6F2 /* libPods-agridata_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 464F47CCD4925EC3F2F3BF37 /* libPods-agridata_app.a */; };
 		7DF74B993B184ABCA780703D /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58BA1688611243B1965D774E /* Poppins-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		83690AFFE1654313AAF02ACD /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C5031973C0C439E9C6D1216 /* Poppins-ExtraBoldItalic.ttf */; };
 		881E43D7B90942DBB45F622B /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29623601209845BEBF128809 /* Poppins-ExtraLight.ttf */; };
 		9127D58547424D6593144F56 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D8F04FAA2064471AA676FD3 /* Poppins-Regular.ttf */; };
 		B0C64AE986B843B4A8E5637C /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0CF6A3D8E1A9464B9D091FA9 /* Poppins-ExtraBold.ttf */; };
-		B223CE5BA226ED115A7729FF /* libPods-agridata_app-agridata_appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9502077346DBCFCCC9DD596 /* libPods-agridata_app-agridata_appTests.a */; };
 		CEA802D54D7049F3ABAF5C5E /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F233DB2FB464A48961F4E46 /* Poppins-Black.ttf */; };
 		CF33449B29654A2F9B16410A /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50E3F1242F96416E805409FE /* Poppins-LightItalic.ttf */; };
 		D1A13B8CD2B945E18030F2C7 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B1351DDA5854B37AEA8D506 /* Poppins-MediumItalic.ttf */; };
-		D360FAA962CDFA631A685CCD /* libPods-agridata_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D64059BCF73B4A5AA3D1B73 /* libPods-agridata_app.a */; };
 		D457E871F3AE45D38063C528 /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E20B2B0872AA42A587F2ED76 /* Poppins-ExtraLightItalic.ttf */; };
 		E6DE620FA874471698259C98 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B748753535F4068A2651E63 /* Poppins-Italic.ttf */; };
 		EAF83592179C44A59B2D7895 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88A5965DDD2F460E92D8A1AF /* Poppins-ThinItalic.ttf */; };
@@ -59,7 +59,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = agridata_app/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = agridata_app/main.m; sourceTree = "<group>"; };
 		29623601209845BEBF128809 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
-		3D64059BCF73B4A5AA3D1B73 /* libPods-agridata_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-agridata_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29AD8DCC18D0930B72329655 /* Pods-agridata_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app.debug.xcconfig"; path = "Target Support Files/Pods-agridata_app/Pods-agridata_app.debug.xcconfig"; sourceTree = "<group>"; };
+		464F47CCD4925EC3F2F3BF37 /* libPods-agridata_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-agridata_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B04297CCA3C46E396017C81 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		50E3F1242F96416E805409FE /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		58BA1688611243B1965D774E /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -67,19 +68,18 @@
 		5C5031973C0C439E9C6D1216 /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		7D8F04FAA2064471AA676FD3 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = agridata_app/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		82DCFBC0744DE08FCB4323C2 /* Pods-agridata_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app.release.xcconfig"; path = "Target Support Files/Pods-agridata_app/Pods-agridata_app.release.xcconfig"; sourceTree = "<group>"; };
 		88A5965DDD2F460E92D8A1AF /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		8D42B475ED124C84B6CD5389 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
-		932453754713F62FD172F926 /* Pods-agridata_app-agridata_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app-agridata_appTests.debug.xcconfig"; path = "Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests.debug.xcconfig"; sourceTree = "<group>"; };
+		96526DFB75B533B5486D7412 /* Pods-agridata_app-agridata_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app-agridata_appTests.release.xcconfig"; path = "Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B1351DDA5854B37AEA8D506 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
-		9F1858CE18674B551C600903 /* Pods-agridata_app-agridata_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app-agridata_appTests.release.xcconfig"; path = "Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests.release.xcconfig"; sourceTree = "<group>"; };
-		C3F1664E7EC73900B395756B /* Pods-agridata_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app.release.xcconfig"; path = "Target Support Files/Pods-agridata_app/Pods-agridata_app.release.xcconfig"; sourceTree = "<group>"; };
-		D9502077346DBCFCCC9DD596 /* libPods-agridata_app-agridata_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-agridata_app-agridata_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB5ED946F48493911F9679DF /* libPods-agridata_app-agridata_appTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-agridata_app-agridata_appTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D85A23CF7043E42D98BCE5E0 /* Pods-agridata_app-agridata_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app-agridata_appTests.debug.xcconfig"; path = "Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DA8D02041FAB457E96ACDDDB /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		E20B2B0872AA42A587F2ED76 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		EB763923E31B4F5BA3660724 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FBC38FE2E8104ED7A0181F1B /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
-		FCE12C0629E7AB766D7683EE /* Pods-agridata_app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-agridata_app.debug.xcconfig"; path = "Target Support Files/Pods-agridata_app/Pods-agridata_app.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B223CE5BA226ED115A7729FF /* libPods-agridata_app-agridata_appTests.a in Frameworks */,
+				25746A0241C29C3066D7E436 /* libPods-agridata_app-agridata_appTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D360FAA962CDFA631A685CCD /* libPods-agridata_app.a in Frameworks */,
+				669E5FB3D2C1B6C02836B6F2 /* libPods-agridata_app.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,8 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				3D64059BCF73B4A5AA3D1B73 /* libPods-agridata_app.a */,
-				D9502077346DBCFCCC9DD596 /* libPods-agridata_app-agridata_appTests.a */,
+				464F47CCD4925EC3F2F3BF37 /* libPods-agridata_app.a */,
+				CB5ED946F48493911F9679DF /* libPods-agridata_app-agridata_appTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -202,10 +202,10 @@
 		B429C184EA4C701DB7AE5ACC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FCE12C0629E7AB766D7683EE /* Pods-agridata_app.debug.xcconfig */,
-				C3F1664E7EC73900B395756B /* Pods-agridata_app.release.xcconfig */,
-				932453754713F62FD172F926 /* Pods-agridata_app-agridata_appTests.debug.xcconfig */,
-				9F1858CE18674B551C600903 /* Pods-agridata_app-agridata_appTests.release.xcconfig */,
+				29AD8DCC18D0930B72329655 /* Pods-agridata_app.debug.xcconfig */,
+				82DCFBC0744DE08FCB4323C2 /* Pods-agridata_app.release.xcconfig */,
+				D85A23CF7043E42D98BCE5E0 /* Pods-agridata_app-agridata_appTests.debug.xcconfig */,
+				96526DFB75B533B5486D7412 /* Pods-agridata_app-agridata_appTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -217,12 +217,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "agridata_appTests" */;
 			buildPhases = (
-				125AA894FEF2D85D221B5EBE /* [CP] Check Pods Manifest.lock */,
+				338DF12AC1A1754BDBDA987C /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				97C8FD837F2763391DB75FC5 /* [CP] Embed Pods Frameworks */,
-				C8E02200CC36211986B34B0B /* [CP] Copy Pods Resources */,
+				6B1290A2290935DDA6879678 /* [CP] Embed Pods Frameworks */,
+				9C5A1FA41974AD6C686605EA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -238,14 +238,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "agridata_app" */;
 			buildPhases = (
-				754EE7DA42F510FF387D5C84 /* [CP] Check Pods Manifest.lock */,
+				AC95F0F53FA5C889FCACC733 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				A1A2CC2ADBF3331CCD97FD49 /* [CP] Embed Pods Frameworks */,
-				95802F609033710F15E25D9F /* [CP] Copy Pods Resources */,
+				8CB9D42B5A8FFD38EE98D417 /* [CP] Embed Pods Frameworks */,
+				5E67B7CA0C88B1117DC72EF3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -344,7 +344,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		125AA894FEF2D85D221B5EBE /* [CP] Check Pods Manifest.lock */ = {
+		338DF12AC1A1754BDBDA987C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -366,7 +366,75 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		754EE7DA42F510FF387D5C84 /* [CP] Check Pods Manifest.lock */ = {
+		5E67B7CA0C88B1117DC72EF3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6B1290A2290935DDA6879678 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CB9D42B5A8FFD38EE98D417 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9C5A1FA41974AD6C686605EA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AC95F0F53FA5C889FCACC733 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -386,74 +454,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		95802F609033710F15E25D9F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		97C8FD837F2763391DB75FC5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A1A2CC2ADBF3331CCD97FD49 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app/Pods-agridata_app-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C8E02200CC36211986B34B0B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-agridata_app-agridata_appTests/Pods-agridata_app-agridata_appTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -508,7 +508,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 932453754713F62FD172F926 /* Pods-agridata_app-agridata_appTests.debug.xcconfig */;
+			baseConfigurationReference = D85A23CF7043E42D98BCE5E0 /* Pods-agridata_app-agridata_appTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = L463XJ3434;
@@ -536,7 +536,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F1858CE18674B551C600903 /* Pods-agridata_app-agridata_appTests.release.xcconfig */;
+			baseConfigurationReference = 96526DFB75B533B5486D7412 /* Pods-agridata_app-agridata_appTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -561,7 +561,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FCE12C0629E7AB766D7683EE /* Pods-agridata_app.debug.xcconfig */;
+			baseConfigurationReference = 29AD8DCC18D0930B72329655 /* Pods-agridata_app.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -569,6 +569,7 @@
 				DEVELOPMENT_TEAM = L463XJ3434;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = agridata_app/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -588,13 +589,14 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C3F1664E7EC73900B395756B /* Pods-agridata_app.release.xcconfig */;
+			baseConfigurationReference = 82DCFBC0744DE08FCB4323C2 /* Pods-agridata_app.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L463XJ3434;
 				INFOPLIST_FILE = agridata_app/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -644,7 +646,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -709,7 +711,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

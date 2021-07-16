@@ -8,7 +8,6 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-
 import {LoadingModal} from '_components';
 import {ChatBubbleList, MessageInput, ChatInfo} from './components';
 import BackgroundTimer from 'react-native-background-timer';
@@ -232,7 +231,7 @@ export const ChatRoom = props => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
-          Platform.OS === 'ios' ? hp('3%') : hp('17%')
+          Platform.OS === 'ios' ? hp('14%') : hp('17%')
         } /* Keyboard Offset needs to be tested against multiple phones */
         style={{
           top: hp('3%'),
@@ -254,7 +253,6 @@ export const ChatRoom = props => {
             setRefresh={setRefresh}
           />
         </View>
-
         <View style={{top: hp('3%')}}>
           <MessageInput
             userID={props.user.id}

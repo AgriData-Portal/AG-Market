@@ -120,7 +120,7 @@ const GMNavigation = props => {
         name={Strings.inbox}
         options={({route, navigation}) => ({
           headerTitle: getHeaderTitle(route),
-          headerTitleStyle: [Typography.header],
+          headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
             <MenuButton
@@ -184,8 +184,10 @@ const GMNavigation = props => {
                 isVisible={detailsModal}
                 onBackdropPress={() => setDetailsModal(false)}>
                 <DetailsModal
+                  companyType={'retailer'}
                   name={route.params.storeName}
-                  id={route.params.itemId}></DetailsModal>
+                  id={route.params.itemId}
+                  setDetailsModal={setDetailsModal}></DetailsModal>
               </Modal>
             </View>
           ),
@@ -336,6 +338,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -377,7 +380,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -402,6 +405,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -443,7 +447,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -471,6 +475,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -515,7 +520,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -540,6 +545,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -581,7 +587,7 @@ const TabbedNavigator = props => {
             focused ? (
               <View
                 style={{
-                  width: wp('15%'),
+                  width: wp('20%'),
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -606,6 +612,7 @@ const TabbedNavigator = props => {
             ) : (
               <View
                 style={{
+                  width: wp('20%'),
                   height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
