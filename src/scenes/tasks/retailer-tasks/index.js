@@ -112,7 +112,7 @@ export const RetailerTasks = props => {
               style={[
                 Typography.normal,
                 {
-                  color: Colors.GRAY_DARK,
+                  color: 'black',
                   fontFamily: 'Poppins-Bold',
                   textDecorationLine: 'underline',
                 },
@@ -127,7 +127,9 @@ export const RetailerTasks = props => {
               right: wp('15%'),
               top: hp('2%'),
             }}>
-            <Text style={[Typography.normal]}>{Strings.toRecieve}</Text>
+            <Text style={[Typography.normal, {color: 'grey'}]}>
+              {Strings.toRecieve}
+            </Text>
           </TouchableOpacity>
         )}
         {task == 'pay' ? (
@@ -140,7 +142,7 @@ export const RetailerTasks = props => {
               style={[
                 Typography.normal,
                 {
-                  color: Colors.GRAY_DARK,
+                  color: 'black',
                   fontFamily: 'Poppins-Bold',
                   textDecorationLine: 'underline',
                 },
@@ -155,7 +157,9 @@ export const RetailerTasks = props => {
               top: hp('2%'),
               left: wp('15%'),
             }}>
-            <Text style={[Typography.normal]}>{Strings.toPay}</Text>
+            <Text style={[Typography.normal, {color: 'grey'}]}>
+              {Strings.toPay}
+            </Text>
           </TouchableOpacity>
         )}
       </View>

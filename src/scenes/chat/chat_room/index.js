@@ -13,8 +13,12 @@ import {ChatBubbleList, MessageInput, ChatInfo} from './components';
 import BackgroundTimer from 'react-native-background-timer';
 import {messagesInChatByDate} from '../../../graphql/queries';
 import {onCreateMessage} from '../../../graphql/subscriptions';
+import {
+  updateChatGroupUsers,
+  createChatGroupUsers,
+} from '../../../graphql/mutations';
 import Modal from 'react-native-modal';
-
+var dayjs = require('dayjs');
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -94,6 +98,34 @@ export const ChatRoom = props => {
       AppState.removeEventListener('change', handleAppStateChange);
     };
   }, []);
+
+  const updateLastSeen = async () => {
+    const uniqueID = props.user.id + itemID;
+    try {
+      const updatedLastSeen = await API.graphql({
+        query: updateChatGroupUsers,
+        variables: {input: {id: uniqueID, lastOnline: dayjs()}},
+      });
+      console.log('updated last seen');
+    } catch (e) {
+      console.log(e);
+      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+        console.log('no special connection created, creating one now');
+        const createLastSeen = await API.graphql({
+          query: createChatGroupUsers,
+          variables: {
+            input: {
+              id: uniqueID,
+              lastOnline: dayjs(),
+              userID: props.user.id,
+              chatGroupID: itemID,
+            },
+          },
+        });
+      }
+    }
+  };
+
   let a = 0;
   useEffect(() => {
     console.log(appState);
@@ -101,6 +133,7 @@ export const ChatRoom = props => {
       if (appState == 'inactive') {
         BackgroundTimer.runBackgroundTimer(() => {
           console.log('3 seconds');
+          updateLastSeen();
         }, 3000);
         setTimeout(() => {
           BackgroundTimer.stopBackgroundTimer();

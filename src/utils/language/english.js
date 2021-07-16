@@ -89,7 +89,7 @@ export default {
   updateCompany: 'Update Company',
   verificationWord: 'VERIFICATION',
   sendCodeToPhone:
-    'Enter phone number to recieve a code in order to verify your number',
+    'Enter phone number to receive a code in order to verify your number',
   authenticationCode: 'Authentication Code',
   resendCode: 'Re-send Code',
   verify: 'VERIFY',
@@ -133,9 +133,9 @@ export default {
   paymentFrom: 'Payment From',
   dateOfPayment: 'Date of Payment',
   reference: 'Reference',
-  recieved: 'Recieved',
+  recieved: 'Received',
   bank: 'Bank',
-  toRecieve: 'To Recieve',
+  toRecieve: 'To Receive',
   toPay: 'To Pay',
   paymentTo: 'Payment To',
   uploadReciept: 'Upload Reciept',
@@ -185,7 +185,7 @@ export default {
   youCurrentlyDontHave:
     " You currently don't have any chats.\nLook for a retailer to start chatting",
   amount: 'Amount',
-  recieveBefore: 'Recieve Before',
+  recieveBefore: 'Receive Before',
   orderedOn: 'Ordered On',
   recievedPayment:
     'You have received your payment. The payment task will now be deleted, you can find the invoice in your list of invoices',
@@ -199,10 +199,11 @@ export default {
   paid: 'PAID',
   notPaid: 'NOT PAID',
   invoiceDate: 'Invoice Date',
-  recievedBy: 'Recieved By',
+  recievedBy: 'Received By',
   pleaseFillIn: 'Please fill in all empty spaces!',
   successfullyAddedCrops:
     "You have successfully added your crops! We'll send you a notification as soon as retailers buy your produce!",
   successfullyUpdated: 'You have successfully updated your product listing',
   successfullyDeleted: 'You have successfully deleted your product listing',
+  successfullyUploaded: 'You have uploaded your payment receipt',
 };

@@ -207,4 +207,5 @@ export default {
     'Anda berjaya menambahkan tanaman anda! Kami akan kirimkan notis kepada anda sebaik sahaja peruncit membeli hasil anda!',
   successfullyUpdated: 'Anda berjaya mengemas kini senarai produk anda!',
   successfullyDeleted: 'Anda berjaya padamkan produk anda!',
+  successfullyUploaded: 'Anda telah memuat naik resit pembayaran anda',
 };
