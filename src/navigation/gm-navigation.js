@@ -115,7 +115,12 @@ const GMNavigation = props => {
     }
   };
   return (
-    <AppStack.Navigator>
+    <AppStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          height: hp('8%'),
+        },
+      }}>
       <AppStack.Screen
         name={Strings.inbox}
         options={({route, navigation}) => ({

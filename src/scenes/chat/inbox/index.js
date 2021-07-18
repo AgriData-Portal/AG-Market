@@ -188,9 +188,10 @@ export const Inbox = props => {
 
       <View
         style={{
-          height: hp('62%'),
+          height: hp('70%'),
+
           width: wp('95%'),
-          top: hp('4%'),
+          top: hp('2%'),
         }}>
         <ChatList
           data={chatRooms}

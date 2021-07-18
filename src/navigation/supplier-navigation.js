@@ -89,7 +89,12 @@ export {SupplierNavigation};
 const SupplierNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   return (
-    <AppStack.Navigator>
+    <AppStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          height: hp('8%'),
+        },
+      }}>
       <AppStack.Screen
         name={Strings.inbox}
         options={({route, navigation}) => ({
