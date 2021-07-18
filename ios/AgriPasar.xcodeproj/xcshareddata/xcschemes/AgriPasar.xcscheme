@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "agridata_app.app"
-               BlueprintName = "agridata_app"
-               ReferencedContainer = "container:agridata_app.xcodeproj">
+               BuildableName = "AgriPasar.app"
+               BlueprintName = "AgriPasar"
+               ReferencedContainer = "container:AgriPasar.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "agridata_appTests.xctest"
-               BlueprintName = "agridata_appTests"
-               ReferencedContainer = "container:agridata_app.xcodeproj">
+               BuildableName = "AgriPasarTests.xctest"
+               BlueprintName = "AgriPasarTests"
+               ReferencedContainer = "container:AgriPasar.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "agridata_app.app"
-            BlueprintName = "agridata_app"
-            ReferencedContainer = "container:agridata_app.xcodeproj">
+            BuildableName = "AgriPasar.app"
+            BlueprintName = "AgriPasar"
+            ReferencedContainer = "container:AgriPasar.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "agridata_app.app"
-            BlueprintName = "agridata_app"
-            ReferencedContainer = "container:agridata_app.xcodeproj">
+            BuildableName = "AgriPasar.app"
+            BlueprintName = "AgriPasar"
+            ReferencedContainer = "container:AgriPasar.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
