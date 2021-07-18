@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '14.5.0'
 
-target 'agridata_app' do
+target 'AgriPasar' do
 
 
   config = use_native_modules!
@@ -22,7 +22,7 @@ target 'agridata_app' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
 
-  target 'agridata_appTests' do
+  target 'AgriPasarTests' do
     inherit! :complete
     # Pods for testing
   end
