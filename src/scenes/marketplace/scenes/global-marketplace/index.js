@@ -17,6 +17,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import Modal from 'react-native-modal';
+import SearchableDropdown from 'react-native-searchable-dropdown';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -25,6 +26,8 @@ export const Marketplace = props => {
   const [initialRender, setInitialRender] = useState(true);
   const [searchPressed, setSearchPressed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchable, setSearchable] = useState([]);
+
   console.log('marketplace initial render' + props.user);
   const fetchProducts = async () => {
     setLoading(true);
@@ -66,6 +69,29 @@ export const Marketplace = props => {
     setSearchValue('');
   }, [choice]);
 
+  const getAllListings = async () => {
+    try {
+      const listings = await API.graphql({
+        query: listProductListings,
+      });
+      console.log(listings.data.listProductListings.items);
+      var responseList = listings.data.listProductListings.items;
+      responseList = responseList.map(item => {
+        return item.productName.toUpperCase();
+      });
+
+      console.log(responseList);
+      var array = Array.from(new Set(responseList));
+      setSearchable(array);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    console.log('All listings');
+    getAllListings();
+  }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -75,11 +101,47 @@ export const Marketplace = props => {
         alignItems: 'center',
       }}>
       <View style={{top: hp('1%')}}>
-        <Searchbar
-          setSearchPressed={setSearchPressed}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
+        {choice == 'product' ? (
+          <View
+            style={{
+              backgroundColor: Colors.GRAY_MEDIUM,
+              borderRadius: 30,
+              width: wp('90%'),
+              height: hp('5%'),
+              flexDirection: 'row',
+            }}>
+            <View
+              style={{
+                position: 'absolute',
+                left: wp('5%'),
+                top: hp('0.75%'),
+              }}>
+              <Icon name="search" size={wp('7%')} color={Colors.GRAY_DARK} />
+            </View>
+            <View style={{left: wp('13%')}}>
+              <SearchableDropdown
+                placeholder={Strings.search}
+                itemsContainerStyle={{
+                  maxHeight: hp('60%'),
+                  backgroundColor: 'red',
+                }}
+                textInputStyle={{
+                  width: wp('70%'),
+                  height: hp('5%'),
+                }}
+                setSearchPressed={setSearchPressed}
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+              />
+            </View>
+          </View>
+        ) : (
+          <Searchbar
+            setSearchPressed={setSearchPressed}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
+        )}
       </View>
       <View
         style={{
