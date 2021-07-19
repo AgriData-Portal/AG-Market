@@ -83,7 +83,6 @@ export const Marketplace = props => {
       console.log(responseList);
       var array = Array.from(new Set(responseList));
       setSearchable(array);
-      console.log(searchable);
     } catch (e) {
       console.log(e);
     }
