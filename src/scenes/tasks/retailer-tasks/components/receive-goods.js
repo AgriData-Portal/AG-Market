@@ -22,7 +22,7 @@ import {
 import {
   createInvoice,
   createPaymentTask,
-  deleteGoodsTask,
+  updateGoodsTask,
   updateSupplierCompany,
 } from '../../../../graphql/mutations';
 import {API} from 'aws-amplify';
@@ -85,15 +85,15 @@ const ReceiveModal = props => {
     }
     try {
       const invoiceResponse = await API.graphql({
-        query: deleteGoodsTask,
-        variables: {input: {id: props.taskID}},
+        query: updateGoodsTask,
+        variables: {input: {id: props.taskID, status: 'received'}},
       });
       var tempList = props.receiveTask;
-      for (let [i, temp] of tempList.entries()) {
-        if (temp.id == props.taskID) {
-          tempList.splice(i, 1);
+      tempList.forEach((item, index, arr) => {
+        if (item.id == props.taskID) {
+          arr[index] = invoiceResponse.data.updateGoodsTask;
         }
-      }
+      });
       props.setReceiveTask(tempList);
       setRatingModal(true);
       console.log('deleted!');
@@ -252,7 +252,7 @@ const ReceiveModal = props => {
         ]}>
         {props.supplier.name}
       </Text>
-      {props.sentByRetailer ? (
+      {props.status == 'sent' ? (
         <TouchableOpacity
           onPress={() => {
             if (props.trigger) {
@@ -301,9 +301,7 @@ const ReceiveModal = props => {
           width: wp('10%'),
           top: hp('50%'),
           left: wp('20%'),
-        }}>
-        <Text style={[Typography.normal, {}]}>Test</Text>
-      </TouchableOpacity>
+        }}></TouchableOpacity>
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [
@@ -322,6 +320,8 @@ const ReceiveModal = props => {
           setRatingModal={setRatingModal}
           setSuccessfulModal={setSuccessfulModal}
           supplier={props.supplier}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
         />
       </Modal>
     </View>
@@ -370,12 +370,14 @@ const Receive = props => {
             alignItems: 'center',
           }}>
           <View style={{bottom: hp('0.5%')}}>
-            {props.sentByRetailer ? (
+            {props.status == 'sent' ? (
               <Icon
                 name="cube-outline"
-                color={Colors.LIME_GREEN}
                 size={wp('11%')}
+                color={Colors.LIME_GREEN}
               />
+            ) : props.status == 'received' ? (
+              <Icon name="cube-outline" size={wp('11%')} color="gold" />
             ) : (
               <Icon name="cube-outline" size={wp('11%')} />
             )}
@@ -440,7 +442,7 @@ const Receive = props => {
           retailer={props.retailer}
           retailerID={props.retailerID}
           supplierID={props.supplierID}
-          sentByRetailer={props.sentByRetailer}
+          status={props.status}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
           user={props.user}
@@ -496,24 +498,28 @@ export const ReceiveList = props => {
         }
         renderItem={({item}) => {
           console.log(item.supplier);
-          return (
-            <Receive
-              retailer={item.retailer}
-              supplier={item.supplier}
-              retailerID={item.retailerID}
-              supplierID={item.supplierID}
-              goods={item.items}
-              createdAt={item.createdAt}
-              deliverydate={item.deliveryDate}
-              taskID={item.id}
-              sentByRetailer={item.sentByRetailer}
-              user={props.user}
-              trigger={props.trigger}
-              setTrigger={props.setTrigger}
-              receiveTask={props.receiveTask}
-              setReceiveTask={props.setReceiveTask}
-            />
-          );
+          if (item.status == 'received') {
+            return <View />;
+          } else {
+            return (
+              <Receive
+                retailer={item.retailer}
+                supplier={item.supplier}
+                retailerID={item.retailerID}
+                supplierID={item.supplierID}
+                goods={item.items}
+                createdAt={item.createdAt}
+                deliverydate={item.deliveryDate}
+                taskID={item.id}
+                status={item.status}
+                user={props.user}
+                trigger={props.trigger}
+                setTrigger={props.setTrigger}
+                receiveTask={props.receiveTask}
+                setReceiveTask={props.setReceiveTask}
+              />
+            );
+          }
         }}
       />
     </View>
@@ -668,6 +674,11 @@ const RatingModal = props => {
       props.setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
+    }
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
     }
   };
   return (
