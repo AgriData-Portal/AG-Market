@@ -536,6 +536,116 @@ const ChatBubble = props => {
         </Modal>
       </View>
     );
+  } else if (contentType == 'store') {
+    const storeDetails = props.content.split('+');
+    console.log(storeDetails);
+    return (
+      <View>
+        <View>
+          {!isMyMessage() && (
+            <View
+              style={{
+                left: wp('1%'),
+                top: hp('16%'),
+                borderColor: 'white',
+                borderWidth: 0.2,
+                width: wp('8%'),
+                height: wp('8%'),
+                position: 'absolute',
+                borderRadius: 100,
+                justifyContent: 'center',
+                backgroundColor: Colors.GRAY_WHITE,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+              }}>
+              <Text
+                style={{
+                  color: Colors.GRAY_DARK,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}>
+                {getInitials(props.sender)}
+              </Text>
+            </View>
+          )}
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
+            marginLeft: isMyMessage() ? wp('40%') : 0,
+            marginRight: isMyMessage() ? 0 : wp('33%'),
+            left: isMyMessage() ? wp('5%') : wp('12%'),
+            marginTop: hp('1%'),
+            width: wp('45%'),
+            height: hp('19%'),
+            borderRadius: 10,
+          }}>
+          <Text
+            style={[
+              Typography.small,
+              {
+                top: hp('-1%'),
+                textAlign: 'center',
+                width: wp('43%'),
+              },
+            ]}>
+            Come and view my store by pressing the image!
+          </Text>
+          {isMyMessage() ? (
+            <View>
+              <Image
+                source={require('_assets/images/supermarket.png')}
+                style={{
+                  width: wp('20%'),
+                  height: hp('6%'),
+                  resizeMode: 'contain',
+                  top: hp('1%'),
+                }}
+              />
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('store', {
+                  itemId: storeDetails[0],
+                  storeName: storeDetails[1],
+                });
+              }}>
+              <Image
+                source={require('_assets/images/supermarket.png')}
+                style={{
+                  width: wp('20%'),
+                  height: hp('6%'),
+                  resizeMode: 'contain',
+                  top: hp('1%'),
+                }}
+              />
+            </TouchableOpacity>
+          )}
+
+          <Text
+            style={[
+              Typography.small,
+              {
+                alignSelf: 'flex-end',
+                right: wp('3%'),
+                top: hp('2%'),
+              },
+            ]}>
+            {createdAt}
+          </Text>
+        </View>
+      </View>
+    );
   }
 };
 
@@ -568,6 +678,7 @@ export const ChatBubbleList = props => {
               userName={props.userName}
               setMessages={props.setMessages}
               messages={props.messages}
+              navigation={props.navigation}
             />
           );
         }}

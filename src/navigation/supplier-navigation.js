@@ -29,6 +29,7 @@ import {
   Landing, //done
   Verification, //done
   ConfirmSignUp, //done
+  RetailerModalButton,
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -85,17 +86,15 @@ function getHeaderTitle(route) {
   }
 }
 
-// function getIcon(route) {
-//   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
-//   switch (routeName) {
-//     case 'marketplace':
-//       return (
-//         <TouchableOpacity>
-//           <Icon name="share-social-outline" />
-//         </TouchableOpacity>
-//       );
-//   }
-// }
+function getIcon(route, user) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
+  if (routeName == 'marketplace') {
+    console.log('test');
+    return <RetailerModalButton user={user}></RetailerModalButton>;
+  } else {
+    return null;
+  }
+}
 
 export {SupplierNavigation};
 
@@ -121,7 +120,7 @@ const SupplierNavigation = props => {
               userType={props.user.role}
             />
           ),
-          //headerRight: getIcon(route),
+          headerRight: () => getIcon((route = route), (user = props.user)),
         })}>
         {screenProps => (
           <TabbedNavigator
