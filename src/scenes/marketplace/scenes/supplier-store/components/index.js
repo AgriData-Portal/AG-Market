@@ -28,6 +28,9 @@ import {
   deleteProductListing,
   updateProductListing,
   createProductListing,
+  updateChatGroup,
+  createChatGroup,
+  createMessage,
 } from '../../../../../graphql/mutations';
 import {API, Storage} from 'aws-amplify';
 import {DismissKeyboardView} from '_components';
@@ -36,6 +39,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {listRetailerCompanys} from '../../../../../graphql/queries';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -1112,5 +1116,177 @@ export const SupplierplaceList = props => {
         );
       }}
     />
+  );
+};
+
+export const RetailerList = props => {
+  return (
+    <FlatList
+      data={props.supermarkets}
+      renderItem={({item}) => {
+        console.log(item);
+
+        return (
+          <RetailerCard
+            name={item.name}
+            id={item.id}
+            user={user}></RetailerCard>
+        );
+      }}
+    />
+  );
+};
+
+const RetailerCard = props => {
+  const sendStoreDetails = async () => {
+    try {
+      console.log(props.id + props.user.supplierCompanyID);
+      const updateChat = await API.graphql({
+        query: updateChatGroup,
+        variables: {
+          input: {
+            id: props.id + props.user.supplierCompanyID,
+            mostRecentMessage: 'Store Catalog',
+            mostRecentMessageSender: props.user.name,
+          },
+        },
+      });
+      console.log('chat group already exist');
+    } catch (e) {
+      console.log(e);
+      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+        try {
+          const chatGroup = {
+            id: props.id + props.user.supplierCompanyID,
+            name: props.name + '+' + props.user.supplierCompany.name,
+            retailerID: props.id,
+            supplierID: props.user.supplierCompanyID,
+            mostRecentMessage: 'Store Catalog',
+            mostRecentMessageSender: props.user.name,
+          };
+          console.log(chatGroup);
+          const createdChatGroup = await API.graphql({
+            query: createChatGroup,
+            variables: {input: chatGroup},
+          });
+          console.log(createdChatGroup);
+        } catch (e) {
+          console.log(e.errors[0].errorType);
+        }
+      } else {
+        console.log(e.errors[0].errorType);
+      }
+    }
+
+    console.log('creating store ' + props.user.supplierCompany.name);
+
+    const store = {
+      chatGroupID: props.id + props.user.supplierCompanyID,
+      type: 'store',
+      content:
+        props.user.supplierCompanyID + '+' + props.user.supplierCompany.name,
+      sender: props.user.name,
+      senderID: props.user.id,
+    };
+    try {
+      const message = await API.graphql({
+        query: createMessage,
+        variables: {input: store},
+      });
+      console.log(message.data.createMessage);
+      //setSuccessfulModal(true);
+    } catch {
+      e => console.log(e);
+    }
+  };
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        sendStoreDetails();
+      }}
+      style={{
+        marginBottom: hp('2%'),
+        width: wp('80%'),
+        alignSelf: 'center',
+        height: hp('8%'),
+        borderColor: 'black',
+        borderWidth: 0.2,
+
+        justifyContent: 'center',
+        borderRadius: 10,
+      }}>
+      <View
+        style={{
+          flexDirection: 'row',
+        }}>
+        <Image
+          source={require('_assets/images/supermarket.png')}
+          style={{
+            width: wp('20%'),
+            height: hp('6%'),
+            resizeMode: 'contain',
+            left: wp('5%'),
+          }}
+        />
+        <View style={{left: wp('10%'), justifyContent: 'center'}}>
+          <Text style={[Typography.normal]}>{props.name}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+export const RetailerModalButton = props => {
+  const [retailerModal, setRetailerModal] = useState(false);
+  return (
+    <View>
+      <TouchableOpacity
+        onPress={() => setRetailerModal(true)}
+        style={{right: wp('5%')}}>
+        <Icon name="share-social-outline" size={wp('6%')} />
+      </TouchableOpacity>
+      <Modal
+        isVisible={retailerModal}
+        onBackdropPress={() => setRetailerModal(false)}>
+        <RetailerModal setRetailerModal={setRetailerModal} />
+      </Modal>
+    </View>
+  );
+};
+
+const RetailerModal = props => {
+  const [supermarkets, setSupermarkets] = useState([]);
+  const getAllSupermarkets = async () => {
+    try {
+      const listRetailers = await API.graphql({
+        query: listRetailerCompanys,
+      });
+
+      setSupermarkets(listRetailers.data.listRetailerCompanys.items);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getAllSupermarkets();
+  }, []);
+  return (
+    <View
+      style={{
+        backgroundColor: 'white',
+        width: wp('90%'),
+        height: hp('80%'),
+        alignSelf: 'center',
+        borderRadius: 10,
+      }}>
+      <View
+        style={{alignItems: 'center', justifyContent: 'center', top: hp('2%')}}>
+        <Text style={[Typography.large]}>Supermarkets</Text>
+      </View>
+      <View style={{height: hp('60%'), top: hp('3%')}}>
+        <RetailerList supermarkets={supermarkets} />
+      </View>
+    </View>
   );
 };

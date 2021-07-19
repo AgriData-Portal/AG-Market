@@ -29,6 +29,7 @@ import {
   Landing, //done
   Verification, //done
   ConfirmSignUp, //done
+  RetailerModalButton,
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -62,6 +63,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 import Modal from 'react-native-modal';
+import {header} from '_styles';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -81,6 +83,16 @@ function getHeaderTitle(route) {
       return Strings.tasks;
     case 'dataanalytics':
       return Strings.analytics;
+  }
+}
+
+function getIcon(route, user) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
+  if (routeName == 'marketplace') {
+    console.log('test');
+    return <RetailerModalButton user={user}></RetailerModalButton>;
+  } else {
+    return null;
   }
 }
 
@@ -108,6 +120,7 @@ const SupplierNavigation = props => {
               userType={props.user.role}
             />
           ),
+          headerRight: () => getIcon((route = route), (user = props.user)),
         })}>
         {screenProps => (
           <TabbedNavigator

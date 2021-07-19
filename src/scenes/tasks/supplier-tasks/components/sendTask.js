@@ -22,8 +22,13 @@ import {
 import {DismissKeyboard} from '_components';
 import Strings from '_utils';
 import {API} from 'aws-amplify';
-import {updateGoodsTask} from '../../../../graphql/mutations';
+import {
+  updateGoodsTask,
+  updateRetailerCompany,
+  deleteGoodsTask,
+} from '../../../../graphql/mutations';
 import {goodsTaskForSupplierByDate} from '../../../../graphql/queries';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 const now = () => {
@@ -81,7 +86,7 @@ export const SendTaskList = props => {
               trigger={props.trigger}
               setTrigger={props.setTrigger}
               sendTask={props.sendTask}
-              sentByRetailer={item.sentByRetailer}
+              status={item.status}
               setSendTask={props.setSendTask}
             />
           );
@@ -98,9 +103,15 @@ export const SendTaskList = props => {
 const SendTask = props => {
   const [sendTaskModal, setSendTaskModal] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
+  const [ratingModal, setRatingModal] = useState(false);
+  const [successfulModal, setSuccessfulModal] = useState(false);
   return (
     <TouchableOpacity
-      onPress={() => setSendTaskModal(true)}
+      onPress={() =>
+        props.status == 'received'
+          ? setRatingModal(true)
+          : setSendTaskModal(true)
+      }
       style={{
         marginBottom: hp('2%'),
         width: wp('85%'),
@@ -137,19 +148,19 @@ const SendTask = props => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {props.sentByRetailer ? (
-            <View style={{bottom: hp('0.5%')}}>
+          <View style={{bottom: hp('0.5%')}}>
+            {props.status == 'sent' ? (
               <Icon
                 name="cube-outline"
                 size={wp('11%')}
                 color={Colors.LIME_GREEN}
               />
-            </View>
-          ) : (
-            <View style={{bottom: hp('0.5%')}}>
+            ) : props.status == 'received' ? (
+              <Icon name="cube-outline" size={wp('11%')} color="gold" />
+            ) : (
               <Icon name="cube-outline" size={wp('11%')} />
-            </View>
-          )}
+            )}
+          </View>
         </View>
         <Text
           style={[
@@ -227,6 +238,18 @@ const SendTask = props => {
           setTrigger={props.setTrigger}
           sendTask={props.sendTask}
           setSendTask={props.setSendTask}></InvoiceModal>
+      </Modal>
+      <Modal isVisible={ratingModal}>
+        <RatingModal
+          taskID={props.taskID}
+          setRatingModal={setRatingModal}
+          setSuccessfulModal={setSuccessfulModal}
+          retailer={props.retailer}
+          sendTask={props.sendTask}
+          setSendTask={props.setSendTask}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+        />
       </Modal>
     </TouchableOpacity>
   );
@@ -392,6 +415,7 @@ const SendTaskModal = props => {
                   position: 'absolute',
                   top: hp('55%'),
                   left: wp('35%'),
+                  width: wp('50%'),
                 },
               ]}>
               {Strings.pleaseAddDeliveryDate}
@@ -399,8 +423,8 @@ const SendTaskModal = props => {
             <TouchableOpacity
               style={{
                 position: 'absolute',
-                top: hp('54.5%'),
-                left: wp('68%'),
+                top: hp('55%'),
+                left: wp('80%'),
                 elevation: 5,
               }}
               onPress={() => setDate(dayjs().format('DD-MM-YYYY'))}>
@@ -536,7 +560,7 @@ const SendTaskModal = props => {
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [setSuccessfulModal(false)]}>
-        <SuccessfulModal />
+        <SuccessfulModal text={'Successfully chosen delivery date!'} />
       </Modal>
     </SafeAreaView>
   );
@@ -565,7 +589,7 @@ const InvoiceModal = props => {
         variables: {
           input: {
             id: props.taskID,
-            sentByRetailer: true,
+            status: 'sent',
             items: itemList,
           },
         },
@@ -903,6 +927,128 @@ const Product = props => {
           {props.siUnit}
         </Text>
       </View>
+    </View>
+  );
+};
+
+const RatingModal = props => {
+  const [rating, setRating] = useState(2.5);
+
+  const updateRating = async () => {
+    try {
+      if (props.retailer.rating == null) {
+        var sendRating = {
+          numberOfRatings: 1,
+          currentRating: rating,
+        };
+      } else {
+        var newNumberOfRating = props.retailer.rating.numberOfRatings + 1;
+        var newRating =
+          (props.retailer.rating.currentRating *
+            props.retailer.rating.numberOfRatings +
+            rating) /
+          newNumberOfRating;
+        var sendRating = {
+          numberOfRatings: newNumberOfRating,
+          currentRating: newRating,
+        };
+      }
+      console.log(props.retailer, sendRating);
+      const update = await API.graphql({
+        query: updateRetailerCompany,
+        variables: {
+          input: {
+            id: props.retailer.id,
+            rating: sendRating,
+          },
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    try {
+      const invoiceResponse = await API.graphql({
+        query: deleteGoodsTask,
+        variables: {input: {id: props.taskID}},
+      });
+      console.log('done');
+      var tempList = props.sendTask;
+      for (let [i, temp] of tempList.entries()) {
+        if (temp.id == props.taskID) {
+          tempList.splice(i, 1);
+        }
+      }
+      props.setSendTask(tempList);
+      props.setRatingModal(false);
+      props.setSuccessfulModal(true);
+    } catch (e) {
+      console.log('failed to delete');
+      console.log(e);
+    }
+    if (props.trigger) {
+      props.setTrigger(false);
+    } else {
+      props.setTrigger(true);
+    }
+  };
+  return (
+    <View
+      style={{
+        width: wp('80%'),
+        height: wp('70%'),
+        backgroundColor: Colors.PALE_GREEN,
+        borderRadius: 10,
+        alignSelf: 'center',
+      }}>
+      <View>
+        <Text
+          style={[
+            Typography.large,
+            {
+              justifyContent: 'center',
+              alignSelf: 'center',
+              top: hp('5%'),
+              marginRight: wp('5%'),
+              marginLeft: wp('5%'),
+            },
+          ]}>
+          Transaction completed. Please give the retailer a rating.
+        </Text>
+      </View>
+      <View style={{top: hp('4%')}}>
+        <Rating
+          showRating
+          count={5}
+          size={wp('15%')}
+          reviews={['']}
+          fractions={1}
+          onSwipeRating={item => [setRating(item)]}
+          tintColor={Colors.PALE_GREEN}
+        />
+      </View>
+      <TouchableOpacity
+        onPress={() => [updateRating()]}
+        style={{
+          backgroundColor: Colors.LIGHT_BLUE,
+          width: wp('30%'),
+          height: hp('5%'),
+          alignSelf: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+          elevation: 5,
+          position: 'absolute',
+          bottom: hp('5%'),
+          borderRadius: 10,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 1,
+          },
+          shadowOpacity: 0.22,
+          shadowRadius: 2.22,
+        }}>
+        <Text style={[Typography.normal, {}]}>Submit rating</Text>
+      </TouchableOpacity>
     </View>
   );
 };

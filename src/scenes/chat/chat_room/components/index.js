@@ -125,12 +125,12 @@ export const MessageInput = props => {
             onChangeText={text => setMessage(text)}
             value={message}
             style={{
-              width: wp('65%'),
+              width: wp('60%'),
               height: hp('7%'),
               borderBottomColor: 'transparent',
               left: wp('2%'),
               color: 'black',
-              top: hp('0%'),
+              top: hp('1.5%'),
             }}
           />
           <TouchableOpacity
