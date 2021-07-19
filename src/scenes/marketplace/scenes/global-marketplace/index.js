@@ -160,7 +160,7 @@ export const Marketplace = props => {
         <View
           style={{
             width: wp('95%'),
-            height: hp('90%'),
+            height: hp('60%'),
             top: hp('1%'),
           }}>
           <FavouritesList
@@ -172,7 +172,7 @@ export const Marketplace = props => {
         <View
           style={{
             width: wp('95%'),
-            height: hp('90%'),
+            height: hp('60%'),
             top: hp('1%'),
           }}>
           <MarketplaceList

@@ -413,12 +413,12 @@ export const ProductPopUp = props => {
 export const FavouritesList = props => {
   return (
     <FlatList
-      refreshControl={
-        <RefreshControl
-          refreshing={props.refreshing}
-          onRefresh={props.onRefresh}
-        />
-      }
+      // refreshControl={
+      //   <RefreshControl
+      //     refreshing={props.refreshing}
+      //     onRefresh={props.onRefresh}
+      //   />
+      // }
       keyExtractor={item => item.id}
       data={props.data}
       numColumns={2}
