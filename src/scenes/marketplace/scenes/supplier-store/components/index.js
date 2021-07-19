@@ -1114,3 +1114,11 @@ export const SupplierplaceList = props => {
     />
   );
 };
+
+export const RetailerModal = props => {
+  return (
+    <View>
+      <Text>hi</Text>
+    </View>
+  );
+};

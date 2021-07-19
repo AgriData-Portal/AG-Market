@@ -62,6 +62,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 import Modal from 'react-native-modal';
+import {header} from '_styles';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -83,6 +84,18 @@ function getHeaderTitle(route) {
       return Strings.analytics;
   }
 }
+
+// function getIcon(route) {
+//   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
+//   switch (routeName) {
+//     case 'marketplace':
+//       return (
+//         <TouchableOpacity>
+//           <Icon name="share-social-outline" />
+//         </TouchableOpacity>
+//       );
+//   }
+// }
 
 export {SupplierNavigation};
 
@@ -108,6 +121,7 @@ const SupplierNavigation = props => {
               userType={props.user.role}
             />
           ),
+          //headerRight: getIcon(route),
         })}>
         {screenProps => (
           <TabbedNavigator
