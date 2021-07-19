@@ -250,7 +250,7 @@ type GoodsTask
   updatedAt: String
   createdAt: String
   deliveryDate: String
-  sentByRetailer: Boolean
+  status: String
 }
 
 type PaymentTask

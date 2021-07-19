@@ -79,7 +79,7 @@ export const createUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -181,7 +181,7 @@ export const createUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -313,7 +313,7 @@ export const updateUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -415,7 +415,7 @@ export const updateUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -547,7 +547,7 @@ export const deleteUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -649,7 +649,7 @@ export const deleteUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -798,7 +798,7 @@ export const createRetailerCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1024,7 +1024,7 @@ export const updateRetailerCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1250,7 +1250,7 @@ export const deleteRetailerCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1505,7 +1505,7 @@ export const createSupplierCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1760,7 +1760,7 @@ export const updateSupplierCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -2015,7 +2015,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -2190,7 +2190,7 @@ export const createChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2293,7 +2293,7 @@ export const createChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2437,7 +2437,7 @@ export const updateChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2540,7 +2540,7 @@ export const updateChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2684,7 +2684,7 @@ export const deleteChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2787,7 +2787,7 @@ export const deleteChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -3634,7 +3634,7 @@ export const createProductListing = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -3758,7 +3758,7 @@ export const updateProductListing = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -3882,7 +3882,7 @@ export const deleteProductListing = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4111,7 +4111,7 @@ export const createGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4214,7 +4214,7 @@ export const createGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4275,7 +4275,7 @@ export const createGoodsTask = /* GraphQL */ `
       updatedAt
       createdAt
       deliveryDate
-      sentByRetailer
+      status
     }
   }
 `;
@@ -4321,7 +4321,7 @@ export const updateGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4424,7 +4424,7 @@ export const updateGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4485,7 +4485,7 @@ export const updateGoodsTask = /* GraphQL */ `
       updatedAt
       createdAt
       deliveryDate
-      sentByRetailer
+      status
     }
   }
 `;
@@ -4531,7 +4531,7 @@ export const deleteGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4634,7 +4634,7 @@ export const deleteGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4695,7 +4695,7 @@ export const deleteGoodsTask = /* GraphQL */ `
       updatedAt
       createdAt
       deliveryDate
-      sentByRetailer
+      status
     }
   }
 `;
@@ -4741,7 +4741,7 @@ export const createPaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4844,7 +4844,7 @@ export const createPaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4945,7 +4945,7 @@ export const updatePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5048,7 +5048,7 @@ export const updatePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5149,7 +5149,7 @@ export const deletePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5252,7 +5252,7 @@ export const deletePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5353,7 +5353,7 @@ export const createInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5456,7 +5456,7 @@ export const createInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5564,7 +5564,7 @@ export const updateInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5667,7 +5667,7 @@ export const updateInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5775,7 +5775,7 @@ export const deleteInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5878,7 +5878,7 @@ export const deleteInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }

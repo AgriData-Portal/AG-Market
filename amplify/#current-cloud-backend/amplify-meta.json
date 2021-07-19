@@ -23,7 +23,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/auth/agridataapp1c4f9eeb-cloudformation-template.yml",
         "logicalId": "authagridataapp1c4f9eeb"
       },
-      "lastPushTimeStamp": "2021-07-16T07:45:35.453Z",
+      "lastPushTimeStamp": "2021-07-19T03:20:09.301Z",
       "output": {
         "UserPoolId": "ap-southeast-1_e3TqGI5PR",
         "AppClientIDWeb": "1l3tf271h2qv74atcaccdm7eut",
@@ -57,8 +57,8 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiagridataapp"
       },
-      "lastPushTimeStamp": "2021-07-16T08:11:43.921Z",
-      "lastPushDirHash": "rl84cMm+l0tNH6b8Pcl07hzryC8="
+      "lastPushTimeStamp": "2021-07-19T03:20:18.041Z",
+      "lastPushDirHash": "9+ovZz38+j37FWYOGZPAQjS+3W4="
     }
   },
   "storage": {
@@ -69,7 +69,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
         "logicalId": "storageimageContent"
       },
-      "lastPushTimeStamp": "2021-07-16T07:45:35.459Z",
+      "lastPushTimeStamp": "2021-07-19T03:20:09.317Z",
       "output": {
         "BucketName": "agridataappimagecontentbucket164209-dev",
         "Region": "ap-southeast-1"

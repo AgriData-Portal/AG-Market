@@ -76,7 +76,7 @@ export const getUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -178,7 +178,7 @@ export const getUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -427,7 +427,7 @@ export const getRetailerCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -604,7 +604,7 @@ export const listRetailerCompanys = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -778,7 +778,7 @@ export const getSupplierCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -973,7 +973,7 @@ export const listSupplierCompanys = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -1067,7 +1067,7 @@ export const getChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -1170,7 +1170,7 @@ export const getChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -1779,7 +1779,7 @@ export const getProductListing = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2029,7 +2029,7 @@ export const getGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2132,7 +2132,7 @@ export const getGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2193,7 +2193,7 @@ export const getGoodsTask = /* GraphQL */ `
       updatedAt
       createdAt
       deliveryDate
-      sentByRetailer
+      status
     }
   }
 `;
@@ -2290,7 +2290,7 @@ export const listGoodsTasks = /* GraphQL */ `
         updatedAt
         createdAt
         deliveryDate
-        sentByRetailer
+        status
       }
       nextToken
     }
@@ -2335,7 +2335,7 @@ export const getPaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2438,7 +2438,7 @@ export const getPaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2629,7 +2629,7 @@ export const getInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2732,7 +2732,7 @@ export const getInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -3682,7 +3682,7 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
         updatedAt
         createdAt
         deliveryDate
-        sentByRetailer
+        status
       }
       nextToken
     }
@@ -3791,7 +3791,7 @@ export const goodsTaskForSupplierByDate = /* GraphQL */ `
         updatedAt
         createdAt
         deliveryDate
-        sentByRetailer
+        status
       }
       nextToken
     }
