@@ -415,6 +415,7 @@ const SendTaskModal = props => {
                   position: 'absolute',
                   top: hp('55%'),
                   left: wp('35%'),
+                  width: wp('50%'),
                 },
               ]}>
               {Strings.pleaseAddDeliveryDate}
@@ -422,8 +423,8 @@ const SendTaskModal = props => {
             <TouchableOpacity
               style={{
                 position: 'absolute',
-                top: hp('54.5%'),
-                left: wp('68%'),
+                top: hp('55%'),
+                left: wp('80%'),
                 elevation: 5,
               }}
               onPress={() => setDate(dayjs().format('DD-MM-YYYY'))}>
@@ -559,7 +560,7 @@ const SendTaskModal = props => {
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [setSuccessfulModal(false)]}>
-        <SuccessfulModal />
+        <SuccessfulModal text={'Successfully chosen delivery date!'} />
       </Modal>
     </SafeAreaView>
   );

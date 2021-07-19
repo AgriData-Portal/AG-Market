@@ -286,6 +286,7 @@ export const ChatRoom = props => {
             setMessages={setMessages}
             messages={messages}
             setRefresh={setRefresh}
+            navigation={props.navigation}
           />
         </View>
         <View style={{top: hp('2.5%')}}>
