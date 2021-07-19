@@ -76,7 +76,7 @@ export const onCreateUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -178,7 +178,7 @@ export const onCreateUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -307,7 +307,7 @@ export const onUpdateUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -409,7 +409,7 @@ export const onUpdateUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -538,7 +538,7 @@ export const onDeleteUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -640,7 +640,7 @@ export const onDeleteUser = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -786,7 +786,7 @@ export const onCreateRetailerCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1009,7 +1009,7 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1232,7 +1232,7 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1484,7 +1484,7 @@ export const onCreateSupplierCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1736,7 +1736,7 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -1988,7 +1988,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
           updatedAt
           createdAt
           deliveryDate
-          sentByRetailer
+          status
         }
         nextToken
       }
@@ -2160,7 +2160,7 @@ export const onCreateChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2263,7 +2263,7 @@ export const onCreateChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2404,7 +2404,7 @@ export const onUpdateChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2507,7 +2507,7 @@ export const onUpdateChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2648,7 +2648,7 @@ export const onDeleteChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -2751,7 +2751,7 @@ export const onDeleteChatGroup = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -3577,7 +3577,7 @@ export const onCreateProductListing = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -3698,7 +3698,7 @@ export const onUpdateProductListing = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -3819,7 +3819,7 @@ export const onDeleteProductListing = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4027,7 +4027,7 @@ export const onCreateGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4130,7 +4130,7 @@ export const onCreateGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4191,7 +4191,7 @@ export const onCreateGoodsTask = /* GraphQL */ `
       updatedAt
       createdAt
       deliveryDate
-      sentByRetailer
+      status
     }
   }
 `;
@@ -4234,7 +4234,7 @@ export const onUpdateGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4337,7 +4337,7 @@ export const onUpdateGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4398,7 +4398,7 @@ export const onUpdateGoodsTask = /* GraphQL */ `
       updatedAt
       createdAt
       deliveryDate
-      sentByRetailer
+      status
     }
   }
 `;
@@ -4441,7 +4441,7 @@ export const onDeleteGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4544,7 +4544,7 @@ export const onDeleteGoodsTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4605,7 +4605,7 @@ export const onDeleteGoodsTask = /* GraphQL */ `
       updatedAt
       createdAt
       deliveryDate
-      sentByRetailer
+      status
     }
   }
 `;
@@ -4648,7 +4648,7 @@ export const onCreatePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4751,7 +4751,7 @@ export const onCreatePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4849,7 +4849,7 @@ export const onUpdatePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -4952,7 +4952,7 @@ export const onUpdatePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5050,7 +5050,7 @@ export const onDeletePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5153,7 +5153,7 @@ export const onDeletePaymentTask = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5251,7 +5251,7 @@ export const onCreateInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5354,7 +5354,7 @@ export const onCreateInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5459,7 +5459,7 @@ export const onUpdateInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5562,7 +5562,7 @@ export const onUpdateInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5667,7 +5667,7 @@ export const onDeleteInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
@@ -5770,7 +5770,7 @@ export const onDeleteInvoice = /* GraphQL */ `
             updatedAt
             createdAt
             deliveryDate
-            sentByRetailer
+            status
           }
           nextToken
         }
