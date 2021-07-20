@@ -25,6 +25,7 @@ import {
   updateChatGroup,
   createGoodsTask,
 } from '../../../../graphql/mutations';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import {
   getOrderQuotation,
   listUsersInChat,
@@ -49,6 +50,8 @@ export const MessageInput = props => {
   const [message, setMessage] = useState('');
   const [imageSource, setImageSource] = useState(null);
   const [imageModal, setImageModal] = useState(false);
+  const [recording, setRecording] = useState(null);
+  const audioRecorderPlayer = new AudioRecorderPlayer();
 
   function selectImage() {
     let options = {
@@ -70,6 +73,50 @@ export const MessageInput = props => {
       }
     });
   }
+  onStartRecord = async () => {
+    const result = await audioRecorderPlayer.startRecorder();
+    audioRecorderPlayer.addRecordBackListener(e => {
+      setRecording({
+        recordSecs: e.currentPosition,
+      });
+      return;
+    });
+    console.log(result);
+  };
+
+  onStopRecord = async () => {
+    const result = await audioRecorderPlayer.stopRecorder();
+    audioRecorderPlayer.removeRecordBackListener();
+    setRecording({
+      recordSecs: 0,
+    });
+    console.log(result);
+  };
+
+  onStartPlay = async () => {
+    console.log('onStartPlay');
+    const msg = await audioRecorderPlayer.startPlayer();
+    console.log(msg);
+    audioRecorderPlayer.addPlayBackListener(e => {
+      setRecording({
+        currentPositionSec: e.currentPosition,
+        currentDurationSec: e.duration,
+        playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+        duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+      });
+      return;
+    });
+  };
+
+  onPausePlay = async () => {
+    await audioRecorderPlayer.pausePlayer();
+  };
+
+  onStopPlay = async () => {
+    console.log('onStopPlay');
+    audioRecorderPlayer.stopPlayer();
+    audioRecorderPlayer.removePlayBackListener();
+  };
   const createNewMessage = async () => {
     console.log('creating new message');
     try {
@@ -128,11 +175,31 @@ export const MessageInput = props => {
               width: wp('65%'),
               height: hp('7%'),
               borderBottomColor: 'transparent',
-              left: wp('2%'),
+              left: wp('14%'),
               color: 'black',
-              top: hp('0%'),
+              top: hp('2%'),
             }}
           />
+          <TouchableOpacity
+            onPress={() => onStartRecord()}
+            style={{
+              height: hp('9%'),
+              width: hp('9%'),
+
+              left: wp('7%'),
+              top: hp('2%'),
+
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}>
+            <Icon name="mic-outline" size={wp('6%')} />
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               selectImage();
@@ -141,8 +208,8 @@ export const MessageInput = props => {
               height: hp('8%'),
               width: hp('8%'),
 
-              left: wp('2.5%'),
-              top: hp('1.5%'),
+              right: wp('4%'),
+              top: hp('2%'),
 
               shadowColor: '#000',
               shadowOffset: {

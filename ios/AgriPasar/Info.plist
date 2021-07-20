@@ -39,6 +39,8 @@
 	<string>In order to upload pictures to chat or for listing, you will need to enable permissions for your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>In order to upload pictures to chat or for listing, you will need to enable permissions for your location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Give $(PRODUCT_NAME) permission to use your microphone. Your record wont be shared without your permission.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>In order to upload pictures to chat or for listing, you will need to enable permissions for your gallery</string>
 	<key>UIAppFonts</key>

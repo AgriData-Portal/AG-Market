@@ -29,6 +29,7 @@
     "dayjs": "^1.10.5",
     "react": "17.0.1",
     "react-native": "0.64.2",
+    "react-native-audio-recorder-player": "^3.1.0",
     "react-native-background-timer": "^2.4.1",
     "react-native-camera": "^3.44.1",
     "react-native-code-push": "^7.0.1",

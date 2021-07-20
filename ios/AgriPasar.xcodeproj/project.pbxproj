@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		19F3B18126A5B29400E597A3 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F3B18026A5B29400E597A3 /* File.swift */; };
 		1EA299D1BE904796BE538B4D /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B04297CCA3C46E396017C81 /* Poppins-BlackItalic.ttf */; };
 		25746A0241C29C3066D7E436 /* libPods-AgriPasar-AgriPasarTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5ED946F48493911F9679DF /* libPods-AgriPasar-AgriPasarTests.a */; };
 		28F7B5AC7B2440C7AE5B88CB /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBC38FE2E8104ED7A0181F1B /* Poppins-SemiBoldItalic.ttf */; };
@@ -58,6 +59,8 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AgriPasar/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AgriPasar/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AgriPasar/main.m; sourceTree = "<group>"; };
+		19F3B17F26A5B29400E597A3 /* AgriPasar-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AgriPasar-Bridging-Header.h"; sourceTree = "<group>"; };
+		19F3B18026A5B29400E597A3 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		29623601209845BEBF128809 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		29AD8DCC18D0930B72329655 /* Pods-AgriPasar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriPasar.debug.xcconfig"; path = "Target Support Files/Pods-AgriPasar/Pods-AgriPasar.debug.xcconfig"; sourceTree = "<group>"; };
 		464F47CCD4925EC3F2F3BF37 /* libPods-AgriPasar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AgriPasar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +131,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				19F3B18026A5B29400E597A3 /* File.swift */,
+				19F3B17F26A5B29400E597A3 /* AgriPasar-Bridging-Header.h */,
 			);
 			name = AgriPasar;
 			sourceTree = "<group>";
@@ -269,7 +274,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -491,6 +496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				19F3B18126A5B29400E597A3 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,6 +516,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D85A23CF7043E42D98BCE5E0 /* Pods-AgriPasar-AgriPasarTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = L463XJ3434;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -538,6 +545,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 96526DFB75B533B5486D7412 /* Pods-AgriPasar-AgriPasarTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = L463XJ3434;
@@ -565,10 +573,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 4N9BY5Y3KU;
+				DEVELOPMENT_TEAM = L463XJ3434;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = AgriPasar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
@@ -582,9 +590,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasartest;
 				PRODUCT_NAME = AgriPasar;
-				PROVISIONING_PROFILE_SPECIFIER = "AgriData Portal Sdn Bhd";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AgriPasar-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -597,10 +606,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 4N9BY5Y3KU;
+				DEVELOPMENT_TEAM = L463XJ3434;
 				INFOPLIST_FILE = AgriPasar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -613,9 +622,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasartest;
 				PRODUCT_NAME = AgriPasar;
-				PROVISIONING_PROFILE_SPECIFIER = "AgriData Portal Sdn Bhd";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AgriPasar-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -654,7 +664,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -719,7 +729,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
