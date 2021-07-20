@@ -669,7 +669,7 @@ const ProductModal = props => {
               backgroundColor: Colors.GRAY_LIGHT,
               borderRadius: 15,
               width: wp('80%'),
-              height: hp('30%'),
+              height: hp('33%'),
               alignItems: 'center',
               zIndex: 10,
               shadowColor: '#000',
@@ -686,15 +686,15 @@ const ProductModal = props => {
                 style={{
                   alignItems: 'flex-start',
                   justifyContent: 'center',
-                  margin: wp('1%'),
+                  margin: wp('0.5%'),
                 }}>
-                <Text style={[Typography.large, {margin: wp('1%')}]}>
+                <Text style={[Typography.large, {margin: wp('0.5%')}]}>
                   {Strings.editProductDetails}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
                   {Strings.grade}: {props.grade}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
                   {Strings.variety}: {props.variety}
                 </Text>
                 <View
@@ -838,22 +838,22 @@ const ProductModal = props => {
                   margin: wp('1%'),
                   top: hp('1%'),
                 }}>
-                <Text style={[Typography.large, {margin: wp('1%')}]}>
+                <Text style={[Typography.large, {margin: wp('0.5%')}]}>
                   {Strings.productDetails}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
                   {Strings.grade}: {props.grade}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
                   {Strings.variety}: {props.variety}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
                   {Strings.priceRange}: RM {lowPrice} - {highPrice}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
                   {Strings.available}: {available} {props.siUnit}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
                   MOQ: {moq} {props.siUnit}
                 </Text>
               </View>
@@ -1018,7 +1018,7 @@ const ProductCard = props => {
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('36%'),
-        height: hp('25%'),
+        height: hp('28%'),
         margin: wp('5%'),
         borderRadius: 20,
         elevation: 3,
