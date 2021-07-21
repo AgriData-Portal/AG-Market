@@ -55,7 +55,7 @@ export default {
   havingTrouble: 'Menghadapi Sebarang Masalah?',
   registerCompany: 'Daftarkan Syarikat',
   companyAddress: 'Alamat Syarikat',
-  companyType: 'Apakah Jenis Syarikat yang anda akan Jalankan?',
+  companyType: 'Jenis Syarikat',
   wholesaler: 'Pemborong',
   supermarket: 'Pasaraya',
   farm: 'Ladang',
