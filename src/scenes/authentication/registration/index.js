@@ -50,21 +50,23 @@ export const Registration = props => {
   const [companyName, setCompanyName] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
   const [companyRegistrationNum, setCompanyRegistrationNum] = useState('');
-
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [errorText, setErrorText] = useState('');
 
   useEffect(() => {
-    if (items2 == 'supermarket') {
+    if (value2 == 'supermarket') {
       setItems([
         {label: Strings.generalManager, value: 'generalmanager'},
         {label: Strings.owner, value: 'owner'},
         {label: Strings.retailManager, value: 'retailmanager'},
       ]);
+      console.log('works');
     } else {
       setItems([{label: Strings.owner, value: 'owner'}]);
+      console.log('hi');
+      console.log(items2[1]);
     }
-  }, [items2]);
+  }, [value2]);
   const signUp = async () => {
     try {
       const user = await Auth.signUp({
@@ -174,7 +176,7 @@ export const Registration = props => {
           height: hp('100%'),
           width: wp('100%'),
         }}>
-        <ScrollView style={{marginBottom: hp('10%')}}>
+        <ScrollView>
           <View
             style={{
               position: 'absolute',
@@ -270,9 +272,10 @@ export const Registration = props => {
                 style={{
                   top: hp('3%'),
                   left: wp('8%'),
+                  zIndex: 1000,
                 }}>
                 <View>
-                  <Text style={[Typography.placeholder, {fontSize: 12}]}>
+                  <Text style={[Typography.placeholder]}>
                     {Strings.companyType}
                   </Text>
                 </View>
@@ -280,6 +283,7 @@ export const Registration = props => {
                   style={{
                     top: hp('1%'),
                     height: hp('7%'),
+                    zIndex: 1000,
                   }}>
                   <DropDownPicker
                     open={open2}
@@ -308,39 +312,52 @@ export const Registration = props => {
                     }}></DropDownPicker>
                 </View>
               </View>
-              <View
-                style={{
-                  top: hp('3%'),
-                  height: hp('7%'),
-                  left: wp('8%'),
-                }}>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.roleInCompany}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  style={{
-                    width: wp('85%'),
-                    height: hp('5%'),
-                    borderColor: 'white',
-                    borderRadius: 3,
-                    backgroundColor: Colors.GRAY_LIGHT,
-                  }}
-                  zIndex={2000}
-                  zIndexInverse={2000}
-                  dropDownDirection="BOTTOM"
-                  listItemContainerStyle={{height: hp('5%')}}
-                  dropDownContainerStyle={{
-                    borderWidth: 1,
-                    width: wp('85%'),
-                    height: hp('15%'),
-                    backgroundColor: Colors.GRAY_LIGHT,
-                  }}></DropDownPicker>
-              </View>
+              {value2 == null ? (
+                <View />
+              ) : (
+                <View>
+                  <View style={{top: hp('3%'), left: wp('8%')}}>
+                    <Text style={[Typography.placeholder]}>
+                      {Strings.roleInCompany}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      top: hp('4%'),
+                      height: hp('7%'),
+                      left: wp('8%'),
+                      zIndex: 100,
+                    }}>
+                    <DropDownPicker
+                      open={open}
+                      value={value}
+                      items={items}
+                      placeholderTextColor={Colors.GRAY_DARK}
+                      placeholder={Strings.roleInCompany}
+                      setOpen={setOpen}
+                      setValue={setValue}
+                      setItems={setItems}
+                      style={{
+                        width: wp('85%'),
+                        height: hp('5%'),
+                        borderColor: 'white',
+                        borderRadius: 3,
+                        backgroundColor: Colors.GRAY_LIGHT,
+                      }}
+                      zIndex={2000}
+                      zIndexInverse={2000}
+                      dropDownDirection="BOTTOM"
+                      listItemContainerStyle={{height: hp('5%')}}
+                      dropDownContainerStyle={{
+                        borderWidth: 1,
+                        width: wp('85%'),
+
+                        backgroundColor: Colors.GRAY_LIGHT,
+                      }}></DropDownPicker>
+                  </View>
+                </View>
+              )}
+
               <Input
                 name={Strings.companyRegistrationNum}
                 placeholder="######"

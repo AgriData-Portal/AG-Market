@@ -54,7 +54,7 @@ export default {
   havingTrouble: 'Having any trouble?',
   registerCompany: 'Register Company',
   companyAddress: 'Branch Address',
-  companyType: ' What type of company are you running?',
+  companyType: 'Company Type',
   wholesaler: 'Wholesaler',
   supermarket: 'Supermarket',
   farm: 'Farm',
