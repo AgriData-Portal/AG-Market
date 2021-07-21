@@ -25,6 +25,7 @@ import {
 import Strings from '_utils';
 import {DismissKeyboardView} from '_components';
 import Modal from 'react-native-modal';
+import {useIsFocused} from '@react-navigation/native';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -216,7 +217,12 @@ export const Registration = props => {
             <View style={{top: hp('2%'), left: wp('8%'), width: wp('70%')}}>
               <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
             </View>
-            <View style={{top: hp('4%'), height: hp('100%'), zIndex: 1000}}>
+            <View
+              style={{
+                top: hp('4%'),
+                height: hp('100%'),
+                zIndex: Platform.OS == 'ios' ? 1000 : 0,
+              }}>
               <Input
                 name={Strings.name}
                 placeholder="eg. Hannah Wong"
@@ -272,7 +278,7 @@ export const Registration = props => {
                 style={{
                   top: hp('3%'),
                   left: wp('8%'),
-                  zIndex: 1000,
+                  zIndex: Platform.OS == 'ios' ? 1000 : 0,
                 }}>
                 <View>
                   <Text style={[Typography.placeholder]}>
@@ -283,7 +289,7 @@ export const Registration = props => {
                   style={{
                     top: hp('1%'),
                     height: hp('7%'),
-                    zIndex: 1000,
+                    zIndex: Platform.OS == 'ios' ? 1000 : 0,
                   }}>
                   <DropDownPicker
                     open={open2}
@@ -315,7 +321,7 @@ export const Registration = props => {
               {value2 == null ? (
                 <View />
               ) : (
-                <View>
+                <View style={{zIndex: Platform.OS == 'ios' ? 100 : 0}}>
                   <View style={{top: hp('3%'), left: wp('8%')}}>
                     <Text style={[Typography.placeholder]}>
                       {Strings.roleInCompany}
@@ -326,7 +332,7 @@ export const Registration = props => {
                       top: hp('4%'),
                       height: hp('7%'),
                       left: wp('8%'),
-                      zIndex: 100,
+                      zIndex: Platform.OS == 'ios' ? 100 : 0,
                     }}>
                     <DropDownPicker
                       open={open}
@@ -523,14 +529,23 @@ const CreateAccountPopUp = props => {
 };
 
 const Input = props => {
+  const [focus, setFocus] = useState(false);
   return (
     <View
       style={{
         left: wp('8%'),
         top: hp('3%'),
       }}>
-      <Text style={[Typography.placeholder]}>{props.name}</Text>
+      <Text
+        style={[
+          Typography.placeholder,
+          {color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK},
+        ]}>
+        {props.name}
+      </Text>
       <TextInput
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         placeholderTextColor={Colors.GRAY_DARK}
         keyboardType="default"
         placeholder={props.placeholder}
@@ -548,7 +563,7 @@ const Input = props => {
           bottom: hp('1.5%'),
           width: wp('85%'),
           borderBottomWidth: 1,
-          borderColor: Colors.GRAY_DARK,
+          borderColor: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
         }}></View>
     </View>
   );
