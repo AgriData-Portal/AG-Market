@@ -218,11 +218,18 @@ export const Registration = props => {
               <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
             </View>
             <View
-              style={{
-                top: hp('4%'),
-                height: hp('100%'),
-                zIndex: Platform.OS == 'ios' ? 1000 : 0,
-              }}>
+              style={
+                Platform.OS == 'ios'
+                  ? {
+                      top: hp('4%'),
+                      height: hp('100%'),
+                      zIndex: 1000,
+                    }
+                  : {
+                      top: hp('4%'),
+                      height: hp('100%'),
+                    }
+              }>
               <Input
                 name={Strings.name}
                 placeholder="eg. Hannah Wong"
@@ -275,22 +282,26 @@ export const Registration = props => {
                 setState={setCompanyName}
               />
               <View
-                style={{
-                  top: hp('3%'),
-                  left: wp('8%'),
-                  zIndex: Platform.OS == 'ios' ? 1000 : 0,
-                }}>
+                style={
+                  Platform.OS == 'ios'
+                    ? {top: hp('3%'), left: wp('8%'), zIndex: 1000}
+                    : {top: hp('3%'), left: wp('8%')}
+                }>
                 <View>
                   <Text style={[Typography.placeholder]}>
                     {Strings.companyType}
                   </Text>
                 </View>
                 <View
-                  style={{
-                    top: hp('1%'),
-                    height: hp('7%'),
-                    zIndex: Platform.OS == 'ios' ? 1000 : 0,
-                  }}>
+                  style={
+                    Platform.OS == 'ios '
+                      ? {
+                          top: hp('1%'),
+                          height: hp('7%'),
+                          zIndex: 1000,
+                        }
+                      : {top: hp('1%'), height: hp('7%')}
+                  }>
                   <DropDownPicker
                     open={open2}
                     value={value2}
@@ -321,19 +332,23 @@ export const Registration = props => {
               {value2 == null ? (
                 <View />
               ) : (
-                <View style={{zIndex: Platform.OS == 'ios' ? 100 : 0}}>
+                <View style={Platform.OS == 'ios' ? {zIndex: 100} : {}}>
                   <View style={{top: hp('3%'), left: wp('8%')}}>
                     <Text style={[Typography.placeholder]}>
                       {Strings.roleInCompany}
                     </Text>
                   </View>
                   <View
-                    style={{
-                      top: hp('4%'),
-                      height: hp('7%'),
-                      left: wp('8%'),
-                      zIndex: Platform.OS == 'ios' ? 100 : 0,
-                    }}>
+                    style={
+                      Platform.OS == 'ios'
+                        ? {
+                            top: hp('4%'),
+                            height: hp('7%'),
+                            left: wp('8%'),
+                            zIndex: 100,
+                          }
+                        : {top: hp('4%'), height: hp('7%'), left: wp('8%')}
+                    }>
                     <DropDownPicker
                       open={open}
                       value={value}
