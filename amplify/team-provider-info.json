@@ -17,8 +17,8 @@
             },
             "notifications": {
                 "Pinpoint": {
-                    "Name": "AgriDataPinpoint-dev",
-                    "Id": "ccc9423938c049b5b128eccbd11176fc",
+                    "Name": "agridataappKpDwf-dev",
+                    "Id": "eebc9ecad55748a39df6511fe38b16d6",
                     "Region": "us-west-2"
                 }
             }

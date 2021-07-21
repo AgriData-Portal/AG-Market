@@ -31,12 +31,11 @@
         }
     },
     "notifications": {
-        "AgriDataPinpoint": {
+        "agridataappKpDwf": {
             "service": "Pinpoint",
             "channels": [
                 "FCM"
             ]
         }
-    },
-    "analytics": {}
+    }
 }

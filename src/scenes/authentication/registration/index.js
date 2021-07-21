@@ -53,7 +53,7 @@ export const Registration = props => {
         },
       });
       console.log(user.userSub);
-      props.navigation.navigate('confirmsignup');
+      props.navigation.navigate('confirmsignup', {phone: phone});
       return user.userSub;
     } catch (error) {
       if (error.message == 'Invalid phone number format.') {

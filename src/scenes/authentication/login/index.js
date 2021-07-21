@@ -28,7 +28,7 @@ export const Login = props => {
   const [secure, setSecure] = useState(true);
   const [forgetPassword, setForgetPassword] = useState(false);
   const [verified, setVerified] = useState(false);
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [errorText, setErrorText] = useState('');
@@ -36,7 +36,7 @@ export const Login = props => {
   const signIn = async () => {
     try {
       setLoading(true);
-      const user = await Auth.signIn(email, password);
+      const user = await Auth.signIn(phone, password);
       console.log('Successful sign in');
       props.updateUserID(user.attributes.sub);
       props.setUserAttributes(user.attributes);
@@ -119,8 +119,8 @@ export const Login = props => {
               keyboardType="default"
               placeholder="+60123456 or example@example.com"
               underlineColorAndroid="transparent"
-              onChangeText={item => setEmail(item)}
-              value={email}
+              onChangeText={item => setPhone(item)}
+              value={phone}
               style={{
                 width: wp('80%'),
                 height: hp('7%'),
@@ -202,7 +202,7 @@ export const Login = props => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              if (password == '' || email == '') {
+              if (password == '' || phone == '') {
                 console.log('empty input');
                 setUnsuccessfulModal(true);
                 setErrorText('Please fill in all empty spaces!');
@@ -267,6 +267,7 @@ export const Login = props => {
         <VerificationModal
           navigation={props.navigation}
           setVerified={setVerified}
+          phone={phone}
         />
       </Modal>
       <Modal
@@ -308,7 +309,7 @@ const VerificationModal = props => {
         <TouchableOpacity
           onPress={() => [
             props.setVerified(false),
-            props.navigation.navigate('confirmsignup'),
+            props.navigation.navigate('confirmsignup', {phone: props.phone}),
           ]}
           style={{
             height: hp('5%'),

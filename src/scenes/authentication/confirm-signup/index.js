@@ -20,7 +20,7 @@ import {Auth} from 'aws-amplify';
 import Strings from '_utils';
 
 export const ConfirmSignUp = props => {
-  const [username, setPhone] = useState('');
+  const [phone, setPhone] = useState(props.route.params.phone);
   const [authCode, setAuthCode] = useState('');
   const [error, setError] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false); //success modal
@@ -28,7 +28,7 @@ export const ConfirmSignUp = props => {
   const [resendCode, setResendCode] = useState(false);
   const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
   const [wrongCode, setWrongCode] = useState(false);
-
+  console.log(phone);
   async function confirmSignUp() {
     try {
       const user = await Auth.confirmSignUp(username, authCode);
@@ -48,14 +48,13 @@ export const ConfirmSignUp = props => {
   }
 
   async function resendConfirmationCode() {
-    setResendCode(true); /*
     try {
-      await Auth.resendSignUp(username);
+      await Auth.resendSignUp(phone);
       console.log('code resent successfully');
-      
+      setResendCode(true);
     } catch (err) {
       console.log('error resending code: ', err);
-    }*/
+    }
   }
 
   return (
@@ -114,39 +113,18 @@ export const ConfirmSignUp = props => {
           ]}>
           {Strings.sendCodeToPhone}
         </Text>
-        <View style={{top: hp('10%')}}>
-          <Text style={[Typography.small]}>{Strings.contactNumber}</Text>
-          <TextInput
-            style={{
-              width: wp('80%'),
-              height: hp('5%'),
-              color: 'black',
-              borderBottomColor: 'transparent',
-            }}
-            underlineColorAndroid="transparent"
-            onChangeText={text => setPhone(text)}
-            placeholder="##########"
-            placeholderTextColor={Colors.GRAY_DARK}
-          />
-          <View
-            style={{
-              width: wp('80%'),
-              bottom: hp('1.5%'),
-              borderBottomWidth: 1,
-              borderColor: Colors.GRAY_DARK,
-            }}></View>
-        </View>
         <View style={{top: hp('12%')}}>
           <Text style={[Typography.small]}>{Strings.authenticationCode}</Text>
           <TextInput
             style={{
               width: wp('80%'),
 
-              height: hp('5%'),
+              height: hp('7%'),
               color: 'black',
               borderBottomColor: 'transparent',
             }}
             underlineColorAndroid="transparent"
+            keyboardType="numeric"
             onChangeText={text => setAuthCode(text)}
             placeholder="######"
             placeholderTextColor={Colors.GRAY_DARK}
@@ -158,35 +136,20 @@ export const ConfirmSignUp = props => {
               borderBottomWidth: 1,
               borderColor: Colors.GRAY_DARK,
             }}></View>
-        </View>
-        <View>
           <TouchableOpacity
             style={{
-              top: hp('20%'),
-              width: wp('40%'),
-              height: hp('6%'),
-              backgroundColor: 'white',
-              borderRadius: 20,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
+              bottom: hp('0.5%'),
+              left: wp('25%'),
               alignItems: 'center',
               justifyContent: 'center',
             }}
             onPress={() => {
-              if (username == '') {
-                setUnsuccessfulModal2(true);
-              } else {
-                resendConfirmationCode();
-              }
+              resendConfirmationCode();
             }}>
-            <Text style={[Typography.normal]}>{Strings.resendCode}</Text>
+            <Text style={[Typography.small]}>{Strings.resendCode}</Text>
           </TouchableOpacity>
+        </View>
+        <View>
           <TouchableOpacity
             style={{
               top: hp('25%'),
@@ -206,7 +169,7 @@ export const ConfirmSignUp = props => {
               justifyContent: 'center',
             }}
             onPress={() => {
-              if (authCode == '' || username == '') {
+              if (authCode == '') {
                 setUnsuccessfulModal(true);
               } else {
                 confirmSignUp();
