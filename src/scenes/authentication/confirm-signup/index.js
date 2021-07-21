@@ -31,8 +31,8 @@ export const ConfirmSignUp = props => {
   console.log(phone);
   async function confirmSignUp() {
     try {
-      const user = await Auth.confirmSignUp(username, authCode);
-      console.log('✅ Code confirmed' + user);
+      const user = await Auth.confirmSignUp(phone, authCode);
+      console.log('✅ Code confirmed' + phone);
       setSuccessfulModal(true);
       setTimeout(() => {
         props.navigation.navigate('signin');
@@ -125,6 +125,7 @@ export const ConfirmSignUp = props => {
             }}
             underlineColorAndroid="transparent"
             keyboardType="numeric"
+            value={authCode}
             onChangeText={text => setAuthCode(text)}
             placeholder="######"
             placeholderTextColor={Colors.GRAY_DARK}

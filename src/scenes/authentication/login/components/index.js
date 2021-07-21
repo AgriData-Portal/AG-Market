@@ -10,22 +10,41 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {CloseButton, AddButton} from '_components';
+import {
+  CloseButton,
+  UnsuccessfulModal,
+  SuccessfulModal,
+  DismissKeyboardView,
+} from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
-import {DismissKeyboardView} from '_components';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {Auth} from 'aws-amplify';
 import Strings from '_utils';
 
 export const ForgetPassword = props => {
   const [changePassword, setChangePassword] = useState(false);
   const [phoneNumberModal, setPhoneNumberModal] = useState(false);
-  const [search, setSearch] = useState('');
+  const [phone, setPhone] = useState('+60' + props.phone);
+
+  const sendConfirmation = async props => {
+    await Auth.forgotPassword(phone)
+      .then(data => {
+        console.log(data);
+        console.log(phone);
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(phone);
+      });
+    setChangePassword(true);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -85,18 +104,18 @@ export const ForgetPassword = props => {
                 }}>
                 <TextInput
                   onChangeText={value => {
-                    setSearch(value);
+                    setPhone(value);
                   }}
+                  underlineColorAndroid="transparent"
                   placeholderTextColor={Colors.GRAY_DARK}
+                  value={phone}
                   placeholder={Strings.phoneNumber}
-                  style={{height: hp('6%')}}></TextInput>
+                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
               </View>
             </View>
             <TouchableOpacity
               onPress={() => [
-                search == ''
-                  ? setPhoneNumberModal(true)
-                  : setChangePassword(true),
+                phone == '' ? setPhoneNumberModal(true) : sendConfirmation(),
               ]}
               style={{
                 top: hp('7%'),
@@ -121,12 +140,13 @@ export const ForgetPassword = props => {
           <Modal
             isVisible={phoneNumberModal}
             onBackdropPress={() => setPhoneNumberModal(false)}>
-            <PhoneNumberModal setPhoneNumberModal={setPhoneNumberModal} />
+            <UnsuccessfulModal text={Strings.pleaseEnterPhoneNum} />
           </Modal>
           <Modal isVisible={changePassword}>
             <ChangePassword
               setChangePassword={setChangePassword}
               setForgetPassword={props.setForgetPassword}
+              phone={phone}
             />
           </Modal>
         </DismissKeyboardView>
@@ -139,8 +159,44 @@ export const ChangePassword = props => {
   const [passwordCodeModal, setPasswordCodeModal] = useState(false);
   const [resendCodeModal, setResendCodeModal] = useState(false);
   const [resendCodeSuccessModal, setResendCodeSuccessModal] = useState(false);
+  const [wrongAuthCode, setWrongAuthCode] = useState(false);
+  const [passwordFormat, setPasswordFormat] = useState(false);
+  const [limitExceeded, setLimitExceeded] = useState(false);
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
+
+  const changePassword = async () => {
+    try {
+      await Auth.forgotPasswordSubmit(props.phone, code, password);
+      setResendCodeModal(true);
+    } catch (e) {
+      if (e.code == 'CodeMismatchException') {
+        setWrongAuthCode(true);
+        console.log('code error');
+      } else if (e.code == 'InvalidPasswordException') {
+        setPasswordFormat(true);
+        console.log('code error');
+      } else if (e.code == 'LimitExceededException') {
+        setLimitExceeded(true);
+        console.log('code error');
+      }
+      console.log(e);
+    }
+  };
+
+  const sendConfirmation = async => {
+    // await Auth.forgotPassword(props.phone)
+    //   .then(data => {
+    //     console.log(data);
+    //     console.log(phone);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //     console.log(phone);
+    //   });
+    setResendCodeModal(true);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
@@ -201,8 +257,10 @@ export const ChangePassword = props => {
                     setCode(value);
                   }}
                   placeholderTextColor={Colors.GRAY_DARK}
+                  keyboardType="numeric"
+                  underlineColorAndroid="transparent"
                   placeholder={Strings.authenticationCode}
-                  style={{height: hp('5%')}}></TextInput>
+                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
               </View>
               <View
                 style={{
@@ -220,14 +278,14 @@ export const ChangePassword = props => {
                   }}
                   placeholderTextColor={Colors.GRAY_DARK}
                   placeholder={Strings.newPassword}
-                  style={{height: hp('5%')}}></TextInput>
+                  underlineColorAndroid="transparent"
+                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => setResendCodeModal(true)}
-              style={{top: hp('9%')}}>
-              <Text
-                style={[Typography.small, {textDecorationLine: 'underline'}]}>
+              onPress={() => sendConfirmation()}
+              style={{top: hp('6%'), left: wp('10%')}}>
+              <Text style={[Typography.placeholderSmall]}>
                 {Strings.resendCode}
               </Text>
             </TouchableOpacity>
@@ -235,12 +293,9 @@ export const ChangePassword = props => {
               onPress={() => [
                 code == '' || password == ''
                   ? setPasswordCodeModal(true)
-                  : setPasswordCodeModal(false),
-                code != '' && password != ''
-                  ? setResendCodeSuccessModal(true)
-                  : setResendCodeSuccessModal(false),
+                  : changePassword(),
               ]}
-              style={{top: hp('13%')}}>
+              style={{top: hp('10%')}}>
               <Text
                 style={[Typography.small, {textDecorationLine: 'underline'}]}>
                 {Strings.changePass}
@@ -250,7 +305,30 @@ export const ChangePassword = props => {
           <Modal
             isVisible={passwordCodeModal}
             onBackdropPress={() => setPasswordCodeModal(false)}>
-            <PasswordCodeModal setPasswordCodeModal={setPasswordCodeModal} />
+            <UnsuccessfulModal text={Strings.pleaseEnterBothAuth} />
+          </Modal>
+          <Modal
+            isVisible={wrongAuthCode}
+            onBackdropPress={() => setWrongAuthCode(false)}>
+            <UnsuccessfulModal
+              text={'Wrong Auth Code. Please exit and try again'}
+            />
+          </Modal>
+          <Modal
+            isVisible={passwordFormat}
+            onBackdropPress={() => setPasswordFormat(false)}>
+            <UnsuccessfulModal
+              text={'Password must contain a number and be 8 characters long'}
+            />
+          </Modal>
+          <Modal
+            isVisible={limitExceeded}
+            onBackdropPress={() => setLimitExceeded(false)}>
+            <UnsuccessfulModal
+              text={
+                'The number of requests have exceeded the limit. Please wait for 30 minutes and try again. You can contact us in the meantime'
+              }
+            />
           </Modal>
           <Modal
             isVisible={resendCodeModal}
@@ -259,128 +337,15 @@ export const ChangePassword = props => {
           </Modal>
           <Modal
             isVisible={resendCodeSuccessModal}
-            onBackdropPress={() => setResendCodeSuccessModal(false)}>
-            <ResendCodeSuccessModal
-              setResendCodeSuccessModal={setResendCodeSuccessModal}
-              setForgetPassword={props.setForgetPassword}
-            />
+            onBackdropPress={() => [
+              setResendCodeSuccessModal(false),
+              props.setForgetPassword(false),
+            ]}>
+            <SuccessfulModal text={Strings.passwordSuccess} />
           </Modal>
         </DismissKeyboardView>
       </SafeAreaView>
     </KeyboardAvoidingView>
-  );
-};
-
-export const PhoneNumberModal = props => {
-  return (
-    <SafeAreaView
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <View
-        style={{
-          height: hp('40%'),
-          width: wp('90%'),
-          backgroundColor: 'white',
-          borderRadius: 20,
-          alignItems: 'center',
-          alignSelf: 'center',
-        }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
-          {Strings.pleaseEnterPhoneNum}
-        </Text>
-
-        <View style={{top: hp('8%'), justifyContent: 'center'}}>
-          <Icon name="warning" color={'red'} size={wp('40%')} />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-};
-
-export const PasswordCodeModal = props => {
-  return (
-    <SafeAreaView
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <View
-        style={{
-          height: hp('50%'),
-          width: wp('90%'),
-          backgroundColor: 'white',
-          borderRadius: 20,
-          alignItems: 'center',
-          alignSelf: 'center',
-        }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
-          {Strings.pleaseEnterBothAuth}
-        </Text>
-        <View style={{top: hp('8%'), justifyContent: 'center'}}>
-          <Icon name="warning" color={'red'} size={wp('45%')} />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-};
-
-export const ResendCodeSuccessModal = props => {
-  return (
-    <SafeAreaView>
-      <DismissKeyboardView>
-        <View
-          style={{
-            height: hp('50%'),
-            width: wp('90%'),
-            backgroundColor: 'white',
-            borderRadius: 20,
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}>
-          <Text
-            style={[
-              Typography.header,
-              {top: hp('3%'), textAlign: 'center', width: wp('80%')},
-            ]}>
-            {Strings.passwordSuccess}
-          </Text>
-          <View style={{top: hp('4%'), justifyContent: 'center'}}>
-            <Icon name="checkmark-done" color={'green'} size={wp('40%')} />
-          </View>
-          <TouchableOpacity
-            onPress={() => props.setForgetPassword(false)}
-            style={{
-              top: hp('5%'),
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('40%'),
-              height: hp('5%'),
-              alignItems: 'center',
-              justifyContent: 'center',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-              borderRadius: 10,
-            }}>
-            <Text>{Strings.logInScreen}</Text>
-          </TouchableOpacity>
-        </View>
-      </DismissKeyboardView>
-    </SafeAreaView>
   );
 };
 
@@ -414,3 +379,115 @@ export const ResendCodeModal = props => {
     </SafeAreaView>
   );
 };
+
+// export const PhoneNumberModal = props => {
+//   return (
+//     <SafeAreaView
+//       style={{
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//       }}>
+//       <View
+//         style={{
+//           height: hp('40%'),
+//           width: wp('90%'),
+//           backgroundColor: 'white',
+//           borderRadius: 20,
+//           alignItems: 'center',
+//           alignSelf: 'center',
+//         }}>
+//         <Text
+//           style={[
+//             Typography.large,
+//             {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
+//           ]}>
+//           {}
+//         </Text>
+
+//         <View style={{top: hp('8%'), justifyContent: 'center'}}>
+//           <Icon name="warning" color={'red'} size={wp('40%')} />
+//         </View>
+//       </View>
+//     </SafeAreaView>
+//   );
+// };
+
+// export const PasswordCodeModal = props => {
+//   return (
+//     <SafeAreaView
+//       style={{
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//       }}>
+//       <View
+//         style={{
+//           height: hp('50%'),
+//           width: wp('90%'),
+//           backgroundColor: 'white',
+//           borderRadius: 20,
+//           alignItems: 'center',
+//           alignSelf: 'center',
+//         }}>
+//         <Text
+//           style={[
+//             Typography.large,
+//             {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
+//           ]}>
+//           {Strings.pleaseEnterBothAuth}
+//         </Text>
+//         <View style={{top: hp('8%'), justifyContent: 'center'}}>
+//           <Icon name="warning" color={'red'} size={wp('45%')} />
+//         </View>
+//       </View>
+//     </SafeAreaView>
+//   );
+// };
+// export const ResendCodeSuccessModal = props => {
+//   return (
+//     <SafeAreaView>
+//       <DismissKeyboardView>
+//         <View
+//           style={{
+//             height: hp('50%'),
+//             width: wp('90%'),
+//             backgroundColor: 'white',
+//             borderRadius: 20,
+//             alignItems: 'center',
+//             alignSelf: 'center',
+//           }}>
+//           <Text
+//             style={[
+//               Typography.header,
+//               {top: hp('3%'), textAlign: 'center', width: wp('80%')},
+//             ]}>
+//             {Strings.passwordSuccess}
+//           </Text>
+//           <View style={{top: hp('4%'), justifyContent: 'center'}}>
+//             <Icon name="checkmark-done" color={'green'} size={wp('40%')} />
+//           </View>
+//           <TouchableOpacity
+//             onPress={() => props.setForgetPassword(false)}
+//             style={{
+//               top: hp('5%'),
+//               backgroundColor: Colors.LIGHT_BLUE,
+//               width: wp('40%'),
+//               height: hp('5%'),
+//               alignItems: 'center',
+//               justifyContent: 'center',
+//               shadowColor: '#000',
+//               shadowOffset: {
+//                 width: 0,
+//                 height: 2,
+//               },
+//               shadowOpacity: 0.25,
+//               shadowRadius: 3.84,
+//               elevation: 5,
+//               borderRadius: 10,
+//             }}>
+//             <Text>{Strings.logInScreen}</Text>
+//           </TouchableOpacity>
+//         </View>
+//       </DismissKeyboardView>
+//     </SafeAreaView>
+//   );
+// };

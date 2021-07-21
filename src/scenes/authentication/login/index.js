@@ -113,20 +113,24 @@ export const Login = props => {
               top: hp('12%'),
               left: wp('8%'),
             }}>
-            <Text style={[Typography.placeholder]}>{Strings.phoneEmail}</Text>
-            <TextInput
-              placeholderTextColor={Colors.GRAY_DARK}
-              keyboardType="default"
-              placeholder="+60123456 or example@example.com"
-              underlineColorAndroid="transparent"
-              onChangeText={item => setPhone(item)}
-              value={phone}
-              style={{
-                width: wp('80%'),
-                height: hp('7%'),
-                borderBottomColor: 'transparent',
-                color: 'black',
-              }}></TextInput>
+            <Text style={[Typography.placeholder]}>{Strings.phoneNumber}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{top: hp('1%')}}>+60</Text>
+              <TextInput
+                placeholderTextColor={Colors.GRAY_DARK}
+                keyboardType="default"
+                placeholder="109125654"
+                underlineColorAndroid="transparent"
+                onChangeText={item => setPhone(item)}
+                value={phone}
+                style={{
+                  width: wp('80%'),
+                  height: hp('7%'),
+                  borderBottomColor: 'transparent',
+                  color: 'black',
+                }}></TextInput>
+            </View>
+
             <View
               style={{
                 width: wp('85%'),
@@ -192,7 +196,10 @@ export const Login = props => {
             </Text>
           </TouchableOpacity>
           <Modal isVisible={forgetPassword}>
-            <ForgetPassword setForgetPassword={setForgetPassword} />
+            <ForgetPassword
+              setForgetPassword={setForgetPassword}
+              phone={phone}
+            />
           </Modal>
         </View>
         <View
