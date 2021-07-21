@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -39,8 +39,32 @@ export const Registration = props => {
     {label: Strings.owner, value: 'owner'},
     {label: Strings.retailManager, value: 'retailmanager'},
   ]);
+  const [open2, setOpen2] = useState(false);
+  const [value2, setValue2] = useState(null);
+  const [items2, setItems2] = useState([
+    {label: Strings.wholesaler, value: 'wholesaler'},
+    {label: Strings.supermarket, value: 'supermarket'},
+    {label: Strings.farm, value: 'farm'},
+  ]);
+  const [createAccountButton, setCreateAccountButton] = useState(false);
+  const [companyName, setCompanyName] = useState('');
+  const [companyAddress, setCompanyAddress] = useState('');
+  const [companyRegistrationNum, setCompanyRegistrationNum] = useState('');
+
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [errorText, setErrorText] = useState('');
+
+  useEffect(() => {
+    if (items2 == 'supermarket') {
+      setItems([
+        {label: Strings.generalManager, value: 'generalmanager'},
+        {label: Strings.owner, value: 'owner'},
+        {label: Strings.retailManager, value: 'retailmanager'},
+      ]);
+    } else {
+      setItems([{label: Strings.owner, value: 'owner'}]);
+    }
+  }, [items2]);
   const signUp = async () => {
     try {
       const user = await Auth.signUp({
@@ -77,17 +101,6 @@ export const Registration = props => {
   };
   var hasNumber = /\d/;
 
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [items2, setItems2] = useState([
-    {label: Strings.wholesaler, value: 'wholesaler'},
-    {label: Strings.supermarket, value: 'supermarket'},
-    {label: Strings.farm, value: 'farm'},
-  ]);
-  const [createAccountButton, setCreateAccountButton] = useState(false);
-  const [companyName, setCompanyName] = useState('');
-  const [companyAddress, setCompanyAddress] = useState('');
-  const [companyRegistrationNum, setCompanyRegistrationNum] = useState('');
   const registerCompany = async () => {
     console.log('registering');
     console.log(props.user.id);
@@ -161,7 +174,7 @@ export const Registration = props => {
           height: hp('100%'),
           width: wp('100%'),
         }}>
-        <ScrollView>
+        <ScrollView style={{marginBottom: hp('10%')}}>
           <View
             style={{
               position: 'absolute',
@@ -201,7 +214,7 @@ export const Registration = props => {
             <View style={{top: hp('2%'), left: wp('8%'), width: wp('70%')}}>
               <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
             </View>
-            <View style={{top: hp('4%'), height: hp('100%'), zIndex: 100}}>
+            <View style={{top: hp('4%'), height: hp('100%'), zIndex: 1000}}>
               <Input
                 name={Strings.name}
                 placeholder="eg. Hannah Wong"
@@ -257,7 +270,6 @@ export const Registration = props => {
                 style={{
                   top: hp('3%'),
                   left: wp('8%'),
-                  zIndex: 10,
                 }}>
                 <View>
                   <Text style={[Typography.placeholder, {fontSize: 12}]}>
@@ -267,7 +279,6 @@ export const Registration = props => {
                 <View
                   style={{
                     top: hp('1%'),
-                    left: wp('-1%'),
                     height: hp('7%'),
                   }}>
                   <DropDownPicker
@@ -278,22 +289,57 @@ export const Registration = props => {
                     setValue={setValue2}
                     setItems={setItems2}
                     dropDownDirection="BOTTOM"
-                    listItemContainerStyle={{height: Mixins.scaleHeight(30)}}
+                    listItemContainerStyle={{height: hp('5%')}}
                     style={{
-                      width: wp('80%'),
+                      width: wp('85%'),
                       height: hp('5%'),
                       borderColor: 'white',
                       borderRadius: 3,
                       backgroundColor: Colors.GRAY_LIGHT,
                     }}
+                    zIndex={3000}
+                    zIndexInverse={1000}
                     containerStyle={{}}
                     dropDownContainerStyle={{
                       borderWidth: 0,
-                      width: wp('80%'),
+                      width: wp('85%'),
                       height: hp('15%'),
                       backgroundColor: Colors.GRAY_LIGHT,
                     }}></DropDownPicker>
                 </View>
+              </View>
+              <View
+                style={{
+                  top: hp('3%'),
+                  height: hp('7%'),
+                  left: wp('8%'),
+                }}>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder={Strings.roleInCompany}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  style={{
+                    width: wp('85%'),
+                    height: hp('5%'),
+                    borderColor: 'white',
+                    borderRadius: 3,
+                    backgroundColor: Colors.GRAY_LIGHT,
+                  }}
+                  zIndex={2000}
+                  zIndexInverse={2000}
+                  dropDownDirection="BOTTOM"
+                  listItemContainerStyle={{height: hp('5%')}}
+                  dropDownContainerStyle={{
+                    borderWidth: 1,
+                    width: wp('85%'),
+                    height: hp('15%'),
+                    backgroundColor: Colors.GRAY_LIGHT,
+                  }}></DropDownPicker>
               </View>
               <Input
                 name={Strings.companyRegistrationNum}
@@ -307,41 +353,7 @@ export const Registration = props => {
                 state={companyAddress}
                 setState={setCompanyAddress}
               />
-
-              <View
-                style={{
-                  left: wp('8%'),
-                  width: wp('80%'),
-                  height: hp('7%'),
-                  top: hp('3%'),
-                }}>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.roleInCompany}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  style={{
-                    width: wp('85%'),
-                    height: hp('6%'),
-                    borderColor: 'white',
-                    borderRadius: 3,
-                    backgroundColor: Colors.GRAY_LIGHT,
-                  }}
-                  dropDownDirection="BOTTOM"
-                  listItemContainerStyle={{height: hp('5%')}}
-                  dropDownContainerStyle={{
-                    borderWidth: 1,
-
-                    width: wp('85%'),
-                    backgroundColor: Colors.GRAY_LIGHT,
-                  }}></DropDownPicker>
-              </View>
             </View>
-
             <Modal
               isVisible={createAccountButton}
               onBackdropPress={() => {
@@ -353,83 +365,81 @@ export const Registration = props => {
                   setCreateAccountButton
                 }></CreateAccountPopUp>
             </Modal>
-
-            <TouchableOpacity
-              onPress={async () => {
-                if (
-                  value == null ||
-                  email == '' ||
-                  phone == '' ||
-                  name == '' ||
-                  password == ''
-                ) {
-                  console.log('error');
-                  setUnsuccessfulModal(true);
-                  setErrorText('Please fill in all empty spaces!');
-                } else if (
-                  !phone.startsWith('+') ||
-                  !phone.length > 5 ||
-                  isNaN(phone.slice(1))
-                ) {
-                  setUnsuccessfulModal(true);
-                  setErrorText(
-                    'Sorry you have entered an invalid phone number. Please try again.',
-                  );
-                } else if (!email.includes('@')) {
-                  setUnsuccessfulModal(true);
-                  setErrorText(
-                    'Sorry you have entered an invalid email address. Please try again.',
-                  );
-                } else if (password.length < 8) {
-                  setUnsuccessfulModal(true);
-                  setErrorText(
-                    'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
-                  );
-                } else if (!hasNumber.test(password)) {
-                  setUnsuccessfulModal(true);
-                  setErrorText(
-                    'Sorry you have entered an invalid password. Password must contain at least 1 number.',
-                  );
-                } else {
-                  console.log('succes');
-                  signUp();
-                }
-              }}
-              style={{
-                backgroundColor: Colors.LIGHT_BLUE,
-
-                bottom: hp('5%'),
-                width: wp('30%'),
-                height: hp('5%'),
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignSelf: 'center',
-                borderRadius: 10,
-                flexDirection: 'row',
-                shadowOffset: {
-                  width: 1,
-                  height: 2,
-                },
-                shadowOpacity: 2,
-                shadowRadius: 3,
-                shadowColor: 'grey',
-                elevation: 3,
-                zIndex: 2,
-              }}>
-              <Text
-                style={[
-                  Typography.large,
-                  {position: 'absolute', left: wp('3%')},
-                ]}>
-                {Strings.next}
-              </Text>
-
-              <Icon
-                name="arrow-forward-outline"
-                size={wp('6%')}
-                style={{left: wp('10%')}}
-              />
-            </TouchableOpacity>
+            <View style={{zIndex: -1}}>
+              <TouchableOpacity
+                onPress={async () => {
+                  if (
+                    value == null ||
+                    email == '' ||
+                    phone == '' ||
+                    name == '' ||
+                    password == ''
+                  ) {
+                    console.log('error');
+                    setUnsuccessfulModal(true);
+                    setErrorText('Please fill in all empty spaces!');
+                  } else if (
+                    !phone.startsWith('+') ||
+                    !phone.length > 5 ||
+                    isNaN(phone.slice(1))
+                  ) {
+                    setUnsuccessfulModal(true);
+                    setErrorText(
+                      'Sorry you have entered an invalid phone number. Please try again.',
+                    );
+                  } else if (!email.includes('@')) {
+                    setUnsuccessfulModal(true);
+                    setErrorText(
+                      'Sorry you have entered an invalid email address. Please try again.',
+                    );
+                  } else if (password.length < 8) {
+                    setUnsuccessfulModal(true);
+                    setErrorText(
+                      'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+                    );
+                  } else if (!hasNumber.test(password)) {
+                    setUnsuccessfulModal(true);
+                    setErrorText(
+                      'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+                    );
+                  } else {
+                    console.log('succes');
+                    signUp();
+                  }
+                }}
+                style={{
+                  backgroundColor: Colors.LIGHT_BLUE,
+                  bottom: hp('5%'),
+                  width: wp('30%'),
+                  height: hp('5%'),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  borderRadius: 10,
+                  flexDirection: 'row',
+                  shadowOffset: {
+                    width: 1,
+                    height: 2,
+                  },
+                  shadowOpacity: 2,
+                  shadowRadius: 3,
+                  shadowColor: 'grey',
+                  elevation: 3,
+                }}>
+                <Text
+                  style={[
+                    Typography.large,
+                    {position: 'absolute', left: wp('3%')},
+                  ]}>
+                  {Strings.next}
+                </Text>
+                <Icon
+                  name="arrow-forward-outline"
+                  size={wp('6%')}
+                  style={{left: wp('10%')}}
+                />
+              </TouchableOpacity>
+            </View>
             <Modal
               isVisible={unsuccessfulModal}
               onBackdropPress={() => setUnsuccessfulModal(false)}>
