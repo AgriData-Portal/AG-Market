@@ -31,7 +31,7 @@ import {
   ConfirmSignUp, //done
   RetailerModalButton,
 } from '_scenes';
-
+import 'react-native-gesture-handler';
 import {DataAnalytics} from '_scenes/data_analytics/';
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import {Colors} from '_styles/';
@@ -259,7 +259,7 @@ const TabbedNavigator = props => {
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
-          bottom: hp('0%'),
+
           height: hp('9.5%'),
         },
       }}>
@@ -274,7 +274,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="chatbubbles-outline"
@@ -342,7 +341,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="clipboard-outline"
@@ -410,7 +408,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Image
                   source={require('_assets/images/online-store.png')}
@@ -482,7 +479,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="checkmark-done-outline"
@@ -549,7 +545,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="stats-chart-outline"

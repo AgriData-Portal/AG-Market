@@ -99,6 +99,32 @@ export const Store = props => {
     }
   };
 
+  const unfavourite = async () => {
+    try {
+      var currentFavList = props.user.retailerCompany.favouriteStores;
+      console.log(currentFavList.length);
+      currentFavList.forEach((item, index, arr) => {
+        if (item.id == itemId) {
+          arr.splice(index, 1);
+        }
+      });
+      console.log(currentFavList.length);
+      var updated = await API.graphql({
+        query: updateRetailerCompany,
+        variables: {
+          input: {
+            id: props.user.retailerCompanyID,
+            favouriteStores: currentFavList,
+          },
+        },
+      });
+      setIsFavourite(false);
+      console.log('success');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const checkIsFavourite = () => {
     var tempList = props.user.retailerCompany.favouriteStores;
     if (tempList != null) {
@@ -106,12 +132,17 @@ export const Store = props => {
         return item.id == itemId;
       });
       if (tempList.length == 0) {
-        return false;
-      } else return true;
+        setIsFavourite(false);
+      } else setIsFavourite(true);
     } else {
-      return null;
+      setIsFavourite(false);
     }
   };
+
+  useEffect(() => {
+    checkIsFavourite();
+  }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -120,7 +151,7 @@ export const Store = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      {/*<View
+      {/* <View
         style={{
           position: 'absolute',
           left: wp('5%'),
@@ -128,18 +159,42 @@ export const Store = props => {
         }}>
         <BackButton navigation={props.navigation} />
       </View>
-      <Text style={[Typography.header, {top: hp('4%')}]}>{storeName}</Text>
-      {checkIsFavourite() || isFavourite ? (
-        <View style={{position: 'absolute', right: wp('5%'), top: hp('4%')}}>
-          <Icon color="gold" name="star-outline" size={wp('7%')} />
-        </View>
+      <Text style={[Typography.header, {top: hp('4%')}]}>{storeName}</Text> */}
+
+      {isFavourite ? (
+        <TouchableOpacity
+          onPress={() => unfavourite()}
+          style={{
+            position: 'absolute',
+            right: wp('5%'),
+            bottom: hp('20%'),
+            backgroundColor: 'gold',
+            width: wp('38%'),
+            height: hp('6%'),
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 10,
+          }}>
+          <Text style={[Typography.normal, {}]}>Favourited</Text>
+        </TouchableOpacity>
       ) : (
         <TouchableOpacity
           onPress={() => updateFavourites()}
-          style={{position: 'absolute', right: wp('5%'), top: hp('4%')}}>
-          <Icon name="star-outline" size={wp('7%')} />
+          style={{
+            position: 'absolute',
+            right: wp('5%'),
+            bottom: hp('20%'),
+            backgroundColor: Colors.GRAY_MEDIUM,
+            width: wp('38%'),
+            height: hp('6%'),
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 10,
+          }}>
+          <Text style={[Typography.normal, {}]}>Add to Favourites</Text>
         </TouchableOpacity>
-      )}*/}
+      )}
+
       <View
         style={{
           width: wp('93%'),
@@ -158,7 +213,7 @@ export const Store = props => {
         style={{
           position: 'absolute',
           right: wp('5%'),
-          bottom: hp('18%'),
+          bottom: hp('13%'),
         }}>
         <PurchaseOrderButton
           purchaseOrder={purchaseOrder}

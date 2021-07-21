@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import 'react-native-gesture-handler';
 
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-
+import 'react-native-gesture-handler';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
@@ -20,6 +20,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Platform,
 } from 'react-native';
 import {Typography} from '_styles';
 import {
@@ -118,7 +119,7 @@ const GMNavigation = props => {
     <AppStack.Navigator
       screenOptions={{
         headerStyle: {
-          height: hp('8%'),
+          height: Platform.OS === 'ios' ? hp('9.5%') : hp('8%'),
         },
       }}>
       <AppStack.Screen
@@ -196,40 +197,40 @@ const GMNavigation = props => {
               </Modal>
             </View>
           ),
-          headerRight: () => (
-            <View>
-              {checkIsFavourite(
-                (userDetails = props.user),
-                (itemId = route.params.itemId),
-              ) || isFavourite ? (
-                <View
-                  style={{
-                    position: 'absolute',
-                    right: wp('5%'),
-                    top: hp('4%'),
-                  }}>
-                  <Icon color="gold" name="star-outline" size={wp('7%')} />
-                </View>
-              ) : (
-                <TouchableOpacity
-                  onPress={() =>
-                    updateFavourites(
-                      (userDetails = props.user),
-                      (itemId = route.params.itemId),
-                      (storeName = route.params.storeName),
-                      (setIsFavourite = setIsFavourite()),
-                    )
-                  }
-                  style={{
-                    position: 'absolute',
-                    right: wp('5%'),
-                    top: hp('4%'),
-                  }}>
-                  <Icon name="star-outline" size={wp('7%')} />
-                </TouchableOpacity>
-              )}
-            </View>
-          ),
+          // headerRight: () => (
+          //   <View>
+          //     {checkIsFavourite(
+          //       (userDetails = props.user),
+          //       (itemId = route.params.itemId),
+          //     ) || isFavourite ? (
+          //       <View
+          //         style={{
+          //           position: 'absolute',
+          //           right: wp('5%'),
+          //           top: hp('4%'),
+          //         }}>
+          //         <Icon color="gold" name="star-outline" size={wp('7%')} />
+          //       </View>
+          //     ) : (
+          //       <TouchableOpacity
+          //         onPress={() =>
+          //           updateFavourites(
+          //             (userDetails = props.user),
+          //             (itemId = route.params.itemId),
+          //             (storeName = route.params.storeName),
+          //             (setIsFavourite = setIsFavourite()),
+          //           )
+          //         }
+          //         style={{
+          //           position: 'absolute',
+          //           right: wp('5%'),
+          //           top: hp('4%'),
+          //         }}>
+          //         <Icon name="star-outline" size={wp('7%')} />
+          //       </TouchableOpacity>
+          //     )}
+          //   </View>
+          // ),
         })}>
         {screenProps => (
           <Store
@@ -307,7 +308,6 @@ const TabbedNavigator = props => {
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
-          bottom: hp('0%'),
           height: hp('9.5%'),
         },
       }}>
@@ -322,7 +322,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="chatbubbles-outline"
@@ -389,7 +388,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="clipboard-outline"
@@ -456,7 +454,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Image
                   source={require('_assets/images/online-store.png')}
@@ -529,7 +526,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="checkmark-done-outline"
@@ -596,7 +592,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="stats-chart-outline"

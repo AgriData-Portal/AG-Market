@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-
+import 'react-native-gesture-handler';
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import config from './aws-exports';

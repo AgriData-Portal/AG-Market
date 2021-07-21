@@ -18,6 +18,7 @@ import {
 import Strings from '_utils';
 import Modal from 'react-native-modal';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -70,6 +71,7 @@ export const Marketplace = props => {
   }, [choice]);
 
   const getAllListings = async () => {
+    //EDIT NODEMODULES FOR SEARCHABLE DROPDOWN AND DELETE ALL NAME IN ITEM.NAME
     try {
       const listings = await API.graphql({
         query: listProductListings,
@@ -82,7 +84,24 @@ export const Marketplace = props => {
 
       console.log(responseList);
       var array = Array.from(new Set(responseList));
+      array.sort();
       setSearchable(array);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getFirstTenListings = async () => {
+    try {
+      const listings = await API.graphql({
+        query: listProductListings,
+        variables: {
+          limit: 10,
+        },
+      });
+      console.log(listings.data.listProductListings.items);
+      var responseList = listings.data.listProductListings.items;
+      setProducts(listings.data.listProductListings.items);
     } catch (e) {
       console.log(e);
     }
@@ -90,7 +109,16 @@ export const Marketplace = props => {
   useEffect(() => {
     console.log('All listings');
     getAllListings();
+    getFirstTenListings();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      console.log('Refreshed!');
+      getFirstTenListings();
+    });
+    return unsubscribe;
+  }, [props.navigation]);
 
   return (
     <SafeAreaView
@@ -100,7 +128,88 @@ export const Marketplace = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      <View style={{top: hp('1%')}}>
+      <View
+        style={{
+          top: hp('1%'),
+          width: wp('100%'),
+          height: hp('4%'),
+          flexDirection: 'row',
+        }}>
+        {choice == 'product' ? (
+          <View
+            style={{
+              width: wp('50%'),
+              borderRightWidth: 1,
+              borderColor: Colors.GRAY_LIGHT,
+              alignItems: 'center',
+            }}>
+            <Text
+              style={[
+                Typography.normal,
+                {
+                  color: 'black',
+                  fontFamily: 'Poppins-Bold',
+                  textDecorationLine: 'underline',
+                },
+              ]}>
+              {Strings.product}
+            </Text>
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={() => [
+              setChoice('product'),
+              setInitialRender(true),
+              //getFirstTenListings(), //refresh page :)
+            ]}
+            style={{
+              width: wp('50%'),
+              borderRightWidth: 1,
+              borderColor: Colors.GRAY_LIGHT,
+              alignItems: 'center',
+            }}>
+            <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
+              {Strings.product}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {choice == 'favourites' ? (
+          <View
+            style={{
+              width: wp('50%'),
+              borderLeftWidth: 1,
+              borderColor: Colors.GRAY_LIGHT,
+              alignItems: 'center',
+            }}>
+            <Text
+              style={[
+                Typography.normal,
+                {
+                  color: 'black',
+                  fontFamily: 'Poppins-Bold',
+                  textDecorationLine: 'underline',
+                },
+              ]}>
+              {Strings.favourites}
+            </Text>
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={() => setChoice('favourites')}
+            style={{
+              width: wp('50%'),
+              borderLeftWidth: 0.5,
+              borderColor: Colors.GRAY_LIGHT,
+              alignItems: 'center',
+            }}>
+            <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
+              {Strings.favourites}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      <View style={{top: hp('1%'), zIndex: 100}}>
         {choice == 'product' ? (
           <View
             style={{
@@ -120,20 +229,53 @@ export const Marketplace = props => {
             </View>
             <View style={{left: wp('13%')}}>
               <SearchableDropdown
+                items={searchable}
                 placeholder={Strings.search}
+                placeholderTextColor={Colors.DARK_GRAY}
                 itemsContainerStyle={{
-                  maxHeight: hp('60%'),
-                  backgroundColor: 'red',
+                  zIndex: 10,
+                  height: hp('80%'),
+                }}
+                itemTextStyle={{
+                  //text style of a single dropdown item
+                  color: 'black',
+                }}
+                itemStyle={{
+                  padding: 10,
+                  backgroundColor: '#ddd',
+                  borderColor: '#bbb',
+                  borderWidth: 1,
+                  borderRadius: 5,
+                }}
+                containerStyle={{
+                  padding: 1,
+                  width: wp('75%'),
+                  borderRadius: 20,
                 }}
                 textInputStyle={{
-                  width: wp('70%'),
+                  width: wp('55%'),
                   height: hp('5%'),
                 }}
-                setSearchPressed={setSearchPressed}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
+                textInputProps={{value: searchValue}}
+                resetValue={false}
+                onItemSelect={item => [setSearchValue(item)]}
+                onTextChange={item => setSearchValue(item)}
               />
             </View>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                left: wp('70%'),
+                top: hp('1%'),
+              }}
+              onPress={() => {
+                if (searchValue != '') {
+                  setSearchPressed(true);
+                  console.log(searchValue);
+                }
+              }}>
+              <Text style={[Typography.normal]}>{Strings.search}</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <Searchbar
@@ -141,81 +283,6 @@ export const Marketplace = props => {
             searchValue={searchValue}
             setSearchValue={setSearchValue}
           />
-        )}
-      </View>
-      <View
-        style={{
-          top: hp('3%'),
-          width: wp('100%'),
-          height: hp('4%'),
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderColor: Colors.GRAY_LIGHT,
-        }}>
-        {choice == 'product' ? (
-          <View
-            style={{
-              width: wp('50%'),
-              borderRightWidth: 1,
-              borderColor: Colors.GRAY_LIGHT,
-              alignItems: 'center',
-            }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: Colors.GRAY_DARK,
-                  fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
-                },
-              ]}>
-              {Strings.product}
-            </Text>
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={() => [setChoice('product'), setInitialRender(true)]}
-            style={{
-              width: wp('50%'),
-              borderRightWidth: 1,
-              borderColor: Colors.GRAY_LIGHT,
-              alignItems: 'center',
-            }}>
-            <Text style={Typography.normal}>{Strings.product}</Text>
-          </TouchableOpacity>
-        )}
-
-        {choice == 'favourites' ? (
-          <View
-            style={{
-              width: wp('50%'),
-              borderLeftWidth: 1,
-              borderColor: Colors.GRAY_LIGHT,
-              alignItems: 'center',
-            }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: Colors.GRAY_DARK,
-                  fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
-                },
-              ]}>
-              {Strings.favourites}
-            </Text>
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={() => setChoice('favourites')}
-            style={{
-              width: wp('50%'),
-              borderLeftWidth: 0.5,
-              borderColor: Colors.GRAY_LIGHT,
-              alignItems: 'center',
-            }}>
-            <Text style={Typography.normal}>{Strings.favourites}</Text>
-          </TouchableOpacity>
         )}
       </View>
       {choice == 'favourites' ? (
@@ -234,8 +301,8 @@ export const Marketplace = props => {
         <View
           style={{
             width: wp('95%'),
-            height: hp('90%'),
-            top: hp('1%'),
+            height: hp('70%'),
+            top: hp('3%'),
           }}>
           <MarketplaceList
             chatGroups={props.user.retailerCompany.chatGroups.items}

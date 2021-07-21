@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
-
+import 'react-native-gesture-handler';
 import {
   AccountsDashboard, //done
   RetailManagerDashboard, // done
