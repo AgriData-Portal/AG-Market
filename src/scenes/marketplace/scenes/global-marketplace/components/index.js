@@ -52,6 +52,7 @@ export const ProductCard = props => {
         width: wp('36%'),
         height: hp('25%'),
         margin: wp('5%'),
+        marginTop: hp('1%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
@@ -62,7 +63,7 @@ export const ProductCard = props => {
           height: hp('8%'),
           width: hp('8%'),
           borderRadius: 100,
-          top: Mixins.scaleHeight(10),
+          top: hp('2%'),
         }}></Image>
       <Text style={[Typography.normal, {top: hp('2.5%')}]}>
         {props.productName}
@@ -113,12 +114,12 @@ export const MarketplaceList = props => {
   };
   return (
     <FlatList
-      refreshControl={
-        <RefreshControl
-          refreshing={props.refreshing}
-          onRefresh={props.onRefresh}
-        />
-      }
+      // refreshControl={
+      //   <RefreshControl
+      //     refreshing={props.refreshing}
+      //     onRefresh={props.onRefresh}
+      //   />
+      // }
       keyExtractor={item => item.id}
       data={props.productList}
       numColumns={2}

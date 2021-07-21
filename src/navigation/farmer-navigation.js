@@ -96,9 +96,9 @@ function getIcon(route, user) {
   }
 }
 
-export {SupplierNavigation};
+export {FarmerNavigation};
 
-const SupplierNavigation = props => {
+const FarmerNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   return (
     <AppStack.Navigator
@@ -165,6 +165,24 @@ const SupplierNavigation = props => {
           ),
         })}>
         {screenProps => <ChatRoom {...screenProps} user={props.user} />}
+      </AppStack.Screen>
+      <AppStack.Screen
+        name="store"
+        options={({route, navigation}) => ({
+          title: route.params.storeName,
+          headerTitleStyle: [Typography.large],
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <HeaderBackButton onPress={() => navigation.goBack()} />
+          ),
+        })}>
+        {screenProps => (
+          <Store
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+          />
+        )}
       </AppStack.Screen>
 
       <AppStack.Screen

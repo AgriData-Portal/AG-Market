@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import 'react-native-gesture-handler';
 
 import {
   RetailerTasks, //done
@@ -91,7 +92,6 @@ const TabbedNavigator = props => {
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
-          bottom: hp('0%'),
           height: hp('9.5%'),
         },
       }}>
@@ -106,7 +106,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="checkmark-done-outline"
