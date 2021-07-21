@@ -468,7 +468,9 @@ const SendTaskModal = props => {
               minDate={now()}
               date={deliverydate}
               onDateChange={item => setDate(item)}
-              androidMode="spinner"></DatePicker>
+              androidMode="spinner"
+              confirmBtnText={Strings.confirm}
+              cancelBtnText={Strings.cancel}></DatePicker>
             <TouchableOpacity
               style={{
                 position: 'absolute',
