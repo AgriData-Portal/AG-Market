@@ -37,8 +37,9 @@ export const Login = props => {
     try {
       setLoading(true);
       const user = await Auth.signIn(email, password);
+      console.log(user);
       console.log('Successful sign in');
-      props.updateUserID(user.attributes.sub);
+      props.updateUserID(user.username);
       props.setUserAttributes(user.attributes);
 
       //props.updateAuthState('loggedIn'); //fucking weird
