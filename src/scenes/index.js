@@ -16,10 +16,12 @@ import {
   Store,
   SupplierStore,
   RetailerModalButton,
+  FarmerStore,
+  SupplierModalButton,
 } from './marketplace';
 import {Inbox, ChatRoom} from './chat';
 import {Orders} from './orders';
-import {SupplierTasks, RetailerTasks} from './tasks';
+import {SupplierTasks, RetailerTasks, FarmerTasks} from './tasks';
 import {DataAnalytics} from './data-analytics';
 import {
   Registration,
@@ -60,4 +62,7 @@ export {
   CreateAccountPopUp,
   ConfirmSignUp,
   RetailerModalButton,
+  FarmerStore,
+  FarmerTasks,
+  SupplierModalButton,
 };

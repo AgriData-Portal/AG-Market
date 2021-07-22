@@ -21,12 +21,15 @@ import {MenuButton} from '_components';
 export const Inbox = props => {
   //console.log(props.user.role);
   const [chatRooms, setChatRooms] = useState(null);
-  if (props.user.retailerCompanyID == null) {
+  if (props.user.supplierCompanyID != null) {
     var companyID = props.user.supplierCompany.id;
     var companyType = 'supplier';
-  } else {
+  } else if (props.user.retailerCompanyID != null) {
     var companyID = props.user.retailerCompany.id;
     var companyType = 'retailer';
+  } else {
+    var companyID = props.user.farmerCompany.id;
+    var companyType = 'farmer';
   }
 
   useEffect(() => {
@@ -45,60 +48,6 @@ export const Inbox = props => {
       next: data => {
         const newMessage = data.value.data.onUpdateChatGroup;
         fetchChats();
-        /*try {
-          console.log(chatRooms);
-          var chatList = chatRooms;
-          if (companyType == 'supplier') {
-            if (chatRooms) {
-              var removedList = chatList.filter(item => {
-                console.log(item.id + '     ' + newMessage.id);
-                return item.id != newMessage.id;
-              });
-              console.log('Updating chat');
-              console.log(removedList);
-              removedList = removedList.reverse();
-              removedList.push(newMessage);
-              removedList = removedList.reverse();
-              console.log(removedList);
-              setChatRooms(removedList);
-            } else {
-              console.log('chatroom is null');
-            }
-          } else {
-            if (chatRooms) {
-              var removedList = chatList.filter(item => {
-                console.log(item.id + '     ' + newMessage.id);
-                return item.id != newMessage.id;
-              });
-              console.log('Updating chat');
-              console.log(removedList);
-              removedList = removedList.reverse();
-              removedList.push(newMessage);
-              removedList = removedList.reverse();
-              console.log(removedList);
-              setChatRooms(removedList);
-            } else {
-              console.log('chatroom is null');
-            }
-          }
-        } catch (e) {
-          console.log(e);
-        }*/
-        /* 
-      
-        if (newMessage.id != itemID) {
-          console.log('Message is in another room!');
-          return;
-        }
-        console.log(newMessage.senderID, props.user.id);
-        &*/
-
-        /*var messageList = messages;
-
-        messageList = messageList.reverse();
-        messageList.push(newMessage);
-        messageList = messageList.reverse();
-        setMessages(messageList);*/
       },
     });
 
@@ -119,7 +68,7 @@ export const Inbox = props => {
         setChatRooms(
           chats.data.getChatGroupsContainingRetailersByUpdatedAt.items,
         );
-      } else {
+      } else if (companyType == 'supplier') {
         const chats = await API.graphql({
           query: getChatGroupsContainingSuppliersByUpdatedAt,
           variables: {
@@ -130,6 +79,18 @@ export const Inbox = props => {
         console.log('fetching chats');
         setChatRooms(
           chats.data.getChatGroupsContainingSuppliersByUpdatedAt.items,
+        );
+      } else {
+        const chats = await API.graphql({
+          query: getChatGroupsContainingFarmersByUpdatedAt,
+          variables: {
+            supplierID: companyID,
+            sortDirection: 'DESC',
+          },
+        });
+        console.log('fetching chats');
+        setChatRooms(
+          chats.data.getChatGroupsContainingFarmersByUpdatedAt.items,
         );
       }
     } catch (e) {
