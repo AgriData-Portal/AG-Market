@@ -136,7 +136,7 @@ type Message
   chatGroupID: ID!
   "retailerID+supplierID"
   type: String!
-  "Text, Product Inquiry, PO, Quotation"
+  "Text, Product Inquiry, PO, Quotation, Image, Recording"
   content: String!
   senderID: ID!
   sender: String!

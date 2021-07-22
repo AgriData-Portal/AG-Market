@@ -344,6 +344,8 @@ PODS:
     - React-perflogger (= 0.64.2)
   - ReactNativeLocalization (2.1.7):
     - React-Core
+  - rn-fetch-blob (0.12.0):
+    - React-Core
   - RNAudioRecorderPlayer (3.1.0):
     - React-Core
   - RNAWSCognito (5.0.4):
@@ -462,6 +464,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeLocalization (from `../node_modules/react-native-localization`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
@@ -567,6 +570,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeLocalization:
     :path: "../node_modules/react-native-localization"
+  rn-fetch-blob:
+    :path: "../node_modules/rn-fetch-blob"
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNAWSCognito:
@@ -647,6 +652,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
+  rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAudioRecorderPlayer: be071a52faede40b3025f624079a9d554a877309
   RNAWSCognito: 14872bf41aca1a7f48114e7f4f470c00b45bef4d
   RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885

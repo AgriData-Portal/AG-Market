@@ -25,7 +25,14 @@ import {
   updateChatGroup,
   createGoodsTask,
 } from '../../../../graphql/mutations';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import AudioRecorderPlayer, {
+  AVEncoderAudioQualityIOSType,
+  AVEncodingOption,
+  AudioEncoderAndroidType,
+  AudioSet,
+  AudioSourceAndroidType,
+} from 'react-native-audio-recorder-player';
+import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 import {
   getOrderQuotation,
   listUsersInChat,
@@ -43,15 +50,28 @@ import {ChatBubbleList} from './chat-bubbles';
 import {ChatInfo} from './chat-info';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {DismissKeyboardView} from '_components';
+import {set} from 'react-native-reanimated';
 
 export {ChatBubbleList, ChatInfo};
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
 export const MessageInput = props => {
   const [message, setMessage] = useState('');
   const [imageSource, setImageSource] = useState(null);
   const [imageModal, setImageModal] = useState(false);
-  const [recording, setRecording] = useState(null);
-  const audioRecorderPlayer = new AudioRecorderPlayer();
+  const [recording, setRecording] = useState({
+    isLoggingIn: false,
+    recordSecs: 0,
+    recordTime: '00:00:00',
+    currentPositionSec: 0,
+    currentDurationSec: 0,
+    playTime: '00:00:00',
+    duration: '00:00:00',
+  });
+  const [audio, setAudio] = useState(false);
+
+  audioRecorderPlayer.setSubscriptionDuration(0.09);
 
   function selectImage() {
     let options = {
@@ -73,15 +93,27 @@ export const MessageInput = props => {
       }
     });
   }
+  onSlideRight = () => {
+    onStopRecord();
+  };
   onStartRecord = async () => {
-    const result = await audioRecorderPlayer.startRecorder();
+    const path = 'hello.mp4';
+    const audioSet = {
+      AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+      AudioSourceAndroid: AudioSourceAndroidType.MIC,
+      AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+      AVNumberOfChannelsKeyIOS: 2,
+      AVFormatIDKeyIOS: AVEncodingOption.aac,
+    };
+    console.log('audioSet', audioSet);
+    const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
     audioRecorderPlayer.addRecordBackListener(e => {
       setRecording({
-        recordSecs: e.currentPosition,
+        recordSecs: e.current_position,
+        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
       });
-      return;
     });
-    console.log(result);
+    console.log(`uri: ${uri}`);
   };
 
   onStopRecord = async () => {
@@ -95,16 +127,21 @@ export const MessageInput = props => {
 
   onStartPlay = async () => {
     console.log('onStartPlay');
-    const msg = await audioRecorderPlayer.startPlayer();
+    const path = 'hello.mp4';
+    const msg = await audioRecorderPlayer.startPlayer(path);
+    audioRecorderPlayer.setVolume(1.0);
     console.log(msg);
     audioRecorderPlayer.addPlayBackListener(e => {
+      if (e.current_position === e.duration) {
+        console.log('finished');
+        audioRecorderPlayer.stopPlayer();
+      }
       setRecording({
         currentPositionSec: e.currentPosition,
         currentDurationSec: e.duration,
         playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
         duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
       });
-      return;
     });
   };
 
@@ -172,16 +209,17 @@ export const MessageInput = props => {
             onChangeText={text => setMessage(text)}
             value={message}
             style={{
-              width: wp('65%'),
+              width: wp('60%'),
               height: hp('7%'),
               borderBottomColor: 'transparent',
               left: wp('14%'),
               color: 'black',
-              top: hp('2%'),
+              top: hp('1.5%'),
             }}
           />
           <TouchableOpacity
-            onPress={() => onStartRecord()}
+            onPress={() => setAudio(true)}
+            onLongPress={() => onStartRecord()}
             style={{
               height: hp('9%'),
               width: hp('9%'),
@@ -199,6 +237,24 @@ export const MessageInput = props => {
               elevation: 5,
             }}>
             <Icon name="mic-outline" size={wp('6%')} />
+          </TouchableOpacity>
+          <RNSlidingButton
+            isVisible={audio}
+            style={{
+              width: 240,
+            }}
+            height={35}
+            onSlidingSuccess={onSlideRight}
+            slideDirection={SlideDirection.RIGHT}>
+            <View>
+              <Text numberOfLines={1}>SLIDE RIGHT TO ACCEPT</Text>
+            </View>
+          </RNSlidingButton>
+          <TouchableOpacity onPress={() => onStartPlay()}>
+            <Icon name="play" size={wp('6%')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => onStopPlay()}>
+            <Icon name="stop" size={wp('6%')} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {

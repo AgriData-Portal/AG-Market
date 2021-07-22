@@ -796,7 +796,6 @@ const PurchaseOrderComponent = props => {
 export const DetailsModal = props => {
   const [companyDetails, setCompanyDetails] = useState([]);
   const [imageSource, setImageSource] = useState(null);
-
   const getStoreDetails = async () => {
     if (props.companyType == 'retailer') {
       try {
@@ -856,7 +855,6 @@ export const DetailsModal = props => {
 
       <View
         style={{
-          top: hp('4%'),
           alignItems: 'center',
           justifyContent: 'center',
           width: wp('80%'),
@@ -882,13 +880,26 @@ export const DetailsModal = props => {
           />
         )}
       </View>
+      {companyDetails.rating == null ? (
+        <Text style={[Typography.normal]}>No ratings yet</Text>
+      ) : (
+        <View style={{flexDirection: 'row'}}>
+          <Rating
+            imageSize={wp('6%')}
+            readonly={true}
+            startingValue={companyDetails.rating.currentRating}></Rating>
+          <Text style={[Typography.normal, {left: wp('1%')}]}>
+            ( {companyDetails.rating.numberOfRatings} )
+          </Text>
+        </View>
+      )}
       <View
         style={{
           alignItems: 'flex-start',
           backgroundColor: Colors.GRAY_LIGHT,
           width: wp('80%'),
           height: hp('40%'),
-          top: hp('5%'),
+          top: hp('3%'),
           borderRadius: 10,
         }}>
         <View style={{alignItems: 'flex-start', top: hp('5%'), left: wp('5%')}}>

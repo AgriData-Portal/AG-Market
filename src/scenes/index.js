@@ -11,7 +11,12 @@ import {
   EditPersonal,
   GeneralManagerDashboard,
 } from './dashboard';
-import {Marketplace, Store, SupplierStore} from './marketplace';
+import {
+  Marketplace,
+  Store,
+  SupplierStore,
+  RetailerModalButton,
+} from './marketplace';
 import {Inbox, ChatRoom} from './chat';
 import {Orders} from './orders';
 import {SupplierTasks, RetailerTasks} from './tasks';
@@ -54,4 +59,5 @@ export {
   GeneralManagerDashboard,
   CreateAccountPopUp,
   ConfirmSignUp,
+  RetailerModalButton,
 };
