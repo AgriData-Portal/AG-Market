@@ -43,7 +43,7 @@ export const Registration = props => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [items2, setItems2] = useState([
-    {label: Strings.wholesaler, value: 'wholesaler'},
+    {label: 'Supplier', value: 'supplier'}, //translation
     {label: Strings.supermarket, value: 'supermarket'},
     {label: Strings.farm, value: 'farm'},
   ]);
