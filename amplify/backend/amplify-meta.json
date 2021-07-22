@@ -23,7 +23,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/auth/agridataapp1c4f9eeb-cloudformation-template.yml",
         "logicalId": "authagridataapp1c4f9eeb"
       },
-      "lastPushTimeStamp": "2021-07-19T03:20:09.301Z",
+      "lastPushTimeStamp": "2021-07-22T07:16:25.567Z",
       "output": {
         "UserPoolId": "ap-southeast-1_e3TqGI5PR",
         "AppClientIDWeb": "1l3tf271h2qv74atcaccdm7eut",
@@ -50,15 +50,15 @@
           },
           "additionalAuthenticationProviders": []
         },
-        "GraphQLAPIIdOutput": "4npwrqn3hrcttnxnas7ozmyj2q",
-        "GraphQLAPIEndpointOutput": "https://5m3fgl5v5rb6bjwse2tsubfgd4.appsync-api.ap-southeast-1.amazonaws.com/graphql"
+        "GraphQLAPIIdOutput": "ynbpkjqv5ffqhfd2bno625p3ti",
+        "GraphQLAPIEndpointOutput": "https://2a5oapnkova4hdaecojs7vi6ly.appsync-api.ap-southeast-1.amazonaws.com/graphql"
       },
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiagridataapp"
       },
-      "lastPushTimeStamp": "2021-07-19T03:20:18.041Z",
-      "lastPushDirHash": "9+ovZz38+j37FWYOGZPAQjS+3W4="
+      "lastPushTimeStamp": "2021-07-22T07:16:33.637Z",
+      "lastPushDirHash": "Agr44KP846mVnJGeTus0mG/kiz4="
     }
   },
   "storage": {
@@ -69,7 +69,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-agridataapp-dev-164209-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
         "logicalId": "storageimageContent"
       },
-      "lastPushTimeStamp": "2021-07-19T03:20:09.317Z",
+      "lastPushTimeStamp": "2021-07-22T07:16:25.578Z",
       "output": {
         "BucketName": "agridataappimagecontentbucket164209-dev",
         "Region": "ap-southeast-1"
@@ -78,28 +78,27 @@
     }
   },
   "notifications": {
-    "AgriDataPinpoint": {
+    "agridataappKpDwf": {
       "service": "Pinpoint",
       "output": {
-        "Arn": "arn:aws:mobiletargeting:us-west-2:467200493458:apps/ccc9423938c049b5b128eccbd11176fc",
-        "Id": "ccc9423938c049b5b128eccbd11176fc",
-        "Name": "AgriDataPinpoint-dev",
+        "Arn": "arn:aws:mobiletargeting:us-west-2:467200493458:apps/eebc9ecad55748a39df6511fe38b16d6",
+        "Id": "eebc9ecad55748a39df6511fe38b16d6",
+        "Name": "agridataappKpDwf-dev",
         "tags": {},
         "Region": "us-west-2",
         "FCM": {
-          "ApplicationId": "ccc9423938c049b5b128eccbd11176fc",
-          "CreationDate": "2021-07-12T14:15:52.281Z",
+          "ApplicationId": "eebc9ecad55748a39df6511fe38b16d6",
+          "CreationDate": "2021-07-20T08:54:45.636Z",
           "Enabled": true,
           "HasCredential": true,
           "Id": "gcm",
           "IsArchived": false,
-          "LastModifiedDate": "2021-07-12T14:15:52.281Z",
+          "LastModifiedDate": "2021-07-20T08:54:45.636Z",
           "Platform": "GCM",
           "Version": 1
         }
       },
-      "lastPushTimeStamp": "2021-07-12T14:15:20.283Z"
+      "lastPushTimeStamp": "2021-07-20T08:54:32.118Z"
     }
-  },
-  "analytics": {}
+  }
 }
