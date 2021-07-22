@@ -77,8 +77,12 @@ export const Registration = props => {
         attributes: {
           email: email,
           phone_number: phone,
-          'custom:role': value,
           name: name,
+          'custom:role': value,
+          'custom:companyName': companyName,
+          'custom:companyType': value2,
+          'custom:companyRegNum': companyRegistrationNum,
+          'custom:companyAddress': companyAddress,
         },
       });
       console.log(user.userSub);
@@ -105,73 +109,10 @@ export const Registration = props => {
   };
   var hasNumber = /\d/;
 
-  const registerCompany = async () => {
-    console.log('registering');
-    console.log(props.user.id);
-    if (value == 'supermarket') {
-      try {
-        const supermarket = await API.graphql({
-          query: createRetailerCompany,
-          variables: {
-            input: {
-              name: companyName,
-              type: value2,
-              address: companyAddress,
-              registrationNumber: parseInt(companyRegistrationNum),
-            },
-          },
-        });
-        console.log(supermarket);
-        const user = await API.graphql({
-          query: updateUser,
-          variables: {
-            input: {
-              id: props.user.id,
-              retailerCompanyID: supermarket.data.createRetailerCompany.id,
-            },
-          },
-        });
-        console.log(user);
-        console.log('add retailer success');
-        setCreateAccountButton(true);
-      } catch {
-        e => console.log(e);
-      }
-    } else {
-      try {
-        const supplier = await API.graphql({
-          query: createSupplierCompany,
-          variables: {
-            input: {
-              name: companyName,
-              type: value2,
-              address: companyAddress,
-              registrationNumber: parseInt(companyRegistrationNum),
-            },
-          },
-        });
-        console.log(supplier);
-        const user = await API.graphql({
-          query: updateUser,
-          variables: {
-            input: {
-              id: props.user.id,
-              supplierCompanyID: supplier.data.createSupplierCompany.id,
-            },
-          },
-        });
-        console.log(user);
-        console.log('add supplier success');
-        setCreateAccountButton(true);
-      } catch {
-        e => console.log(e);
-      }
-    }
-  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-20%')}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-10%')}>
       <SafeAreaView
         style={{
           backgroundColor: 'white',
@@ -184,7 +125,9 @@ export const Registration = props => {
             nestedScrollEnabled={true}
             scrollToOverflowEnabled={true}
             contentContainerStyle={
-              Platform.OS == 'ios ' ? {} : {paddingBottom: hp('15%')}
+              Platform.OS == 'ios '
+                ? {paddingBottom: 0}
+                : {paddingBottom: hp('15%')}
             }>
             <View style={{flex: 1}}>
               <View
@@ -428,7 +371,12 @@ export const Registration = props => {
                       email == '' ||
                       phone == '' ||
                       name == '' ||
-                      password == ''
+                      password == '' ||
+                      companyName == '' ||
+                      companyRegistrationNum == '' ||
+                      companyAddress == '' ||
+                      items == null ||
+                      items2 == null
                     ) {
                       console.log('error');
                       setUnsuccessfulModal(true);

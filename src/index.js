@@ -19,6 +19,7 @@ import {
   VerificationNavigation,
   CreateCompanyNavigation,
   AuthenticationNavigator,
+  FarmerNavigation,
 } from './navigation';
 
 Amplify.configure(config);
@@ -48,6 +49,7 @@ Amplify.configure(config);
 const AppNavigator = props => {
   console.log('user:' + props.user);
   const type = props.user.role;
+  //to remove create comp nav thing
   if (
     props.user.retailerCompanyID != null ||
     props.user.supplierCompanyID != null
@@ -115,6 +117,19 @@ const AppNavigator = props => {
           setUserDetails={props.setUserDetails}
         />
       );
+    } else if (
+      props.user.farmerCompanyID != null &&
+      props.user.farmerCompany.verified != undefined
+    ) {
+      console.log('Farmer \n');
+      const type = 'farmer';
+      return (
+        <FarmerNavigation
+          user={props.user}
+          updateAuthState={props.updateAuthState}
+          setUserDetails={props.setUserDetails}
+        />
+      );
     } else {
       return (
         <VerificationNavigation
@@ -177,6 +192,25 @@ const App = () => {
     } catch {
       e => console.log(e);
     }
+    try {
+      var type = user.attributes['custom:companyType'];
+      if (type == 'farm') {
+        const response = await API.graphql({
+          query: createFarmerCompany,
+          variables: {input: {}},
+        });
+      } else if (type == 'supermarket') {
+        const response = await API.graphql({
+          query: createRetailerCompany,
+          variables: {input: {}},
+        });
+      } else {
+        const response = await API.graphql({
+          query: createSupplierCompany,
+          variables: {input: {}},
+        });
+      }
+    } catch {}
   };
 
   const getUserAttributes = async id => {
@@ -211,11 +245,7 @@ const App = () => {
   useEffect(() => {
     checkAuthState();
   }, [userID]);
-  /*
-  useEffect(() => {
-    getUserAttributes();
-    console.log('useEffect Triggered');
-  }, [userID, runAgain]);*/
+
   async function checkAuthState() {
     //this checks for the current authenticated state (for when u dont click logout)
     try {
