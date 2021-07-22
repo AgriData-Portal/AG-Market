@@ -28,10 +28,12 @@ import Strings from '_utils';
 import {API, graphqlOperation} from 'aws-amplify';
 
 export const ChatRoom = props => {
-  if (props.user.retailerCompanyID == null) {
+  if (props.user.retailerCompanyID != null) {
+    var type = 'retailer';
+  } else if (props.user.supplierCompanyID != null) {
     var type = 'supplier';
   } else {
-    var type = 'retailer';
+    var type = 'farmer';
   }
 
   const {itemID, chatName} = props.route.params; //props.route.params; //chatgroupid

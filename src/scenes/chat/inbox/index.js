@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
-import {Typography, Spacing, Colors, Mixins} from '_styles';
+
 import {ChatList} from './components';
 import {Searchbar} from './components';
-import {NavBar, BackButton} from '_components';
+
 import {
   getChatGroupsContainingRetailersByUpdatedAt,
   getChatGroupsContainingSuppliersByUpdatedAt,
+  getChatGroupsContainingFarmersByUpdatedAt,
 } from '../../../graphql/queries';
 import {API, graphqlOperation} from 'aws-amplify';
 import {DismissKeyboardView} from '_components';
@@ -16,17 +17,19 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {onUpdateChatGroup} from '../../../graphql/subscriptions';
-import {MenuButton} from '_components';
 
 export const Inbox = props => {
   //console.log(props.user.role);
   const [chatRooms, setChatRooms] = useState(null);
-  if (props.user.retailerCompanyID == null) {
-    var companyID = props.user.supplierCompany.id;
+  if (props.user.supplierCompanyID != null) {
+    var companyID = props.user.supplierCompanyID;
     var companyType = 'supplier';
-  } else {
-    var companyID = props.user.retailerCompany.id;
+  } else if (props.user.retailerCompanyID != null) {
+    var companyID = props.user.retailerCompanyID;
     var companyType = 'retailer';
+  } else {
+    var companyID = props.user.farmerCompanyID;
+    var companyType = 'farmer';
   }
 
   useEffect(() => {
@@ -45,60 +48,6 @@ export const Inbox = props => {
       next: data => {
         const newMessage = data.value.data.onUpdateChatGroup;
         fetchChats();
-        /*try {
-          console.log(chatRooms);
-          var chatList = chatRooms;
-          if (companyType == 'supplier') {
-            if (chatRooms) {
-              var removedList = chatList.filter(item => {
-                console.log(item.id + '     ' + newMessage.id);
-                return item.id != newMessage.id;
-              });
-              console.log('Updating chat');
-              console.log(removedList);
-              removedList = removedList.reverse();
-              removedList.push(newMessage);
-              removedList = removedList.reverse();
-              console.log(removedList);
-              setChatRooms(removedList);
-            } else {
-              console.log('chatroom is null');
-            }
-          } else {
-            if (chatRooms) {
-              var removedList = chatList.filter(item => {
-                console.log(item.id + '     ' + newMessage.id);
-                return item.id != newMessage.id;
-              });
-              console.log('Updating chat');
-              console.log(removedList);
-              removedList = removedList.reverse();
-              removedList.push(newMessage);
-              removedList = removedList.reverse();
-              console.log(removedList);
-              setChatRooms(removedList);
-            } else {
-              console.log('chatroom is null');
-            }
-          }
-        } catch (e) {
-          console.log(e);
-        }*/
-        /* 
-      
-        if (newMessage.id != itemID) {
-          console.log('Message is in another room!');
-          return;
-        }
-        console.log(newMessage.senderID, props.user.id);
-        &*/
-
-        /*var messageList = messages;
-
-        messageList = messageList.reverse();
-        messageList.push(newMessage);
-        messageList = messageList.reverse();
-        setMessages(messageList);*/
       },
     });
 
@@ -119,7 +68,7 @@ export const Inbox = props => {
         setChatRooms(
           chats.data.getChatGroupsContainingRetailersByUpdatedAt.items,
         );
-      } else {
+      } else if (companyType == 'supplier') {
         const chats = await API.graphql({
           query: getChatGroupsContainingSuppliersByUpdatedAt,
           variables: {
@@ -130,6 +79,18 @@ export const Inbox = props => {
         console.log('fetching chats');
         setChatRooms(
           chats.data.getChatGroupsContainingSuppliersByUpdatedAt.items,
+        );
+      } else {
+        const chats = await API.graphql({
+          query: getChatGroupsContainingFarmersByUpdatedAt,
+          variables: {
+            farmerID: companyID,
+            sortDirection: 'DESC',
+          },
+        });
+        console.log('fetching chats');
+        setChatRooms(
+          chats.data.getChatGroupsContainingFarmersByUpdatedAt.items,
         );
       }
     } catch (e) {
@@ -146,40 +107,6 @@ export const Inbox = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      {/*<View
-        style={{
-          flexDirection: 'row',
-          width: wp('100%'),
-          height: hp('10%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            top: hp('3%'),
-            left: wp('5%'),
-          }}>
-          <MenuButton
-            navigation={props.navigation}
-            updateAuthState={props.updateAuthState}
-            userType={props.user.role}></MenuButton>
-        </View>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={[Typography.header, {}]}>{Strings.inbox}</Text>
-          <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
-            5 {Strings.newMessages}
-          </Text>
-        </View>
-        </View>*/}
-      {/* <View
-        style={{
-          top: hp('1%'),
-          width: wp('85%'),
-          borderBottomWidth: 1,
-          height: 0,
-          borderColor: Colors.GRAY_MEDIUM,
-        }}></View> */}
       <DismissKeyboardView>
         <View style={{top: hp('2%')}}>
           <Searchbar />
@@ -200,9 +127,6 @@ export const Inbox = props => {
           userID={props.user.id}
         />
       </View>
-      {/*<View style={{position: 'absolute', top: hp('80%')}}>
-        <NavBar navigation={props.navigation} />
-      </View>*/}
     </SafeAreaView>
   );
 };

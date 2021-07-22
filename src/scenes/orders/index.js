@@ -18,10 +18,10 @@ import {
 import {API} from 'aws-amplify';
 import {
   invoiceForRetailerByDate,
-  invoiceForSupplierByDate,
+  invoiceRetailerForSupplierByDate,
+  invoiceForFarmerByDate,
 } from '../../graphql/queries';
 import Strings from '_utils';
-import {MenuButton} from '_components';
 
 export const Orders = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -33,23 +33,23 @@ export const Orders = props => {
   }, []);
 
   const getInvoice = async () => {
-    if (props.user.retailerCompanyID == null) {
+    if (props.user.supplierCompanyID != null) {
       try {
         const invoice = await API.graphql({
-          query: invoiceForSupplierByDate,
+          query: invoiceRetailerForSupplierByDate,
           variables: {
             supplierID: props.user.supplierCompanyID,
             sortDirection: 'ASC',
           },
         });
-        console.log(invoice.data.invoiceForSupplierByDate.items);
-        setInvoiceList(invoice.data.invoiceForSupplierByDate.items);
+        console.log(invoice.data.invoiceRetailerForSupplierByDate.items);
+        setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
         setLoading(false);
         console.log('supplierCompanyInvoices');
       } catch (e) {
         console.log(e);
       }
-    } else {
+    } else if (props.user.retailerCompanyID != null) {
       try {
         const invoice = await API.graphql({
           query: invoiceForRetailerByDate,
@@ -65,6 +65,22 @@ export const Orders = props => {
       } catch (e) {
         console.log(e);
       }
+    } else {
+      try {
+        const invoice = await API.graphql({
+          query: invoiceForFarmerByDate,
+          variables: {
+            farmerID: props.user.farmerCompanyID,
+            sortDirection: 'ASC',
+          },
+        });
+        console.log(invoice.data.invoiceForFarmerByDate.items);
+        setInvoiceList(invoice.data.invoiceForFarmerByDate.items);
+        setLoading(false);
+        console.log('farmerCompanyInvoices');
+      } catch (e) {
+        console.log(e);
+      }
     }
     console.log('first run');
   };
@@ -75,30 +91,6 @@ export const Orders = props => {
         flex: 1,
         alignItems: 'center',
       }}>
-      {/*<View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: wp('100%'),
-          top: hp('2%'),
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            top: hp('1%'),
-            left: wp('5%'),
-          }}>
-          <MenuButton
-            navigation={props.navigation}
-            updateAuthState={props.updateAuthState}
-            userType={props.user.role}></MenuButton>
-        </View>
-        <Text style={[Typography.header]}>{Strings.orders}</Text>
-        <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
-          {Strings.digitalInvoices}
-        </Text>
-        </View>*/}
-
       <View
         style={{
           width: wp('80%'),
@@ -122,9 +114,7 @@ export const Orders = props => {
         }}>
         <OrderList invoiceList={invoiceList} user={props.user} />
       </View>
-      {/*<View style={{position: 'absolute', top: hp('80%')}}>
-        <NavBar navigation={props.navigation} />
-      </View>*/}
+
       <Modal
         animationIn="fadeIn"
         animationInTiming={100}

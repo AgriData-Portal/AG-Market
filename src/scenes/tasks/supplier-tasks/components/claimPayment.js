@@ -19,21 +19,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {DismissKeyboard} from '_components';
 import {API} from 'aws-amplify';
-import {deletePaymentTask, updateInvoice} from '../../../../graphql/mutations';
-import Strings from '_utils';
 import {
-  listGoodsTasks,
-  goodsTaskForSupplierByDate,
-  paymentsTaskForSupplierByDate,
-} from '../../../../graphql/queries';
-import {Rating, AirbnbRating} from 'react-native-ratings';
-
-const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
-  return now;
-};
+  deletePaymentTaskBetweenRandS,
+  updateInvoiceBetweenRandS,
+} from '../../../../graphql/mutations';
+import Strings from '_utils';
+import {paymentsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 
 export const ReceivePaymentTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -50,16 +42,18 @@ export const ReceivePaymentTaskList = props => {
               setRefreshing(true);
               try {
                 const task = await API.graphql({
-                  query: paymentsTaskForSupplierByDate,
+                  query: paymentsTaskRetailerForSupplierByDate,
                   variables: {
                     supplierID: props.user.supplierCompanyID,
                     sortDirection: 'ASC',
                   },
                 });
                 props.setClaimTask(
-                  task.data.paymentsTaskForSupplierByDate.items,
+                  task.data.paymentsTaskRetailerForSupplierByDate.items,
                 );
-                console.log(task.data.paymentsTaskForSupplierByDate.items);
+                console.log(
+                  task.data.paymentsTaskRetailerForSupplierByDate.items,
+                );
                 console.log('payment task');
               } catch (e) {
                 console.log(e);
@@ -253,7 +247,7 @@ const ReceivePaymentModal = props => {
   const receivedPayment = async () => {
     try {
       const removed = await API.graphql({
-        query: deletePaymentTask,
+        query: deletePaymentTaskBetweenRandS,
         variables: {input: {id: props.id}},
       });
       console.log(removed);
@@ -269,7 +263,7 @@ const ReceivePaymentModal = props => {
     }
     try {
       const updated = await API.graphql({
-        query: updateInvoice,
+        query: updateInvoiceBetweenRandS,
         variables: {input: {id: props.id, paid: true}},
       });
       console.log(updated);

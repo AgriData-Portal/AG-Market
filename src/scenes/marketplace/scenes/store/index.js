@@ -1,17 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {Searchbar} from '../../components';
+
 import {MarketplaceList, PurchaseOrderButton} from './components';
-import {NavBar, BackButton} from '_components';
+
 import {API, Storage} from 'aws-amplify';
 import {
   getSupplierCompany,
@@ -22,7 +14,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {updateRetailerCompany} from '../../../../graphql/mutations';
-import Strings from '_utils';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid

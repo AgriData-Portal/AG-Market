@@ -18,12 +18,10 @@ import {
 } from 'react-native-responsive-screen';
 import {API} from 'aws-amplify';
 import {
-  listGoodsTasks,
-  goodsTaskForSupplierByDate,
-  paymentsTaskForSupplierByDate,
+  goodsTaskRetailerForSupplierByDate,
+  paymentsTaskRetailerForSupplierByDate,
 } from '../../../graphql/queries';
 import Strings from '_utils';
-import {MenuButton} from '_components';
 
 export const SupplierTasks = props => {
   const [sendTask, setSendTask] = useState([]);
@@ -44,14 +42,14 @@ export const SupplierTasks = props => {
     setLoading(true);
     try {
       const task = await API.graphql({
-        query: goodsTaskForSupplierByDate,
+        query: goodsTaskRetailerForSupplierByDate,
         variables: {
           supplierID: props.user.supplierCompanyID,
           sortDirection: 'ASC',
         },
       });
-      setSendTask(task.data.goodsTaskForSupplierByDate.items);
-      console.log(task.data.goodsTaskForSupplierByDate.items);
+      setSendTask(task.data.goodsTaskRetailerForSupplierByDate.items);
+      console.log(task.data.goodsTaskRetailerForSupplierByDate.items);
       console.log('goods task');
       setLoading(false);
     } catch (e) {
@@ -63,14 +61,14 @@ export const SupplierTasks = props => {
     setLoading(true);
     try {
       const task = await API.graphql({
-        query: paymentsTaskForSupplierByDate,
+        query: paymentsTaskRetailerForSupplierByDate,
         variables: {
           supplierID: props.user.supplierCompanyID,
           sortDirection: 'ASC',
         },
       });
-      setClaimTask(task.data.paymentsTaskForSupplierByDate.items);
-      console.log(task.data.paymentsTaskForSupplierByDate.items);
+      setClaimTask(task.data.paymentsTaskRetailerForSupplierByDate.items);
+      console.log(task.data.paymentsTaskRetailerForSupplierByDate.items);
       console.log('payment task');
       setLoading(false);
     } catch (e) {
@@ -87,28 +85,6 @@ export const SupplierTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      {/*<View
-        style={{
-          flexDirection: 'row',
-          width: wp('100%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          top: hp('2%'),
-          height: hp('5%'),
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            top: hp('0%'),
-            left: wp('5%'),
-          }}>
-          <MenuButton
-            navigation={props.navigation}
-            updateAuthState={props.updateAuthState}
-            userType={props.user.role}></MenuButton>
-        </View>
-        <Text style={[Typography.header]}>{Strings.tasks}</Text>
-        </View>*/}
       <View style={{flexDirection: 'row'}}>
         {task == 'send' ? (
           <View
@@ -120,9 +96,7 @@ export const SupplierTasks = props => {
               style={[
                 Typography.normal,
                 {
-                  color: Colors.GRAY_DARK,
                   fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
                 },
               ]}>
               {Strings.send}
@@ -135,7 +109,16 @@ export const SupplierTasks = props => {
               right: wp('15%'),
               top: hp('2%'),
             }}>
-            <Text style={[Typography.normal]}>{Strings.send}</Text>
+            <Text
+              style={[
+                Typography.normal,
+                {
+                  color: Colors.GRAY_DARK,
+                  fontFamily: 'Poppins-Bold',
+                },
+              ]}>
+              {Strings.send}
+            </Text>
           </TouchableOpacity>
         )}
         {task == 'claim' ? (
@@ -148,9 +131,7 @@ export const SupplierTasks = props => {
               style={[
                 Typography.normal,
                 {
-                  color: Colors.GRAY_DARK,
                   fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
                 },
               ]}>
               {Strings.claim}
@@ -163,7 +144,16 @@ export const SupplierTasks = props => {
               top: hp('2%'),
               left: wp('15%'),
             }}>
-            <Text style={[Typography.normal]}>{Strings.claim}</Text>
+            <Text
+              style={[
+                Typography.normal,
+                {
+                  color: Colors.GRAY_DARK,
+                  fontFamily: 'Poppins-Bold',
+                },
+              ]}>
+              {Strings.claim}
+            </Text>
           </TouchableOpacity>
         )}
       </View>

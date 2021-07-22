@@ -1,16 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
-import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {Searchbar} from '../../components';
 import {ProductPopUp, AddItemsButton, SupplierplaceList} from './components';
 import {NavBar, LoadingModal} from '_components';
-import {listProductListings} from '../../../../graphql/queries';
-import {
-  deleteProductListing,
-  updateProductListing,
-  createProductListing,
-} from '../../../../graphql/mutations';
+import {listSupplierListings} from '../../../../graphql/queries';
 import {API} from 'aws-amplify';
 import {
   widthPercentageToDP as wp,
@@ -27,17 +19,17 @@ export const SupplierStore = props => {
   const fetchProducts = async () => {
     try {
       const products = await API.graphql({
-        query: listProductListings,
+        query: listSupplierListings,
         variables: {filter: {supplierID: {eq: props.user.supplierCompanyID}}},
       });
 
-      if (products.data.listProductListings) {
+      if (products.data.listSupplierListings) {
         console.log('Products: \n');
         console.log(products);
-        setProducts(products.data.listProductListings.items);
+        setProducts(products.data.listSupplierListings.items);
       }
       setLoading(false);
-      console.log(products.data.listProductListings.items);
+      console.log(products.data.listSupplierListings.items);
     } catch (e) {
       console.log(e);
       console.log("there's a problem");
@@ -55,26 +47,6 @@ export const SupplierStore = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      {/*<View
-        style={{
-          flexDirection: 'row',
-          width: wp('100%'),
-          height: hp('7%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            left: wp('5%'),
-          }}>
-          <MenuButton
-            navigation={props.navigation}
-            updateAuthState={props.updateAuthState}
-            userType={props.user.role}></MenuButton>
-        </View>
-        <Text style={[Typography.header]}>{Strings.myStore}</Text>
-        </View>*/}
       <View
         style={{
           width: wp('90%'),
@@ -101,9 +73,6 @@ export const SupplierStore = props => {
         />
       </View>
 
-      {/* <View style={{position: 'absolute', top: hp('80%')}}>
-        <NavBar navigation={props.navigation} />
-      </View> */}
       <LoadingModal isVisible={loading} />
     </SafeAreaView>
   );

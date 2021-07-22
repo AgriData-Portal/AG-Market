@@ -1,47 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
-  AccountsDashboard, //done
-  RetailManagerDashboard, // done
-  GeneralManagerDashboard, //done
-  Marketplace, //done
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  EmployeeDashboard, //done
-  OwnerDashboard, //done
   Orders, //Done
-  SupplierStore, // done most
-  SupplierTasks, //done
-  RetailerTasks, //done
-  //CompanyProfile, //done
-  //EditCompany, //done
-  //HumanResource, //done
-  //PersonalProfile, //done.
-  //EditPersonal, //done.
-  //DataAnalytics,
-  Registration, //done
-  SupplierDashboard, //done
-  Login, //done
-  CreateCompany, //done
-  Landing, //done
-  Verification, //done
-  ConfirmSignUp, //done
-  RetailerModalButton,
+  FarmerTasks, //done
+  SupplierModalButton,
+  FarmerStore,
 } from '_scenes';
 import 'react-native-gesture-handler';
 import {DataAnalytics} from '_scenes/data_analytics/';
 import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import {Colors} from '_styles/';
-import {
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  Text,
-  Image,
-} from 'react-native';
+import {View, TouchableOpacity, Text, Image} from 'react-native';
 import {Typography} from '_styles';
 import {
   MenuButton,
@@ -57,13 +31,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
-import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 import Modal from 'react-native-modal';
-import {header} from '_styles';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -90,7 +63,7 @@ function getIcon(route, user) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
   if (routeName == 'marketplace') {
     console.log('test');
-    return <RetailerModalButton user={user}></RetailerModalButton>;
+    return <SupplierModalButton user={user}></SupplierModalButton>;
   } else {
     return null;
   }
@@ -151,7 +124,7 @@ const FarmerNavigation = props => {
             </View>
           ),
           headerTitleAlign: 'center',
-          // headerRight: () => <ChatInfo />,
+
           headerLeft: () => (
             <HeaderBackButton
               onPress={() => [
@@ -461,7 +434,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <SupplierStore
+          <FarmerStore
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
@@ -527,7 +500,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <SupplierTasks
+          <FarmerTasks
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}

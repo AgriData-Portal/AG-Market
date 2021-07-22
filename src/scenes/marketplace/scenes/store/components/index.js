@@ -18,9 +18,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {API, Storage} from 'aws-amplify';
 
 import {
-  createProducts,
-  deleteProducts,
-  updateProducts,
+  createProductsInPurchaseOrder,
+  deleteProductsInPurchaseOrder,
+  updateProductsInPurchaseOrder,
   createMessage,
   createChatGroup,
   updateChatGroup,
@@ -240,7 +240,7 @@ const ProductPopUp = props => {
     console.log('addingToPO ' + props.purchaseOrder);
     try {
       const added = await API.graphql({
-        query: createProducts,
+        query: createProductsInPurchaseOrder,
         variables: {
           input: {
             purchaseOrderID: props.purchaseOrder,
@@ -252,10 +252,10 @@ const ProductPopUp = props => {
           },
         },
       });
-      console.log(added.data.createProducts);
+      console.log(added.data.createProductsInPurchaseOrder);
       var poList = props.POList;
       console.log(poList);
-      poList.push(added.data.createProducts);
+      poList.push(added.data.createProductsInPurchaseOrder);
       console.log(poList);
       props.setPOList(poList);
       setSuccessfulModal(true);
@@ -728,14 +728,14 @@ const PurchaseOrderComponent = props => {
     console.log('deleting item: ' + props.id);
     try {
       const deleted = await API.graphql({
-        query: deleteProducts,
+        query: deleteProductsInPurchaseOrder,
         variables: {input: {id: props.id}},
       });
       var poList = props.POList;
       const tempList = poList.filter(item => item.id !== props.id);
       console.log(tempList);
       props.setPOList(tempList);
-      console.log(deleted.data.deleteProducts);
+      console.log(deleted.data.deleteProductsInPurchaseOrder);
     } catch {
       e => console.log(e);
     }
