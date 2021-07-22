@@ -8,13 +8,13 @@ const awsmobile = {
     "aws_user_pools_id": "ap-southeast-1_e3TqGI5PR",
     "aws_user_pools_web_client_id": "1l3tf271h2qv74atcaccdm7eut",
     "oauth": {},
-    "aws_appsync_graphqlEndpoint": "https://5m3fgl5v5rb6bjwse2tsubfgd4.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "https://2a5oapnkova4hdaecojs7vi6ly.appsync-api.ap-southeast-1.amazonaws.com/graphql",
     "aws_appsync_region": "ap-southeast-1",
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
     "aws_user_files_s3_bucket": "agridataappimagecontentbucket164209-dev",
     "aws_user_files_s3_bucket_region": "ap-southeast-1",
     "aws_mobile_analytics_app_id": "eebc9ecad55748a39df6511fe38b16d6",
-    "aws_mobile_analytics_app_region": "ap-southeast-1"
+    "aws_mobile_analytics_app_region": "us-west-2"
 };
 
 
