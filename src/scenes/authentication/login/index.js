@@ -36,7 +36,7 @@ export const Login = props => {
   const signIn = async () => {
     try {
       setLoading(true);
-      const user = await Auth.signIn(email, password);
+      const user = await Auth.signIn('+60' + phone, password);
       console.log(user);
       console.log('Successful sign in');
       props.updateUserID(user.username);
@@ -45,19 +45,23 @@ export const Login = props => {
       //props.updateAuthState('loggedIn'); //fucking weird
     } catch (error) {
       setLoading(false);
-      if (error.code == 'UserNotConfirmedException') {
-        setVerified(true);
-      } else if (error.code == 'UserNotFoundException') {
-        setUnsuccessfulModal(true);
-        setErrorText(
-          "Sorry you don't have an account associated with this number. Please register.",
-        );
-      } else if (error.code == 'NotAuthorizedException') {
-        setUnsuccessfulModal(true);
-        setErrorText(
-          'Sorry the password you entered is invalid. Please try again.',
-        );
-      }
+      setTimeout(() => {
+        if (error.code == 'UserNotConfirmedException') {
+          console.log('here');
+          setVerified(true);
+        } else if (error.code == 'UserNotFoundException') {
+          setUnsuccessfulModal(true);
+          setErrorText(
+            "Sorry you don't have an account associated with this number. Please register.",
+          );
+        } else if (error.code == 'NotAuthorizedException') {
+          setUnsuccessfulModal(true);
+          setErrorText(
+            'Sorry the password you entered is invalid. Please try again.',
+          );
+        }
+      }, 350);
+
       console.log('Error signing in...', error);
     }
   };
