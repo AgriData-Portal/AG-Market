@@ -170,12 +170,10 @@ export const Registration = props => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-30%')}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-10%')}>
       <SafeAreaView
         style={{
           backgroundColor: 'white',
-          height: hp('100%'),
-          width: wp('100%'),
         }}>
         <ScrollView>
           <View
@@ -197,120 +195,164 @@ export const Registration = props => {
               top: hp('-8%'),
             }}
           />
-
           <View style={{top: hp('3%')}}>
-            <View>
-              <Text
-                style={[
-                  Typography.largestSize,
-                  {
-                    width: wp('70%'),
-                    left: wp('8%'),
-                    top: hp('3%'),
-                    lineHeight: hp('6%'),
-                  },
-                ]}>
-                {Strings.createAccount}
-              </Text>
+            <Text
+              style={[
+                Typography.largestSize,
+                {
+                  width: wp('70%'),
+                  left: wp('8%'),
+                  top: hp('3%'),
+                  lineHeight: hp('6%'),
+                },
+              ]}>
+              {Strings.createAccount}
+            </Text>
+          </View>
+          <View style={{top: hp('5%'), left: wp('8%'), width: wp('70%')}}>
+            <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
+          </View>
+          <View
+            style={
+              Platform.OS == 'ios'
+                ? {
+                    top: hp('4%'),
+                    height: hp('100%'),
+                    zIndex: 1000,
+                  }
+                : {
+                    top: hp('4%'),
+                    height: hp('100%'),
+                  }
+            }>
+            <Input
+              name={Strings.name}
+              placeholder="eg. Hannah Wong"
+              state={name}
+              setState={setName}
+            />
+            <Input
+              name={Strings.contactNumber}
+              placeholder="eg. +60123456789"
+              state={phone}
+              setState={setPhone}
+            />
+            <Input
+              name={Strings.email}
+              placeholder="eg. example@example.com"
+              state={email}
+              setState={setEmail}
+            />
+            <Input
+              name={Strings.password}
+              placeholder="eg. password"
+              state={password}
+              setState={setPassword}
+            />
+            <View
+              style={{
+                top: hp('3%'),
+                left: wp('8%'),
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (secure) {
+                    setSecure(false);
+                  } else {
+                    setSecure(true);
+                  }
+                }}
+                style={{
+                  right: wp('15%'),
+                  position: 'absolute',
+                  bottom: hp('2%'),
+                }}>
+                <Icon name="eye-outline" size={wp('6%')}></Icon>
+              </TouchableOpacity>
             </View>
-
-            <View style={{top: hp('2%'), left: wp('8%'), width: wp('70%')}}>
-              <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
-            </View>
+            <Input
+              name={Strings.companyName}
+              placeholder="eg. City Grocer"
+              state={companyName}
+              setState={setCompanyName}
+            />
             <View
               style={
                 Platform.OS == 'ios'
-                  ? {
-                      top: hp('4%'),
-                      height: hp('100%'),
-                      zIndex: 1000,
-                    }
-                  : {
-                      top: hp('4%'),
-                      height: hp('100%'),
-                    }
+                  ? {top: hp('3%'), left: wp('8%'), zIndex: 1000}
+                  : {top: hp('3%'), left: wp('8%')}
               }>
-              <Input
-                name={Strings.name}
-                placeholder="eg. Hannah Wong"
-                state={name}
-                setState={setName}
-              />
-              <Input
-                name={Strings.contactNumber}
-                placeholder="eg. +60123456789"
-                state={phone}
-                setState={setPhone}
-              />
-              <Input
-                name={Strings.email}
-                placeholder="eg. example@example.com"
-                state={email}
-                setState={setEmail}
-              />
-              <Input
-                name={Strings.password}
-                placeholder="eg. password"
-                state={password}
-                setState={setPassword}
-              />
-              <View
-                style={{
-                  top: hp('3%'),
-                  left: wp('8%'),
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (secure) {
-                      setSecure(false);
-                    } else {
-                      setSecure(true);
-                    }
-                  }}
-                  style={{
-                    right: wp('15%'),
-                    position: 'absolute',
-                    bottom: hp('2%'),
-                  }}>
-                  <Icon name="eye-outline" size={wp('6%')}></Icon>
-                </TouchableOpacity>
+              <View>
+                <Text style={[Typography.placeholder]}>
+                  {Strings.companyType}
+                </Text>
               </View>
-              <Input
-                name={Strings.companyName}
-                placeholder="eg. City Grocer"
-                state={companyName}
-                setState={setCompanyName}
-              />
               <View
                 style={
-                  Platform.OS == 'ios'
-                    ? {top: hp('3%'), left: wp('8%'), zIndex: 1000}
-                    : {top: hp('3%'), left: wp('8%')}
+                  Platform.OS == 'ios '
+                    ? {
+                        top: hp('1%'),
+                        height: hp('7%'),
+                        zIndex: 1000,
+                      }
+                    : {top: hp('1%'), height: hp('7%')}
                 }>
-                <View>
+                <DropDownPicker
+                  open={open2}
+                  value={value2}
+                  items={items2}
+                  setOpen={setOpen2}
+                  setValue={setValue2}
+                  setItems={setItems2}
+                  dropDownDirection="BOTTOM"
+                  listItemContainerStyle={{height: hp('5%')}}
+                  style={{
+                    width: wp('85%'),
+                    height: hp('5%'),
+                    borderColor: 'white',
+                    borderRadius: 3,
+                    backgroundColor: Colors.GRAY_LIGHT,
+                  }}
+                  zIndex={3000}
+                  zIndexInverse={1000}
+                  containerStyle={{}}
+                  dropDownContainerStyle={{
+                    borderWidth: 0,
+                    width: wp('85%'),
+                    height: hp('15%'),
+                    backgroundColor: Colors.GRAY_LIGHT,
+                  }}></DropDownPicker>
+              </View>
+            </View>
+            {value2 == null ? (
+              <View />
+            ) : (
+              <View style={Platform.OS == 'ios' ? {zIndex: 100} : {}}>
+                <View style={{top: hp('3%'), left: wp('8%')}}>
                   <Text style={[Typography.placeholder]}>
-                    {Strings.companyType}
+                    {Strings.roleInCompany}
                   </Text>
                 </View>
                 <View
                   style={
-                    Platform.OS == 'ios '
+                    Platform.OS == 'ios'
                       ? {
-                          top: hp('1%'),
+                          top: hp('4%'),
                           height: hp('7%'),
-                          zIndex: 1000,
+                          left: wp('8%'),
+                          zIndex: 100,
                         }
-                      : {top: hp('1%'), height: hp('7%')}
+                      : {top: hp('4%'), height: hp('7%'), left: wp('8%')}
                   }>
                   <DropDownPicker
-                    open={open2}
-                    value={value2}
-                    items={items2}
-                    setOpen={setOpen2}
-                    setValue={setValue2}
-                    setItems={setItems2}
-                    dropDownDirection="BOTTOM"
-                    listItemContainerStyle={{height: hp('5%')}}
+                    open={open}
+                    value={value}
+                    items={items}
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder={Strings.roleInCompany}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
                     style={{
                       width: wp('85%'),
                       height: hp('5%'),
@@ -318,172 +360,121 @@ export const Registration = props => {
                       borderRadius: 3,
                       backgroundColor: Colors.GRAY_LIGHT,
                     }}
-                    zIndex={3000}
-                    zIndexInverse={1000}
-                    containerStyle={{}}
+                    zIndex={2000}
+                    zIndexInverse={2000}
+                    dropDownDirection="BOTTOM"
+                    listItemContainerStyle={{height: hp('5%')}}
                     dropDownContainerStyle={{
-                      borderWidth: 0,
+                      borderWidth: 1,
                       width: wp('85%'),
-                      height: hp('15%'),
                       backgroundColor: Colors.GRAY_LIGHT,
                     }}></DropDownPicker>
                 </View>
               </View>
-              {value2 == null ? (
-                <View />
-              ) : (
-                <View style={Platform.OS == 'ios' ? {zIndex: 100} : {}}>
-                  <View style={{top: hp('3%'), left: wp('8%')}}>
-                    <Text style={[Typography.placeholder]}>
-                      {Strings.roleInCompany}
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      Platform.OS == 'ios'
-                        ? {
-                            top: hp('4%'),
-                            height: hp('7%'),
-                            left: wp('8%'),
-                            zIndex: 100,
-                          }
-                        : {top: hp('4%'), height: hp('7%'), left: wp('8%')}
-                    }>
-                    <DropDownPicker
-                      open={open}
-                      value={value}
-                      items={items}
-                      placeholderTextColor={Colors.GRAY_DARK}
-                      placeholder={Strings.roleInCompany}
-                      setOpen={setOpen}
-                      setValue={setValue}
-                      setItems={setItems}
-                      style={{
-                        width: wp('85%'),
-                        height: hp('5%'),
-                        borderColor: 'white',
-                        borderRadius: 3,
-                        backgroundColor: Colors.GRAY_LIGHT,
-                      }}
-                      zIndex={2000}
-                      zIndexInverse={2000}
-                      dropDownDirection="BOTTOM"
-                      listItemContainerStyle={{height: hp('5%')}}
-                      dropDownContainerStyle={{
-                        borderWidth: 1,
-                        width: wp('85%'),
-
-                        backgroundColor: Colors.GRAY_LIGHT,
-                      }}></DropDownPicker>
-                  </View>
-                </View>
-              )}
-
-              <Input
-                name={Strings.companyRegistrationNum}
-                placeholder="######"
-                state={companyRegistrationNum}
-                setState={setCompanyRegistrationNum}
-              />
-              <Input
-                name={Strings.companyAddress}
-                placeholder="eg. T1 Bundusan, Penampang Sabah"
-                state={companyAddress}
-                setState={setCompanyAddress}
-              />
-            </View>
-            <Modal
-              isVisible={createAccountButton}
-              onBackdropPress={() => {
-                setCreateAccountButton(false);
-                props.navigation.navigate('verification');
+            )}
+            <Input
+              name={Strings.companyRegistrationNum}
+              placeholder="######"
+              state={companyRegistrationNum}
+              setState={setCompanyRegistrationNum}
+            />
+            <Input
+              name={Strings.companyAddress}
+              placeholder="eg. T1 Bundusan, Penampang Sabah"
+              state={companyAddress}
+              setState={setCompanyAddress}
+            />
+            <TouchableOpacity
+              onPress={async () => {
+                if (
+                  value == null ||
+                  email == '' ||
+                  phone == '' ||
+                  name == '' ||
+                  password == ''
+                ) {
+                  console.log('error');
+                  setUnsuccessfulModal(true);
+                  setErrorText('Please fill in all empty spaces!');
+                } else if (
+                  !phone.startsWith('+') ||
+                  !phone.length > 5 ||
+                  isNaN(phone.slice(1))
+                ) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid phone number. Please try again.',
+                  );
+                } else if (!email.includes('@')) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid email address. Please try again.',
+                  );
+                } else if (password.length < 8) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+                  );
+                } else if (!hasNumber.test(password)) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+                  );
+                } else {
+                  console.log('succes');
+                  signUp();
+                }
+              }}
+              style={{
+                position: 'absolute',
+                bottom: hp('5%'),
+                backgroundColor: Colors.LIGHT_BLUE,
+                width: wp('30%'),
+                height: hp('5%'),
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                borderRadius: 10,
+                flexDirection: 'row',
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 2,
+                shadowRadius: 3,
+                shadowColor: 'grey',
+                elevation: 3,
               }}>
-              <CreateAccountPopUp
-                setCreateAccountButton={
-                  setCreateAccountButton
-                }></CreateAccountPopUp>
-            </Modal>
-            <View style={{zIndex: -1}}>
-              <TouchableOpacity
-                onPress={async () => {
-                  if (
-                    value == null ||
-                    email == '' ||
-                    phone == '' ||
-                    name == '' ||
-                    password == ''
-                  ) {
-                    console.log('error');
-                    setUnsuccessfulModal(true);
-                    setErrorText('Please fill in all empty spaces!');
-                  } else if (
-                    !phone.startsWith('+') ||
-                    !phone.length > 5 ||
-                    isNaN(phone.slice(1))
-                  ) {
-                    setUnsuccessfulModal(true);
-                    setErrorText(
-                      'Sorry you have entered an invalid phone number. Please try again.',
-                    );
-                  } else if (!email.includes('@')) {
-                    setUnsuccessfulModal(true);
-                    setErrorText(
-                      'Sorry you have entered an invalid email address. Please try again.',
-                    );
-                  } else if (password.length < 8) {
-                    setUnsuccessfulModal(true);
-                    setErrorText(
-                      'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
-                    );
-                  } else if (!hasNumber.test(password)) {
-                    setUnsuccessfulModal(true);
-                    setErrorText(
-                      'Sorry you have entered an invalid password. Password must contain at least 1 number.',
-                    );
-                  } else {
-                    console.log('succes');
-                    signUp();
-                  }
-                }}
-                style={{
-                  backgroundColor: Colors.LIGHT_BLUE,
-                  bottom: hp('5%'),
-                  width: wp('30%'),
-                  height: hp('5%'),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  alignSelf: 'center',
-                  borderRadius: 10,
-                  flexDirection: 'row',
-                  shadowOffset: {
-                    width: 1,
-                    height: 2,
-                  },
-                  shadowOpacity: 2,
-                  shadowRadius: 3,
-                  shadowColor: 'grey',
-                  elevation: 3,
-                }}>
-                <Text
-                  style={[
-                    Typography.large,
-                    {position: 'absolute', left: wp('3%')},
-                  ]}>
-                  {Strings.next}
-                </Text>
-                <Icon
-                  name="arrow-forward-outline"
-                  size={wp('6%')}
-                  style={{left: wp('10%')}}
-                />
-              </TouchableOpacity>
-            </View>
-            <Modal
-              isVisible={unsuccessfulModal}
-              onBackdropPress={() => setUnsuccessfulModal(false)}>
-              <UnsuccessfulModal text={errorText} />
-            </Modal>
+              <Text
+                style={[
+                  Typography.large,
+                  {position: 'absolute', left: wp('3%')},
+                ]}>
+                {Strings.next}
+              </Text>
+              <Icon
+                name="arrow-forward-outline"
+                size={wp('6%')}
+                style={{left: wp('10%')}}
+              />
+            </TouchableOpacity>
           </View>
+          <Modal
+            isVisible={createAccountButton}
+            onBackdropPress={() => {
+              setCreateAccountButton(false);
+              props.navigation.navigate('verification');
+            }}>
+            <CreateAccountPopUp
+              setCreateAccountButton={
+                setCreateAccountButton
+              }></CreateAccountPopUp>
+          </Modal>
+          <Modal
+            isVisible={unsuccessfulModal}
+            onBackdropPress={() => setUnsuccessfulModal(false)}>
+            <UnsuccessfulModal text={errorText} />
+          </Modal>
         </ScrollView>
       </SafeAreaView>
     </KeyboardAvoidingView>
