@@ -53,6 +53,7 @@ export const Registration = props => {
   const [companyRegistrationNum, setCompanyRegistrationNum] = useState('');
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [errorText, setErrorText] = useState('');
+  const [focus, setFocus] = useState(false);
 
   useEffect(() => {
     if (value2 == 'supermarket') {
@@ -177,59 +178,62 @@ export const Registration = props => {
           height: hp('100%'),
         }}>
         <View style={{flex: 1}}>
-          <View style={{flex: 1}}>
-            <View
-              style={{
-                position: 'absolute',
-                top: hp('1%'),
-                left: wp('5%'),
-              }}>
-              <BackButton navigation={props.navigation} />
-            </View>
-            <Image
-              source={require('_assets/images/fruits.png')}
-              style={{
-                position: 'absolute',
-                right: 0,
-                width: wp('50%'),
-                height: hp('30%'),
-                resizeMode: 'cover',
-                top: hp('-8%'),
-              }}
-            />
-            <View style={{top: hp('3%')}}>
-              <Text
-                style={[
-                  Typography.largestSize,
-                  {
-                    width: wp('70%'),
-                    left: wp('8%'),
-                    top: hp('3%'),
-                    lineHeight: hp('6%'),
-                  },
-                ]}>
-                {Strings.createAccount}
-              </Text>
-            </View>
-            {/* <View style={{top: hp('5%'), left: wp('8%'), width: wp('70%')}}>
-              <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
-            </View> */}
-            <ScrollView
-              contentContainerStyle={{flexGrow: 1}}
-              contentInset={{bottom: 50}}
-              nestedScrollEnabled={true}
-              scrollToOverflowEnabled={true}
-              contentContainerStyle={{paddingBottom: hp('15%')}}>
+          <ScrollView
+            contentContainerStyle={{flexGrow: 1}}
+            contentInset={Platform.OS == 'ios' ? {} : {bottom: 50}}
+            nestedScrollEnabled={true}
+            scrollToOverflowEnabled={true}
+            contentContainerStyle={
+              Platform.OS == 'ios ' ? {} : {paddingBottom: hp('15%')}
+            }>
+            <View style={{flex: 1}}>
+              <View
+                style={{
+                  position: 'absolute',
+                  top: hp('1%'),
+                  left: wp('5%'),
+                }}>
+                <BackButton navigation={props.navigation} />
+              </View>
+              <Image
+                source={require('_assets/images/fruits.png')}
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  width: wp('50%'),
+                  height: hp('30%'),
+                  resizeMode: 'cover',
+                  top: hp('-8%'),
+                }}
+              />
+              <View style={{top: hp('3%')}}>
+                <Text
+                  style={[
+                    Typography.largestSize,
+                    {
+                      width: wp('70%'),
+                      left: wp('8%'),
+                      top: hp('3%'),
+                      lineHeight: hp('6%'),
+                    },
+                  ]}>
+                  {Strings.createAccount}
+                </Text>
+              </View>
+              <View style={{top: hp('5%'), left: wp('8%'), width: wp('70%')}}>
+                <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
+              </View>
+
               <View
                 style={
                   Platform.OS == 'ios'
                     ? {
-                        top: hp('4%'),
+                        top: hp('7%'),
                         height: hp('100%'),
                         zIndex: 1000,
                       }
                     : {
-                        top: hp('4%'),
+                        top: hp('7%'),
                         height: hp('100%'),
                       }
                 }>
@@ -251,17 +255,42 @@ export const Registration = props => {
                   state={email}
                   setState={setEmail}
                 />
-                <Input
-                  name={Strings.password}
-                  placeholder="eg. password"
-                  state={password}
-                  setState={setPassword}
-                />
                 <View
                   style={{
-                    top: hp('3%'),
+                    top: hp('0%'),
                     left: wp('8%'),
                   }}>
+                  <Text
+                    style={[
+                      Typography.placeholder,
+                      {color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK},
+                    ]}>
+                    {Strings.password}
+                  </Text>
+                  <TextInput
+                    onFocus={() => setFocus(true)}
+                    onBlur={() => setFocus(false)}
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder={Strings.password}
+                    secureTextEntry={secure}
+                    keyboardType="default"
+                    underlineColorAndroid="transparent"
+                    onChangeText={item => setPassword(item)}
+                    value={password}
+                    style={{
+                      width: wp('80%'),
+                      height: hp('6%'),
+                      bottom: hp('1%'),
+                      borderBottomColor: 'transparent',
+                      color: 'black',
+                    }}></TextInput>
+                  <View
+                    style={{
+                      bottom: hp('2.5%'),
+                      width: wp('85%'),
+                      borderBottomWidth: 1,
+                      borderColor: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
+                    }}></View>
                   <TouchableOpacity
                     onPress={() => {
                       if (secure) {
@@ -273,7 +302,7 @@ export const Registration = props => {
                     style={{
                       right: wp('15%'),
                       position: 'absolute',
-                      bottom: hp('2%'),
+                      bottom: hp('3%'),
                     }}>
                     <Icon name="eye-outline" size={wp('6%')}></Icon>
                   </TouchableOpacity>
@@ -287,7 +316,7 @@ export const Registration = props => {
                 <View
                   style={
                     Platform.OS == 'ios'
-                      ? {top: hp('3%'), left: wp('8%'), zIndex: 1000}
+                      ? {left: wp('7%'), zIndex: 1000}
                       : {top: hp('-1%'), left: wp('8%')}
                   }>
                   <View>
@@ -345,9 +374,9 @@ export const Registration = props => {
                       style={
                         Platform.OS == 'ios'
                           ? {
-                              top: hp('4%'),
+                              top: hp('1%'),
                               height: hp('7%'),
-                              left: wp('8%'),
+                              left: wp('7%'),
                               zIndex: 100,
                             }
                           : {top: hp('1%'), height: hp('7%'), left: wp('8%')}
@@ -466,24 +495,24 @@ export const Registration = props => {
                   />
                 </TouchableOpacity>
               </View>
-            </ScrollView>
-            <Modal
-              isVisible={createAccountButton}
-              onBackdropPress={() => {
-                setCreateAccountButton(false);
-                props.navigation.navigate('verification');
-              }}>
-              <CreateAccountPopUp
-                setCreateAccountButton={
-                  setCreateAccountButton
-                }></CreateAccountPopUp>
-            </Modal>
-            <Modal
-              isVisible={unsuccessfulModal}
-              onBackdropPress={() => setUnsuccessfulModal(false)}>
-              <UnsuccessfulModal text={errorText} />
-            </Modal>
-          </View>
+              <Modal
+                isVisible={createAccountButton}
+                onBackdropPress={() => {
+                  setCreateAccountButton(false);
+                  props.navigation.navigate('verification');
+                }}>
+                <CreateAccountPopUp
+                  setCreateAccountButton={
+                    setCreateAccountButton
+                  }></CreateAccountPopUp>
+              </Modal>
+              <Modal
+                isVisible={unsuccessfulModal}
+                onBackdropPress={() => setUnsuccessfulModal(false)}>
+                <UnsuccessfulModal text={errorText} />
+              </Modal>
+            </View>
+          </ScrollView>
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
