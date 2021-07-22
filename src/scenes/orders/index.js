@@ -18,11 +18,10 @@ import {
 import {API} from 'aws-amplify';
 import {
   invoiceForRetailerByDate,
-  invoiceForSupplierByDate,
+  invoiceRetailerForSupplierByDate,
   invoiceForFarmerByDate,
 } from '../../graphql/queries';
 import Strings from '_utils';
-import {MenuButton} from '_components';
 
 export const Orders = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -37,14 +36,14 @@ export const Orders = props => {
     if (props.user.supplierCompanyID != null) {
       try {
         const invoice = await API.graphql({
-          query: invoiceForSupplierByDate,
+          query: invoiceRetailerForSupplierByDate,
           variables: {
             supplierID: props.user.supplierCompanyID,
             sortDirection: 'ASC',
           },
         });
-        console.log(invoice.data.invoiceForSupplierByDate.items);
-        setInvoiceList(invoice.data.invoiceForSupplierByDate.items);
+        console.log(invoice.data.invoiceRetailerForSupplierByDate.items);
+        setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
         setLoading(false);
         console.log('supplierCompanyInvoices');
       } catch (e) {

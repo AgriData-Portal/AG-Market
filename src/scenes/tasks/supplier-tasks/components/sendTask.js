@@ -23,11 +23,11 @@ import {DismissKeyboard} from '_components';
 import Strings from '_utils';
 import {API} from 'aws-amplify';
 import {
-  updateGoodsTask,
+  updateGoodsTaskBetweenRandS,
   updateRetailerCompany,
-  deleteGoodsTask,
+  deleteGoodsTaskBetweenRandS,
 } from '../../../../graphql/mutations';
-import {goodsTaskForSupplierByDate} from '../../../../graphql/queries';
+import {goodsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -53,14 +53,16 @@ export const SendTaskList = props => {
               setRefreshing(true);
               try {
                 const task = await API.graphql({
-                  query: goodsTaskForSupplierByDate,
+                  query: goodsTaskRetailerForSupplierByDate,
                   variables: {
                     supplierID: props.user.supplierCompanyID,
                     sortDirection: 'ASC',
                   },
                 });
-                props.setSendTask(task.data.goodsTaskForSupplierByDate.items);
-                console.log(task.data.goodsTaskForSupplierByDate.items);
+                props.setSendTask(
+                  task.data.goodsTaskRetailerForSupplierByDate.items,
+                );
+                console.log(task.data.goodsTaskRetailerForSupplierByDate.items);
                 console.log('goods task');
               } catch (e) {
                 console.log(e);
@@ -105,6 +107,7 @@ const SendTask = props => {
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [ratingModal, setRatingModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
+  console.log(props.status);
   return (
     <TouchableOpacity
       onPress={() =>
@@ -263,7 +266,7 @@ const SendTaskModal = props => {
   const updateDeliveryDate = async () => {
     try {
       const response = await API.graphql({
-        query: updateGoodsTask,
+        query: updateGoodsTaskBetweenRandS,
         variables: {
           input: {
             id: props.taskID,
@@ -594,7 +597,7 @@ const InvoiceModal = props => {
   const sendForVerfication = async () => {
     try {
       const response = await API.graphql({
-        query: updateGoodsTask,
+        query: updateGoodsTaskBetweenRandS,
         variables: {
           input: {
             id: props.taskID,
@@ -607,7 +610,7 @@ const InvoiceModal = props => {
       var tempList = props.sendTask;
       tempList.forEach((item, index, arr) => {
         if (item.id == props.taskID) {
-          arr[index] = response.data.updateGoodsTask;
+          arr[index] = response.data.updateGoodsTaskBetweenRandS;
         }
       });
       if (props.trigger) {
@@ -789,28 +792,54 @@ const InvoiceItem = props => {
     <View
       style={{
         width: wp('85%'),
-        height: hp('5%'),
+        height: hp('8%'),
         alignSelf: 'center',
         justifyContent: 'center',
       }}>
       <Text style={[Typography.small, {position: 'absolute', left: wp('4%')}]}>
         {props.name}
       </Text>
+
       <TextInput
         style={[
           Typography.small,
-          {position: 'absolute', left: wp('30%'), height: hp('10%')},
+          {
+            position: 'absolute',
+            left: wp('35%'),
+            height: hp('10%'),
+            bottom: hp('1%'),
+          },
         ]}
         onChangeText={item => updateQuantity(item)}
         value={quantity}
         keyboardType="numeric"
       />
-      <Text style={[Typography.small, {position: 'absolute', left: wp('40%')}]}>
+      <View
+        style={{
+          height: 0,
+          width: wp('9%'),
+          borderColor: Colors.LIME_GREEN,
+          borderTopWidth: 1,
+          left: wp('35%'),
+          bottom: hp('1%'),
+        }}
+      />
+
+      <Text
+        style={[
+          Typography.small,
+          {position: 'absolute', left: wp('45%'), bottom: hp('4.5%')},
+        ]}>
         kg
       </Text>
-      <Text style={[Typography.small, {position: 'absolute', left: wp('45%')}]}>
+      <Text
+        style={[
+          Typography.small,
+          {position: 'absolute', left: wp('35%'), top: hp('4%')},
+        ]}>
         @ RM {props.price}/{props.siUnit}
       </Text>
+
       <Text
         style={[
           Typography.small,
@@ -977,7 +1006,7 @@ const RatingModal = props => {
     }
     try {
       const invoiceResponse = await API.graphql({
-        query: deleteGoodsTask,
+        query: deleteGoodsTaskBetweenRandS,
         variables: {input: {id: props.taskID}},
       });
       console.log('done');

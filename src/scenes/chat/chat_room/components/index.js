@@ -11,25 +11,13 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
-import {
-  QuotationItemsContext,
-  QuotationItemsProvider,
-} from './quotationContext';
+
 import {API, Storage} from 'aws-amplify';
 import {
   createMessage,
-  createOrderQuotation,
-  deleteChatGroupUsers,
-  updateOrderQuotation,
   updateChatGroup,
   createGoodsTask,
 } from '../../../../graphql/mutations';
-import {
-  getOrderQuotation,
-  listUsersInChat,
-  purchaseOrderItems,
-} from '../../../../graphql/queries';
 
 var dayjs = require('dayjs');
 

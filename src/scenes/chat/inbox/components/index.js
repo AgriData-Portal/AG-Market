@@ -138,22 +138,17 @@ export const ChatList = props => {
 const ChatRoom = props => {
   const lastUpdated = dayjs(props.updatedAt).add(8, 'hour');
   var listOfParticipants = props.chatParticipants;
-  var tempList = listOfParticipants.filter(item => {
-    return item.userID == props.userID;
-  });
-  if (tempList.length == 0) {
-    var lastSeen = dayjs().subtract(1, 'month');
-  } else {
-    var lastSeen = dayjs(tempList[0].lastOnline).add(8, 'hour');
-  }
-
-  {
-    /* listOfParticipants.forEach((item, index, array) => {
-    if (item.userID == props.userID) {
-      console.log(item.lastOnline);
-      lastSeen = dayjs(item.lastOnline).add(8, 'hour');
+  if (listOfParticipants != undefined || listOfParticipants != null) {
+    var tempList = listOfParticipants.filter(item => {
+      return item.userID == props.userID;
+    });
+    if (tempList.length == 0) {
+      var lastSeen = dayjs().subtract(1, 'month');
+    } else {
+      var lastSeen = dayjs(tempList[0].lastOnline).add(8, 'hour');
     }
-  });*/
+  } else {
+    var lastSeen = dayjs().subtract(1, 'month');
   }
 
   return (

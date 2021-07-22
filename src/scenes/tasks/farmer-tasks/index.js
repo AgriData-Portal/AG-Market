@@ -87,28 +87,6 @@ export const FarmerTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      {/*<View
-        style={{
-          flexDirection: 'row',
-          width: wp('100%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          top: hp('2%'),
-          height: hp('5%'),
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            top: hp('0%'),
-            left: wp('5%'),
-          }}>
-          <MenuButton
-            navigation={props.navigation}
-            updateAuthState={props.updateAuthState}
-            userType={props.user.role}></MenuButton>
-        </View>
-        <Text style={[Typography.header]}>{Strings.tasks}</Text>
-        </View>*/}
       <View style={{flexDirection: 'row'}}>
         {task == 'send' ? (
           <View
@@ -120,9 +98,7 @@ export const FarmerTasks = props => {
               style={[
                 Typography.normal,
                 {
-                  color: Colors.GRAY_DARK,
                   fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
                 },
               ]}>
               {Strings.send}
@@ -135,7 +111,15 @@ export const FarmerTasks = props => {
               right: wp('15%'),
               top: hp('2%'),
             }}>
-            <Text style={[Typography.normal]}>{Strings.send}</Text>
+            <Text
+              style={[
+                Typography.normal,
+                {
+                  color: Colors.GRAY_DARK,
+                },
+              ]}>
+              {Strings.send}
+            </Text>
           </TouchableOpacity>
         )}
         {task == 'claim' ? (
@@ -149,8 +133,6 @@ export const FarmerTasks = props => {
                 Typography.normal,
                 {
                   color: Colors.GRAY_DARK,
-                  fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
                 },
               ]}>
               {Strings.claim}
@@ -163,7 +145,15 @@ export const FarmerTasks = props => {
               top: hp('2%'),
               left: wp('15%'),
             }}>
-            <Text style={[Typography.normal]}>{Strings.claim}</Text>
+            <Text
+              style={[
+                Typography.normal,
+                {
+                  fontFamily: 'Poppins-Bold',
+                },
+              ]}>
+              {Strings.claim}
+            </Text>
           </TouchableOpacity>
         )}
       </View>

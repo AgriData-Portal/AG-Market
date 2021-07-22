@@ -1457,6 +1457,7 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -1507,6 +1508,7 @@ export const listGoodsTaskBetweenRandSs = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -1611,6 +1613,7 @@ export const getGoodsTaskBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -1661,6 +1664,7 @@ export const listGoodsTaskBetweenSandFs = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -2051,6 +2055,7 @@ export const getInvoiceBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -2102,6 +2107,7 @@ export const listInvoiceBetweenRandSs = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -2207,6 +2213,7 @@ export const getInvoiceBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -2258,6 +2265,7 @@ export const listInvoiceBetweenSandFs = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -2955,6 +2963,7 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -3013,6 +3022,7 @@ export const goodsTaskRetailerForSupplierByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -3071,6 +3081,7 @@ export const goodsTaskForFarmerByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -3129,6 +3140,7 @@ export const goodsTaskFarmerForSupplierByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -3395,6 +3407,7 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -3454,6 +3467,7 @@ export const invoiceRetailerForSupplierByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -3513,6 +3527,7 @@ export const invoiceForFarmerByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit
@@ -3572,6 +3587,7 @@ export const invoiceFarmerForSupplierByDate = /* GraphQL */ `
         }
         supplierID
         items {
+          id
           name
           quantity
           siUnit

@@ -19,15 +19,13 @@ import {
 } from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
-import {Rating} from 'react-native-ratings';
-import {ChatButton} from '../../../components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {
-  deleteProductListing,
-  updateProductListing,
-  createProductListing,
+  deleteSupplierListing,
+  updateSupplierListing,
+  createSupplierListing,
   updateChatGroup,
   createChatGroup,
   createMessage,
@@ -84,14 +82,14 @@ const AddItemModal = props => {
         siUnit: value2,
       };
       const productListing = await API.graphql({
-        query: createProductListing,
+        query: createSupplierListing,
         variables: {input: listing},
       });
 
       listing.productPicture = {uri: photo.uri};
 
       props.setProducts(products => [
-        productListing.data.createProductListing,
+        productListing.data.createSupplierListing,
         ...products,
       ]);
       console.log('Added product');
@@ -551,7 +549,7 @@ const ProductModal = props => {
     try {
       setLoading(true);
       const deletedListing = await API.graphql({
-        query: deleteProductListing,
+        query: deleteSupplierListing,
         variables: {input: {id: props.id}},
       });
       var products = props.productList;
@@ -579,7 +577,7 @@ const ProductModal = props => {
   const updateListing = async () => {
     try {
       const updatedListing = await API.graphql({
-        query: updateProductListing,
+        query: updateSupplierListing,
         variables: {
           input: {
             id: props.id,

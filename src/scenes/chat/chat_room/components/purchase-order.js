@@ -15,18 +15,15 @@ import {CloseButton, SuccessfulModal} from '_components';
 import {API} from 'aws-amplify';
 import {
   createMessage,
-  deleteChatGroupUsers,
   updateChatGroup,
   updateOrderQuotation,
   createOrderQuotation,
 } from '../../../../graphql/mutations';
-import {listUsersInChat, purchaseOrderItems} from '../../../../graphql/queries';
+import {purchaseOrderItems} from '../../../../graphql/queries';
 import {
   QuotationItemsContext,
   QuotationItemsProvider,
 } from './quotationContext';
-import {abs} from 'react-native-reanimated';
-import {DismissKeyboardView} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -34,7 +31,7 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import Strings from '_utils';
 
-export const OrderList = props => {
+const OrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
   const Seperator = () => {
     return (
@@ -117,7 +114,7 @@ const OrderCard = props => {
   return (
     <View
       style={{
-        height: hp('8%'),
+        height: hp('9%'),
         width: wp('80%'),
         marginBottom: hp('0.5%'),
         borderBottomColor: Colors.GRAY_DARK,
@@ -141,10 +138,20 @@ const OrderCard = props => {
           keyboardType="numeric"
           style={{
             width: wp('10%'),
-            top: hp('0.5%'),
+
             borderBottomColor: 'transparent',
             color: 'black',
+            alignSelf: 'center',
           }}></TextInput>
+        <View
+          style={{
+            width: wp('7%'),
+            height: 0,
+            top: hp('4%'),
+            borderTopWidth: 1,
+            borderColor: Colors.LIME_GREEN,
+            position: 'absolute',
+          }}></View>
         <Text
           style={[
             Typography.small,
@@ -173,12 +180,22 @@ const OrderCard = props => {
           onChangeText={item => updatePrice(item)}
           keyboardType="numeric"
           style={{
-            top: hp('0.5%'),
             left: wp('1%'),
             width: wp('9%'),
             borderBottomColor: 'transparent',
+            alignSelf: 'center',
             color: 'black',
           }}></TextInput>
+        <View
+          style={{
+            width: wp('8%'),
+            left: wp('5%'),
+            height: 0,
+            top: hp('4%'),
+            borderTopWidth: 1,
+            borderColor: Colors.LIME_GREEN,
+            position: 'absolute',
+          }}></View>
         <Text
           style={[
             Typography.small,
@@ -258,7 +275,7 @@ export const PurchaseOrder = props => {
           }}>
           <CloseButton setModal={props.setPurchaseOrderModal} />
         </View>
-        {true ? (
+        {props.type == 'supplier' ? (
           <TouchableOpacity
             onPress={() => [setOrderQuotation(true)]}
             style={{
@@ -400,11 +417,7 @@ const NewOrderQuotation = props => {
         },
       });
       console.log('Updated chat');
-      /*messages = props.messages;
-      messages = messages.reverse();
-      messages.push(input);
-      messages = messages.reverse();
-      setMessages = {messages};*/
+
       setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
@@ -416,7 +429,7 @@ const NewOrderQuotation = props => {
         flexDirection: 'column',
         width: wp('95%'),
         right: wp('2%'),
-        height: hp('80%'),
+        height: hp('95%'),
         backgroundColor: Colors.GRAY_LIGHT,
         borderRadius: 15,
         alignItems: 'center',
@@ -436,9 +449,9 @@ const NewOrderQuotation = props => {
           {props.chatName}
         </Text>
 
-        <Text style={[Typography.small, {bottom: hp('1%')}]}>
+        {/* <Text style={[Typography.small, {bottom: hp('1%')}]}>
           #{props.chatGroupID.slice(0, 8)}
-        </Text>
+        </Text> */}
       </View>
       <View
         style={{
@@ -451,13 +464,13 @@ const NewOrderQuotation = props => {
       <View
         style={{
           height: hp('40%'),
-          top: hp('17%'),
+          top: hp('14%'),
           alignItems: 'center',
           position: 'absolute',
         }}>
         <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
-      <View style={{position: 'absolute', left: wp('50%'), top: hp('37%')}}>
+      <View style={{position: 'absolute', left: wp('50%'), top: hp('55%')}}>
         <Text
           style={[
             Typography.normal,
@@ -470,12 +483,13 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('32%'),
+          top: hp('60%'),
           alignItems: 'center',
           height: hp('24%'),
           width: wp('85%'),
           backgroundColor: 'white',
           borderRadius: 10,
+          position: 'absolute',
         }}>
         <View
           style={{
@@ -511,7 +525,7 @@ const NewOrderQuotation = props => {
             dropDownContainerStyle={{
               borderWidth: 1,
               position: 'absolute',
-              left: wp('17%'),
+
               width: wp('25%'),
               backgroundColor: Colors.GRAY_LIGHT,
             }}
@@ -559,7 +573,8 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('35%'),
+          position: 'absolute',
+          top: hp('86%'),
         }}>
         <TouchableOpacity
           onPress={() => [sendQuotation()]}
@@ -573,15 +588,14 @@ const NewOrderQuotation = props => {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
-            width: wp('75%'),
-            height: hp('4%'),
+            width: wp('40%'),
+            height: hp('5%'),
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 10,
           }}>
-          <Text style={[Typography.normal]}>
-            {Strings.sendQuotationToRetailer}
-          </Text>
+          {/* //translation */}
+          <Text style={[Typography.normal]}>Send Quotation</Text>
         </TouchableOpacity>
         <Modal
           isVisible={successfulModal}

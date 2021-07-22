@@ -2811,6 +2811,7 @@ export const onCreateGoodsTaskBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -2914,6 +2915,7 @@ export const onUpdateGoodsTaskBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3017,6 +3019,7 @@ export const onDeleteGoodsTaskBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3119,6 +3122,7 @@ export const onCreateGoodsTaskBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3221,6 +3225,7 @@ export const onUpdateGoodsTaskBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3323,6 +3328,7 @@ export const onDeleteGoodsTaskBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4005,6 +4011,7 @@ export const onCreateInvoiceBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4109,6 +4116,7 @@ export const onUpdateInvoiceBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4213,6 +4221,7 @@ export const onDeleteInvoiceBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4316,6 +4325,7 @@ export const onCreateInvoiceBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4419,6 +4429,7 @@ export const onUpdateInvoiceBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4522,6 +4533,7 @@ export const onDeleteInvoiceBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit

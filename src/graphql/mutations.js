@@ -2913,6 +2913,7 @@ export const createGoodsTaskBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3019,6 +3020,7 @@ export const updateGoodsTaskBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3125,6 +3127,7 @@ export const deleteGoodsTaskBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3230,6 +3233,7 @@ export const createGoodsTaskBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3335,6 +3339,7 @@ export const updateGoodsTaskBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -3440,6 +3445,7 @@ export const deleteGoodsTaskBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4143,6 +4149,7 @@ export const createInvoiceBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4250,6 +4257,7 @@ export const updateInvoiceBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4357,6 +4365,7 @@ export const deleteInvoiceBetweenRandS = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4463,6 +4472,7 @@ export const createInvoiceBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4569,6 +4579,7 @@ export const updateInvoiceBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit
@@ -4675,6 +4686,7 @@ export const deleteInvoiceBetweenSandF = /* GraphQL */ `
       }
       supplierID
       items {
+        id
         name
         quantity
         siUnit

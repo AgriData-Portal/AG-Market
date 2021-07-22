@@ -43,7 +43,7 @@ export const Registration = props => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [items2, setItems2] = useState([
-    {label: Strings.wholesaler, value: 'wholesaler'},
+    {label: 'Supplier', value: 'supplier'}, //translation
     {label: Strings.supermarket, value: 'supermarket'},
     {label: Strings.farm, value: 'farm'},
   ]);
@@ -112,7 +112,7 @@ export const Registration = props => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-10%')}>
+      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-25%')}>
       <SafeAreaView
         style={{
           backgroundColor: 'white',
@@ -127,7 +127,7 @@ export const Registration = props => {
             contentContainerStyle={
               Platform.OS == 'ios '
                 ? {paddingBottom: 0}
-                : {paddingBottom: hp('15%')}
+                : {paddingBottom: hp('30%')}
             }>
             <View style={{flex: 1}}>
               <View

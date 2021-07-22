@@ -81,26 +81,6 @@ export const RetailerTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      {/*<View
-        style={{
-          flexDirection: 'row',
-          width: wp('100%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: hp('5%'),
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            left: wp('5%'),
-          }}>
-          <MenuButton
-            navigation={props.navigation}
-            updateAuthState={props.updateAuthState}
-            userType={props.user.role}></MenuButton>
-        </View>
-        <Text style={[Typography.header]}>{Strings.tasks}</Text>
-        </View>*/}
       <View style={{flexDirection: 'row'}}>
         {task == 'receive' ? (
           <View
@@ -114,7 +94,6 @@ export const RetailerTasks = props => {
                 {
                   color: 'black',
                   fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
                 },
               ]}>
               {Strings.toRecieve}
@@ -144,7 +123,6 @@ export const RetailerTasks = props => {
                 {
                   color: 'black',
                   fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
                 },
               ]}>
               {Strings.toPay}
