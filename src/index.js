@@ -226,6 +226,7 @@ const App = () => {
       console.log('✅ User is alreadry signed in: ' + user.attributes.sub);
       getUserAttributes(user.attributes.sub);
     } catch (err) {
+      console.log(err);
       console.log('❌ User is not signed in');
       setUserLoggedIn('loggedOut');
     }
