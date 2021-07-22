@@ -51,7 +51,7 @@ export default {
   havingTrouble: '任何问题?',
   registerCompany: '注册公司',
   companyAddress: '分行地址',
-  companyType: ' 您在经营什么类型的公司?',
+  companyType: '公司的类型',
   wholesaler: '批发商',
   supermarket: '超级市场',
   farm: '农场',

@@ -7,6 +7,7 @@ import {SupplierNavigation} from './supplier-navigation';
 import {VerificationNavigation} from './verification-navigation';
 import {CreateCompanyNavigation} from './create-company-navigation';
 import {AuthenticationNavigator} from './authentication-navigator';
+import {FarmerNavigation} from './farmer-navigation';
 
 export {
   GMNavigation,
@@ -18,4 +19,5 @@ export {
   VerificationNavigation,
   CreateCompanyNavigation,
   AuthenticationNavigator,
+  FarmerNavigation,
 };

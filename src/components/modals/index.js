@@ -70,7 +70,7 @@ export const UnsuccessfulModal = props => {
   return (
     <View
       style={{
-        height: hp('50%'),
+        height: hp('65%'),
         width: wp('85%'),
         backgroundColor: Colors.LIGHT_RED,
         borderRadius: 20,

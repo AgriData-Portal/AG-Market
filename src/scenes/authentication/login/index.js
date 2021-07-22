@@ -28,7 +28,7 @@ export const Login = props => {
   const [secure, setSecure] = useState(true);
   const [forgetPassword, setForgetPassword] = useState(false);
   const [verified, setVerified] = useState(false);
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [errorText, setErrorText] = useState('');
@@ -37,8 +37,9 @@ export const Login = props => {
     try {
       setLoading(true);
       const user = await Auth.signIn(email, password);
+      console.log(user);
       console.log('Successful sign in');
-      props.updateUserID(user.attributes.sub);
+      props.updateUserID(user.username);
       props.setUserAttributes(user.attributes);
 
       //props.updateAuthState('loggedIn'); //fucking weird
@@ -113,20 +114,24 @@ export const Login = props => {
               top: hp('12%'),
               left: wp('8%'),
             }}>
-            <Text style={[Typography.placeholder]}>{Strings.phoneEmail}</Text>
-            <TextInput
-              placeholderTextColor={Colors.GRAY_DARK}
-              keyboardType="default"
-              placeholder="+60123456 or example@example.com"
-              underlineColorAndroid="transparent"
-              onChangeText={item => setEmail(item)}
-              value={email}
-              style={{
-                width: wp('80%'),
-                height: hp('7%'),
-                borderBottomColor: 'transparent',
-                color: 'black',
-              }}></TextInput>
+            <Text style={[Typography.placeholder]}>{Strings.phoneNumber}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{top: hp('1%')}}>+60</Text>
+              <TextInput
+                placeholderTextColor={Colors.GRAY_DARK}
+                keyboardType="default"
+                placeholder="109125654"
+                underlineColorAndroid="transparent"
+                onChangeText={item => setPhone(item)}
+                value={phone}
+                style={{
+                  width: wp('80%'),
+                  height: hp('7%'),
+                  borderBottomColor: 'transparent',
+                  color: 'black',
+                }}></TextInput>
+            </View>
+
             <View
               style={{
                 width: wp('85%'),
@@ -192,7 +197,10 @@ export const Login = props => {
             </Text>
           </TouchableOpacity>
           <Modal isVisible={forgetPassword}>
-            <ForgetPassword setForgetPassword={setForgetPassword} />
+            <ForgetPassword
+              setForgetPassword={setForgetPassword}
+              phone={phone}
+            />
           </Modal>
         </View>
         <View
@@ -202,7 +210,7 @@ export const Login = props => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              if (password == '' || email == '') {
+              if (password == '' || phone == '') {
                 console.log('empty input');
                 setUnsuccessfulModal(true);
                 setErrorText('Please fill in all empty spaces!');
@@ -267,6 +275,7 @@ export const Login = props => {
         <VerificationModal
           navigation={props.navigation}
           setVerified={setVerified}
+          phone={phone}
         />
       </Modal>
       <Modal
@@ -308,7 +317,7 @@ const VerificationModal = props => {
         <TouchableOpacity
           onPress={() => [
             props.setVerified(false),
-            props.navigation.navigate('confirmsignup'),
+            props.navigation.navigate('confirmsignup', {phone: props.phone}),
           ]}
           style={{
             height: hp('5%'),

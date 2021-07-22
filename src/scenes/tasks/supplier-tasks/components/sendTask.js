@@ -440,7 +440,14 @@ const SendTaskModal = props => {
                 borderRadius: 20,
                 width: wp('40%'),
                 height: hp('6%'),
-                elevation: 2,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.22,
+                shadowRadius: 2.22,
+                elevation: 3,
                 position: 'absolute',
                 top: hp('53%'),
                 left: wp('35%'),
@@ -449,13 +456,13 @@ const SendTaskModal = props => {
               customStyles={{
                 dateInput: {
                   position: 'absolute',
-                  right: wp('6%'),
+                  right: wp('5%'),
                   textAlignVertical: 'center',
                   borderColor: 'transparent',
                 },
                 dateIcon: {
                   position: 'absolute',
-                  left: wp('3%'),
+                  left: wp('1%'),
                   height: hp('5%'),
                   width: wp('7%'),
                 },

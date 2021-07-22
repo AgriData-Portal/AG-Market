@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-
+import 'react-native-gesture-handler';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
@@ -20,6 +20,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Platform,
 } from 'react-native';
 import {Typography} from '_styles';
 import {
@@ -35,7 +36,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
+import {
+  updateChatGroupUsers,
+  createChatGroupUsers,
+  updateRetailerCompany,
+} from '../graphql/mutations';
 import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -67,11 +72,12 @@ function getHeaderTitle(route) {
 const GMNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
-  const updateFavourites = async (userDetails, itemId, storeName) => {
+  const updateFavourites = async (userDetails, itemId, store) => {
     try {
+      console.log(userDetails, itemId, store);
       var currentFavList = userDetails.retailerCompany.favouriteStores;
       if (currentFavList != null) {
-        currentFavList.push({id: itemId, name: storeName});
+        currentFavList.push({id: itemId, name: store});
         var updated = await API.graphql({
           query: updateRetailerCompany,
           variables: {
@@ -89,7 +95,7 @@ const GMNavigation = props => {
           variables: {
             input: {
               id: userDetails.retailerCompanyID,
-              favouriteStores: [{id: itemId, name: storeName}],
+              favouriteStores: [{id: itemId, name: store}],
             },
           },
         });
@@ -108,17 +114,21 @@ const GMNavigation = props => {
         return item.id == itemId;
       });
       if (tempList.length == 0) {
+        console.log('found nothing');
         return false;
-      } else return true;
+      } else {
+        console.log('found nothing');
+        return true;
+      }
     } else {
-      return null;
+      return false;
     }
   };
   return (
     <AppStack.Navigator
       screenOptions={{
         headerStyle: {
-          height: hp('8%'),
+          height: Platform.OS === 'ios' ? hp('9.5%') : hp('8%'),
         },
       }}>
       <AppStack.Screen
@@ -178,7 +188,9 @@ const GMNavigation = props => {
         options={({route, navigation}) => ({
           headerTitleAlign: 'center',
           headerLeft: () => (
-            <HeaderBackButton onPress={() => navigation.goBack()} />
+            <HeaderBackButton
+              onPress={() => [navigation.goBack(), setIsFavourite(false)]}
+            />
           ),
           headerTitle: () => (
             <View>
@@ -196,40 +208,40 @@ const GMNavigation = props => {
               </Modal>
             </View>
           ),
-          headerRight: () => (
-            <View>
-              {checkIsFavourite(
-                (userDetails = props.user),
-                (itemId = route.params.itemId),
-              ) || isFavourite ? (
-                <View
-                  style={{
-                    position: 'absolute',
-                    right: wp('5%'),
-                    top: hp('4%'),
-                  }}>
-                  <Icon color="gold" name="star-outline" size={wp('7%')} />
-                </View>
-              ) : (
-                <TouchableOpacity
-                  onPress={() =>
-                    updateFavourites(
-                      (userDetails = props.user),
-                      (itemId = route.params.itemId),
-                      (storeName = route.params.storeName),
-                      (setIsFavourite = setIsFavourite()),
-                    )
-                  }
-                  style={{
-                    position: 'absolute',
-                    right: wp('5%'),
-                    top: hp('4%'),
-                  }}>
-                  <Icon name="star-outline" size={wp('7%')} />
-                </TouchableOpacity>
-              )}
-            </View>
-          ),
+          // headerRight: () => (
+          //   <View>
+          //     {checkIsFavourite(
+          //       (userDetails = props.user),
+          //       (itemId = route.params.itemId),
+          //     ) || isFavourite ? (
+          //       <View
+          //         style={{
+          //           position: 'absolute',
+          //           right: wp('5%'),
+          //           top: hp('4%'),
+          //         }}>
+          //         <Icon color="gold" name="star-outline" size={wp('7%')} />
+          //       </View>
+          //     ) : (
+          //       <TouchableOpacity
+          //         onPress={() =>
+          //           updateFavourites(
+          //             (userDetails = props.user),
+          //             (itemId = route.params.itemId),
+          //             (storeName = route.params.storeName),
+          //             (setIsFavourite = setIsFavourite()),
+          //           )
+          //         }
+          //         style={{
+          //           position: 'absolute',
+          //           right: wp('5%'),
+          //           top: hp('4%'),
+          //         }}>
+          //         <Icon name="star-outline" size={wp('7%')} />
+          //       </TouchableOpacity>
+          //     )}
+          //   </View>
+          // ),
         })}>
         {screenProps => (
           <Store
@@ -307,7 +319,6 @@ const TabbedNavigator = props => {
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
-          bottom: hp('0%'),
           height: hp('9.5%'),
         },
       }}>
@@ -322,7 +333,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="chatbubbles-outline"
@@ -389,7 +399,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="clipboard-outline"
@@ -456,7 +465,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Image
                   source={require('_assets/images/online-store.png')}
@@ -529,7 +537,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="checkmark-done-outline"
@@ -596,7 +603,6 @@ const TabbedNavigator = props => {
                   height: wp('15%'),
                   alignItems: 'center',
                   justifyContent: 'center',
-                  bottom: hp('0.5%'),
                 }}>
                 <Icon
                   name="stats-chart-outline"

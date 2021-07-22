@@ -76,8 +76,8 @@ export const MessageInput = props => {
   function selectImage() {
     let options = {
       mediaType: 'photo',
-      maxWidth: 512,
-      maxHeight: 512,
+      maxWidth: 1024,
+      maxHeight: 1024,
     };
 
     launchImageLibrary(options, response => {
@@ -214,7 +214,6 @@ export const MessageInput = props => {
               borderBottomColor: 'transparent',
               left: wp('14%'),
               color: 'black',
-              top: hp('1.5%'),
             }}
           />
           <TouchableOpacity

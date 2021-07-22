@@ -9,32 +9,13 @@ export const onCreateUser = /* GraphQL */ `
       role
       retailerCompanyID
       supplierCompanyID
+      farmerCompanyID
       chatGroup {
         items {
           id
           userID
           chatGroupID
           lastOnline
-          chatGroup {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
-          user {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
@@ -45,19 +26,8 @@ export const onCreateUser = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -69,55 +39,15 @@ export const onCreateUser = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -129,19 +59,8 @@ export const onCreateUser = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -151,75 +70,65 @@ export const onCreateUser = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerCompany {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
           nextToken
         }
         verified
@@ -240,32 +149,13 @@ export const onUpdateUser = /* GraphQL */ `
       role
       retailerCompanyID
       supplierCompanyID
+      farmerCompanyID
       chatGroup {
         items {
           id
           userID
           chatGroupID
           lastOnline
-          chatGroup {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
-          user {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
@@ -276,19 +166,8 @@ export const onUpdateUser = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -300,55 +179,15 @@ export const onUpdateUser = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -360,19 +199,8 @@ export const onUpdateUser = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -382,75 +210,65 @@ export const onUpdateUser = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerCompany {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
           nextToken
         }
         verified
@@ -471,32 +289,13 @@ export const onDeleteUser = /* GraphQL */ `
       role
       retailerCompanyID
       supplierCompanyID
+      farmerCompanyID
       chatGroup {
         items {
           id
           userID
           chatGroupID
           lastOnline
-          chatGroup {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
-          user {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
@@ -507,19 +306,8 @@ export const onDeleteUser = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -531,55 +319,15 @@ export const onDeleteUser = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -591,19 +339,8 @@ export const onDeleteUser = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -613,75 +350,65 @@ export const onDeleteUser = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerCompany {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
           nextToken
         }
         verified
@@ -706,38 +433,13 @@ export const onCreateRetailerCompany = /* GraphQL */ `
           role
           retailerCompanyID
           supplierCompanyID
-          chatGroup {
-            nextToken
-          }
+          farmerCompanyID
           contactNumber
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
         nextToken
       }
-      type
       address
       rating {
         numberOfRatings
@@ -751,38 +453,8 @@ export const onCreateRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           updatedAt
           createdAt
           deliveryDate
@@ -793,29 +465,7 @@ export const onCreateRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
           paid
           amount
@@ -829,38 +479,8 @@ export const onCreateRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           amount
           updatedAt
           createdAt
@@ -874,35 +494,8 @@ export const onCreateRetailerCompany = /* GraphQL */ `
           id
           name
           retailerID
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          chatParticipants {
-            nextToken
-          }
-          messages {
-            nextToken
-          }
+          farmerID
           updatedAt
           createdAt
           mostRecentMessage
@@ -929,38 +522,13 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
           role
           retailerCompanyID
           supplierCompanyID
-          chatGroup {
-            nextToken
-          }
+          farmerCompanyID
           contactNumber
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
         nextToken
       }
-      type
       address
       rating {
         numberOfRatings
@@ -974,38 +542,8 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           updatedAt
           createdAt
           deliveryDate
@@ -1016,29 +554,7 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
           paid
           amount
@@ -1052,38 +568,8 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           amount
           updatedAt
           createdAt
@@ -1097,35 +583,8 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
           id
           name
           retailerID
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          chatParticipants {
-            nextToken
-          }
-          messages {
-            nextToken
-          }
+          farmerID
           updatedAt
           createdAt
           mostRecentMessage
@@ -1152,38 +611,13 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
           role
           retailerCompanyID
           supplierCompanyID
-          chatGroup {
-            nextToken
-          }
+          farmerCompanyID
           contactNumber
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
         nextToken
       }
-      type
       address
       rating {
         numberOfRatings
@@ -1197,38 +631,8 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           updatedAt
           createdAt
           deliveryDate
@@ -1239,29 +643,7 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
           paid
           amount
@@ -1275,38 +657,8 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           amount
           updatedAt
           createdAt
@@ -1320,35 +672,8 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
           id
           name
           retailerID
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          chatParticipants {
-            nextToken
-          }
-          messages {
-            nextToken
-          }
+          farmerID
           updatedAt
           createdAt
           mostRecentMessage
@@ -1375,38 +700,13 @@ export const onCreateSupplierCompany = /* GraphQL */ `
           role
           retailerCompanyID
           supplierCompanyID
-          chatGroup {
-            nextToken
-          }
+          farmerCompanyID
           contactNumber
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
         nextToken
       }
-      type
       address
       rating {
         numberOfRatings
@@ -1416,21 +716,14 @@ export const onCreateSupplierCompany = /* GraphQL */ `
         bankName
         accountNumber
       }
+      favouriteStores {
+        id
+        name
+      }
       registrationNumber
       listings {
         items {
           id
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
           productName
           variety
@@ -1446,41 +739,11 @@ export const onCreateSupplierCompany = /* GraphQL */ `
         }
         nextToken
       }
-      goodsTask {
+      goodsTaskRetailer {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           updatedAt
           createdAt
           deliveryDate
@@ -1488,32 +751,22 @@ export const onCreateSupplierCompany = /* GraphQL */ `
         }
         nextToken
       }
-      paymentTask {
+      goodsTaskFarmer {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
+          farmerID
+          supplierID
+          updatedAt
+          createdAt
+          deliveryDate
+          status
+        }
+        nextToken
+      }
+      paymentTaskRetailer {
+        items {
+          id
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
           paid
           amount
@@ -1524,41 +777,38 @@ export const onCreateSupplierCompany = /* GraphQL */ `
         }
         nextToken
       }
-      invoice {
+      paymentTaskFarmer {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
+          farmerID
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
+          paid
+          amount
+          payBefore
+          receipt
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      invoiceRetailer {
+        items {
+          id
+          retailerID
+          supplierID
+          amount
+          updatedAt
+          createdAt
+          paid
+          receivedBy
+        }
+        nextToken
+      }
+      invoiceFarmer {
+        items {
+          id
+          farmerID
+          supplierID
           amount
           updatedAt
           createdAt
@@ -1572,35 +822,8 @@ export const onCreateSupplierCompany = /* GraphQL */ `
           id
           name
           retailerID
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          chatParticipants {
-            nextToken
-          }
-          messages {
-            nextToken
-          }
+          farmerID
           updatedAt
           createdAt
           mostRecentMessage
@@ -1627,38 +850,13 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
           role
           retailerCompanyID
           supplierCompanyID
-          chatGroup {
-            nextToken
-          }
+          farmerCompanyID
           contactNumber
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
         nextToken
       }
-      type
       address
       rating {
         numberOfRatings
@@ -1668,21 +866,14 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
         bankName
         accountNumber
       }
+      favouriteStores {
+        id
+        name
+      }
       registrationNumber
       listings {
         items {
           id
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
           productName
           variety
@@ -1698,41 +889,11 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
         }
         nextToken
       }
-      goodsTask {
+      goodsTaskRetailer {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           updatedAt
           createdAt
           deliveryDate
@@ -1740,32 +901,22 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
         }
         nextToken
       }
-      paymentTask {
+      goodsTaskFarmer {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
+          farmerID
+          supplierID
+          updatedAt
+          createdAt
+          deliveryDate
+          status
+        }
+        nextToken
+      }
+      paymentTaskRetailer {
+        items {
+          id
           retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
           paid
           amount
@@ -1776,41 +927,38 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
         }
         nextToken
       }
-      invoice {
+      paymentTaskFarmer {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
+          farmerID
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
+          paid
+          amount
+          payBefore
+          receipt
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      invoiceRetailer {
+        items {
+          id
+          retailerID
+          supplierID
+          amount
+          updatedAt
+          createdAt
+          paid
+          receivedBy
+        }
+        nextToken
+      }
+      invoiceFarmer {
+        items {
+          id
+          farmerID
+          supplierID
           amount
           updatedAt
           createdAt
@@ -1824,35 +972,8 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
           id
           name
           retailerID
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          chatParticipants {
-            nextToken
-          }
-          messages {
-            nextToken
-          }
+          farmerID
           updatedAt
           createdAt
           mostRecentMessage
@@ -1879,38 +1000,13 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
           role
           retailerCompanyID
           supplierCompanyID
-          chatGroup {
-            nextToken
-          }
+          farmerCompanyID
           contactNumber
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
         nextToken
       }
-      type
       address
       rating {
         numberOfRatings
@@ -1920,22 +1016,157 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
         bankName
         accountNumber
       }
+      favouriteStores {
+        id
+        name
+      }
       registrationNumber
       listings {
         items {
           id
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
+          productName
+          variety
+          quantityAvailable
+          lowPrice
+          highPrice
+          minimumQuantity
+          productPicture
+          grade
+          siUnit
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      goodsTaskRetailer {
+        items {
+          id
+          retailerID
+          supplierID
+          updatedAt
+          createdAt
+          deliveryDate
+          status
+        }
+        nextToken
+      }
+      goodsTaskFarmer {
+        items {
+          id
+          farmerID
+          supplierID
+          updatedAt
+          createdAt
+          deliveryDate
+          status
+        }
+        nextToken
+      }
+      paymentTaskRetailer {
+        items {
+          id
+          retailerID
+          supplierID
+          paid
+          amount
+          payBefore
+          receipt
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      paymentTaskFarmer {
+        items {
+          id
+          farmerID
+          supplierID
+          paid
+          amount
+          payBefore
+          receipt
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      invoiceRetailer {
+        items {
+          id
+          retailerID
+          supplierID
+          amount
+          updatedAt
+          createdAt
+          paid
+          receivedBy
+        }
+        nextToken
+      }
+      invoiceFarmer {
+        items {
+          id
+          farmerID
+          supplierID
+          amount
+          updatedAt
+          createdAt
+          paid
+          receivedBy
+        }
+        nextToken
+      }
+      chatGroups {
+        items {
+          id
+          name
+          retailerID
+          supplierID
+          farmerID
+          updatedAt
+          createdAt
+          mostRecentMessage
+          mostRecentMessageSender
+        }
+        nextToken
+      }
+      verified
+      logo
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onCreateFarmerCompany = /* GraphQL */ `
+  subscription OnCreateFarmerCompany {
+    onCreateFarmerCompany {
+      id
+      name
+      employees {
+        items {
+          id
+          name
+          role
+          retailerCompanyID
+          supplierCompanyID
+          farmerCompanyID
+          contactNumber
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      address
+      rating {
+        numberOfRatings
+        currentRating
+      }
+      registrationNumber
+      listings {
+        items {
+          id
+          farmerID
           productName
           variety
           quantityAvailable
@@ -1953,38 +1184,8 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
+          farmerID
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           updatedAt
           createdAt
           deliveryDate
@@ -1995,29 +1196,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
+          farmerID
           supplierID
           paid
           amount
@@ -2031,38 +1210,8 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       invoice {
         items {
           id
-          retailer {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          retailerID
-          supplier {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
+          farmerID
           supplierID
-          items {
-            name
-            quantity
-            siUnit
-            variety
-            grade
-            price
-          }
           amount
           updatedAt
           createdAt
@@ -2076,35 +1225,214 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
           id
           name
           retailerID
-          retailerCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
           supplierID
-          supplierCompany {
-            id
-            name
-            type
-            address
-            registrationNumber
-            verified
-            logo
-            updatedAt
-            createdAt
-          }
-          chatParticipants {
-            nextToken
-          }
-          messages {
-            nextToken
-          }
+          farmerID
+          updatedAt
+          createdAt
+          mostRecentMessage
+          mostRecentMessageSender
+        }
+        nextToken
+      }
+      verified
+      logo
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onUpdateFarmerCompany = /* GraphQL */ `
+  subscription OnUpdateFarmerCompany {
+    onUpdateFarmerCompany {
+      id
+      name
+      employees {
+        items {
+          id
+          name
+          role
+          retailerCompanyID
+          supplierCompanyID
+          farmerCompanyID
+          contactNumber
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      address
+      rating {
+        numberOfRatings
+        currentRating
+      }
+      registrationNumber
+      listings {
+        items {
+          id
+          farmerID
+          productName
+          variety
+          quantityAvailable
+          lowPrice
+          highPrice
+          minimumQuantity
+          productPicture
+          grade
+          siUnit
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      goodsTask {
+        items {
+          id
+          farmerID
+          supplierID
+          updatedAt
+          createdAt
+          deliveryDate
+          status
+        }
+        nextToken
+      }
+      paymentTask {
+        items {
+          id
+          farmerID
+          supplierID
+          paid
+          amount
+          payBefore
+          receipt
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      invoice {
+        items {
+          id
+          farmerID
+          supplierID
+          amount
+          updatedAt
+          createdAt
+          paid
+          receivedBy
+        }
+        nextToken
+      }
+      chatGroups {
+        items {
+          id
+          name
+          retailerID
+          supplierID
+          farmerID
+          updatedAt
+          createdAt
+          mostRecentMessage
+          mostRecentMessageSender
+        }
+        nextToken
+      }
+      verified
+      logo
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onDeleteFarmerCompany = /* GraphQL */ `
+  subscription OnDeleteFarmerCompany {
+    onDeleteFarmerCompany {
+      id
+      name
+      employees {
+        items {
+          id
+          name
+          role
+          retailerCompanyID
+          supplierCompanyID
+          farmerCompanyID
+          contactNumber
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      address
+      rating {
+        numberOfRatings
+        currentRating
+      }
+      registrationNumber
+      listings {
+        items {
+          id
+          farmerID
+          productName
+          variety
+          quantityAvailable
+          lowPrice
+          highPrice
+          minimumQuantity
+          productPicture
+          grade
+          siUnit
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      goodsTask {
+        items {
+          id
+          farmerID
+          supplierID
+          updatedAt
+          createdAt
+          deliveryDate
+          status
+        }
+        nextToken
+      }
+      paymentTask {
+        items {
+          id
+          farmerID
+          supplierID
+          paid
+          amount
+          payBefore
+          receipt
+          updatedAt
+          createdAt
+        }
+        nextToken
+      }
+      invoice {
+        items {
+          id
+          farmerID
+          supplierID
+          amount
+          updatedAt
+          createdAt
+          paid
+          receivedBy
+        }
+        nextToken
+      }
+      chatGroups {
+        items {
+          id
+          name
+          retailerID
+          supplierID
+          farmerID
           updatedAt
           createdAt
           mostRecentMessage
@@ -2129,19 +1457,8 @@ export const onCreateChatGroup = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -2153,55 +1470,15 @@ export const onCreateChatGroup = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -2214,19 +1491,8 @@ export const onCreateChatGroup = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -2236,75 +1502,66 @@ export const onCreateChatGroup = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      farmerCompany {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
           nextToken
         }
         verified
@@ -2318,26 +1575,6 @@ export const onCreateChatGroup = /* GraphQL */ `
           userID
           chatGroupID
           lastOnline
-          chatGroup {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
-          user {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
@@ -2373,19 +1610,8 @@ export const onUpdateChatGroup = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -2397,55 +1623,15 @@ export const onUpdateChatGroup = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -2458,19 +1644,8 @@ export const onUpdateChatGroup = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -2480,75 +1655,66 @@ export const onUpdateChatGroup = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      farmerCompany {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
           nextToken
         }
         verified
@@ -2562,26 +1728,6 @@ export const onUpdateChatGroup = /* GraphQL */ `
           userID
           chatGroupID
           lastOnline
-          chatGroup {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
-          user {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
@@ -2617,19 +1763,8 @@ export const onDeleteChatGroup = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -2641,55 +1776,15 @@ export const onDeleteChatGroup = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -2702,19 +1797,8 @@ export const onDeleteChatGroup = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -2724,75 +1808,66 @@ export const onDeleteChatGroup = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      farmerCompany {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
           nextToken
         }
         verified
@@ -2806,26 +1881,6 @@ export const onDeleteChatGroup = /* GraphQL */ `
           userID
           chatGroupID
           lastOnline
-          chatGroup {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
-          user {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           updatedAt
           createdAt
         }
@@ -2907,32 +1962,8 @@ export const onCreateChatGroupUsers = /* GraphQL */ `
         retailerCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
           registrationNumber
-          favouriteStores {
-            id
-            name
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
           verified
           logo
           updatedAt
@@ -2942,62 +1973,28 @@ export const onCreateChatGroupUsers = /* GraphQL */ `
         supplierCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
-          bankAccount {
-            bankName
-            accountNumber
-          }
           registrationNumber
-          listings {
-            nextToken
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
+          verified
+          logo
+          updatedAt
+          createdAt
+        }
+        farmerID
+        farmerCompany {
+          id
+          name
+          address
+          registrationNumber
           verified
           logo
           updatedAt
           createdAt
         }
         chatParticipants {
-          items {
-            id
-            userID
-            chatGroupID
-            lastOnline
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         messages {
-          items {
-            id
-            chatGroupID
-            type
-            content
-            senderID
-            sender
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         updatedAt
@@ -3011,47 +2008,16 @@ export const onCreateChatGroupUsers = /* GraphQL */ `
         role
         retailerCompanyID
         supplierCompanyID
+        farmerCompanyID
         chatGroup {
-          items {
-            id
-            userID
-            chatGroupID
-            lastOnline
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         contactNumber
         retailerCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
           registrationNumber
-          favouriteStores {
-            id
-            name
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
           verified
           logo
           updatedAt
@@ -3060,35 +2026,18 @@ export const onCreateChatGroupUsers = /* GraphQL */ `
         supplierCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
-          bankAccount {
-            bankName
-            accountNumber
-          }
           registrationNumber
-          listings {
-            nextToken
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
+          verified
+          logo
+          updatedAt
+          createdAt
+        }
+        farmerCompany {
+          id
+          name
+          address
+          registrationNumber
           verified
           logo
           updatedAt
@@ -3116,32 +2065,8 @@ export const onUpdateChatGroupUsers = /* GraphQL */ `
         retailerCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
           registrationNumber
-          favouriteStores {
-            id
-            name
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
           verified
           logo
           updatedAt
@@ -3151,62 +2076,28 @@ export const onUpdateChatGroupUsers = /* GraphQL */ `
         supplierCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
-          bankAccount {
-            bankName
-            accountNumber
-          }
           registrationNumber
-          listings {
-            nextToken
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
+          verified
+          logo
+          updatedAt
+          createdAt
+        }
+        farmerID
+        farmerCompany {
+          id
+          name
+          address
+          registrationNumber
           verified
           logo
           updatedAt
           createdAt
         }
         chatParticipants {
-          items {
-            id
-            userID
-            chatGroupID
-            lastOnline
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         messages {
-          items {
-            id
-            chatGroupID
-            type
-            content
-            senderID
-            sender
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         updatedAt
@@ -3220,47 +2111,16 @@ export const onUpdateChatGroupUsers = /* GraphQL */ `
         role
         retailerCompanyID
         supplierCompanyID
+        farmerCompanyID
         chatGroup {
-          items {
-            id
-            userID
-            chatGroupID
-            lastOnline
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         contactNumber
         retailerCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
           registrationNumber
-          favouriteStores {
-            id
-            name
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
           verified
           logo
           updatedAt
@@ -3269,35 +2129,18 @@ export const onUpdateChatGroupUsers = /* GraphQL */ `
         supplierCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
-          bankAccount {
-            bankName
-            accountNumber
-          }
           registrationNumber
-          listings {
-            nextToken
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
+          verified
+          logo
+          updatedAt
+          createdAt
+        }
+        farmerCompany {
+          id
+          name
+          address
+          registrationNumber
           verified
           logo
           updatedAt
@@ -3325,32 +2168,8 @@ export const onDeleteChatGroupUsers = /* GraphQL */ `
         retailerCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
           registrationNumber
-          favouriteStores {
-            id
-            name
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
           verified
           logo
           updatedAt
@@ -3360,62 +2179,28 @@ export const onDeleteChatGroupUsers = /* GraphQL */ `
         supplierCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
-          bankAccount {
-            bankName
-            accountNumber
-          }
           registrationNumber
-          listings {
-            nextToken
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
+          verified
+          logo
+          updatedAt
+          createdAt
+        }
+        farmerID
+        farmerCompany {
+          id
+          name
+          address
+          registrationNumber
           verified
           logo
           updatedAt
           createdAt
         }
         chatParticipants {
-          items {
-            id
-            userID
-            chatGroupID
-            lastOnline
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         messages {
-          items {
-            id
-            chatGroupID
-            type
-            content
-            senderID
-            sender
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         updatedAt
@@ -3429,47 +2214,16 @@ export const onDeleteChatGroupUsers = /* GraphQL */ `
         role
         retailerCompanyID
         supplierCompanyID
+        farmerCompanyID
         chatGroup {
-          items {
-            id
-            userID
-            chatGroupID
-            lastOnline
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         contactNumber
         retailerCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
           registrationNumber
-          favouriteStores {
-            id
-            name
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
           verified
           logo
           updatedAt
@@ -3478,35 +2232,18 @@ export const onDeleteChatGroupUsers = /* GraphQL */ `
         supplierCompany {
           id
           name
-          employees {
-            nextToken
-          }
-          type
           address
-          rating {
-            numberOfRatings
-            currentRating
-          }
-          bankAccount {
-            bankName
-            accountNumber
-          }
           registrationNumber
-          listings {
-            nextToken
-          }
-          goodsTask {
-            nextToken
-          }
-          paymentTask {
-            nextToken
-          }
-          invoice {
-            nextToken
-          }
-          chatGroups {
-            nextToken
-          }
+          verified
+          logo
+          updatedAt
+          createdAt
+        }
+        farmerCompany {
+          id
+          name
+          address
+          registrationNumber
           verified
           logo
           updatedAt
@@ -3520,27 +2257,16 @@ export const onDeleteChatGroupUsers = /* GraphQL */ `
     }
   }
 `;
-export const onCreateProductListing = /* GraphQL */ `
-  subscription OnCreateProductListing {
-    onCreateProductListing {
+export const onCreateSupplierListing = /* GraphQL */ `
+  subscription OnCreateSupplierListing {
+    onCreateSupplierListing {
       id
       supplier {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -3550,75 +2276,33 @@ export const onCreateProductListing = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -3641,27 +2325,16 @@ export const onCreateProductListing = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateProductListing = /* GraphQL */ `
-  subscription OnUpdateProductListing {
-    onUpdateProductListing {
+export const onUpdateSupplierListing = /* GraphQL */ `
+  subscription OnUpdateSupplierListing {
+    onUpdateSupplierListing {
       id
       supplier {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -3671,75 +2344,33 @@ export const onUpdateProductListing = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -3762,27 +2393,16 @@ export const onUpdateProductListing = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteProductListing = /* GraphQL */ `
-  subscription OnDeleteProductListing {
-    onDeleteProductListing {
+export const onDeleteSupplierListing = /* GraphQL */ `
+  subscription OnDeleteSupplierListing {
+    onDeleteSupplierListing {
       id
       supplier {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -3792,75 +2412,33 @@ export const onDeleteProductListing = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -3883,9 +2461,162 @@ export const onDeleteProductListing = /* GraphQL */ `
     }
   }
 `;
-export const onCreateProducts = /* GraphQL */ `
-  subscription OnCreateProducts {
-    onCreateProducts {
+export const onCreateFarmerListing = /* GraphQL */ `
+  subscription OnCreateFarmerListing {
+    onCreateFarmerListing {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      productName
+      variety
+      quantityAvailable
+      lowPrice
+      highPrice
+      minimumQuantity
+      productPicture
+      grade
+      siUnit
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onUpdateFarmerListing = /* GraphQL */ `
+  subscription OnUpdateFarmerListing {
+    onUpdateFarmerListing {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      productName
+      variety
+      quantityAvailable
+      lowPrice
+      highPrice
+      minimumQuantity
+      productPicture
+      grade
+      siUnit
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onDeleteFarmerListing = /* GraphQL */ `
+  subscription OnDeleteFarmerListing {
+    onDeleteFarmerListing {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      productName
+      variety
+      quantityAvailable
+      lowPrice
+      highPrice
+      minimumQuantity
+      productPicture
+      grade
+      siUnit
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onCreateProductsInPurchaseOrder = /* GraphQL */ `
+  subscription OnCreateProductsInPurchaseOrder {
+    onCreateProductsInPurchaseOrder {
       id
       purchaseOrderID
       name
@@ -3898,9 +2629,9 @@ export const onCreateProducts = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateProducts = /* GraphQL */ `
-  subscription OnUpdateProducts {
-    onUpdateProducts {
+export const onUpdateProductsInPurchaseOrder = /* GraphQL */ `
+  subscription OnUpdateProductsInPurchaseOrder {
+    onUpdateProductsInPurchaseOrder {
       id
       purchaseOrderID
       name
@@ -3913,9 +2644,9 @@ export const onUpdateProducts = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteProducts = /* GraphQL */ `
-  subscription OnDeleteProducts {
-    onDeleteProducts {
+export const onDeleteProductsInPurchaseOrder = /* GraphQL */ `
+  subscription OnDeleteProductsInPurchaseOrder {
+    onDeleteProductsInPurchaseOrder {
       id
       purchaseOrderID
       name
@@ -3933,6 +2664,7 @@ export const onCreateOrderQuotation = /* GraphQL */ `
     onCreateOrderQuotation {
       id
       items {
+        id
         name
         quantity
         siUnit
@@ -3953,6 +2685,7 @@ export const onUpdateOrderQuotation = /* GraphQL */ `
     onUpdateOrderQuotation {
       id
       items {
+        id
         name
         quantity
         siUnit
@@ -3973,6 +2706,7 @@ export const onDeleteOrderQuotation = /* GraphQL */ `
     onDeleteOrderQuotation {
       id
       items {
+        id
         name
         quantity
         siUnit
@@ -3988,27 +2722,16 @@ export const onDeleteOrderQuotation = /* GraphQL */ `
     }
   }
 `;
-export const onCreateGoodsTask = /* GraphQL */ `
-  subscription OnCreateGoodsTask {
-    onCreateGoodsTask {
+export const onCreateGoodsTaskBetweenRandS = /* GraphQL */ `
+  subscription OnCreateGoodsTaskBetweenRandS {
+    onCreateGoodsTaskBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4020,55 +2743,15 @@ export const onCreateGoodsTask = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4081,19 +2764,8 @@ export const onCreateGoodsTask = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4103,75 +2775,33 @@ export const onCreateGoodsTask = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4195,27 +2825,16 @@ export const onCreateGoodsTask = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateGoodsTask = /* GraphQL */ `
-  subscription OnUpdateGoodsTask {
-    onUpdateGoodsTask {
+export const onUpdateGoodsTaskBetweenRandS = /* GraphQL */ `
+  subscription OnUpdateGoodsTaskBetweenRandS {
+    onUpdateGoodsTaskBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4227,55 +2846,15 @@ export const onUpdateGoodsTask = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4288,19 +2867,8 @@ export const onUpdateGoodsTask = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4310,75 +2878,33 @@ export const onUpdateGoodsTask = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4402,27 +2928,16 @@ export const onUpdateGoodsTask = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteGoodsTask = /* GraphQL */ `
-  subscription OnDeleteGoodsTask {
-    onDeleteGoodsTask {
+export const onDeleteGoodsTaskBetweenRandS = /* GraphQL */ `
+  subscription OnDeleteGoodsTaskBetweenRandS {
+    onDeleteGoodsTaskBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4434,55 +2949,15 @@ export const onDeleteGoodsTask = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4495,19 +2970,8 @@ export const onDeleteGoodsTask = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4517,75 +2981,33 @@ export const onDeleteGoodsTask = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4609,27 +3031,322 @@ export const onDeleteGoodsTask = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePaymentTask = /* GraphQL */ `
-  subscription OnCreatePaymentTask {
-    onCreatePaymentTask {
+export const onCreateGoodsTaskBetweenSandF = /* GraphQL */ `
+  subscription OnCreateGoodsTaskBetweenSandF {
+    onCreateGoodsTaskBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      items {
+        name
+        quantity
+        siUnit
+        variety
+        grade
+        price
+      }
+      updatedAt
+      createdAt
+      deliveryDate
+      status
+    }
+  }
+`;
+export const onUpdateGoodsTaskBetweenSandF = /* GraphQL */ `
+  subscription OnUpdateGoodsTaskBetweenSandF {
+    onUpdateGoodsTaskBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      items {
+        name
+        quantity
+        siUnit
+        variety
+        grade
+        price
+      }
+      updatedAt
+      createdAt
+      deliveryDate
+      status
+    }
+  }
+`;
+export const onDeleteGoodsTaskBetweenSandF = /* GraphQL */ `
+  subscription OnDeleteGoodsTaskBetweenSandF {
+    onDeleteGoodsTaskBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      items {
+        name
+        quantity
+        siUnit
+        variety
+        grade
+        price
+      }
+      updatedAt
+      createdAt
+      deliveryDate
+      status
+    }
+  }
+`;
+export const onCreatePaymentTaskBetweenRandS = /* GraphQL */ `
+  subscription OnCreatePaymentTaskBetweenRandS {
+    onCreatePaymentTaskBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4641,55 +3358,15 @@ export const onCreatePaymentTask = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4702,19 +3379,8 @@ export const onCreatePaymentTask = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4724,75 +3390,33 @@ export const onCreatePaymentTask = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4810,27 +3434,16 @@ export const onCreatePaymentTask = /* GraphQL */ `
     }
   }
 `;
-export const onUpdatePaymentTask = /* GraphQL */ `
-  subscription OnUpdatePaymentTask {
-    onUpdatePaymentTask {
+export const onUpdatePaymentTaskBetweenRandS = /* GraphQL */ `
+  subscription OnUpdatePaymentTaskBetweenRandS {
+    onUpdatePaymentTaskBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4842,55 +3455,15 @@ export const onUpdatePaymentTask = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -4903,19 +3476,8 @@ export const onUpdatePaymentTask = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -4925,75 +3487,33 @@ export const onUpdatePaymentTask = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5011,27 +3531,16 @@ export const onUpdatePaymentTask = /* GraphQL */ `
     }
   }
 `;
-export const onDeletePaymentTask = /* GraphQL */ `
-  subscription OnDeletePaymentTask {
-    onDeletePaymentTask {
+export const onDeletePaymentTaskBetweenRandS = /* GraphQL */ `
+  subscription OnDeletePaymentTaskBetweenRandS {
+    onDeletePaymentTaskBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5043,55 +3552,15 @@ export const onDeletePaymentTask = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5104,19 +3573,8 @@ export const onDeletePaymentTask = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5126,75 +3584,33 @@ export const onDeletePaymentTask = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5212,27 +3628,304 @@ export const onDeletePaymentTask = /* GraphQL */ `
     }
   }
 `;
-export const onCreateInvoice = /* GraphQL */ `
-  subscription OnCreateInvoice {
-    onCreateInvoice {
+export const onCreatePaymentTaskBetweenSandF = /* GraphQL */ `
+  subscription OnCreatePaymentTaskBetweenSandF {
+    onCreatePaymentTaskBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      paid
+      amount
+      payBefore
+      receipt
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onUpdatePaymentTaskBetweenSandF = /* GraphQL */ `
+  subscription OnUpdatePaymentTaskBetweenSandF {
+    onUpdatePaymentTaskBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      paid
+      amount
+      payBefore
+      receipt
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onDeletePaymentTaskBetweenSandF = /* GraphQL */ `
+  subscription OnDeletePaymentTaskBetweenSandF {
+    onDeletePaymentTaskBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      paid
+      amount
+      payBefore
+      receipt
+      updatedAt
+      createdAt
+    }
+  }
+`;
+export const onCreateInvoiceBetweenRandS = /* GraphQL */ `
+  subscription OnCreateInvoiceBetweenRandS {
+    onCreateInvoiceBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5244,55 +3937,15 @@ export const onCreateInvoice = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5305,19 +3958,8 @@ export const onCreateInvoice = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5327,75 +3969,33 @@ export const onCreateInvoice = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5420,27 +4020,16 @@ export const onCreateInvoice = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateInvoice = /* GraphQL */ `
-  subscription OnUpdateInvoice {
-    onUpdateInvoice {
+export const onUpdateInvoiceBetweenRandS = /* GraphQL */ `
+  subscription OnUpdateInvoiceBetweenRandS {
+    onUpdateInvoiceBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5452,55 +4041,15 @@ export const onUpdateInvoice = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5513,19 +4062,8 @@ export const onUpdateInvoice = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5535,75 +4073,33 @@ export const onUpdateInvoice = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5628,27 +4124,16 @@ export const onUpdateInvoice = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteInvoice = /* GraphQL */ `
-  subscription OnDeleteInvoice {
-    onDeleteInvoice {
+export const onDeleteInvoiceBetweenRandS = /* GraphQL */ `
+  subscription OnDeleteInvoiceBetweenRandS {
+    onDeleteInvoiceBetweenRandS {
       id
       retailer {
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5660,55 +4145,15 @@ export const onDeleteInvoice = /* GraphQL */ `
           name
         }
         goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
           nextToken
         }
         paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
           nextToken
         }
         invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
           nextToken
         }
         verified
@@ -5721,19 +4166,8 @@ export const onDeleteInvoice = /* GraphQL */ `
         id
         name
         employees {
-          items {
-            id
-            name
-            role
-            retailerCompanyID
-            supplierCompanyID
-            contactNumber
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        type
         address
         rating {
           numberOfRatings
@@ -5743,75 +4177,342 @@ export const onDeleteInvoice = /* GraphQL */ `
           bankName
           accountNumber
         }
+        favouriteStores {
+          id
+          name
+        }
         registrationNumber
         listings {
-          items {
-            id
-            supplierID
-            productName
-            variety
-            quantityAvailable
-            lowPrice
-            highPrice
-            minimumQuantity
-            productPicture
-            grade
-            siUnit
-            updatedAt
-            createdAt
-          }
           nextToken
         }
-        goodsTask {
-          items {
-            id
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            deliveryDate
-            status
-          }
+        goodsTaskRetailer {
           nextToken
         }
-        paymentTask {
-          items {
-            id
-            retailerID
-            supplierID
-            paid
-            amount
-            payBefore
-            receipt
-            updatedAt
-            createdAt
-          }
+        goodsTaskFarmer {
           nextToken
         }
-        invoice {
-          items {
-            id
-            retailerID
-            supplierID
-            amount
-            updatedAt
-            createdAt
-            paid
-            receivedBy
-          }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
           nextToken
         }
         chatGroups {
-          items {
-            id
-            name
-            retailerID
-            supplierID
-            updatedAt
-            createdAt
-            mostRecentMessage
-            mostRecentMessageSender
-          }
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      items {
+        name
+        quantity
+        siUnit
+        variety
+        grade
+        price
+      }
+      amount
+      updatedAt
+      createdAt
+      paid
+      receivedBy
+    }
+  }
+`;
+export const onCreateInvoiceBetweenSandF = /* GraphQL */ `
+  subscription OnCreateInvoiceBetweenSandF {
+    onCreateInvoiceBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      items {
+        name
+        quantity
+        siUnit
+        variety
+        grade
+        price
+      }
+      amount
+      updatedAt
+      createdAt
+      paid
+      receivedBy
+    }
+  }
+`;
+export const onUpdateInvoiceBetweenSandF = /* GraphQL */ `
+  subscription OnUpdateInvoiceBetweenSandF {
+    onUpdateInvoiceBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      supplierID
+      items {
+        name
+        quantity
+        siUnit
+        variety
+        grade
+        price
+      }
+      amount
+      updatedAt
+      createdAt
+      paid
+      receivedBy
+    }
+  }
+`;
+export const onDeleteInvoiceBetweenSandF = /* GraphQL */ `
+  subscription OnDeleteInvoiceBetweenSandF {
+    onDeleteInvoiceBetweenSandF {
+      id
+      farmer {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTask {
+          nextToken
+        }
+        paymentTask {
+          nextToken
+        }
+        invoice {
+          nextToken
+        }
+        chatGroups {
+          nextToken
+        }
+        verified
+        logo
+        updatedAt
+        createdAt
+      }
+      farmerID
+      supplier {
+        id
+        name
+        employees {
+          nextToken
+        }
+        address
+        rating {
+          numberOfRatings
+          currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
+        }
+        favouriteStores {
+          id
+          name
+        }
+        registrationNumber
+        listings {
+          nextToken
+        }
+        goodsTaskRetailer {
+          nextToken
+        }
+        goodsTaskFarmer {
+          nextToken
+        }
+        paymentTaskRetailer {
+          nextToken
+        }
+        paymentTaskFarmer {
+          nextToken
+        }
+        invoiceRetailer {
+          nextToken
+        }
+        invoiceFarmer {
+          nextToken
+        }
+        chatGroups {
           nextToken
         }
         verified
