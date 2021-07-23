@@ -589,6 +589,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            userType={props.user.role}
           />
         )}
       </TabStack.Screen>

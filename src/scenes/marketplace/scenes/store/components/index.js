@@ -724,6 +724,7 @@ const PurchaseOrderList = props => {
 };
 
 const PurchaseOrderComponent = props => {
+  const [edit, setEdit] = useState(false);
   const deleteItemFromPO = async () => {
     console.log('deleting item: ' + props.id);
     try {

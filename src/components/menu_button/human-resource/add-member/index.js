@@ -81,9 +81,9 @@ export const AddEmployeeButtonModal = props => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [errorText, setErrorText] = useState('');
-  const [role, setRole] = useState('retailemployee');
+  const [role, setRole] = useState('receiver');
   const [items, setItems] = useState([
-    {label: 'Retail Employee', value: 'retailemployee'},
+    {label: 'Receiver', value: 'receiver'},
     {label: 'Retail Manager', value: 'retailmanager'},
     {label: 'General Manager', value: 'generalmanager'},
     {label: 'Accounts', value: 'accounts'},

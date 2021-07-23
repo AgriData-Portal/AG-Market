@@ -62,21 +62,6 @@ export const HumanResource = props => {
   }, []);
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
-      {/*<View
-        style={{
-          flexDirection: 'row',
-          top: hp('3%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          right: wp('3%'),
-        }}>
-        <View style={{right: wp('10%')}}>
-          <BackButton navigation={props.navigation} />
-        </View>
-        <View>
-          <Text style={[Typography.header]}>{Strings.humanResource}</Text>
-        </View>
-      </View>*/}
       <View style={{top: hp('0%')}}>
         <View
           style={{
@@ -112,34 +97,6 @@ export const HumanResource = props => {
             <AddEmployeeButton user={props.user} setTeamList={setTeamList} />
           </View>
         </View>
-        <TouchableOpacity
-          onPress={() => setSuccesfulChangesModal(true)}
-          style={{
-            top: hp('2%'),
-            width: wp('55%'),
-            height: hp('5%'),
-            backgroundColor: Colors.LIGHT_BLUE,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'row',
-            borderRadius: 10,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.23,
-            shadowRadius: 2.62,
-            alignSelf: 'center',
-            elevation: 4,
-          }}>
-          <Text>{Strings.saveChanges}</Text>
-          <Icon
-            name="checkmark-circle-outline"
-            size={wp('5.5%')}
-            style={{left: wp('4%')}}
-          />
-        </TouchableOpacity>
         <Modal
           isVisible={succesfulChangesModal}
           onBackdropPress={() => [setSuccesfulChangesModal(false)]}>
@@ -170,28 +127,44 @@ const Participant = props => {
           {props.role}
         </Text>
       </View>
-      <TouchableOpacity
-        onPress={() => setConfirmRemoveModal(true)}
-        style={{
-          left: wp('75%'),
-          bottom: hp('5%'),
-          width: wp('8%'),
-          height: hp('4%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Icon name="trash-outline" size={wp('6%')} />
-      </TouchableOpacity>
-      <Modal
-        isVisible={confirmRemoveModal}
-        onBackdropPress={() => setConfirmRemoveModal(false)}>
-        <ConfirmRemoveModal setConfirmRemoveModal={setConfirmRemoveModal} />
+      {props.role == 'generalmanager' || props.role == 'owner' ? (
+        <View />
+      ) : (
+        <TouchableOpacity
+          onPress={() => setConfirmRemoveModal(true)}
+          style={{
+            left: wp('75%'),
+            bottom: hp('5%'),
+            width: wp('8%'),
+            height: hp('4%'),
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Icon name="trash-outline" size={wp('6%')} />
+        </TouchableOpacity>
+      )}
+      <Modal isVisible={confirmRemoveModal}>
+        <ConfirmRemoveModal
+          setConfirmRemoveModal={setConfirmRemoveModal}
+          user={props.user}
+        />
       </Modal>
     </View>
   );
 };
 
 const ConfirmRemoveModal = props => {
+  const removeMember = async () => {
+    try {
+      const member = await API.graphql({
+        query: deleteUser,
+        variables: {id: props.user.id},
+      });
+      console.log(members.data.getUsersBySupplierCompany.items);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <View
       style={{
@@ -229,6 +202,7 @@ const ConfirmRemoveModal = props => {
       </View>
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
+          onPress={() => props.setConfirmRemoveModal(false)}
           style={{
             top: hp('7%'),
             backgroundColor: Colors.LIGHT_BLUE,
@@ -336,7 +310,9 @@ const ParticipantList = props => {
       }
       renderItem={({item}) => {
         console.log(item);
-        return <Participant name={item.name} role={item.role} />;
+        return (
+          <Participant name={item.name} role={item.role} user={props.user} />
+        );
       }}></FlatList>
   );
 };
