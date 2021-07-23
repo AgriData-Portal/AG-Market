@@ -202,4 +202,5 @@ export default {
   paymentTerms: '付款方法',
   creditTerm: '赊购条款',
   sendQuotationToRetailer: '发送报价给零售商',
+  edit: '编辑',
 };

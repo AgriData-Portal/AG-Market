@@ -18,6 +18,18 @@ import {
   updateChatGroup,
   createGoodsTask,
 } from '../../../../graphql/mutations';
+import AudioRecorderPlayer, {
+  AVEncoderAudioQualityIOSType,
+  AVEncodingOption,
+  AudioEncoderAndroidType,
+  AudioSet,
+  AudioSourceAndroidType,
+} from 'react-native-audio-recorder-player';
+import {
+  getOrderQuotation,
+  listUsersInChat,
+  purchaseOrderItems,
+} from '../../../../graphql/queries';
 
 var dayjs = require('dayjs');
 
@@ -30,13 +42,29 @@ import {ChatBubbleList} from './chat-bubbles';
 import {ChatInfo} from './chat-info';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {DismissKeyboardView} from '_components';
+import {set} from 'react-native-reanimated';
 
 export {ChatBubbleList, ChatInfo};
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
 export const MessageInput = props => {
   const [message, setMessage] = useState('');
   const [imageSource, setImageSource] = useState(null);
   const [imageModal, setImageModal] = useState(false);
+  const [recording, setRecording] = useState({
+    isLoggingIn: false,
+    recordSecs: 0,
+    recordTime: '00:00:00',
+    currentPositionSec: 0,
+    currentDurationSec: 0,
+    playTime: '00:00:00',
+    duration: '00:00:00',
+  });
+  const [audio, setAudio] = useState(false);
+  const [whenMicPressed, setMicPressed] = useState(false);
+
+  audioRecorderPlayer.setSubscriptionDuration(0.09);
 
   function selectImage() {
     let options = {
@@ -58,6 +86,67 @@ export const MessageInput = props => {
       }
     });
   }
+  onSlideRight = () => {
+    onStopRecord();
+  };
+  onStartRecord = async () => {
+    const path = 'hello.mp4';
+    const audioSet = {
+      AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+      AudioSourceAndroid: AudioSourceAndroidType.MIC,
+      AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+      AVNumberOfChannelsKeyIOS: 2,
+      AVFormatIDKeyIOS: AVEncodingOption.aac,
+    };
+    console.log('audioSet', audioSet);
+    const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
+    audioRecorderPlayer.addRecordBackListener(e => {
+      setRecording({
+        recordSecs: e.current_position,
+        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+      });
+    });
+    console.log(`uri: ${uri}`);
+  };
+
+  onStopRecord = async () => {
+    const result = await audioRecorderPlayer.stopRecorder();
+    audioRecorderPlayer.removeRecordBackListener();
+    setRecording({
+      recordSecs: 0,
+    });
+    console.log(result);
+  };
+
+  onStartPlay = async () => {
+    console.log('onStartPlay');
+    const path = 'hello.mp4';
+    const msg = await audioRecorderPlayer.startPlayer(path);
+    audioRecorderPlayer.setVolume(1.0);
+    console.log(msg);
+    audioRecorderPlayer.addPlayBackListener(e => {
+      if (e.current_position === e.duration) {
+        console.log('finished');
+        audioRecorderPlayer.stopPlayer();
+      }
+      setRecording({
+        currentPositionSec: e.currentPosition,
+        currentDurationSec: e.duration,
+        playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+        duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+      });
+    });
+  };
+
+  onPausePlay = async () => {
+    await audioRecorderPlayer.pausePlayer();
+  };
+
+  onStopPlay = async () => {
+    console.log('onStopPlay');
+    audioRecorderPlayer.stopPlayer();
+    audioRecorderPlayer.removePlayBackListener();
+  };
   const createNewMessage = async () => {
     console.log('creating new message');
     try {
@@ -116,20 +205,20 @@ export const MessageInput = props => {
               width: wp('60%'),
               height: hp('7%'),
               borderBottomColor: 'transparent',
-              left: wp('2%'),
+              left: wp('15%'),
               color: 'black',
+              top: hp('1.5%'),
             }}
           />
           <TouchableOpacity
-            onPress={() => {
-              selectImage();
-            }}
+            onPressIn={() => [onStartRecord(), setMicPressed(true)]}
+            onPressOut={() => [onStopRecord(), setAudio(true)]}
             style={{
-              height: hp('8%'),
-              width: hp('8%'),
+              height: hp('9%'),
+              width: hp('9%'),
 
-              left: wp('2.5%'),
-              top: hp('1.5%'),
+              left: wp('5%'),
+              top: hp('2%'),
 
               shadowColor: '#000',
               shadowOffset: {
@@ -140,7 +229,132 @@ export const MessageInput = props => {
               shadowRadius: 3.84,
               elevation: 5,
             }}>
-            <Icon name="images-outline" size={wp('6%')} />
+            <Icon name="mic-outline" size={wp('7%')} />
+          </TouchableOpacity>
+          {whenMicPressed ? (
+            <Text
+              style={{
+                position: 'absolute',
+                left: wp('40%'),
+                top: hp('2.5%'),
+                width: wp('17%'),
+              }}>
+              {recording.recordTime}
+            </Text>
+          ) : (
+            <View></View>
+          )}
+          <Modal isVisible={audio}>
+            <View
+              style={{
+                backgroundColor: Colors.GRAY_LIGHT,
+                top: hp('45%'),
+                height: hp('13%'),
+                width: wp('100%'),
+                right: wp('5%'),
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                onPress={() => [setMicPressed(false), setAudio(false)]}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  right: wp('10%'),
+                }}>
+                <Icon name="trash-outline" size={wp('8%')} color="white"></Icon>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  right: wp('5%'),
+                  top: hp('4%'),
+                  width: wp('17%'),
+                }}>
+                {recording.playTime}
+              </Text>
+              <TouchableOpacity
+                onPress={() => onStartPlay()}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: wp('5%'),
+                }}>
+                <Icon name="play" size={wp('8%')} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onStopPlay()}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Icon name="stop" size={wp('8%')} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  top: hp('2.8%'),
+                  left: wp('10%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                }}>
+                <Icon
+                  name="paper-plane-outline"
+                  size={wp('6%')}
+                  color={Colors.LIGHT_BLUE}
+                />
+              </TouchableOpacity>
+            </View>
+          </Modal>
+          <TouchableOpacity
+            onPress={() => {
+              selectImage();
+            }}
+            style={{
+              height: hp('8%'),
+              width: hp('8%'),
+
+              right: wp('5%'),
+              top: hp('2%'),
+
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}>
+            <Icon name="images-outline" size={wp('7%')} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity

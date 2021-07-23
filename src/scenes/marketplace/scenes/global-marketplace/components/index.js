@@ -68,7 +68,7 @@ export const ProductCard = props => {
       <Text style={[Typography.normal, {top: hp('2.5%')}]}>
         {props.productName}
       </Text>
-      <Text style={[Typography.small, {top: hp('2%'), width: wp('25%')}]}>
+      <Text style={[Typography.small, {top: hp('3%'), width: wp('25%')}]}>
         {Strings.variety}: {props.variety}
         {'\n'}
         {Strings.price}: {props.lowPrice} - {props.highPrice}
@@ -318,12 +318,13 @@ export const ProductPopUp = props => {
               readonly={true}
               startingValue={3.5}></Rating>
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => [
                 props.navigation.navigate('store', {
                   itemId: props.supplierID,
                   storeName: props.supplier.name,
-                })
-              }
+                }),
+                props.setProductModal(false),
+              ]}
               style={{
                 width: wp('40%'),
                 flexDirection: 'row',
@@ -404,7 +405,10 @@ export const ProductPopUp = props => {
       </View>
       <Modal
         isVisible={successfulModal}
-        onBackdropPress={() => setSuccessfulModal(false)}>
+        onBackdropPress={() => [
+          setSuccessfulModal(false),
+          props.setProductModal(false),
+        ]}>
         <SuccessfulModal text="You have successfully sent an inquiry to the supplier. Go to chats to continue your conversation" />
       </Modal>
     </View>

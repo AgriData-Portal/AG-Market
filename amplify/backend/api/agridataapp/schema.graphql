@@ -175,6 +175,15 @@ type Message
     queryField: "messagesInChatByDate"
   ) {
   id: ID
+<<<<<<< HEAD
+  chatGroupID: ID!
+  "retailerID+supplierID"
+  type: String!
+  "Text, Product Inquiry, PO, Quotation, Image, Recording"
+  content: String!
+  senderID: ID!
+  sender: String!
+=======
   chatGroupID: ID
   "retailerID+supplierID or farmerID+supplierID"
   type: String
@@ -182,6 +191,7 @@ type Message
   content: String
   senderID: ID
   sender: String
+>>>>>>> 2841264dbeae9ce79dd97a7571f392ae3dda9999
   updatedAt: String
   createdAt: String
 }

@@ -210,4 +210,6 @@ export default {
   paymentTerms: 'Payment Terms',
   creditTerm: 'Credit Terms',
   sendQuotationToRetailer: 'Send Quotation To Retailer',
+  edit: 'Edit',
+  bankName: 'Bank Name',
 };
