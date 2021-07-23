@@ -83,33 +83,6 @@ export const CompanyProfile = props => {
   };
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
-      {/*<View
-        style={{
-          backgroundColor: 'red',
-          flexDirection: 'row',
-          top: hp('3%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: wp('100%'),
-        }}>
-        <View style={{left: wp('4%'), position: 'absolute'}}>
-          <BackButton navigation={props.navigation} />
-        </View>
-        <View>
-          <Text style={[Typography.header]}>{Strings.companyProfile}</Text>
-        </View>
-        <TouchableOpacity
-          style={{
-            right: wp('4%'),
-            position: 'absolute',
-          }}>
-          <Icon
-            name="create-outline"
-            size={wp('6%')}
-            onPress={() => props.navigation.navigate('editcompany')}
-          />
-        </TouchableOpacity>
-        </View>*/}
       <View
         style={{
           top: hp('4%'),
@@ -144,12 +117,12 @@ export const CompanyProfile = props => {
           top: hp('8%'),
           backgroundColor: Colors.GRAY_MEDIUM,
           width: wp('85%'),
-          height: hp('40%'),
+          height: hp('43%'),
           borderRadius: 10,
         }}>
         <View
           style={{
-            top: hp('2%'),
+            top: hp('1%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
@@ -157,7 +130,7 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.companyRegistrationNum}
           </Text>
-          <View>
+          <View style={{top: hp('0.5%')}}>
             <Text style={[Typography.normal]}>
               {company.registrationNumber}
             </Text>
@@ -165,7 +138,7 @@ export const CompanyProfile = props => {
         </View>
         <View
           style={{
-            top: hp('4%'),
+            top: hp('3%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
@@ -173,13 +146,13 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.companyAddress}
           </Text>
-          <View>
+          <View style={{top: hp('0.5%')}}>
             <Text style={[Typography.normal]}>{company.address}</Text>
           </View>
         </View>
         <View
           style={{
-            top: hp('6%'),
+            top: hp('5%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
@@ -187,25 +160,25 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.contactNumber}
           </Text>
-          <View>
-            <Text style={[Typography.normal]}>+60 11 6569 1999 </Text>
+          <View style={{top: hp('0.5%')}}>
+            <Text style={[Typography.normal]}> {props.user.contactNumber}</Text>
           </View>
         </View>
         <View
           style={{
-            top: hp('8%'),
+            top: hp('7%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
           }}>
           <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
-          <View>
+          <View style={{top: hp('0.5%')}}>
             <Text style={[Typography.normal]}>citygrocerkk@gmail.com</Text>
           </View>
         </View>
         <View
           style={{
-            top: hp('10%'),
+            top: hp('9%'),
             left: wp('6%'),
             width: wp('73%'),
             height: hp('5%'),
@@ -213,20 +186,37 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.bankDetails}
           </Text>
-          <View>
-            <Text style={[Typography.normal]}>13812641234146194672136417</Text>
-          </View>
+          <Text style={[Typography.normal, {top: hp('0.5%')}]}>
+            13812641234146194672136417
+          </Text>
+        </View>
+        <View
+          style={{
+            top: hp('11%'),
+            left: wp('6%'),
+            width: wp('73%'),
+            height: hp('5%'),
+          }}>
+          <Text style={[Typography.placeholderSmall]}>{Strings.bankName}</Text>
+          <Text style={[Typography.normal, {top: '0.5%'}]}>Maybank</Text>
         </View>
       </View>
       <TouchableOpacity
-        onPress={() => props.navigation.navigate('editcompany')}
+        onPress={() =>
+          props.navigation.navigate('editcompany', {
+            contactNumber: props.user.contactNumber,
+            email: 'email@test.com',
+            bankNumber: '123521',
+            bankName: 'maybank',
+          })
+        }
         style={{
           backgroundColor: Colors.LIGHT_BLUE,
           width: wp('45%'),
-          height: hp('4%'),
+          height: hp('5%'),
           alignItems: 'center',
           justifyContent: 'center',
-          top: hp('13%'),
+          top: hp('10%'),
           borderRadius: 10,
           shadowColor: '#000',
           shadowOffset: {
@@ -237,7 +227,9 @@ export const CompanyProfile = props => {
           shadowRadius: 3.84,
           elevation: 5,
         }}>
-        <Text style={[Typography.normal]}>Edit {Strings.companyProfile}</Text>
+        <Text style={[Typography.normal]}>
+          {Strings.edit} {Strings.companyProfile}
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

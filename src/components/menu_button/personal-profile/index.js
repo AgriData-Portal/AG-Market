@@ -78,7 +78,7 @@ export const PersonalProfile = props => {
         </View>*/}
           <View
             style={{
-              top: hp('3%'),
+              top: hp('5%'),
               alignItems: 'center',
               justifyContent: 'center',
               width: wp('80%'),
@@ -98,7 +98,7 @@ export const PersonalProfile = props => {
           </View>
           <View
             style={{
-              top: hp('8%'),
+              top: hp('10%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
               height: hp('35%'),
@@ -124,7 +124,7 @@ export const PersonalProfile = props => {
                 </View>
               )}
             </View>
-            <View
+            {/* <View
               style={{
                 top: hp('5%'),
                 left: wp('6%'),
@@ -137,10 +137,10 @@ export const PersonalProfile = props => {
               <View>
                 <Text style={[Typography.normal]}>STREET, CITY, STATE</Text>
               </View>
-            </View>
+            </View> */}
             <View
               style={{
-                top: hp('7%'),
+                top: hp('5%'),
                 left: wp('6%'),
                 width: wp('73%'),
                 height: hp('5%'),
@@ -152,7 +152,7 @@ export const PersonalProfile = props => {
             </View>
             <View
               style={{
-                top: hp('9%'),
+                top: hp('7%'),
                 left: wp('6%'),
                 width: wp('73%'),
                 height: hp('5%'),
@@ -168,14 +168,18 @@ export const PersonalProfile = props => {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('editprofile')}
+            onPress={() =>
+              props.navigation.navigate('editprofile', {
+                email: 'email@test.com',
+              })
+            }
             style={{
               backgroundColor: Colors.LIGHT_BLUE,
               width: wp('45%'),
-              height: hp('4%'),
+              height: hp('5%'),
               alignItems: 'center',
               justifyContent: 'center',
-              top: hp('10%'),
+              top: hp('1%'),
               borderRadius: 10,
               shadowColor: '#000',
               shadowOffset: {
@@ -187,16 +191,16 @@ export const PersonalProfile = props => {
               elevation: 5,
             }}>
             <Text style={[Typography.normal]}>
-              Edit {Strings.personalProfile}
+              {Strings.edit} {Strings.personalProfile}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setChangePassword(true)}
             style={{
               alignSelf: 'center',
-              top: hp('12%'),
-              width: wp('40%'),
-              height: hp('4%'),
+              top: hp('9%'),
+              width: wp('45%'),
+              height: hp('5%'),
               backgroundColor: Colors.LIGHT_BLUE,
               alignItems: 'center',
               justifyContent: 'center',

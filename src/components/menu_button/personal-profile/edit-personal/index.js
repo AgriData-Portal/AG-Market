@@ -34,7 +34,7 @@ export const EditPersonal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [name, setName] = useState(props.user.name);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(props.route.params.email);
   const [number, setNumber] = useState(props.user.contactNumber);
   const [errorText, setErrorText] = useState('');
 
@@ -61,6 +61,7 @@ export const EditPersonal = props => {
       }
     });
   }
+
   const saveChanges = async () => {
     try {
       const editPersonal = await API.graphql({
@@ -169,7 +170,7 @@ export const EditPersonal = props => {
               top: hp('10%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
-              height: hp('33%'),
+              height: hp('27%'),
               borderRadius: 10,
             }}>
             <View
@@ -200,7 +201,7 @@ export const EditPersonal = props => {
             </View>
             <View
               style={{
-                top: hp('7%'),
+                top: hp('9%'),
                 left: wp('5%'),
                 width: wp('75%'),
                 height: hp('5%'),
@@ -208,7 +209,6 @@ export const EditPersonal = props => {
               <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
-                placeholder="email@gmail.com"
                 underlineColorAndroid="transparent"
                 value={email}
                 onChangeText={item => setEmail(item)}
@@ -222,7 +222,7 @@ export const EditPersonal = props => {
                 style={{borderColor: Colors.GRAY_DARK, borderBottomWidth: 1}}
               />
             </View>
-            <View
+            {/* <View
               style={{
                 top: hp('11%'),
                 left: wp('5%'),
@@ -247,7 +247,7 @@ export const EditPersonal = props => {
               <View
                 style={{borderColor: Colors.GRAY_DARK, borderBottomWidth: 1}}
               />
-            </View>
+            </View> */}
           </View>
 
           <TouchableOpacity
@@ -272,6 +272,7 @@ export const EditPersonal = props => {
               } else {
                 try {
                   saveChanges();
+                  setSuccessfulModal(true);
                 } catch {
                   e => console.log('error ' + e);
                 }

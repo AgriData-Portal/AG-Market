@@ -132,7 +132,7 @@ export const FarmerTasks = props => {
               style={[
                 Typography.normal,
                 {
-                  color: Colors.GRAY_DARK,
+                  color: 'black',
                 },
               ]}>
               {Strings.claim}
@@ -150,6 +150,7 @@ export const FarmerTasks = props => {
                 Typography.normal,
                 {
                   fontFamily: 'Poppins-Bold',
+                  color: Colors.GRAY_DARK,
                 },
               ]}>
               {Strings.claim}
