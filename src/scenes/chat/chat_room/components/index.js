@@ -32,7 +32,6 @@ import AudioRecorderPlayer, {
   AudioSet,
   AudioSourceAndroidType,
 } from 'react-native-audio-recorder-player';
-import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 import {
   getOrderQuotation,
   listUsersInChat,
@@ -70,6 +69,7 @@ export const MessageInput = props => {
     duration: '00:00:00',
   });
   const [audio, setAudio] = useState(false);
+  const [whenMicPressed, setMicPressed] = useState(false);
 
   audioRecorderPlayer.setSubscriptionDuration(0.09);
 
@@ -110,7 +110,7 @@ export const MessageInput = props => {
     audioRecorderPlayer.addRecordBackListener(e => {
       setRecording({
         recordSecs: e.current_position,
-        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.current_position)),
+        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
       });
     });
     console.log(`uri: ${uri}`);
@@ -212,18 +212,19 @@ export const MessageInput = props => {
               width: wp('60%'),
               height: hp('7%'),
               borderBottomColor: 'transparent',
-              left: wp('14%'),
+              left: wp('15%'),
               color: 'black',
+              top: hp('1.5%'),
             }}
           />
           <TouchableOpacity
-            onPress={() => setAudio(true)}
-            onLongPress={() => onStartRecord()}
+            onPressIn={() => [onStartRecord(), setMicPressed(true)]}
+            onPressOut={() => [onStopRecord(), setAudio(true)]}
             style={{
               height: hp('9%'),
               width: hp('9%'),
 
-              left: wp('7%'),
+              left: wp('5%'),
               top: hp('2%'),
 
               shadowColor: '#000',
@@ -235,26 +236,111 @@ export const MessageInput = props => {
               shadowRadius: 3.84,
               elevation: 5,
             }}>
-            <Icon name="mic-outline" size={wp('6%')} />
+            <Icon name="mic-outline" size={wp('7%')} />
           </TouchableOpacity>
-          <RNSlidingButton
-            isVisible={audio}
-            style={{
-              width: 240,
-            }}
-            height={35}
-            onSlidingSuccess={onSlideRight}
-            slideDirection={SlideDirection.RIGHT}>
-            <View>
-              <Text numberOfLines={1}>SLIDE RIGHT TO ACCEPT</Text>
+          {whenMicPressed ? (
+            <Text
+              style={{
+                position: 'absolute',
+                left: wp('40%'),
+                top: hp('2.5%'),
+                width: wp('17%'),
+              }}>
+              {recording.recordTime}
+            </Text>
+          ) : (
+            <View></View>
+          )}
+          <Modal isVisible={audio}>
+            <View
+              style={{
+                backgroundColor: Colors.GRAY_LIGHT,
+                top: hp('45%'),
+                height: hp('13%'),
+                width: wp('100%'),
+                right: wp('5%'),
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                onPress={() => [setMicPressed(false), setAudio(false)]}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  right: wp('10%'),
+                }}>
+                <Icon name="trash-outline" size={wp('8%')} color="white"></Icon>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  right: wp('5%'),
+                  top: hp('4%'),
+                  width: wp('17%'),
+                }}>
+                {recording.playTime}
+              </Text>
+              <TouchableOpacity
+                onPress={() => onStartPlay()}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: wp('5%'),
+                }}>
+                <Icon name="play" size={wp('8%')} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onStopPlay()}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Icon name="stop" size={wp('8%')} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  top: hp('2.8%'),
+                  left: wp('10%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                }}>
+                <Icon
+                  name="paper-plane-outline"
+                  size={wp('6%')}
+                  color={Colors.LIGHT_BLUE}
+                />
+              </TouchableOpacity>
             </View>
-          </RNSlidingButton>
-          <TouchableOpacity onPress={() => onStartPlay()}>
-            <Icon name="play" size={wp('6%')} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => onStopPlay()}>
-            <Icon name="stop" size={wp('6%')} />
-          </TouchableOpacity>
+          </Modal>
           <TouchableOpacity
             onPress={() => {
               selectImage();
@@ -263,7 +349,7 @@ export const MessageInput = props => {
               height: hp('8%'),
               width: hp('8%'),
 
-              right: wp('4%'),
+              right: wp('5%'),
               top: hp('2%'),
 
               shadowColor: '#000',
@@ -275,7 +361,7 @@ export const MessageInput = props => {
               shadowRadius: 3.84,
               elevation: 5,
             }}>
-            <Icon name="images-outline" size={wp('6%')} />
+            <Icon name="images-outline" size={wp('7%')} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity
