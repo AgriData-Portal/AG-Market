@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* AgriPasarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* AgriPasarTests.m */; };
+		00E356F31AD99517003FC87E /* MarketTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MarketTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1EA299D1BE904796BE538B4D /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B04297CCA3C46E396017C81 /* Poppins-BlackItalic.ttf */; };
-		25746A0241C29C3066D7E436 /* libPods-AgriPasar-AgriPasarTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5ED946F48493911F9679DF /* libPods-AgriPasar-AgriPasarTests.a */; };
+		25746A0241C29C3066D7E436 /* libPods-Market-MarketTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5ED946F48493911F9679DF /* libPods-Market-MarketTests.a */; };
 		28F7B5AC7B2440C7AE5B88CB /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBC38FE2E8104ED7A0181F1B /* Poppins-SemiBoldItalic.ttf */; };
 		30DDF3D578AB4B0DB4A2E207 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D42B475ED124C84B6CD5389 /* Poppins-Light.ttf */; };
 		4CEAB2431E4F49FD8E0ECD9D /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA8D02041FAB457E96ACDDDB /* Poppins-Bold.ttf */; };
 		6120A6C3263F4922945D6403 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0347006E6F5C4C32A8C975A9 /* Poppins-BoldItalic.ttf */; };
 		6226334F2C244CA8ABBE6366 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB763923E31B4F5BA3660724 /* Poppins-Thin.ttf */; };
-		669E5FB3D2C1B6C02836B6F2 /* libPods-AgriPasar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 464F47CCD4925EC3F2F3BF37 /* libPods-AgriPasar.a */; };
+		669E5FB3D2C1B6C02836B6F2 /* libPods-Market.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 464F47CCD4925EC3F2F3BF37 /* libPods-Market.a */; };
 		7DF74B993B184ABCA780703D /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58BA1688611243B1965D774E /* Poppins-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		83690AFFE1654313AAF02ACD /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C5031973C0C439E9C6D1216 /* Poppins-ExtraBoldItalic.ttf */; };
@@ -40,41 +40,41 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = AgriPasar;
+			remoteInfo = Market;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* AgriPasarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgriPasarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* MarketTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarketTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* AgriPasarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgriPasarTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* MarketTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarketTests.m; sourceTree = "<group>"; };
 		0347006E6F5C4C32A8C975A9 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		089440DB69D143F380F41FC7 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		0CF6A3D8E1A9464B9D091FA9 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
 		0F233DB2FB464A48961F4E46 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* AgriPasar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgriPasar.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AgriPasar/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = AgriPasar/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AgriPasar/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AgriPasar/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AgriPasar/main.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Market.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Market.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Market/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Market/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Market/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Market/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Market/main.m; sourceTree = "<group>"; };
 		29623601209845BEBF128809 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
-		29AD8DCC18D0930B72329655 /* Pods-AgriPasar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriPasar.debug.xcconfig"; path = "Target Support Files/Pods-AgriPasar/Pods-AgriPasar.debug.xcconfig"; sourceTree = "<group>"; };
-		464F47CCD4925EC3F2F3BF37 /* libPods-AgriPasar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AgriPasar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29AD8DCC18D0930B72329655 /* Pods-Market.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market.debug.xcconfig"; path = "Target Support Files/Pods-Market/Pods-Market.debug.xcconfig"; sourceTree = "<group>"; };
+		464F47CCD4925EC3F2F3BF37 /* libPods-Market.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Market.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B04297CCA3C46E396017C81 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		50E3F1242F96416E805409FE /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		58BA1688611243B1965D774E /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		5B748753535F4068A2651E63 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		5C5031973C0C439E9C6D1216 /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		7D8F04FAA2064471AA676FD3 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AgriPasar/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		82DCFBC0744DE08FCB4323C2 /* Pods-AgriPasar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriPasar.release.xcconfig"; path = "Target Support Files/Pods-AgriPasar/Pods-AgriPasar.release.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Market/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		82DCFBC0744DE08FCB4323C2 /* Pods-Market.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market.release.xcconfig"; path = "Target Support Files/Pods-Market/Pods-Market.release.xcconfig"; sourceTree = "<group>"; };
 		88A5965DDD2F460E92D8A1AF /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		8D42B475ED124C84B6CD5389 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
-		96526DFB75B533B5486D7412 /* Pods-AgriPasar-AgriPasarTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriPasar-AgriPasarTests.release.xcconfig"; path = "Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests.release.xcconfig"; sourceTree = "<group>"; };
+		96526DFB75B533B5486D7412 /* Pods-Market-MarketTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market-MarketTests.release.xcconfig"; path = "Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B1351DDA5854B37AEA8D506 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
-		CB5ED946F48493911F9679DF /* libPods-AgriPasar-AgriPasarTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AgriPasar-AgriPasarTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D85A23CF7043E42D98BCE5E0 /* Pods-AgriPasar-AgriPasarTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgriPasar-AgriPasarTests.debug.xcconfig"; path = "Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CB5ED946F48493911F9679DF /* libPods-Market-MarketTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Market-MarketTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D85A23CF7043E42D98BCE5E0 /* Pods-Market-MarketTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market-MarketTests.debug.xcconfig"; path = "Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DA8D02041FAB457E96ACDDDB /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		E20B2B0872AA42A587F2ED76 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		EB763923E31B4F5BA3660724 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25746A0241C29C3066D7E436 /* libPods-AgriPasar-AgriPasarTests.a in Frameworks */,
+				25746A0241C29C3066D7E436 /* libPods-Market-MarketTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,20 +95,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				669E5FB3D2C1B6C02836B6F2 /* libPods-AgriPasar.a in Frameworks */,
+				669E5FB3D2C1B6C02836B6F2 /* libPods-Market.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* AgriPasarTests */ = {
+		00E356EF1AD99517003FC87E /* MarketTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* AgriPasarTests.m */,
+				00E356F21AD99517003FC87E /* MarketTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = AgriPasarTests;
+			path = MarketTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -119,7 +119,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* AgriPasar */ = {
+		13B07FAE1A68108700A75B9A /* Market */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -129,15 +129,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = AgriPasar;
+			name = Market;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				464F47CCD4925EC3F2F3BF37 /* libPods-AgriPasar.a */,
-				CB5ED946F48493911F9679DF /* libPods-AgriPasar-AgriPasarTests.a */,
+				464F47CCD4925EC3F2F3BF37 /* libPods-Market.a */,
+				CB5ED946F48493911F9679DF /* libPods-Market-MarketTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -177,9 +177,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* AgriPasar */,
+				13B07FAE1A68108700A75B9A /* Market */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* AgriPasarTests */,
+				00E356EF1AD99517003FC87E /* MarketTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				325AA32C5C544F738793F3CA /* Resources */,
@@ -193,8 +193,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* AgriPasar.app */,
-				00E356EE1AD99517003FC87E /* AgriPasarTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Market.app */,
+				00E356EE1AD99517003FC87E /* MarketTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -202,10 +202,10 @@
 		B429C184EA4C701DB7AE5ACC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				29AD8DCC18D0930B72329655 /* Pods-AgriPasar.debug.xcconfig */,
-				82DCFBC0744DE08FCB4323C2 /* Pods-AgriPasar.release.xcconfig */,
-				D85A23CF7043E42D98BCE5E0 /* Pods-AgriPasar-AgriPasarTests.debug.xcconfig */,
-				96526DFB75B533B5486D7412 /* Pods-AgriPasar-AgriPasarTests.release.xcconfig */,
+				29AD8DCC18D0930B72329655 /* Pods-Market.debug.xcconfig */,
+				82DCFBC0744DE08FCB4323C2 /* Pods-Market.release.xcconfig */,
+				D85A23CF7043E42D98BCE5E0 /* Pods-Market-MarketTests.debug.xcconfig */,
+				96526DFB75B533B5486D7412 /* Pods-Market-MarketTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -213,9 +213,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* AgriPasarTests */ = {
+		00E356ED1AD99517003FC87E /* MarketTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "AgriPasarTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "MarketTests" */;
 			buildPhases = (
 				338DF12AC1A1754BDBDA987C /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -229,14 +229,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = AgriPasarTests;
-			productName = AgriPasarTests;
-			productReference = 00E356EE1AD99517003FC87E /* AgriPasarTests.xctest */;
+			name = MarketTests;
+			productName = MarketTests;
+			productReference = 00E356EE1AD99517003FC87E /* MarketTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* AgriPasar */ = {
+		13B07F861A680F5B00A75B9A /* Market */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AgriPasar" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Market" */;
 			buildPhases = (
 				AC95F0F53FA5C889FCACC733 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -251,9 +251,9 @@
 			);
 			dependencies = (
 			);
-			name = AgriPasar;
-			productName = AgriPasar;
-			productReference = 13B07F961A680F5B00A75B9A /* AgriPasar.app */;
+			name = Market;
+			productName = Market;
+			productReference = 13B07F961A680F5B00A75B9A /* Market.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -273,7 +273,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AgriPasar" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Market" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -286,8 +286,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* AgriPasar */,
-				00E356ED1AD99517003FC87E /* AgriPasarTests */,
+				13B07F861A680F5B00A75B9A /* Market */,
+				00E356ED1AD99517003FC87E /* MarketTests */,
 			);
 		};
 /* End PBXProject section */
@@ -359,7 +359,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AgriPasar-AgriPasarTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Market-MarketTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -372,15 +372,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar/Pods-AgriPasar-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar/Pods-AgriPasar-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriPasar/Pods-AgriPasar-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6B1290A2290935DDA6879678 /* [CP] Embed Pods Frameworks */ = {
@@ -389,15 +389,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8CB9D42B5A8FFD38EE98D417 /* [CP] Embed Pods Frameworks */ = {
@@ -406,15 +406,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar/Pods-AgriPasar-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar/Pods-AgriPasar-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriPasar/Pods-AgriPasar-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9C5A1FA41974AD6C686605EA /* [CP] Copy Pods Resources */ = {
@@ -423,15 +423,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgriPasar-AgriPasarTests/Pods-AgriPasar-AgriPasarTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Market-MarketTests/Pods-Market-MarketTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AC95F0F53FA5C889FCACC733 /* [CP] Check Pods Manifest.lock */ = {
@@ -449,7 +449,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AgriPasar-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Market-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -482,7 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* AgriPasarTests.m in Sources */,
+				00E356F31AD99517003FC87E /* MarketTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,7 +500,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* AgriPasar */;
+			target = 13B07F861A680F5B00A75B9A /* Market */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -508,7 +508,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D85A23CF7043E42D98BCE5E0 /* Pods-AgriPasar-AgriPasarTests.debug.xcconfig */;
+			baseConfigurationReference = D85A23CF7043E42D98BCE5E0 /* Pods-Market-MarketTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = L463XJ3434;
@@ -516,7 +516,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = AgriPasarTests/Info.plist;
+				INFOPLIST_FILE = MarketTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -530,18 +530,18 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgriPasar.app/AgriPasar";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Market.app/Market";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96526DFB75B533B5486D7412 /* Pods-AgriPasar-AgriPasarTests.release.xcconfig */;
+			baseConfigurationReference = 96526DFB75B533B5486D7412 /* Pods-Market-MarketTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = L463XJ3434;
-				INFOPLIST_FILE = AgriPasarTests/Info.plist;
+				INFOPLIST_FILE = MarketTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -555,22 +555,22 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgriPasar.app/AgriPasar";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Market.app/Market";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29AD8DCC18D0930B72329655 /* Pods-AgriPasar.debug.xcconfig */;
+			baseConfigurationReference = 29AD8DCC18D0930B72329655 /* Pods-Market.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 4N9BY5Y3KU;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = AgriPasar/Info.plist;
+				INFOPLIST_FILE = Market/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -583,7 +583,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasar;
-				PRODUCT_NAME = AgriPasar;
+				PRODUCT_NAME = Market;
 				PROVISIONING_PROFILE_SPECIFIER = "AgriData Portal Sdn Bhd";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -593,16 +593,16 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 82DCFBC0744DE08FCB4323C2 /* Pods-AgriPasar.release.xcconfig */;
+			baseConfigurationReference = 82DCFBC0744DE08FCB4323C2 /* Pods-Market.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 4N9BY5Y3KU;
 				GCC_OPTIMIZATION_LEVEL = 1;
-				INFOPLIST_FILE = AgriPasar/Info.plist;
+				INFOPLIST_FILE = Market/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -615,7 +615,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasar;
-				PRODUCT_NAME = AgriPasar;
+				PRODUCT_NAME = Market;
 				PROVISIONING_PROFILE_SPECIFIER = "AgriData Portal Sdn Bhd";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -748,7 +748,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "AgriPasarTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "MarketTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -757,7 +757,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AgriPasar" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Market" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -766,7 +766,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AgriPasar" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Market" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

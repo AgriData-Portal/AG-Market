@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AgriPasar</string>
+    <string name="app_name">Market</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
     <string name="CodePushDeploymentKey" moduleConfig="true">GrPZ_E7dO8TpIu-fwpyCFTkHLKiOjG47KMaEf</string>
