@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '14.5.0'
 
-target 'AgriPasar' do
+target 'Market' do
 
 
   config = use_native_modules!
@@ -22,7 +22,7 @@ target 'AgriPasar' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
 
-  target 'AgriPasarTests' do
+  target 'MarketTests' do
     inherit! :complete
     # Pods for testing
   end

@@ -120,7 +120,7 @@ export const Login = props => {
             }}>
             <Text style={[Typography.placeholder]}>{Strings.phoneNumber}</Text>
             <View style={{flexDirection: 'row'}}>
-              <Text style={{top: hp('1%')}}>+60</Text>
+              <Text style={{alignSelf: 'center'}}>+60</Text>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 keyboardType="default"
@@ -133,6 +133,7 @@ export const Login = props => {
                   height: hp('7%'),
                   borderBottomColor: 'transparent',
                   color: 'black',
+                  alignSelf: 'center',
                 }}></TextInput>
             </View>
 

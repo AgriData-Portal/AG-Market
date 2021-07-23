@@ -138,7 +138,7 @@ export const ChatList = props => {
 const ChatRoom = props => {
   const lastUpdated = dayjs(props.updatedAt).add(8, 'hour');
   var listOfParticipants = props.chatParticipants;
-  if (listOfParticipants) {
+  if (listOfParticipants != undefined || listOfParticipants != null) {
     var tempList = listOfParticipants.filter(item => {
       return item.userID == props.userID;
     });
@@ -149,15 +149,6 @@ const ChatRoom = props => {
     }
   } else {
     var lastSeen = dayjs().subtract(1, 'month');
-  }
-
-  {
-    /* listOfParticipants.forEach((item, index, array) => {
-    if (item.userID == props.userID) {
-      console.log(item.lastOnline);
-      lastSeen = dayjs(item.lastOnline).add(8, 'hour');
-    }
-  });*/
   }
 
   return (

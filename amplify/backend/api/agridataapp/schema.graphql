@@ -462,6 +462,7 @@ type InvoiceBetweenSandF
 }
 
 type Goods {
+  id: String
   name: String
   quantity: Float
   siUnit: String

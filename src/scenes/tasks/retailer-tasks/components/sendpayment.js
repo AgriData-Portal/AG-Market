@@ -21,7 +21,7 @@ import {
 } from 'react-native-responsive-screen';
 import {DismissKeyboard} from '_components';
 import {API} from 'aws-amplify';
-import {updatePaymentTask} from '../../../../graphql/mutations';
+import {updatePaymentTaskBetweenRandS} from '../../../../graphql/mutations';
 import Strings from '_utils';
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -35,7 +35,7 @@ const UploadReceiptModal = props => {
   const sendReceipt = async () => {
     try {
       const updated = await API.graphql({
-        query: updatePaymentTask,
+        query: updatePaymentTaskBetweenRandS,
         variables: {input: {id: props.id, receipt: 'some receipt'}},
       });
       console.log(updated);
@@ -43,7 +43,7 @@ const UploadReceiptModal = props => {
       var tempList = props.payTask;
       tempList.forEach((item, index, arr) => {
         if (item.id == props.id) {
-          arr[index] = updated.data.updatePaymentTask;
+          arr[index] = updated.data.updatePaymentTaskBetweenRandS;
         }
       });
       if (props.trigger) {

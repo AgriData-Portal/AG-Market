@@ -7,9 +7,8 @@ import {LoadingModal} from '_components';
 import {MarketplaceList, FavouritesList} from './components';
 import {API} from 'aws-amplify';
 import {
-  getRetailerCompany,
-  listProductListings,
-  productListingByNameStartingWithLowestPrice,
+  listSupplierListings,
+  supplierListingByNameStartingWithLowestPrice,
 } from '../../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
@@ -18,7 +17,6 @@ import {
 import Strings from '_utils';
 import Modal from 'react-native-modal';
 import SearchableDropdown from 'react-native-searchable-dropdown';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -34,20 +32,20 @@ export const Marketplace = props => {
     setLoading(true);
     try {
       const products = await API.graphql({
-        query: productListingByNameStartingWithLowestPrice,
+        query: supplierListingByNameStartingWithLowestPrice,
         variables: {
           productName: searchValue.toUpperCase().trim(),
           sortDirection: 'ASC',
         },
       });
       console.log(products);
-      if (products.data.productListingByNameStartingWithLowestPrice) {
+      if (products.data.supplierListingByNameStartingWithLowestPrice) {
         console.log('Products: \n');
         console.log(
-          products.data.productListingByNameStartingWithLowestPrice.items,
+          products.data.supplierListingByNameStartingWithLowestPrice.items,
         );
         setProducts(
-          products.data.productListingByNameStartingWithLowestPrice.items,
+          products.data.supplierListingByNameStartingWithLowestPrice.items,
         );
       }
     } catch (e) {
@@ -74,10 +72,10 @@ export const Marketplace = props => {
     //EDIT NODEMODULES FOR SEARCHABLE DROPDOWN AND DELETE ALL NAME IN ITEM.NAME
     try {
       const listings = await API.graphql({
-        query: listProductListings,
+        query: listSupplierListings,
       });
-      console.log(listings.data.listProductListings.items);
-      var responseList = listings.data.listProductListings.items;
+      console.log(listings.data.listSupplierListings.items);
+      var responseList = listings.data.listSupplierListings.items;
       responseList = responseList.map(item => {
         return item.productName.toUpperCase();
       });
@@ -94,14 +92,14 @@ export const Marketplace = props => {
   const getFirstTenListings = async () => {
     try {
       const listings = await API.graphql({
-        query: listProductListings,
+        query: listSupplierListings,
         variables: {
           limit: 10,
         },
       });
-      console.log(listings.data.listProductListings.items);
-      var responseList = listings.data.listProductListings.items;
-      setProducts(listings.data.listProductListings.items);
+      console.log(listings.data.listSupplierListings.items);
+      var responseList = listings.data.listSupplierListings.items;
+      setProducts(listings.data.listSupplierListings.items);
     } catch (e) {
       console.log(e);
     }
@@ -254,9 +252,13 @@ export const Marketplace = props => {
                 }}
                 textInputStyle={{
                   width: wp('55%'),
-                  height: hp('5%'),
+                  height: hp('6%'),
+                  borderBottomWidth: 0,
                 }}
-                textInputProps={{value: searchValue}}
+                textInputProps={{
+                  value: searchValue,
+                  underlineColorAndroid: 'transparent',
+                }}
                 resetValue={false}
                 onItemSelect={item => [setSearchValue(item)]}
                 onTextChange={item => setSearchValue(item)}

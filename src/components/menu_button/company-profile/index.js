@@ -10,7 +10,11 @@ import {
 import Strings from '_utils';
 import {EditCompany} from './edit-company';
 import {API, Storage} from 'aws-amplify';
-import {getSupplierCompany, getRetailerCompany} from '../../../graphql/queries';
+import {
+  getSupplierCompany,
+  getRetailerCompany,
+  getFarmerCompany,
+} from '../../../graphql/queries';
 
 export {EditCompany};
 
@@ -33,7 +37,7 @@ export const CompanyProfile = props => {
     }
   }, [company]);
   const getCompanyProfile = async () => {
-    if (props.user.retailerCompanyID == null) {
+    if (props.user.supplierCompanyID != null) {
       try {
         var companyProfile = await API.graphql({
           query: getSupplierCompany,
@@ -48,7 +52,7 @@ export const CompanyProfile = props => {
         console.log(props.user.supplierCompanyID);
         console.log(e);
       }
-    } else {
+    } else if (props.user.retailerCompanyID != null) {
       try {
         var companyProfile = await API.graphql({
           query: getRetailerCompany,
@@ -57,6 +61,19 @@ export const CompanyProfile = props => {
           },
         });
         setCompany(companyProfile.data.getRetailerCompany);
+        console.log('Get retailer company profile');
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        var companyProfile = await API.graphql({
+          query: getFarmerCompany,
+          variables: {
+            id: props.user.farmerCompanyID,
+          },
+        });
+        setCompany(companyProfile.data.getFarmerCompany);
         console.log('Get retailer company profile');
       } catch (e) {
         console.log(e);

@@ -14,15 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {CloseButton} from '_components';
 import {API, Storage} from 'aws-amplify';
-import {
-  createMessage,
-  deleteChatGroupUsers,
-  updateChatGroup,
-} from '../../../../graphql/mutations';
-import {listUsersInChat} from '../../../../graphql/queries';
 
-import {abs, set} from 'react-native-reanimated';
-import {DismissKeyboardView} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

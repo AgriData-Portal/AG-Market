@@ -1,9 +1,9 @@
-import {scaleFont} from './mixins';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {Dimensions, PixelRatio} from 'react-native';
 
 // FONT FAMILY
 export const FONT_FAMILY_REGULAR = 'Poppins-Medium';
@@ -24,8 +24,38 @@ const divide = num => {
 };
 
 const byWidth = num => {
-  num = parseFloat(num / 3.1);
+  var windowHeight = Dimensions.get('window').height;
+  var windowWidth = Dimensions.get('window').width;
+  var width = Dimensions.get('screen').width;
+  var height = Dimensions.get('screen').height;
+  console.log(Math.sqrt(Math.log10(height / width)));
+  var aspectRatioLog = Math.sqrt(Math.log10(height / width));
+  console.log(PixelRatio.get());
+  var factor = null;
+  if (PixelRatio.get() == 1) {
+    factor = 1.7 / aspectRatioLog;
+  } else if (PixelRatio.get() == 1.5) {
+    factor = 1.7 / aspectRatioLog;
+  } else if (PixelRatio.get() == 2) {
+    factor = 1.7 / aspectRatioLog;
+  } else if (PixelRatio.get() == 2.5) {
+    factor = 1.6 / aspectRatioLog;
+  } else if (PixelRatio.get() == 3) {
+    factor = 1.7 / aspectRatioLog;
+  } else if (PixelRatio.get() == 3.5) {
+    factor = 1.7 / aspectRatioLog;
+  }
+
+  //console.log(height2, width2, height2 / width2);
+
+  num = parseFloat(num / factor);
   num = num.toString() + '%';
+  return wp(num);
+};
+
+const byWidth2 = num => {
+  num = RFPercentage(num / 20);
+
   return wp(num);
 };
 // FONT STYLE
@@ -60,13 +90,13 @@ export const small = {
 };
 
 export const largestSize = {
-  fontSize: byWidth(30), //RFPercentage(divide(30)),
+  fontSize: byWidth(26), //RFPercentage(divide(30)),
   fontFamily: 'Poppins-Bold',
   color: 'black',
 };
 
 export const welcome = {
-  fontSize: byWidth(25), //RFPercentage(divide(25)),
+  fontSize: byWidth(20), //RFPercentage(divide(25)),
   fontFamily: 'Poppins-Bold',
   color: '#444443',
 };

@@ -13,23 +13,22 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {CloseButton, SuccessfulModal} from '_components';
-import DatePicker from 'react-native-datepicker';
+
 import dayjs from 'dayjs';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {
-  createInvoice,
-  createPaymentTask,
-  updateGoodsTask,
+  createInvoiceBetweenRandS,
+  createPaymentTaskBetweenRandS,
+  updateGoodsTaskBetweenRandS,
   updateSupplierCompany,
 } from '../../../../graphql/mutations';
 import {API} from 'aws-amplify';
-import {DismissKeyboard} from '_components';
 import Strings from '_utils';
 import {goodsTaskForRetailerByDate} from '../../../../graphql/queries';
-import {Rating, AirbnbRating} from 'react-native-ratings';
+import {Rating} from 'react-native-ratings';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -58,7 +57,7 @@ const ReceiveModal = props => {
     };
     try {
       const paymentTaskResponse = API.graphql({
-        query: createPaymentTask,
+        query: createPaymentTaskBetweenRandS,
         variables: {input: input},
       });
       console.log('payment success!');
@@ -76,7 +75,7 @@ const ReceiveModal = props => {
     };
     try {
       const invoiceResponse = API.graphql({
-        query: createInvoice,
+        query: createInvoiceBetweenRandS,
         variables: {input: input},
       });
       console.log('success!');
@@ -85,13 +84,13 @@ const ReceiveModal = props => {
     }
     try {
       const invoiceResponse = await API.graphql({
-        query: updateGoodsTask,
+        query: updateGoodsTaskBetweenRandS,
         variables: {input: {id: props.taskID, status: 'received'}},
       });
       var tempList = props.receiveTask;
       tempList.forEach((item, index, arr) => {
         if (item.id == props.taskID) {
-          arr[index] = invoiceResponse.data.updateGoodsTask;
+          arr[index] = invoiceResponse.data.updateGoodsTaskBetweenRandS;
         }
       });
       props.setReceiveTask(tempList);

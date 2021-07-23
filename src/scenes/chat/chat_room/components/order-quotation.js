@@ -1,28 +1,27 @@
+/*
+
+
+
+need to add farmer ability
+
+
+
+*/
+
 import React, {useState, useContext, useEffect} from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  RefreshControl,
-  FlatList,
-  Text,
-  Image,
-} from 'react-native';
+import {View, TouchableOpacity, FlatList, Text} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import Modal from 'react-native-modal';
 import {CloseButton} from '_components';
 import {API} from 'aws-amplify';
 import {
   createMessage,
-  deleteChatGroupUsers,
   updateChatGroup,
-  createGoodsTask,
+  createGoodsTaskBetweenRandS,
 } from '../../../../graphql/mutations';
 import {listUsersInChat, getOrderQuotation} from '../../../../graphql/queries';
 
-import {abs} from 'react-native-reanimated';
-import {DismissKeyboardView} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -123,7 +122,7 @@ export const OrderQuotationModal = props => {
     }
     try {
       const goodsTask = await API.graphql({
-        query: createGoodsTask,
+        query: createGoodsTaskBetweenRandS,
         variables: {
           input: {
             items: orderDetails.items,
@@ -133,6 +132,7 @@ export const OrderQuotationModal = props => {
         },
       });
       console.log('goods task created');
+      setSuccesfulModal(true);
     } catch (e) {
       console.log(e);
     }
@@ -190,14 +190,14 @@ export const OrderQuotationModal = props => {
             style={{
               top: hp('50%'),
 
-              height: hp('10%'),
-              width: wp('75%'),
+              height: hp('15%'),
+              width: wp('85%'),
               backgroundColor: 'white',
               borderRadius: 10,
-
+              alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Text style={[Typography.normal, {left: wp('10%')}]}>
+            <Text style={[Typography.normal]}>
               Logistics Provided: {'\t'}
               {'\t'}
               {'\t'}
@@ -205,11 +205,15 @@ export const OrderQuotationModal = props => {
                 {orderDetails.logisticsProvided ? 'Provided' : 'Not Provided'}
               </Text>
             </Text>
-            <Text style={[Typography.normal, {left: wp('10%')}]}>
+            <Text style={[Typography.normal]}>
               Payment Terms:{'\t'}
               {'\t'}
               {'\t'}
-              <Text style={{left: wp('20%')}}>{orderDetails.paymentTerms}</Text>
+              <Text style={{left: wp('20%')}}>
+                {orderDetails.paymentTerms == 'cashOnDelivery'
+                  ? 'Cash on Delivery'
+                  : 'Credit Terms'}
+              </Text>
             </Text>
           </View>
 
@@ -217,10 +221,10 @@ export const OrderQuotationModal = props => {
             <View
               style={{
                 flexDirection: 'row',
-                top: hp('55%'),
+                top: hp('53%'),
               }}>
               <TouchableOpacity
-                onPress={() => [accept(), setSuccesfulModal(true)]}
+                onPress={() => [accept()]}
                 style={{
                   backgroundColor: Colors.LIGHT_BLUE,
                   shadowColor: '#000',
@@ -233,7 +237,7 @@ export const OrderQuotationModal = props => {
                   elevation: 5,
                   right: wp('5%'),
                   width: wp('25%'),
-                  height: hp('4%'),
+                  height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 10,
@@ -255,7 +259,7 @@ export const OrderQuotationModal = props => {
                   elevation: 5,
                   left: wp('5%'),
                   width: wp('25%'),
-                  height: hp('4%'),
+                  height: hp('5%'),
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 10,
