@@ -18,7 +18,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {EditPersonal} from './edit-personal';
-import {API} from 'aws-amplify';
+import {API, Auth} from 'aws-amplify';
 import {
   getUser,
   getUsersBySupplierCompany,
