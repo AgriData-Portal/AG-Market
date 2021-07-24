@@ -194,76 +194,6 @@ export const ChatRoom = props => {
         backgroundColor: 'white',
         alignItems: 'center',
       }}>
-      {/* This is the Immovable chat name 
-      {Platform.OS == 'ios' ? (
-        <View // This is for status bar on ios chat
-          style={{
-            position: 'absolute',
-            backgroundColor: 'white',
-            top: hp('-1%'),
-            height: hp('7%'),
-            width: wp('100%'),
-            zIndex: 5,
-          }}></View>
-      ) : (
-        <View></View>
-      )}
-
-      <View
-        style={{
-          zIndex: 2,
-          height: hp('10%'),
-          width: wp('100%'),
-          backgroundColor: 'white',
-          alignItems: 'center',
-        }}>
-        <View
-          style={{
-            position: 'absolute',
-            left: wp('6%'),
-            top: hp('3.5%'),
-          }}>
-          <TouchableOpacity
-            onPress={() => [updateLastSeen(), console.log('test123')]}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Icon name="arrow-back-outline" size={wp('7%')} />
-          </TouchableOpacity>
-        </View>
-        {props.user.retailerCompanyID == null ? (
-          <Text style={[Typography.header, {top: hp('3%')}]}>{chatName}</Text>
-        ) : (
-          <TouchableOpacity
-            style={{top: hp('3%')}}
-            onPress={() =>
-              props.navigation.navigate('store', {
-                itemId: itemID.slice(36, 72),
-              })
-            }>
-            <Text style={[Typography.header]}>{chatName}</Text>
-          </TouchableOpacity>
-        )}
-
-        <View
-          style={{
-            position: 'absolute',
-            top: hp('-1%'),
-            right: wp('5%'),
-          }}>
-          <ChatInfo chatGroupID={itemID} />
-        </View>
-
-        <View
-          style={{
-            top: hp('6%'),
-            width: wp('100%'),
-            borderBottomWidth: 1,
-            height: 0,
-            borderColor: Colors.GRAY_MEDIUM,
-          }}></View>
-      </View>*/}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
@@ -291,7 +221,7 @@ export const ChatRoom = props => {
             navigation={props.navigation}
           />
         </View>
-        <View style={{top: hp('2.5%')}}>
+        <View style={{position: 'absolute', bottom: -hp('9%')}}>
           <MessageInput
             userID={props.user.id}
             chatGroupID={itemID}
