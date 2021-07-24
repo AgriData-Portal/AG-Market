@@ -212,4 +212,6 @@ export default {
   paymentTerms: 'Terma Pembayaran',
   creditTerm: 'Terma Credit',
   sendQuotationToRetailer: 'Hantar sebut harga kepada peruncit',
+  edit: 'Edit',
+  bankName: 'Nama Bank',
 };

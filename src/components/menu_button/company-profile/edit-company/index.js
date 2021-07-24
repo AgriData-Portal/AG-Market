@@ -38,9 +38,10 @@ export const EditCompany = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [address, setAddress] = useState('');
-  const [number, setNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [bankDetails, setBankDetails] = useState('');
+  const [number, setNumber] = useState(props.route.params.contactNumber);
+  const [email, setEmail] = useState(props.route.params.email);
+  const [bankDetails, setBankDetails] = useState(props.route.params.bankNumber);
+  const [bankName, setBankName] = useState(props.route.params.bankName);
   const [errorText, setErrorText] = useState('');
 
   function selectImage() {
@@ -143,22 +144,6 @@ export const EditCompany = props => {
               justifyContent: 'center',
               top: hp('-14%'),
             }}>
-            {/*<View
-              style={{
-                width: wp('100%'),
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <View style={{left: wp('3%'), position: 'absolute'}}>
-                <BackButton navigation={props.navigation} />
-              </View>
-              <View>
-                <Text style={[Typography.header]}>
-                  Edit {Strings.companyProfile}
-                </Text>
-              </View>
-            </View>*/}
-
             <View
               style={{
                 top: hp('0%'),
@@ -212,31 +197,7 @@ export const EditCompany = props => {
               }}>
               <View
                 style={{
-                  top: hp('6%'),
-                  left: wp('5%'),
-                  width: wp('75%'),
-                  height: hp('5%'),
-                  borderColor: Colors.GRAY_DARK,
-                  borderBottomWidth: 1,
-                  justifyContent: 'center',
-                }}>
-                <Text style={[Typography.placeholderSmall]}>
-                  {Strings.companyAddress}
-                </Text>
-                <TextInput
-                  underlineColorAndroid="transparent"
-                  value={address}
-                  onChangeText={item => setAddress(item)}
-                  style={{
-                    borderBottomColor: 'transparent',
-                    width: wp('75%'),
-                    height: hp('5%'),
-                    color: 'black',
-                  }}></TextInput>
-              </View>
-              <View
-                style={{
-                  top: hp('9%'),
+                  top: hp('3%'),
                   left: wp('5%'),
                   width: wp('75%'),
                   height: hp('5%'),
@@ -260,7 +221,7 @@ export const EditCompany = props => {
               </View>
               <View
                 style={{
-                  top: hp('12%'),
+                  top: hp('6%'),
                   left: wp('5%'),
                   width: wp('75%'),
                   height: hp('5%'),
@@ -284,7 +245,7 @@ export const EditCompany = props => {
               </View>
               <View
                 style={{
-                  top: hp('15%'),
+                  top: hp('9%'),
                   left: wp('5%'),
                   width: wp('75%'),
                   height: hp('5%'),
@@ -306,6 +267,30 @@ export const EditCompany = props => {
                     color: 'black',
                   }}></TextInput>
               </View>
+              <View
+                style={{
+                  top: hp('12%'),
+                  left: wp('5%'),
+                  width: wp('75%'),
+                  height: hp('5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  borderBottomWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <Text style={[Typography.placeholderSmall]}>
+                  {Strings.bankName}
+                </Text>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  value={bankName}
+                  onChangeText={item => setBankName(item)}
+                  style={{
+                    borderBottomColor: 'transparent',
+                    width: wp('75%'),
+                    height: hp('5%'),
+                    color: 'black',
+                  }}></TextInput>
+              </View>
             </View>
 
             <TouchableOpacity
@@ -313,8 +298,8 @@ export const EditCompany = props => {
                 if (
                   email == '' ||
                   number == '' ||
-                  address == '' ||
-                  bankDetails == ''
+                  bankDetails == '' ||
+                  bankName == ''
                 ) {
                   console.log('empty field');
                   setErrorText('Please fill in all empty spaces!');
@@ -342,6 +327,7 @@ export const EditCompany = props => {
                   try {
                     console.log('saved');
                     saveChanges();
+                    setSuccessfulModal(true);
                   } catch {
                     e => console.log('error ' + e);
                   }

@@ -81,66 +81,84 @@ export const RetailerTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      <View style={{flexDirection: 'row'}}>
-        {task == 'receive' ? (
-          <View
-            style={{
-              right: wp('15%'),
-              top: hp('2%'),
-            }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: 'black',
-                  fontFamily: 'Poppins-Bold',
-                },
-              ]}>
-              {Strings.toRecieve}
-            </Text>
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={() => setTask('receive')}
-            style={{
-              right: wp('15%'),
-              top: hp('2%'),
-            }}>
-            <Text style={[Typography.normal, {color: 'grey'}]}>
-              {Strings.toRecieve}
-            </Text>
-          </TouchableOpacity>
-        )}
-        {task == 'pay' ? (
-          <View
-            style={{
-              left: wp('15%'),
-              top: hp('2%'),
-            }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: 'black',
-                  fontFamily: 'Poppins-Bold',
-                },
-              ]}>
-              {Strings.toPay}
-            </Text>
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={() => setTask('pay')}
-            style={{
-              top: hp('2%'),
-              left: wp('15%'),
-            }}>
-            <Text style={[Typography.normal, {color: 'grey'}]}>
-              {Strings.toPay}
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      {props.user.role == 'receiver' ? (
+        <View
+          style={{
+            top: hp('2%'),
+          }}>
+          <Text
+            style={[
+              Typography.normal,
+              {
+                color: 'black',
+                fontFamily: 'Poppins-Bold',
+              },
+            ]}>
+            {Strings.toRecieve}
+          </Text>
+        </View>
+      ) : (
+        <View style={{flexDirection: 'row'}}>
+          {task == 'receive' ? (
+            <View
+              style={{
+                right: wp('15%'),
+                top: hp('2%'),
+              }}>
+              <Text
+                style={[
+                  Typography.normal,
+                  {
+                    color: 'black',
+                    fontFamily: 'Poppins-Bold',
+                  },
+                ]}>
+                {Strings.toRecieve}
+              </Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() => setTask('receive')}
+              style={{
+                right: wp('15%'),
+                top: hp('2%'),
+              }}>
+              <Text style={[Typography.normal, {color: 'grey'}]}>
+                {Strings.toRecieve}
+              </Text>
+            </TouchableOpacity>
+          )}
+          {task == 'pay' ? (
+            <View
+              style={{
+                left: wp('15%'),
+                top: hp('2%'),
+              }}>
+              <Text
+                style={[
+                  Typography.normal,
+                  {
+                    color: 'black',
+                    fontFamily: 'Poppins-Bold',
+                  },
+                ]}>
+                {Strings.toPay}
+              </Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() => setTask('pay')}
+              style={{
+                top: hp('2%'),
+                left: wp('15%'),
+              }}>
+              <Text style={[Typography.normal, {color: 'grey'}]}>
+                {Strings.toPay}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
       <View
         style={{
           top: hp('4%'),

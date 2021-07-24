@@ -87,8 +87,8 @@ const AppNavigator = props => {
           setUserDetails={props.setUserDetails}
         />
       );
-    } else if (type == 'retailemployee') {
-      console.log('Retailer Employee \n');
+    } else if (type == 'receiver') {
+      console.log('Receiver \n');
       return (
         <RetailEmployeeNavigation
           user={props.user}

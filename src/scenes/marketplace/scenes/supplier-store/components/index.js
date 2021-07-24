@@ -19,13 +19,15 @@ import {
 } from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
+import {Rating} from 'react-native-ratings';
+import {ChatButton} from '../../../components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {
-  deleteSupplierListing,
-  updateSupplierListing,
-  createSupplierListing,
+  deleteFarmerListing,
+  updateFarmerListing,
+  createFarmerListing,
   updateChatGroup,
   createChatGroup,
   createMessage,
@@ -37,7 +39,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {listRetailerCompanys} from '../../../../../graphql/queries';
+import {listSupplierCompanys} from '../../../../../graphql/queries';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -56,6 +58,7 @@ const AddItemModal = props => {
   const [grade, setGrade] = useState('');
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const [focus, setFocus] = useState('');
 
   async function addListing() {
     try {
@@ -82,14 +85,14 @@ const AddItemModal = props => {
         siUnit: value2,
       };
       const productListing = await API.graphql({
-        query: createSupplierListing,
+        query: createFarmerListing,
         variables: {input: listing},
       });
 
       listing.productPicture = {uri: photo.uri};
 
       props.setProducts(products => [
-        productListing.data.createSupplierListing,
+        productListing.data.createFarmerListing,
         ...products,
       ]);
       console.log('Added product');
@@ -242,14 +245,14 @@ const AddItemModal = props => {
             shadowColor: 'grey',
           }}>
           <Text
-            style={
-              ([Typography.normal],
+            style={[
+              Typography.large,
               {
                 left: wp('6%'),
                 top: hp('1.5%'),
-                width: wp('40%'),
-              })
-            }>
+                width: wp('50%'),
+              },
+            ]}>
             {Strings.enterProductDetails}
           </Text>
           <DismissKeyboardView>
@@ -258,165 +261,397 @@ const AddItemModal = props => {
                 left: wp('5%'),
                 top: hp('2%'),
               }}>
-              <TextInput
-                keyboardType="default"
-                placeholderTextColor={Colors.GRAY_DARK}
-                placeholder={Strings.productName}
-                value={productName}
-                onChangeText={item => setProductName(item)}
-                underlineColorAndroid="transparent"
-                style={{
-                  left: wp('1%'),
-                  backgroundColor: 'white',
-                  width: wp('65%'),
-                  height: hp('7%'),
-                  borderRadius: 3,
-                  justifyContent: 'center',
-                  marginBottom: hp('1%'),
-                  marginTop: hp('0.5%'),
-                  borderBottomColor: 'transparent',
-                  color: 'black',
-                }}></TextInput>
+              <View
+                style={
+                  focus == '1'
+                    ? {
+                        backgroundColor: 'white',
+                        width: wp('69%'),
+                        borderColor: Colors.GRAY_DARK,
+                        borderWidth: wp('0.2%'),
+                        height: hp('6%'),
+                        justifyContent: 'center',
+                        borderRadius: 3,
+                        shadowColor: '#000',
+                        shadowOffset: {
+                          width: 0,
+                          height: 3,
+                        },
+                        shadowOpacity: 0.29,
+                        shadowRadius: 4.65,
+
+                        elevation: 7,
+                      }
+                    : {
+                        backgroundColor: 'white',
+                        width: wp('69%'),
+                        borderColor: Colors.GRAY_DARK,
+                        borderWidth: wp('0.2%'),
+                        height: hp('6%'),
+                        justifyContent: 'center',
+                        borderRadius: 3,
+                      }
+                }>
+                <TextInput
+                  onFocus={() => setFocus('1')}
+                  onBlur={() => setFocus('')}
+                  keyboardType="default"
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder={Strings.productName}
+                  value={productName}
+                  onChangeText={item => setProductName(item)}
+                  underlineColorAndroid="transparent"
+                  style={{
+                    left: wp('1%'),
+                    width: wp('60%'),
+                    height: hp('7%'),
+
+                    justifyContent: 'center',
+                    borderBottomColor: 'transparent',
+                    color: 'black',
+                  }}></TextInput>
+              </View>
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
+                  top: hp('1%'),
                 }}>
                 <Text
                   style={[
                     Typography.large,
-                    {bottom: hp('0.5%'), marginRight: wp('1%'), left: wp('1%')},
+                    {marginRight: wp('1%'), left: wp('1%')},
                   ]}>
                   RM
                 </Text>
-                <TextInput
-                  keyboardType="numeric"
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.minPrice}
-                  underlineColorAndroid="transparent"
-                  value={minPrice}
-                  onChangeText={item => setMinPrice(item)}
-                  style={{
-                    left: wp('3%'),
-                    backgroundColor: 'white',
-                    width: wp('22.3%'),
-                    height: hp('7%'),
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    marginBottom: hp('1%'),
-                    borderBottomColor: 'transparent',
-                    color: 'black',
-                  }}></TextInput>
+                <View
+                  style={
+                    focus == '2'
+                      ? {
+                          backgroundColor: 'white',
+                          width: wp('23%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          borderRadius: 3,
+                          left: wp('2%'),
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.29,
+                          shadowRadius: 4.65,
+
+                          elevation: 7,
+                        }
+                      : {
+                          backgroundColor: 'white',
+                          width: wp('23%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          borderRadius: 3,
+                          left: wp('2%'),
+                        }
+                  }>
+                  <TextInput
+                    onFocus={() => setFocus('2')}
+                    onBlur={() => setFocus('')}
+                    keyboardType="numeric"
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder={Strings.minPrice}
+                    underlineColorAndroid="transparent"
+                    value={minPrice}
+                    onChangeText={item => setMinPrice(item)}
+                    style={{
+                      left: wp('3%'),
+                      width: wp('22%'),
+                      height: hp('7%'),
+                      borderRadius: 3,
+                      justifyContent: 'center',
+
+                      borderBottomColor: 'transparent',
+                      color: 'black',
+                    }}></TextInput>
+                </View>
                 <View
                   style={{
                     width: wp('3%'),
                     borderWidth: wp('0.2%'),
-                    borderColor: 'black',
-                    bottom: hp('1%'),
-                    left: wp('7%'),
+                    borderColor: Colors.GRAY_DARK,
+                    left: wp('6%'),
                     zIndex: 10,
                   }}></View>
-                <TextInput
-                  keyboardType="numeric"
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.maxPrice}
-                  underlineColorAndroid="transparent"
-                  value={maxPrice}
-                  onChangeText={item => setMaxPrice(item)}
-                  style={{
-                    left: wp('11%'),
-                    backgroundColor: 'white',
-                    width: wp('22.3%'),
-                    height: hp('7%'),
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    marginBottom: hp('1%'),
-                    borderBottomColor: 'transparent',
-                    color: 'black',
-                  }}></TextInput>
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <TextInput
-                  keyboardType="default"
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder="Grade"
-                  underlineColorAndroid="transparent"
-                  value={grade}
-                  onChangeText={item => setGrade(item)}
-                  style={{
-                    backgroundColor: 'white',
-                    width: wp('20%'),
-                    height: hp('7%'),
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    marginBottom: hp('1%'),
-                    left: wp('1%'),
-                    borderBottomColor: 'transparent',
-                    color: 'black',
-                  }}></TextInput>
-                <TextInput
-                  keyboardType="default"
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.variety}
-                  underlineColorAndroid="transparent"
-                  value={variety}
-                  onChangeText={item => setVariety(item)}
-                  style={{
-                    left: wp('7%'),
-                    backgroundColor: 'white',
-                    width: wp('40%'),
-                    height: hp('7%'),
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    marginBottom: hp('1%'),
+                <View
+                  style={
+                    focus == '3'
+                      ? {
+                          backgroundColor: 'white',
+                          width: wp('23%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          left: wp('9%'),
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.29,
+                          shadowRadius: 4.65,
 
-                    borderBottomColor: 'transparent',
-                    color: 'black',
-                  }}></TextInput>
+                          elevation: 7,
+                        }
+                      : {
+                          backgroundColor: 'white',
+                          width: wp('23%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          left: wp('9%'),
+                        }
+                  }>
+                  <TextInput
+                    onFocus={() => setFocus('3')}
+                    onBlur={() => setFocus('')}
+                    keyboardType="numeric"
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder={Strings.maxPrice}
+                    underlineColorAndroid="transparent"
+                    value={maxPrice}
+                    onChangeText={item => setMaxPrice(item)}
+                    style={{
+                      width: wp('22%'),
+                      height: hp('7%'),
+                      left: wp('3%'),
+                      justifyContent: 'center',
+
+                      borderBottomColor: 'transparent',
+                      color: 'black',
+                    }}></TextInput>
+                </View>
+              </View>
+              <View style={{flexDirection: 'row', top: hp('1%')}}>
+                <View
+                  style={
+                    focus == '4'
+                      ? {
+                          backgroundColor: 'white',
+                          width: wp('21%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          top: hp('1%'),
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.29,
+                          shadowRadius: 4.65,
+
+                          elevation: 7,
+                        }
+                      : {
+                          backgroundColor: 'white',
+                          width: wp('21%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          top: hp('1%'),
+                        }
+                  }>
+                  <TextInput
+                    onFocus={() => setFocus('4')}
+                    onBlur={() => setFocus('')}
+                    keyboardType="default"
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder="Grade"
+                    underlineColorAndroid="transparent"
+                    value={grade}
+                    onChangeText={item => setGrade(item)}
+                    style={{
+                      width: wp('20%'),
+                      height: hp('7%'),
+                      borderRadius: 3,
+                      justifyContent: 'center',
+
+                      left: wp('1%'),
+                      borderBottomColor: 'transparent',
+                      color: 'black',
+                    }}></TextInput>
+                </View>
+                <View
+                  style={
+                    focus == '5'
+                      ? {
+                          backgroundColor: 'white',
+                          width: wp('41%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          left: wp('7%'),
+                          top: hp('1%'),
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.29,
+                          shadowRadius: 4.65,
+
+                          elevation: 7,
+                        }
+                      : {
+                          backgroundColor: 'white',
+                          width: wp('41%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          left: wp('7%'),
+                          top: hp('1%'),
+                        }
+                  }>
+                  <TextInput
+                    onFocus={() => setFocus('5')}
+                    onBlur={() => setFocus('')}
+                    keyboardType="default"
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder={Strings.variety}
+                    underlineColorAndroid="transparent"
+                    value={variety}
+                    onChangeText={item => setVariety(item)}
+                    style={{
+                      left: wp('1%'),
+                      width: wp('40%'),
+                      height: hp('7%'),
+                      borderRadius: 3,
+                      justifyContent: 'center',
+                      borderBottomColor: 'transparent',
+                      color: 'black',
+                    }}></TextInput>
+                </View>
               </View>
               <View
                 style={{
                   flexDirection: 'row',
+                  top: hp('1%'),
                 }}>
-                <TextInput
-                  keyboardType="numeric"
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.quantityAvailable}
-                  underlineColorAndroid="transparent"
-                  value={quantityAvailable}
-                  onChangeText={item => setQuantityAvailable(item)}
-                  style={{
-                    left: wp('1%'),
-                    backgroundColor: 'white',
-                    width: wp('35%'),
-                    height: hp('7%'),
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    marginBottom: hp('1%'),
-                    borderBottomColor: 'transparent',
-                    color: 'black',
-                  }}></TextInput>
+                <View
+                  style={
+                    focus == '6'
+                      ? {
+                          backgroundColor: 'white',
+                          width: wp('36%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          top: hp('2%'),
+                          borderRadius: 3,
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.29,
+                          shadowRadius: 4.65,
+
+                          elevation: 7,
+                        }
+                      : {
+                          backgroundColor: 'white',
+                          width: wp('36%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          top: hp('2%'),
+                          borderRadius: 3,
+                        }
+                  }>
+                  <TextInput
+                    onFocus={() => setFocus('6')}
+                    onBlur={() => setFocus('')}
+                    keyboardType="numeric"
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder={Strings.quantityAvailable}
+                    underlineColorAndroid="transparent"
+                    value={quantityAvailable}
+                    onChangeText={item => setQuantityAvailable(item)}
+                    style={{
+                      left: wp('1%'),
+                      width: wp('35%'),
+                      height: hp('7%'),
+
+                      justifyContent: 'center',
+                      borderBottomColor: 'transparent',
+                      color: 'black',
+                    }}></TextInput>
+                </View>
               </View>
-              <View style={{flexDirection: 'row'}}>
-                <TextInput
-                  keyboardType="numeric"
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.minimumOrder}
-                  underlineColorAndroid="transparent"
-                  value={moq}
-                  onChangeText={item => setMOQ(item)}
-                  style={{
-                    left: wp('1%'),
-                    backgroundColor: 'white',
-                    width: wp('35%'),
-                    height: hp('7%'),
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    marginBottom: hp('1%'),
-                    borderBottomColor: 'transparent',
-                    color: 'black',
-                  }}></TextInput>
-                <View style={{marginLeft: wp('3%'), bottom: hp('3%')}}>
+              <View style={{flexDirection: 'row', top: hp('1%')}}>
+                <View
+                  style={
+                    focus == '7'
+                      ? {
+                          backgroundColor: 'white',
+                          width: wp('36%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          top: hp('3%'),
+                          borderRadius: 3,
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.29,
+                          shadowRadius: 4.65,
+
+                          elevation: 7,
+                        }
+                      : {
+                          backgroundColor: 'white',
+                          width: wp('36%'),
+                          borderColor: Colors.GRAY_DARK,
+                          borderWidth: wp('0.2%'),
+                          height: hp('6%'),
+                          justifyContent: 'center',
+                          top: hp('3%'),
+                          borderRadius: 3,
+                        }
+                  }>
+                  <TextInput
+                    onFocus={() => setFocus('7')}
+                    onBlur={() => setFocus('')}
+                    keyboardType="numeric"
+                    placeholderTextColor={Colors.GRAY_DARK}
+                    placeholder={Strings.minimumOrder}
+                    underlineColorAndroid="transparent"
+                    value={moq}
+                    onChangeText={item => setMOQ(item)}
+                    style={{
+                      left: wp('1%'),
+                      width: wp('35%'),
+                      height: hp('7%'),
+                      justifyContent: 'center',
+                      borderBottomColor: 'transparent',
+                      color: 'black',
+                    }}></TextInput>
+                </View>
+                <View style={{marginLeft: wp('3%'), top: hp('0.5%')}}>
                   <DropDownPicker
                     open={open2}
                     value={value2}
@@ -549,7 +784,7 @@ const ProductModal = props => {
     try {
       setLoading(true);
       const deletedListing = await API.graphql({
-        query: deleteSupplierListing,
+        query: deleteFarmerListing,
         variables: {input: {id: props.id}},
       });
       var products = props.productList;
@@ -577,7 +812,7 @@ const ProductModal = props => {
   const updateListing = async () => {
     try {
       const updatedListing = await API.graphql({
-        query: updateSupplierListing,
+        query: updateFarmerListing,
         variables: {
           input: {
             id: props.id,
@@ -1207,7 +1442,7 @@ const RetailerCard = props => {
         width: wp('80%'),
         alignSelf: 'center',
         height: hp('8%'),
-        borderColor: 'black',
+        borderColor: Colors.GRAY_DARK,
         borderWidth: 0.2,
 
         justifyContent: 'center',
@@ -1234,7 +1469,7 @@ const RetailerCard = props => {
   );
 };
 
-export const RetailerModalButton = props => {
+export const SupplierModalButton = props => {
   const [retailerModal, setRetailerModal] = useState(false);
   return (
     <View>
@@ -1256,11 +1491,11 @@ const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
   const getAllSupermarkets = async () => {
     try {
-      const listRetailers = await API.graphql({
-        query: listRetailerCompanys,
+      const listSupplier = await API.graphql({
+        query: listSupplierCompanys,
       });
 
-      setSupermarkets(listRetailers.data.listRetailerCompanys.items);
+      setSupermarkets(listSupplier.data.listSupplierCompanys.items);
     } catch (e) {
       console.log(e);
     }
@@ -1280,7 +1515,7 @@ const RetailerModal = props => {
       }}>
       <View
         style={{alignItems: 'center', justifyContent: 'center', top: hp('2%')}}>
-        <Text style={[Typography.large]}>Supermarkets</Text>
+        <Text style={[Typography.large]}>Suppliers</Text>
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
         <RetailerList supermarkets={supermarkets} />

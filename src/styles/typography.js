@@ -24,8 +24,6 @@ const divide = num => {
 };
 
 const byWidth = num => {
-  var windowHeight = Dimensions.get('window').height;
-  var windowWidth = Dimensions.get('window').width;
   var width = Dimensions.get('screen').width;
   var height = Dimensions.get('screen').height;
   console.log(Math.sqrt(Math.log10(height / width)));
@@ -39,7 +37,7 @@ const byWidth = num => {
   } else if (PixelRatio.get() == 2) {
     factor = 1.7 / aspectRatioLog;
   } else if (PixelRatio.get() == 2.5) {
-    factor = 1.6 / aspectRatioLog;
+    factor = 1.7 / aspectRatioLog;
   } else if (PixelRatio.get() == 3) {
     factor = 1.7 / aspectRatioLog;
   } else {

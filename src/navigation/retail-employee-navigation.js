@@ -5,6 +5,7 @@ import 'react-native-gesture-handler';
 
 import {
   RetailerTasks, //done
+  Orders,
 } from '_scenes';
 import {Colors} from '_styles/';
 import {View, Text, Image} from 'react-native';
@@ -29,6 +30,8 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'tasks':
       return Strings.tasks;
+    case 'orders':
+      return Strings.orders;
   }
 }
 
@@ -155,6 +158,72 @@ const TabbedNavigator = props => {
         }}>
         {screenProps => (
           <RetailerTasks
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+          />
+        )}
+      </TabStack.Screen>
+      <TabStack.Screen
+        name="orders"
+        options={{
+          tabBarIcon: ({focused}) =>
+            focused ? (
+              <View
+                style={{
+                  width: wp('20%'),
+                  height: wp('15%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon
+                  name="clipboard-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: Colors.LIME_GREEN,
+                    },
+                  ]}>
+                  {Strings.orders}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  width: wp('20%'),
+                  height: hp('5%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  top: hp('0.5%'),
+                }}>
+                <Icon
+                  name="clipboard-outline"
+                  size={wp('7%')}
+                  style={{
+                    color: 'black',
+                  }}></Icon>
+                <Text
+                  style={[
+                    Typography.small,
+                    {
+                      color: 'black',
+                    },
+                  ]}>
+                  {Strings.orders}
+                </Text>
+              </View>
+            ),
+          tabBarLabel: () => {
+            return null;
+          },
+        }}>
+        {screenProps => (
+          <Orders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
