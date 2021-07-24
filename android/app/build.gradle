@@ -135,12 +135,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    /*Expiring Daemon because JVM heap space is exhausted*/
+    // dexOptions {
+    //    javaMaxHeapSize "3g"
+    // }
 
     defaultConfig {
         applicationId "com.agridata_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        versionCode 6
         versionName "1.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }

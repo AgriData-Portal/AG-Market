@@ -42,7 +42,7 @@ const byWidth = num => {
     factor = 1.6 / aspectRatioLog;
   } else if (PixelRatio.get() == 3) {
     factor = 1.7 / aspectRatioLog;
-  } else if (PixelRatio.get() == 3.5) {
+  } else {
     factor = 1.7 / aspectRatioLog;
   }
 
