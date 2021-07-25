@@ -1,10 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import 'react-native-gesture-handler';
-import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
+import Amplify, {Auth, API, Analytics} from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import config from './aws-exports';
-import {View, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+  Platform,
+} from 'react-native';
 import {getUser} from './graphql/queries';
 import {
   createUser,
@@ -29,27 +35,31 @@ import {
 
 Amplify.configure(config);
 
-// PushNotification.onRegister(token => {
-//   console.log('onRegister', token);
-// });
-// PushNotification.onNotification(notification => {
-//   if (notification.foreground) {
-//     console.log('onNotification foreground', notification);
-//   } else {
-//     console.log('onNotification background or closed', notification);
-//   }
-//   // extract the data passed in the push notification
-//   const data = JSON.parse(notification.data['pinpoint.jsonBody']);
-//   console.log('onNotification data', data);
-//   // iOS only
-//   notification.finish(PushNotificationIOS.FetchResult.NoData);
-// });
-// PushNotification.onNotificationOpened(notification => {
-//   console.log('onNotificationOpened', notification);
-//   // extract the data passed in the push notification
-//   const data = JSON.parse(notification['pinpoint.jsonBody']);
-//   console.log('onNotificationOpened data', data);
-// });
+PushNotification.onRegister(token => {
+  console.log('onRegister', token);
+});
+PushNotification.onNotification(notification => {
+  if (notification.foreground) {
+    console.log('onNotification foreground', notification);
+  } else {
+    console.log('onNotification background or closed', notification);
+  }
+  // extract the data passed in the push notification
+  const data = JSON.parse(notification.data['pinpoint.jsonBody']);
+  console.log('onNotification data', data);
+  // iOS only
+  if (Platform.OS == 'ios') {
+    notification.finish(PushNotificationIOS.FetchResult.NoData);
+  }
+});
+PushNotification.onNotificationOpened(notification => {
+  console.log('onNotificationOpened', notification);
+  // extract the data passed in the push notification
+  const data = JSON.parse(notification['pinpoint.jsonBody']);
+  console.log('onNotificationOpened data', data);
+});
+
+const endpointId = Analytics.getPluggable('AWSPinpoint')['_config'];
 
 const AppNavigator = props => {
   console.log('user:' + props.user);
@@ -156,7 +166,7 @@ const App = () => {
   const [userID, setUserID] = useState(null);
   const [userAttributes, setUserAttributes] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
-  const [runAgain, setRunAgain] = useState(false);
+  console.log('EndpointID: ', endpointId);
 
   const createNewUser = async () => {
     var user = null;

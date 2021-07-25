@@ -30,19 +30,20 @@ const byWidth = num => {
   var aspectRatioLog = Math.sqrt(Math.log10(height / width));
   console.log(PixelRatio.get());
   var factor = null;
-  if (PixelRatio.get() == 1) {
-    factor = 1.7 / aspectRatioLog;
-  } else if (PixelRatio.get() == 1.5) {
-    factor = 1.7 / aspectRatioLog;
-  } else if (PixelRatio.get() == 2) {
-    factor = 1.7 / aspectRatioLog;
-  } else if (PixelRatio.get() == 2.5) {
-    factor = 1.7 / aspectRatioLog;
-  } else if (PixelRatio.get() == 3) {
-    factor = 1.7 / aspectRatioLog;
-  } else {
-    factor = 1.7 / aspectRatioLog;
-  }
+  factor = 1.7 / aspectRatioLog;
+  // if (PixelRatio.get() == 1) {
+
+  // } else if (PixelRatio.get() == 1.5) {
+  //   factor = 1.7 / aspectRatioLog;
+  // } else if (PixelRatio.get() == 2) {
+  //   factor = 1.7 / aspectRatioLog;
+  // } else if (PixelRatio.get() == 2.5) {
+  //   factor = 1.7 / aspectRatioLog;
+  // } else if (PixelRatio.get() == 3) {
+  //   factor = 1.7 / aspectRatioLog;
+  // } else {
+  //   factor = 1.7 / aspectRatioLog;
+  // }
 
   //console.log(height2, width2, height2 / width2);
 
