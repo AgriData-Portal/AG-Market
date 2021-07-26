@@ -63,6 +63,7 @@ type SupplierCompany @model {
   address: String
   rating: Rating
   bankAccount: BankDetails
+  mostRecentInvoiceNumber:String
   favouriteStores: [Favourites]
   registrationNumber: String
   listings: [SupplierListing]
@@ -95,6 +96,7 @@ type FarmerCompany @model {
   bankAccount: BankDetails
   rating: Rating
   registrationNumber: String
+  mostRecentInvoiceNumber:String
   listings: [FarmerListing]
     @connection(keyName: "listingsByFarmer", fields: ["id"])
   goodsTask: [GoodsTaskBetweenSandF]
