@@ -7,6 +7,7 @@ import {
   FlatList,
   Text,
   Image,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,13 +19,13 @@ import {
   updateChatGroup,
   createGoodsTask,
 } from '../../../../graphql/mutations';
-import AudioRecorderPlayer, {
-  AVEncoderAudioQualityIOSType,
-  AVEncodingOption,
-  AudioEncoderAndroidType,
-  AudioSet,
-  AudioSourceAndroidType,
-} from 'react-native-audio-recorder-player';
+// import AudioRecorderPlayer, {
+//   AVEncoderAudioQualityIOSType,
+//   AVEncodingOption,
+//   AudioEncoderAndroidType,
+//   AudioSet,
+//   AudioSourceAndroidType,
+// } from 'react-native-audio-recorder-player';
 import {
   getOrderQuotation,
   listUsersInChat,
@@ -42,11 +43,12 @@ import {ChatBubbleList} from './chat-bubbles';
 import {ChatInfo} from './chat-info';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {DismissKeyboardView} from '_components';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {set} from 'react-native-reanimated';
 
 export {ChatBubbleList, ChatInfo};
 
-const audioRecorderPlayer = new AudioRecorderPlayer();
+// const audioRecorderPlayer = new AudioRecorderPlayer();
 
 export const MessageInput = props => {
   const [message, setMessage] = useState('');
@@ -64,7 +66,7 @@ export const MessageInput = props => {
   const [audio, setAudio] = useState(false);
   const [whenMicPressed, setMicPressed] = useState(false);
 
-  audioRecorderPlayer.setSubscriptionDuration(0.09);
+  // audioRecorderPlayer.setSubscriptionDuration(0.09);
 
   function selectImage() {
     let options = {
@@ -86,67 +88,67 @@ export const MessageInput = props => {
       }
     });
   }
-  onSlideRight = () => {
-    onStopRecord();
-  };
-  onStartRecord = async () => {
-    const path = 'hello.mp4';
-    const audioSet = {
-      AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
-      AudioSourceAndroid: AudioSourceAndroidType.MIC,
-      AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
-      AVNumberOfChannelsKeyIOS: 2,
-      AVFormatIDKeyIOS: AVEncodingOption.aac,
-    };
-    console.log('audioSet', audioSet);
-    const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
-    audioRecorderPlayer.addRecordBackListener(e => {
-      setRecording({
-        recordSecs: e.current_position,
-        recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
-      });
-    });
-    console.log(`uri: ${uri}`);
-  };
+  // onSlideRight = () => {
+  //   onStopRecord();
+  // };
+  // onStartRecord = async () => {
+  //   const path = 'hello.mp4';
+  //   const audioSet = {
+  //     AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+  //     AudioSourceAndroid: AudioSourceAndroidType.MIC,
+  //     AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+  //     AVNumberOfChannelsKeyIOS: 2,
+  //     AVFormatIDKeyIOS: AVEncodingOption.aac,
+  //   };
+  //   console.log('audioSet', audioSet);
+  //   const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
+  //   audioRecorderPlayer.addRecordBackListener(e => {
+  //     setRecording({
+  //       recordSecs: e.current_position,
+  //       recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+  //     });
+  //   });
+  //   console.log(`uri: ${uri}`);
+  // };
 
-  onStopRecord = async () => {
-    const result = await audioRecorderPlayer.stopRecorder();
-    audioRecorderPlayer.removeRecordBackListener();
-    setRecording({
-      recordSecs: 0,
-    });
-    console.log(result);
-  };
+  // onStopRecord = async () => {
+  //   const result = await audioRecorderPlayer.stopRecorder();
+  //   audioRecorderPlayer.removeRecordBackListener();
+  //   setRecording({
+  //     recordSecs: 0,
+  //   });
+  //   console.log(result);
+  // };
 
-  onStartPlay = async () => {
-    console.log('onStartPlay');
-    const path = 'hello.mp4';
-    const msg = await audioRecorderPlayer.startPlayer(path);
-    audioRecorderPlayer.setVolume(1.0);
-    console.log(msg);
-    audioRecorderPlayer.addPlayBackListener(e => {
-      if (e.current_position === e.duration) {
-        console.log('finished');
-        audioRecorderPlayer.stopPlayer();
-      }
-      setRecording({
-        currentPositionSec: e.currentPosition,
-        currentDurationSec: e.duration,
-        playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
-        duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
-      });
-    });
-  };
+  // onStartPlay = async () => {
+  //   console.log('onStartPlay');
+  //   const path = 'hello.mp4';
+  //   const msg = await audioRecorderPlayer.startPlayer(path);
+  //   audioRecorderPlayer.setVolume(1.0);
+  //   console.log(msg);
+  //   audioRecorderPlayer.addPlayBackListener(e => {
+  //     if (e.current_position === e.duration) {
+  //       console.log('finished');
+  //       audioRecorderPlayer.stopPlayer();
+  //     }
+  //     setRecording({
+  //       currentPositionSec: e.currentPosition,
+  //       currentDurationSec: e.duration,
+  //       playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+  //       duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+  //     });
+  //   });
+  // };
 
-  onPausePlay = async () => {
-    await audioRecorderPlayer.pausePlayer();
-  };
+  // onPausePlay = async () => {
+  //   await audioRecorderPlayer.pausePlayer();
+  // };
 
-  onStopPlay = async () => {
-    console.log('onStopPlay');
-    audioRecorderPlayer.stopPlayer();
-    audioRecorderPlayer.removePlayBackListener();
-  };
+  // onStopPlay = async () => {
+  //   console.log('onStopPlay');
+  //   audioRecorderPlayer.stopPlayer();
+  //   audioRecorderPlayer.removePlayBackListener();
+  // };
   const createNewMessage = async () => {
     console.log('creating new message');
     try {
@@ -183,7 +185,10 @@ export const MessageInput = props => {
     }
   };
   return (
-    <DismissKeyboardView>
+    <KeyboardAwareScrollView
+      enabled
+      behaviour={Platform.OS === 'ios' ? 'padding' : 'height'}
+      automaticallyAdjustContentInsets={false}>
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <View
           style={{
@@ -207,10 +212,9 @@ export const MessageInput = props => {
               borderBottomColor: 'transparent',
               left: wp('15%'),
               color: 'black',
-              top: hp('1.5%'),
             }}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPressIn={() => [onStartRecord(), setMicPressed(true)]}
             onPressOut={() => [onStopRecord(), setAudio(true)]}
             style={{
@@ -240,7 +244,7 @@ export const MessageInput = props => {
                 width: wp('17%'),
               }}>
               {recording.recordTime}
-            </Text>
+            </Text> 
           ) : (
             <View></View>
           )}
@@ -333,7 +337,7 @@ export const MessageInput = props => {
                 />
               </TouchableOpacity>
             </View>
-          </Modal>
+          </Modal>*/}
           <TouchableOpacity
             onPress={() => {
               selectImage();
@@ -397,7 +401,7 @@ export const MessageInput = props => {
           userName={props.userName}
         />
       </View>
-    </DismissKeyboardView>
+    </KeyboardAwareScrollView>
   );
 };
 
