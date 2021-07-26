@@ -15,6 +15,7 @@ import {
   getRetailerCompany,
   getFarmerCompany,
 } from '../../../graphql/queries';
+import {BlueButton} from '_components';
 
 export {EditCompany};
 
@@ -201,7 +202,7 @@ export const CompanyProfile = props => {
           <Text style={[Typography.normal, {top: '0.5%'}]}>Maybank</Text>
         </View>
       </View>
-      <TouchableOpacity
+      <BlueButton
         onPress={() =>
           props.navigation.navigate('editcompany', {
             contactNumber: props.user.contactNumber,
@@ -210,27 +211,12 @@ export const CompanyProfile = props => {
             bankName: 'maybank',
           })
         }
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('45%'),
-          height: hp('5%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          top: hp('10%'),
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-        }}>
-        <Text style={[Typography.normal]}>
-          {Strings.edit} {Strings.companyProfile}
-        </Text>
-      </TouchableOpacity>
+        font={Typography.small}
+        text={Strings.editCompanyProfile}
+        maxWidth={wp('80%')}
+        borderRadius={10}
+        top={hp('11%')}
+      />
     </SafeAreaView>
   );
 };

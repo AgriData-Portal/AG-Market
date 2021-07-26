@@ -28,6 +28,7 @@ import {
 import {API, Auth} from 'aws-amplify';
 import Strings from '_utils';
 import {updateUser} from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
 
 export const EditPersonal = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -249,8 +250,7 @@ export const EditPersonal = props => {
               />
             </View> */}
           </View>
-
-          <TouchableOpacity
+          <BlueButton
             onPress={() => {
               if (name == '' || email == '' || number == '') {
                 console.log('empty field');
@@ -278,33 +278,14 @@ export const EditPersonal = props => {
                 }
               }
             }}
-            style={{
-              alignSelf: 'center',
-              top: hp('18%'),
-              width: wp('55%'),
-              height: hp('5%'),
-              backgroundColor: Colors.LIGHT_BLUE,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.23,
-              shadowRadius: 2.62,
-              zIndex: 5,
-              elevation: 4,
-            }}>
-            <Text>{Strings.saveChanges}</Text>
-            <Icon
-              name="checkmark-circle-outline"
-              size={wp('5.5%')}
-              style={{left: wp('4%')}}
-            />
-          </TouchableOpacity>
+            text={Strings.saveChanges}
+            icon={'checkmark-circle-outline'}
+            offsetCenter={wp('5%')}
+            borderRadius={10}
+            font={Typography.small}
+            top={hp('17%')}
+          />
+
           <Modal
             isVisible={unsuccessfulModal}
             onBackdropPress={() => setUnsuccessfulModal(false)}>

@@ -33,6 +33,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {createUser} from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
 
 //modal issues
 export const AddEmployeeButton = props => {
@@ -40,23 +41,17 @@ export const AddEmployeeButton = props => {
   const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
 
   return (
-    <TouchableOpacity
-      onPress={() => [setAddEmployeeButtonModal(true)]}
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: wp('65%'),
-        height: hp('5%'),
-        bottom: hp('2%'),
-        backgroundColor: Colors.GRAY_LIGHT,
-        borderRadius: 10,
-      }}>
-      <Icon name="add-circle-outline" size={wp('5.5%')} />
-      <Text
-        style={[Typography.normal, {left: wp('0%'), color: Colors.LIME_GREEN}]}>
-        {Strings.addNewTeamMember}
-      </Text>
+    <View>
+      <BlueButton
+        onPress={() => [setAddEmployeeButtonModal(true)]}
+        backgroundColor={Colors.GRAY_LIGHT}
+        flexDirection={'row-reverse'}
+        text={Strings.addNewTeamMember}
+        icon={'add-circle-outline'}
+        offsetCenter={wp('5%')}
+        font={Typography.normal}
+        textColor={Colors.LIME_GREEN}
+      />
 
       <Modal
         animationIn="fadeInLeft"
@@ -70,7 +65,7 @@ export const AddEmployeeButton = props => {
           setTeamList={props.setTeamList}
         />
       </Modal>
-    </TouchableOpacity>
+    </View>
   );
 };
 

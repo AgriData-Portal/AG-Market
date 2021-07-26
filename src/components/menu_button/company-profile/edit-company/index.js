@@ -32,6 +32,7 @@ import {
   updateRetailerCompany,
   updateSupplierCompany,
 } from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -292,8 +293,7 @@ export const EditCompany = props => {
                   }}></TextInput>
               </View>
             </View>
-
-            <TouchableOpacity
+            <BlueButton
               onPress={() => {
                 if (
                   email == '' ||
@@ -333,32 +333,14 @@ export const EditCompany = props => {
                   }
                 }
               }}
-              style={{
-                top: hp('8%'),
-                width: wp('50%'),
-                height: wp('11%'),
-                backgroundColor: Colors.LIGHT_BLUE,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                borderRadius: 10,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
+              text={Strings.saveChanges}
+              icon={'checkmark-circle-outline'}
+              offsetCenter={wp('5%')}
+              borderRadius={10}
+              top={hp('10%')}
+              font={Typography.small}
+            />
 
-                elevation: 4,
-              }}>
-              <Text>{Strings.saveChanges}</Text>
-              <Icon
-                name="checkmark-circle-outline"
-                size={wp('5%')}
-                style={{left: wp('3%')}}
-              />
-            </TouchableOpacity>
             <Modal
               isVisible={unsuccessfulModal}
               onBackdropPress={() => setUnsuccessfulModal(false)}>

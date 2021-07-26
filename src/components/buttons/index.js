@@ -7,6 +7,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {useState} from 'react/cjs/react.development';
 
 export const CloseButton = props => {
   return (
@@ -47,6 +48,58 @@ export const BackButton = props => {
   return (
     <TouchableOpacity onPress={() => props.navigation.goBack()}>
       <Icon name="arrow-back-outline" size={wp('7%')} />
+    </TouchableOpacity>
+  );
+};
+
+export const BlueButton = props => {
+  const [buttonWidth, setButtonWidth] = useState(40);
+  return (
+    <TouchableOpacity
+      onPress={props.onPress}
+      onLayout={layout => setButtonWidth(layout.nativeEvent.layout.width)}
+      // onPressIn={() => props.onPressIn} // for preventing double tap
+      style={{
+        paddingHorizontal: wp('4%'),
+        paddingVertical: hp('1%'),
+        minWidth: props.minWidth || wp('20%'),
+        backgroundColor: props.backgroundColor || Colors.LIGHT_BLUE,
+        borderRadius: props.borderRadius || buttonWidth / 2,
+        maxWidth: props.maxWidth || wp('80%'),
+        flexDirection: props.flexDirection || 'row',
+        justifyContent: 'space-evenly',
+        top: props.top || 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        alignSelf: 'center',
+        right: props.right,
+        left: props.left,
+      }}>
+      <Text style={[props.font, {color: props.textColor, alignSelf: 'center'}]}>
+        {props.text}
+      </Text>
+      {props.icon ? (
+        <View
+          style={{
+            alignSelf: 'center',
+            marginLeft:
+              props.flexDirection == 'row-reverse'
+                ? 0
+                : props.offsetCenter || wp('20%'),
+            marginRight:
+              props.flexDirection == 'row-reverse'
+                ? props.offsetCenter || wp('20%')
+                : 0,
+          }}>
+          <Icon name={props.icon} size={wp('6%')} />
+        </View>
+      ) : null}
     </TouchableOpacity>
   );
 };

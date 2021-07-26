@@ -26,6 +26,7 @@ import {
 } from '../../../graphql/queries';
 import Modal from 'react-native-modal';
 import {DismissKeyboardView} from '_components';
+import {BlueButton} from '_components';
 export {EditPersonal};
 
 export const PersonalProfile = props => {
@@ -167,56 +168,24 @@ export const PersonalProfile = props => {
               </View>
             </View>
           </View>
-          <TouchableOpacity
+          <BlueButton
             onPress={() =>
               props.navigation.navigate('editprofile', {
                 email: 'email@test.com',
               })
             }
-            style={{
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('45%'),
-              height: hp('5%'),
-              alignItems: 'center',
-              justifyContent: 'center',
-              top: hp('1%'),
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}>
-            <Text style={[Typography.normal]}>
-              {Strings.edit} {Strings.personalProfile}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            text={Strings.editPersonalProfile}
+            font={Typography.normal}
+            borderRadius={10}
+            top={hp('1%')}
+          />
+          <BlueButton
             onPress={() => setChangePassword(true)}
-            style={{
-              alignSelf: 'center',
-              top: hp('9%'),
-              width: wp('45%'),
-              height: hp('5%'),
-              backgroundColor: Colors.LIGHT_BLUE,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.23,
-              shadowRadius: 2.62,
-              elevation: 5,
-            }}>
-            <Text style={[Typography.normal]}>{Strings.changePass}</Text>
-          </TouchableOpacity>
+            text={Strings.changePass}
+            font={Typography.normal}
+            top={hp('10%')}
+            borderRadius={10}
+          />
           <Modal isVisible={changePassword}>
             <ChangePassword
               setChangePassword={setChangePassword}

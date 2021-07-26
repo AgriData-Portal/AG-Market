@@ -212,4 +212,6 @@ export default {
   sendQuotationToRetailer: 'Send Quotation To Retailer',
   edit: 'Edit',
   bankName: 'Bank Name',
+  editCompanyProfile: 'Edit Company Profile',
+  editPersonalProfile: 'Edit Personal Profile',
 };

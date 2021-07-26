@@ -18,6 +18,7 @@ import {
   updateChatGroup,
   createGoodsTask,
 } from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
 // import AudioRecorderPlayer, {
 //   AVEncoderAudioQualityIOSType,
 //   AVEncodingOption,
@@ -197,6 +198,7 @@ export const MessageInput = props => {
             <Icon name="images-outline" size={wp('7%')} />
           </TouchableOpacity>
         </View>
+
         <TouchableOpacity
           onPress={() => {
             if (message.length > 0) {

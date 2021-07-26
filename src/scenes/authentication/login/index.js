@@ -23,6 +23,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {BlueButton} from '_components';
 
 export const Login = props => {
   const [secure, setSecure] = useState(true);
@@ -122,8 +123,8 @@ export const Login = props => {
             <View style={{flexDirection: 'row'}}>
               <Text style={{alignSelf: 'center'}}>+60</Text>
               <TextInput
+                keyboardType={'phone-pad'}
                 placeholderTextColor={Colors.GRAY_DARK}
-                keyboardType="default"
                 placeholder="109125654"
                 underlineColorAndroid="transparent"
                 onChangeText={item => setPhone(item)}
@@ -208,43 +209,25 @@ export const Login = props => {
             />
           </Modal>
         </View>
-        <View
-          style={{
-            alignItems: 'center',
-            top: hp('23%'),
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              if (password == '' || phone == '') {
-                console.log('empty input');
-                setUnsuccessfulModal(true);
-                setErrorText('Please fill in all empty spaces!');
-              } else {
-                signIn();
-              }
-            }}
-            style={{
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('40%'),
-              height: hp('5%'),
-              justifyContent: 'center',
-              borderRadius: 10,
-              shadowOffset: {
-                width: 1,
-                height: 2,
-              },
-              shadowOpacity: 2,
-              shadowRadius: 3,
-              shadowColor: 'grey',
-            }}>
-            <View style={{flexDirection: 'row', left: wp('6%')}}>
-              <Text style={[Typography.large]}>{Strings.logIn}</Text>
-              <View style={{position: 'absolute', left: wp('25%')}}>
-                <Icon name="arrow-forward-outline" size={wp('6%')} />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+
+        <BlueButton
+          onPress={() => {
+            if (password == '' || phone == '') {
+              console.log('empty input');
+              setUnsuccessfulModal(true);
+              setErrorText('Please fill in all empty spaces!');
+            } else {
+              signIn();
+            }
+          }}
+          text={Strings.logIn}
+          icon={'arrow-forward-outline'}
+          top={hp('21%')}
+          offsetCenter={wp('10%')}
+          minWidth={wp('40%')}
+          font={Typography.large}
+          borderRadius={10}
+        />
 
         {/*<TouchableOpacity
           style={{
