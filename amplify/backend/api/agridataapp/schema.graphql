@@ -18,6 +18,7 @@ type User
   id: ID
   name: String
   role: String
+  email: String
   retailerCompanyID: ID
   supplierCompanyID: ID
   farmerCompanyID: ID
@@ -48,6 +49,7 @@ type RetailerCompany @model {
   chatGroups: [ChatGroup]
     @connection(keyName: "chatGroupbyRetailer", fields: ["id"])
   verified: Boolean
+  contactDetails:ContactDetails
   logo: String
   updatedAt: String
   createdAt: String
@@ -78,6 +80,7 @@ type SupplierCompany @model {
   chatGroups: [ChatGroup]
     @connection(keyName: "chatGroupbySupplier", fields: ["id"])
   verified: Boolean
+  contactDetails:ContactDetails
   logo: String
   updatedAt: String
   createdAt: String
@@ -89,6 +92,7 @@ type FarmerCompany @model {
   employees: [User]
     @connection(keyName: "usersByFarmerCompany", fields: ["id"])
   address: String
+  bankAccount: BankDetails
   rating: Rating
   registrationNumber: String
   listings: [FarmerListing]
@@ -101,6 +105,7 @@ type FarmerCompany @model {
   chatGroups: [ChatGroup]
     @connection(keyName: "chatGroupbyFarmer", fields: ["id"])
   verified: Boolean
+  contactDetails:ContactDetails
   logo: String
   updatedAt: String
   createdAt: String
@@ -109,6 +114,10 @@ type FarmerCompany @model {
 """
 to add a chatgroup list per company so that we have a base truth to query/check from
 """
+type ContactDetails{
+  email: String
+  phone:String
+}
 
 type Favourites {
   id: ID
@@ -175,15 +184,6 @@ type Message
     queryField: "messagesInChatByDate"
   ) {
   id: ID
-<<<<<<< HEAD
-  chatGroupID: ID!
-  "retailerID+supplierID"
-  type: String!
-  "Text, Product Inquiry, PO, Quotation, Image, Recording"
-  content: String!
-  senderID: ID!
-  sender: String!
-=======
   chatGroupID: ID
   "retailerID+supplierID or farmerID+supplierID"
   type: String
@@ -191,7 +191,6 @@ type Message
   content: String
   senderID: ID
   sender: String
->>>>>>> 2841264dbeae9ce79dd97a7571f392ae3dda9999
   updatedAt: String
   createdAt: String
 }
