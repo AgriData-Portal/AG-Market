@@ -91,6 +91,7 @@ const TabbedNavigator = props => {
   return (
     <TabStack.Navigator
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
