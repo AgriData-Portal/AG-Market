@@ -119,7 +119,7 @@ export const EditPersonal = props => {
               </Text>
             </View>
           </View>*/}
-          <View
+          {/* <View
             style={{
               top: hp('5%'),
               alignItems: 'center',
@@ -161,10 +161,19 @@ export const EditPersonal = props => {
                 />
               </View>
             )}
-          </View>
+          </View> */}
+          <Image
+            source={require('_assets/images/agridata.png')}
+            style={{
+              resizeMode: 'contain',
+              width: wp('80%'),
+              height: hp('30%'),
+              top: hp('0%'),
+            }}
+          />
           <View
             style={{
-              top: hp('10%'),
+              top: hp('0%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
               height: hp('27%'),
@@ -277,7 +286,7 @@ export const EditPersonal = props => {
             }}
             style={{
               alignSelf: 'center',
-              top: hp('18%'),
+              top: hp('10%'),
               width: wp('55%'),
               height: hp('5%'),
               backgroundColor: Colors.LIGHT_BLUE,

@@ -69,21 +69,21 @@ export const EditCompany = props => {
   const saveChanges = async () => {
     if (props.user.retailerCompanyID == null) {
       try {
-        // let photo = imageSource;
-        // const response = await fetch(photo.uri);
-        // const blob = await response.blob();
-        // console.log('FileName: \n');
-        // photo.fileName = props.user.supplierCompany.name + '_logo';
-        // await Storage.put(photo.fileName, blob, {
-        //   contentType: 'image/jpeg',
-        // });
+        let photo = imageSource;
+        const response = await fetch(photo.uri);
+        const blob = await response.blob();
+        console.log('FileName: \n');
+        photo.fileName = props.user.supplierCompany.name + '_logo';
+        await Storage.put(photo.fileName, blob, {
+          contentType: 'image/jpeg',
+        });
 
         var companyProfile = await API.graphql({
           query: updateSupplierCompany,
           variables: {
             input: {
               id: props.user.supplierCompanyID,
-              //logo: photo.fileName,
+              logo: photo.fileName,
               contactDetails: {email: email, phone: number},
               bankAccount: {bankName: bankName, accountNumber: bankDetails},
             },
@@ -97,21 +97,21 @@ export const EditCompany = props => {
       }
     } else if (props.user.supplierCompanyID == null) {
       try {
-        // let photo = imageSource;
-        // const response = await fetch(photo.uri);
-        // const blob = await response.blob();
-        // console.log('FileName: \n');
-        // photo.fileName = props.user.retailerCompany.name + '_logo';
-        // await Storage.put(photo.fileName, blob, {
-        //   contentType: 'image/jpeg',
-        // });
+        let photo = imageSource;
+        const response = await fetch(photo.uri);
+        const blob = await response.blob();
+        console.log('FileName: \n');
+        photo.fileName = props.user.retailerCompany.name + '_logo';
+        await Storage.put(photo.fileName, blob, {
+          contentType: 'image/jpeg',
+        });
 
         var companyProfile = await API.graphql({
           query: updateRetailerCompany,
           variables: {
             input: {
               id: props.user.retailerCompanyID,
-              //logo: photo.fileName,
+              logo: photo.fileName,
               contactDetails: {email: email, phone: number},
               bankAccount: {bankName: bankName, accountNumber: bankDetails},
             },
