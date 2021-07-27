@@ -570,6 +570,7 @@ const InvoiceModal = props => {
   const [toggle, setToggle] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [sum, setSum] = useState(0);
+  const [verifyDoubleButton, setVerifyDoubleButton] = useState(false);
   var tempSum = 0;
   useEffect(() => {
     console.log(itemList);
@@ -608,6 +609,7 @@ const InvoiceModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setVerifyDoubleButton(false);
   };
 
   const Seperator = () => {
@@ -730,6 +732,8 @@ const InvoiceModal = props => {
         position={'absolute'}
         top={hp('70%')}
         right={wp('5%')}
+        onPressIn={() => setVerifyDoubleButton(true)}
+        disabled={verifyDoubleButton}
       />
       <Modal
         isVisible={successfulModal}

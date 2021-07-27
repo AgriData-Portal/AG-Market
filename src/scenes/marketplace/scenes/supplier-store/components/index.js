@@ -25,9 +25,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {
-  deleteFarmerListing,
-  updateFarmerListing,
-  createFarmerListing,
+  deleteSupplierListing,
+  updateSupplierListing,
+  createSupplierListing,
   updateChatGroup,
   createChatGroup,
   createMessage,
@@ -60,6 +60,7 @@ const AddItemModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [focus, setFocus] = useState('');
+  const [addProductButton, setAddProductButton] = useState(false);
 
   async function addListing() {
     try {
@@ -86,14 +87,14 @@ const AddItemModal = props => {
         siUnit: value2,
       };
       const productListing = await API.graphql({
-        query: createFarmerListing,
+        query: createSupplierListing,
         variables: {input: listing},
       });
 
       listing.productPicture = {uri: photo.uri};
 
       props.setProducts(products => [
-        productListing.data.createFarmerListing,
+        productListing.data.createSupplierListing,
         ...products,
       ]);
       console.log('Added product');
@@ -101,6 +102,7 @@ const AddItemModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setAddProductButton(false);
   }
 
   function selectImage() {
@@ -698,6 +700,8 @@ const AddItemModal = props => {
               }
             }
           }}
+          onPressIn={() => setAddProductButton(true)}
+          disabled={addProductButton}
           text={Strings.addProduct}
           icon={'add-circle-outline'}
           offsetCenter={wp('5%')}
@@ -765,7 +769,7 @@ const ProductModal = props => {
     try {
       setLoading(true);
       const deletedListing = await API.graphql({
-        query: deleteFarmerListing,
+        query: deleteSupplierListing,
         variables: {input: {id: props.id}},
       });
       var products = props.productList;
@@ -793,7 +797,7 @@ const ProductModal = props => {
   const updateListing = async () => {
     try {
       const updatedListing = await API.graphql({
-        query: updateFarmerListing,
+        query: updateSupplierListing,
         variables: {
           input: {
             id: props.id,
@@ -833,6 +837,7 @@ const ProductModal = props => {
         props.setTrigger(true);
       }
       setSuccessfulModal(true);
+      setEditMode(false);
     } catch (e) {
       console.log(e);
     }
@@ -1087,14 +1092,13 @@ const ProductModal = props => {
                 } else {
                   try {
                     updateListing();
-                    setEditMode(false);
                   } catch {
                     e => console.log('error ' + e);
                   }
                 }
               }}
               text={Strings.saveChanges}
-              top={hp('15%')}
+              top={hp('10%')}
               borderRadius={10}
               font={Typography.normal}
             />
@@ -1128,20 +1132,12 @@ const ProductModal = props => {
           </Modal>
           <Modal
             isVisible={successfulModal}
-            onBackdropPress={() => [
-              setSuccessfulModal(false),
-              setEditMode(false),
-              props.setProductModal(false),
-            ]}>
+            onBackdropPress={() => [setSuccessfulModal(false)]}>
             <SuccessfulModal text={Strings.successfullyUpdated} />
           </Modal>
           <Modal
             isVisible={successfulModal2}
-            onBackdropPress={() => [
-              setSuccessfulModal2(false),
-              setEditMode(false),
-              props.setProductModal(false),
-            ]}>
+            onBackdropPress={() => [setSuccessfulModal2(false)]}>
             <SuccessfulModal text={Strings.successfullyDeleted} />
           </Modal>
         </View>
@@ -1300,6 +1296,7 @@ export const RetailerList = props => {
 };
 
 const RetailerCard = props => {
+  const [supermarketButton, setSupermarketButton] = useState(false);
   const sendStoreDetails = async () => {
     try {
       console.log(props.id + props.user.supplierCompanyID);
@@ -1360,12 +1357,15 @@ const RetailerCard = props => {
     } catch {
       e => console.log(e);
     }
+    setSupermarketButton(false);
   };
   return (
     <TouchableOpacity
       onPress={() => {
         sendStoreDetails();
       }}
+      disabled={supermarketButton}
+      onPressIn={() => setSupermarketButton(true)}
       style={{
         marginBottom: hp('2%'),
         width: wp('80%'),
@@ -1418,6 +1418,7 @@ export const RetailerModalButton = props => {
 
 const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
+
   const getAllSupermarkets = async () => {
     try {
       const listRetailer = await API.graphql({

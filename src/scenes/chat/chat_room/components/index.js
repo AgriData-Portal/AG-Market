@@ -56,6 +56,7 @@ export const MessageInput = props => {
     playTime: '00:00:00',
     duration: '00:00:00',
   });
+  const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
   const [audio, setAudio] = useState(false);
   const [whenMicPressed, setMicPressed] = useState(false);
 
@@ -107,11 +108,12 @@ export const MessageInput = props => {
           },
         },
       });
-
-      setMessage('');
     } catch (e) {
       console.log(e);
     }
+    setMessage('');
+    setSendButtonDisabled(false);
+    console.log('hello');
   };
   return (
     <DismissKeyboardView>
@@ -205,6 +207,12 @@ export const MessageInput = props => {
               createNewMessage();
             }
           }}
+          onPressIn={() => {
+            if (message.length > 0) {
+              setSendButtonDisabled(true);
+            }
+          }}
+          disabled={sendButtonDisabled}
           style={{
             height: hp('5.5%'),
             width: hp('5.5%'),

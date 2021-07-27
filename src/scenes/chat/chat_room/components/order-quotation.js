@@ -37,6 +37,8 @@ export const OrderQuotationModal = props => {
   }, []);
   const [succesfulModal, setSuccesfulModal] = useState(false);
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
+  const [acceptButton, setAcceptButton] = useState(false);
+  const [declineButton, setDeclineButton] = useState(false);
 
   console.log('quotation' + props.chatGroupID);
   const fetchQuotation = async () => {
@@ -85,7 +87,9 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setDeclineButton(false);
   };
+
   const accept = async () => {
     try {
       const acceptanceMessage = await API.graphql({
@@ -137,6 +141,7 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setAcceptButton(false);
   };
   return (
     <View>
@@ -237,6 +242,8 @@ export const OrderQuotationModal = props => {
                 minWidth={wp('25%')}
                 right={wp('5%')}
                 position={'absolute'}
+                onPressIn={() => setAcceptButton(true)}
+                disabled={acceptButton}
               />
               <BlueButton
                 text={Strings.decline}
@@ -246,6 +253,8 @@ export const OrderQuotationModal = props => {
                 minWidth={wp('25%')}
                 left={wp('5%')}
                 position={'absolute'}
+                onPressIn={() => setDeclineButton(true)}
+                disabled={declineButton}
               />
 
               <Modal

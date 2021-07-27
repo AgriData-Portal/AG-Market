@@ -92,6 +92,7 @@ const ProductCard = props => {
       </Text>
       <Modal isVisible={productModal}>
         <ProductPopUp
+          navigation={props.navigation}
           productName={props.productName}
           variety={props.variety}
           quantityAvailable={props.quantityAvailable}
@@ -138,6 +139,7 @@ export const MarketplaceList = props => {
       renderItem={({item}) => {
         return (
           <ProductCard
+            navigation={props.navigation}
             productName={item.productName}
             variety={item.variety}
             quantityAvailable={item.quantityAvailable}
@@ -167,6 +169,8 @@ const ProductPopUp = props => {
   const [desiredQuantity, setDesiredQuantity] = useState('');
   const [inquirySuccessfulModal, setInquirySuccessfulModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
+  const [addPO, setAddPO] = useState(false);
+  const [productInquire, setProductInquire] = useState(false);
 
   const sendProductInquiry = async () => {
     try {
@@ -236,6 +240,7 @@ const ProductPopUp = props => {
     } catch {
       e => console.log(e);
     }
+    props.navigation.navigate('inbox'), setProductInquire(false);
   };
   const addToPurchaseOrder = async () => {
     console.log('addingToPO ' + props.purchaseOrder);
@@ -263,6 +268,7 @@ const ProductPopUp = props => {
     } catch {
       e => console.log(e);
     }
+    setAddPO(false);
   };
   return (
     <KeyboardAvoidingView
@@ -299,7 +305,10 @@ const ProductPopUp = props => {
             {props.productName}
           </Text>
           <View style={{position: 'absolute', right: wp('2%')}}>
-            <TouchableOpacity onPress={() => sendProductInquiry()}>
+            <TouchableOpacity
+              onPress={() => [sendProductInquiry()]}
+              onPressIn={() => setProductInquire(true)}
+              disabled={productInquire}>
               <Icon name="chatbox-outline" size={wp('8%')}></Icon>
             </TouchableOpacity>
           </View>
@@ -418,6 +427,8 @@ const ProductPopUp = props => {
           borderRadius={10}
           onPress={() => addToPurchaseOrder()}
           top={hp('12%')}
+          onPressIn={() => setAddPO(true)}
+          disabled={addPO}
         />
       </View>
       <Modal
@@ -508,6 +519,7 @@ export const PurchaseOrderButton = props => {
 
 const PurchaseOrder = props => {
   const [poSuccessfulModal, setpoSuccessfulModal] = useState(false);
+  const [sendPOButton, setSendPOButton] = useState(false);
   const sendPO = async () => {
     try {
       const updateChat = await API.graphql({
@@ -566,6 +578,7 @@ const PurchaseOrder = props => {
     } catch {
       e => console.log(e);
     }
+    setSendPOButton(false);
   };
   return (
     <View
@@ -619,6 +632,8 @@ const PurchaseOrder = props => {
         borderRadius={10}
         onPress={() => sendPO()}
         top={hp('8%')}
+        onPressIn={() => setSendPOButton(true)}
+        disabled={sendPOButton}
       />
 
       <View

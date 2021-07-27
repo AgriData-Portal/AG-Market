@@ -58,7 +58,8 @@ export const BlueButton = props => {
     <TouchableOpacity
       onPress={props.onPress}
       onLayout={layout => setButtonWidth(layout.nativeEvent.layout.width)}
-      // onPressIn={() => props.onPressIn} // for preventing double tap
+      onPressIn={props.onPressIn} // for preventing double tap
+      disabled={props.disabled}
       style={{
         position: props.position,
         paddingHorizontal: wp('4%'),

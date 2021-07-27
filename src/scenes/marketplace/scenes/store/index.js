@@ -185,6 +185,7 @@ export const Store = props => {
           height: hp('70%'),
         }}>
         <MarketplaceList
+          navigation={props.navigation}
           productList={products}
           POList={POList}
           setPOList={setPOList}
