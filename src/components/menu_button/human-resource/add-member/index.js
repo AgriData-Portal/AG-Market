@@ -51,6 +51,7 @@ export const AddEmployeeButton = props => {
         offsetCenter={wp('5%')}
         font={Typography.normal}
         textColor={Colors.LIME_GREEN}
+        position={'absolute'}
       />
 
       <Modal

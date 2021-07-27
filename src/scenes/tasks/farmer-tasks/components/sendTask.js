@@ -539,32 +539,16 @@ const SendTaskModal = props => {
           ]}>
           {props.retailer.name}
         </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: Colors.LIGHT_BLUE,
-            width: wp('30%'),
-            height: hp('5%'),
-            alignSelf: 'center',
-            justifyContent: 'center',
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-            position: 'absolute',
-            bottom: hp('8%'),
-            borderRadius: 10,
-          }}
+        <BlueButton
           onPress={() => {
-            [props.setInvoiceModal(true), props.setSendTaskModal(false)];
-          }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.createInvoice}
-          </Text>
-        </TouchableOpacity>
+            [setInvoiceModal(true)];
+          }}
+          text={Strings.createInvoice}
+          font={Typography.normal}
+          borderRadius={10}
+          top={hp('70%')}
+          position={'absolute'}
+        />
       </View>
       <Modal
         isVisible={successfulModal}
@@ -732,23 +716,15 @@ const InvoiceModal = props => {
           </Text>
         </View>
       </View>
-      <TouchableOpacity
+      <BlueButton
         onPress={() => [sendForVerfication()]}
-        style={{
-          position: 'absolute',
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('35%'),
-          height: hp('5%'),
-          bottom: hp('5%'),
-          right: wp('5%'),
-          elevation: 3,
-          borderRadius: 10,
-          justifyContent: 'center',
-        }}>
-        <Text style={[Typography.normal, {left: wp('5%')}]}>
-          Send to Verify
-        </Text>
-      </TouchableOpacity>
+        text={Strings.sendToVerify}
+        borderRadius={10}
+        font={Typography.normal}
+        position={'absolute'}
+        top={hp('70%')}
+        right={wp('5%')}
+      />
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [

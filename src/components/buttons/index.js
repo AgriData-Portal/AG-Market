@@ -60,8 +60,9 @@ export const BlueButton = props => {
       onLayout={layout => setButtonWidth(layout.nativeEvent.layout.width)}
       // onPressIn={() => props.onPressIn} // for preventing double tap
       style={{
+        position: props.position,
         paddingHorizontal: wp('4%'),
-        paddingVertical: hp('1%'),
+        paddingVertical: props.paddingVertical || hp('1%'),
         minWidth: props.minWidth || wp('20%'),
         backgroundColor: props.backgroundColor || Colors.LIGHT_BLUE,
         borderRadius: props.borderRadius || buttonWidth / 2,

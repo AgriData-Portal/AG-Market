@@ -434,41 +434,16 @@ const ReceivePaymentModal = props => {
         ]}>
         9065 7756 8989
       </Text>
-      <TouchableOpacity
+      <BlueButton
         onPress={() => [receivedPayment()]}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('30%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          justifyContent: 'center',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('10%'),
-          borderRadius: 10,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.recieved}
-          </Text>
-          <Icon
-            name="checkmark-circle-outline"
-            size={wp('5%')}
-            style={{left: wp('2%')}}></Icon>
-        </View>
-      </TouchableOpacity>
+        text={Strings.recieved}
+        font={Typography.normal}
+        borderRadius={10}
+        icon="checkmark-circle-outline"
+        position={'absolute'}
+        offsetCenter={wp('5%')}
+        top={hp('65%')}
+      />
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => {

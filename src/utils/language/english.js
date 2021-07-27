@@ -214,4 +214,6 @@ export default {
   bankName: 'Bank Name',
   editCompanyProfile: 'Edit Company Profile',
   editPersonalProfile: 'Edit Personal Profile',
+  sendQuotation: 'Send Quotation',
+  sendToVerify: 'Send to Verify',
 };

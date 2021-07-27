@@ -28,6 +28,7 @@ const now = () => {
   return now;
 };
 import {paymentsTaskForRetailerByDate} from '../../../../graphql/queries';
+import {BlueButton} from '_components';
 
 //Retailer upload receipt
 const UploadReceiptModal = props => {
@@ -215,44 +216,16 @@ const UploadReceiptModal = props => {
         ]}>
         9065 7756 8989
       </Text>
-      <TouchableOpacity
+      <BlueButton
         onPress={() => sendReceipt()}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('45%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          justifyContent: 'center',
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('10%'),
-          borderRadius: 10,
-          flexDirection: 'row',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-        }}>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-            flexDirection: 'row',
-          }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.paid}
-          </Text>
-          <Icon
-            name="receipt-outline"
-            size={wp('5%')}
-            style={{left: wp('3%')}}
-          />
-        </View>
-      </TouchableOpacity>
+        text={Strings.paid}
+        font={Typography.normal}
+        borderRadius={10}
+        icon="receipt-outline"
+        offsetCenter={wp('5%')}
+        top={hp('65%')}
+      />
+
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [

@@ -26,6 +26,7 @@ import Strings from '_utils';
 import {DismissKeyboardView} from '_components';
 import Modal from 'react-native-modal';
 import {useIsFocused} from '@react-navigation/native';
+import {BlueButton} from '_components';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -364,7 +365,7 @@ export const Registration = props => {
                   state={companyAddress}
                   setState={setCompanyAddress}
                 />
-                <TouchableOpacity
+                <BlueButton
                   onPress={async () => {
                     if (
                       value == null ||
@@ -410,38 +411,13 @@ export const Registration = props => {
                       signUp();
                     }
                   }}
-                  style={{
-                    top: hp('5%'),
-                    backgroundColor: Colors.LIGHT_BLUE,
-                    width: wp('30%'),
-                    height: hp('5%'),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    borderRadius: 10,
-                    flexDirection: 'row',
-                    shadowOffset: {
-                      width: 1,
-                      height: 2,
-                    },
-                    shadowOpacity: 2,
-                    shadowRadius: 3,
-                    shadowColor: 'grey',
-                    elevation: 3,
-                  }}>
-                  <Text
-                    style={[
-                      Typography.large,
-                      {position: 'absolute', left: wp('3%')},
-                    ]}>
-                    {Strings.next}
-                  </Text>
-                  <Icon
-                    name="arrow-forward-outline"
-                    size={wp('6%')}
-                    style={{left: wp('10%')}}
-                  />
-                </TouchableOpacity>
+                  text={Strings.next}
+                  font={Typography.large}
+                  borderRadius={10}
+                  icon="arrow-forward-outline"
+                  offsetCenter={wp('5%')}
+                  top={hp('5%')}
+                />
               </View>
               <Modal
                 isVisible={createAccountButton}

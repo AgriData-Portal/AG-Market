@@ -14,6 +14,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {updateRetailerCompany} from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid
@@ -153,37 +154,29 @@ export const Store = props => {
       <Text style={[Typography.header, {top: hp('4%')}]}>{storeName}</Text> */}
 
       {isFavourite ? (
-        <TouchableOpacity
+        <BlueButton
           onPress={() => unfavourite()}
-          style={{
-            position: 'absolute',
-            right: wp('5%'),
-            bottom: hp('20%'),
-            backgroundColor: 'gold',
-            width: wp('38%'),
-            height: hp('6%'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-          }}>
-          <Text style={[Typography.normal, {}]}>Favourited</Text>
-        </TouchableOpacity>
+          text={'Favourited'}
+          font={Typography.normal}
+          backgroundColor={'gold'}
+          borderRadius={10}
+          paddingVertical={hp('1.5%')}
+          top={hp('73%')}
+          left={wp('25%')}
+          minWidth={wp('44%')}
+        />
       ) : (
-        <TouchableOpacity
+        <BlueButton
           onPress={() => updateFavourites()}
-          style={{
-            position: 'absolute',
-            right: wp('5%'),
-            bottom: hp('20%'),
-            backgroundColor: Colors.GRAY_MEDIUM,
-            width: wp('38%'),
-            height: hp('6%'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-          }}>
-          <Text style={[Typography.normal, {}]}>Add to Favourites</Text>
-        </TouchableOpacity>
+          backgroundColor={Colors.GRAY_MEDIUM}
+          text={'Add to Favourites'}
+          top={hp('73%')}
+          left={wp('25%')}
+          minWidth={wp('44%')}
+          font={Typography.normal}
+          paddingVertical={hp('1.5%')}
+          borderRadius={10}
+        />
       )}
 
       <View
@@ -203,8 +196,8 @@ export const Store = props => {
       <View
         style={{
           position: 'absolute',
-          right: wp('5%'),
-          bottom: hp('13%'),
+          right: wp('2.5%'),
+          bottom: hp('14%'),
         }}>
         <PurchaseOrderButton
           purchaseOrder={purchaseOrder}

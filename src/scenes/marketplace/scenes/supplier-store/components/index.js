@@ -39,7 +39,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {listSupplierCompanys} from '../../../../../graphql/queries';
+import {listRetailerCompanys} from '../../../../../graphql/queries';
+import {BlueButton} from '_components';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -250,7 +251,7 @@ const AddItemModal = props => {
               {
                 left: wp('6%'),
                 top: hp('1.5%'),
-                width: wp('50%'),
+                width: wp('70%'),
               },
             ]}>
             {Strings.enterProductDetails}
@@ -675,7 +676,7 @@ const AddItemModal = props => {
             </View>
           </DismissKeyboardView>
         </View>
-        <TouchableOpacity
+        <BlueButton
           onPress={() => {
             if (
               imageSource == null ||
@@ -697,31 +698,14 @@ const AddItemModal = props => {
               }
             }
           }}
-          style={{
-            height: hp('5%'),
-            height: hp('7%'),
-            width: wp('40%'),
-            backgroundColor: Colors.LIGHT_BLUE,
-            borderRadius: 10,
-            shadowOffset: {
-              width: 0,
-              height: 5,
-            },
-            shadowOpacity: 5,
-            shadowRadius: 3,
-            shadowColor: 'grey',
-            justifyContent: 'center',
-            alignItems: 'center',
-            top: hp('15%'),
-            flexDirection: 'row',
-          }}>
-          <Text style={[Typography.normal]}>{Strings.addProduct}</Text>
-          <Icon
-            name="add-circle-outline"
-            size={wp('5%')}
-            style={{left: hp('1%')}}
-          />
-        </TouchableOpacity>
+          text={Strings.addProduct}
+          icon={'add-circle-outline'}
+          offsetCenter={wp('5%')}
+          font={Typography.normal}
+          borderRadius={10}
+          paddingVertical={hp('1.5%')}
+          top={hp('17%')}
+        />
       </View>
       <Modal
         isVisible={successfulModal}
@@ -743,19 +727,16 @@ const AddItemModal = props => {
 export const AddItemsButton = props => {
   const [addItemsButton, setAddItemsButton] = useState(false);
   return (
-    <TouchableOpacity
-      style={{
-        height: hp('8%'),
-        width: wp('30%'),
-        backgroundColor: 'grey',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-      }}
-      onPress={() => setAddItemsButton(true)}>
-      <Text style={[Typography.large, {textAlign: 'center'}]}>
-        {Strings.addItems}
-      </Text>
+    <View>
+      <BlueButton
+        onPress={() => setAddItemsButton(true)}
+        text={Strings.addItems}
+        backgroundColor="grey"
+        font={Typography.normal}
+        borderRadius={10}
+        paddingVertical={hp('1.5%')}
+      />
+
       <Modal isVisible={addItemsButton}>
         <AddItemModal
           setAddItemsButton={setAddItemsButton}
@@ -763,7 +744,7 @@ export const AddItemsButton = props => {
           productList={props.productList}
           setProducts={props.setProducts}></AddItemModal>
       </Modal>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -1093,7 +1074,7 @@ const ProductModal = props => {
             )}
           </View>
           {editMode ? (
-            <TouchableOpacity
+            <BlueButton
               onPress={() => {
                 if (
                   lowPrice == '' ||
@@ -1106,90 +1087,38 @@ const ProductModal = props => {
                 } else {
                   try {
                     updateListing();
+                    setEditMode(false);
                   } catch {
                     e => console.log('error ' + e);
                   }
                 }
               }}
-              style={{
-                backgroundColor: Colors.LIGHT_BLUE,
-                width: wp('50%'),
-                height: hp('5%'),
-                borderRadius: 10,
-                top: hp('12%'),
-                zIndex: 0,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-                elevation: 4,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={[Typography.normal]}>{Strings.saveChanges}</Text>
-            </TouchableOpacity>
+              text={Strings.saveChanges}
+              top={hp('15%')}
+              borderRadius={10}
+              font={Typography.normal}
+            />
           ) : (
             <View style={{alignItems: 'center'}}>
-              <TouchableOpacity
+              <BlueButton
                 onPress={() => setEditMode(true)}
-                style={{
-                  backgroundColor: Colors.LIGHT_BLUE,
-                  width: wp('50%'),
-                  height: hp('5%'),
-                  borderRadius: 10,
-                  top: hp('9%'),
-                  zIndex: 0,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-                  elevation: 4,
-
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={[Typography.normal]}>{Strings.editListing}</Text>
-                <Icon
-                  name="create-outline"
-                  size={wp('5%')}
-                  style={{left: wp('3%')}}></Icon>
-              </TouchableOpacity>
-
-              <TouchableOpacity
+                text={Strings.editListing}
+                icon="create-outline"
+                top={hp('10%')}
+                borderRadius={10}
+                offsetCenter={wp('5%')}
+                font={Typography.normal}
+              />
+              <BlueButton
                 onPress={() => deleteListing()}
-                style={{
-                  backgroundColor: Colors.LIGHT_RED,
-                  width: wp('60%'),
-                  height: hp('5%'),
-                  borderRadius: 10,
-                  top: hp('10%'),
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-                  elevation: 4,
-
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={[Typography.normal]}>{Strings.removeListing}</Text>
-                <Icon
-                  name="remove-circle-outline"
-                  size={wp('5%')}
-                  style={{left: wp('3%')}}></Icon>
-              </TouchableOpacity>
+                text={Strings.removeListing}
+                backgroundColor={Colors.LIGHT_RED}
+                icon="remove-circle-outline"
+                borderRadius={10}
+                offsetCenter={wp('5%')}
+                font={Typography.normal}
+                top={hp('12%')}
+              />
             </View>
           )}
           <Modal
@@ -1469,7 +1398,7 @@ const RetailerCard = props => {
   );
 };
 
-export const SupplierModalButton = props => {
+export const RetailerModalButton = props => {
   const [retailerModal, setRetailerModal] = useState(false);
   return (
     <View>
@@ -1491,11 +1420,11 @@ const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
   const getAllSupermarkets = async () => {
     try {
-      const listSupplier = await API.graphql({
-        query: listSupplierCompanys,
+      const listRetailer = await API.graphql({
+        query: listRetailerCompanys,
       });
 
-      setSupermarkets(listSupplier.data.listSupplierCompanys.items);
+      setSupermarkets(listRetailer.data.listRetailerCompanys.items);
     } catch (e) {
       console.log(e);
     }
@@ -1515,7 +1444,7 @@ const RetailerModal = props => {
       }}>
       <View
         style={{alignItems: 'center', justifyContent: 'center', top: hp('2%')}}>
-        <Text style={[Typography.large]}>Suppliers</Text>
+        <Text style={[Typography.large]}>Supermarkets</Text>
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
         <RetailerList supermarkets={supermarkets} />

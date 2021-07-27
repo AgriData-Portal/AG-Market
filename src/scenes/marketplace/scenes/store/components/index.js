@@ -35,6 +35,7 @@ import {
   getSupplierCompany,
   getRetailerCompany,
 } from '../../../../../graphql/queries';
+import {BlueButton} from '_components';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -352,7 +353,7 @@ const ProductPopUp = props => {
                 position: 'absolute',
               },
             ]}>
-            Grade:{'\n'}
+            {Strings.grade}:{'\n'}
             {Strings.variety}: {'\n'}
             {Strings.available}: {'\n'}MOQ:
           </Text>
@@ -408,35 +409,16 @@ const ProductPopUp = props => {
               color: 'black',
             }}></TextInput>
         </View>
-        <View style={{position: 'absolute', bottom: hp('5%')}}>
-          <TouchableOpacity
-            onPress={() => addToPurchaseOrder()}
-            style={{
-              width: wp('50%'),
-              backgroundColor: Colors.GRAY_LIGHT,
-              borderRadius: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              height: hp('5%'),
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
-            }}>
-            <View>
-              <Icon name="add-outline" size={wp('5.5%')}></Icon>
-            </View>
-            <Text style={[Typography.normal, {left: wp('3%')}]}>
-              {Strings.purchaseOrder}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <BlueButton
+          text={Strings.purchaseOrder}
+          font={Typography.normal}
+          icon="add-outline"
+          flexDirection="row-reverse"
+          offsetCenter={wp('5%')}
+          borderRadius={10}
+          onPress={() => addToPurchaseOrder()}
+          top={hp('12%')}
+        />
       </View>
       <Modal
         isVisible={inquirySuccessfulModal}
@@ -500,17 +482,17 @@ export const PurchaseOrderButton = props => {
   const [purchaseOrderModal, setPurchaseOrderModal] = useState(false);
 
   return (
-    <TouchableOpacity
-      style={{
-        height: hp('6%'),
-        width: wp('38%'),
-        backgroundColor: Colors.PALE_BLUE,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-      }}
-      onPress={() => setPurchaseOrderModal(true)}>
-      <Text style={[Typography.normal]}>{Strings.purchaseOrder}</Text>
+    <View>
+      <BlueButton
+        onPress={() => setPurchaseOrderModal(true)}
+        text={Strings.purchaseOrder}
+        font={Typography.normal}
+        borderRadius={10}
+        backgroundColor={Colors.PALE_BLUE}
+        minWidth={wp('44%')}
+        paddingVertical={hp('1.5%')}
+      />
+
       <Modal isVisible={purchaseOrderModal}>
         <PurchaseOrder
           setPurchaseOrderModal={setPurchaseOrderModal}
@@ -520,7 +502,7 @@ export const PurchaseOrderButton = props => {
           purchaseOrder={props.purchaseOrder}
           storeName={props.storeName}></PurchaseOrder>
       </Modal>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -629,29 +611,16 @@ const PurchaseOrder = props => {
           POList={props.POList}
           setPOList={props.setPOList}></PurchaseOrderList>
       </View>
-      <TouchableOpacity
-        style={{
-          bottom: hp('2%'),
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('70%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: hp('5%'),
-          borderRadius: 10,
-          shadowColor: 'grey',
-          shadowOffset: {width: 0, height: 3},
-          shadowOpacity: 3,
-          shadowRadius: 5,
-          position: 'absolute',
-        }}
-        onPress={() => sendPO()}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={[Typography.normal]}>{Strings.sendPOtoSupplier}</Text>
-          <View style={{right: wp('-1%')}}>
-            <Icon name="paper-plane-outline" size={wp('5%')}></Icon>
-          </View>
-        </View>
-      </TouchableOpacity>
+      <BlueButton
+        text={Strings.sendPOtoSupplier}
+        font={Typography.normal}
+        icon="paper-plane-outline"
+        offsetCenter={wp('5%')}
+        borderRadius={10}
+        onPress={() => sendPO()}
+        top={hp('8%')}
+      />
+
       <View
         style={{
           position: 'absolute',

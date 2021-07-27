@@ -236,6 +236,7 @@ export const OrderQuotationModal = props => {
                 onPress={() => [accept()]}
                 minWidth={wp('25%')}
                 right={wp('5%')}
+                position={'absolute'}
               />
               <BlueButton
                 text={Strings.decline}
@@ -244,6 +245,7 @@ export const OrderQuotationModal = props => {
                 onPress={() => [reject(), setUnsuccesfulModal(true)]}
                 minWidth={wp('25%')}
                 left={wp('5%')}
+                position={'absolute'}
               />
 
               <Modal
