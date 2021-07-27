@@ -229,7 +229,7 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.invoice} #{props.id.slice(0, 6)}
+        {Strings.invoice} <Text style={Typography.normal}>#{props.id}</Text>
       </Text>
       <Text
         style={[
