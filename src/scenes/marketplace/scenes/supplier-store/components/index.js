@@ -1469,7 +1469,7 @@ const RetailerCard = props => {
   );
 };
 
-export const SupplierModalButton = props => {
+export const RetailerModalButton = props => {
   const [retailerModal, setRetailerModal] = useState(false);
   return (
     <View>

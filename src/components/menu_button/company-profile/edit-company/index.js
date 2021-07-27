@@ -69,25 +69,27 @@ export const EditCompany = props => {
   const saveChanges = async () => {
     if (props.user.retailerCompanyID == null) {
       try {
-        let photo = imageSource;
-        const response = await fetch(photo.uri);
-        const blob = await response.blob();
-        console.log('FileName: \n');
-        photo.fileName = props.user.supplierCompany.name + '_logo';
-        await Storage.put(photo.fileName, blob, {
-          contentType: 'image/jpeg',
-        });
+        // let photo = imageSource;
+        // const response = await fetch(photo.uri);
+        // const blob = await response.blob();
+        // console.log('FileName: \n');
+        // photo.fileName = props.user.supplierCompany.name + '_logo';
+        // await Storage.put(photo.fileName, blob, {
+        //   contentType: 'image/jpeg',
+        // });
 
         var companyProfile = await API.graphql({
           query: updateSupplierCompany,
           variables: {
             input: {
               id: props.user.supplierCompanyID,
-              address: address,
-              logo: photo.fileName,
+              //logo: photo.fileName,
+              contactDetails: {email: email, phone: number},
+              bankAccount: {bankName: bankName, accountNumber: bankDetails},
             },
           },
         });
+
         setSuccessfulModal(true);
       } catch (e) {
         console.log(e);
@@ -95,22 +97,23 @@ export const EditCompany = props => {
       }
     } else if (props.user.supplierCompanyID == null) {
       try {
-        let photo = imageSource;
-        const response = await fetch(photo.uri);
-        const blob = await response.blob();
-        console.log('FileName: \n');
-        photo.fileName = props.user.retailerCompany.name + '_logo';
-        await Storage.put(photo.fileName, blob, {
-          contentType: 'image/jpeg',
-        });
+        // let photo = imageSource;
+        // const response = await fetch(photo.uri);
+        // const blob = await response.blob();
+        // console.log('FileName: \n');
+        // photo.fileName = props.user.retailerCompany.name + '_logo';
+        // await Storage.put(photo.fileName, blob, {
+        //   contentType: 'image/jpeg',
+        // });
 
         var companyProfile = await API.graphql({
           query: updateRetailerCompany,
           variables: {
             input: {
               id: props.user.retailerCompanyID,
-              address: address,
-              logo: photo.fileName,
+              //logo: photo.fileName,
+              contactDetails: {email: email, phone: number},
+              bankAccount: {bankName: bankName, accountNumber: bankDetails},
             },
           },
         });
@@ -215,7 +218,7 @@ export const EditCompany = props => {
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                   }}></TextInput>
               </View>
@@ -239,7 +242,7 @@ export const EditCompany = props => {
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                   }}></TextInput>
               </View>
@@ -263,7 +266,7 @@ export const EditCompany = props => {
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                   }}></TextInput>
               </View>
@@ -287,7 +290,7 @@ export const EditCompany = props => {
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                   }}></TextInput>
               </View>
@@ -324,13 +327,7 @@ export const EditCompany = props => {
                     'Sorry you have entered an invalid bank detail . Please try again.',
                   );
                 } else {
-                  try {
-                    console.log('saved');
-                    saveChanges();
-                    setSuccessfulModal(true);
-                  } catch {
-                    e => console.log('error ' + e);
-                  }
+                  saveChanges();
                 }
               }}
               style={{
