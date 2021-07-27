@@ -60,7 +60,7 @@ export const Login = props => {
             'Sorry the password you entered is invalid. Please try again.',
           );
         }
-      }, 400);
+      }, 350);
 
       console.log('Error signing in...', error);
     }
@@ -189,7 +189,7 @@ export const Login = props => {
 
           <TouchableOpacity
             onPress={() => setForgetPassword(true)}
-            style={{top: hp('15%'), left: wp('65%'), width: wp('30%')}}>
+            style={{top: hp('15%'), right: wp('7%')}}>
             <Text
               style={[
                 Typography.welcome,

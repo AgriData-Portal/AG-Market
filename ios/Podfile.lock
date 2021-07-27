@@ -346,6 +346,8 @@ PODS:
     - React-Core
   - rn-fetch-blob (0.12.0):
     - React-Core
+  - RNAudioRecorderPlayer (3.1.0):
+    - React-Core
   - RNAWSCognito (5.0.4):
     - React-Core
   - RNCAsyncStorage (1.15.5):
@@ -463,6 +465,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeLocalization (from `../node_modules/react-native-localization`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
@@ -569,6 +572,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-localization"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
+  RNAudioRecorderPlayer:
+    :path: "../node_modules/react-native-audio-recorder-player"
   RNAWSCognito:
     :path: "../node_modules/amazon-cognito-identity-js"
   RNCAsyncStorage:
@@ -605,7 +610,7 @@ SPEC CHECKSUMS:
   CodePush: 9bb93f52a44ee80b72739d89dead9c7e86c3bd3a
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: bd3adf629c275782c3eca76a9910ba7956f3dc4f
+  FBReactNativeSpec: 0fb6f0a5326a88fd414b1dd17f33e66af92cca7f
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: 755929a4f851b2fb2c347d533a23f191b008554c
@@ -648,6 +653,7 @@ SPEC CHECKSUMS:
   ReactCommon: 149906e01aa51142707a10665185db879898e966
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
+  RNAudioRecorderPlayer: be071a52faede40b3025f624079a9d554a877309
   RNAWSCognito: 14872bf41aca1a7f48114e7f4f470c00b45bef4d
   RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
   RNCMaskedView: b7a3b119b1d738734a9d761e4220c6850bb248a3

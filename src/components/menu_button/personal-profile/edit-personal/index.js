@@ -70,12 +70,15 @@ export const EditPersonal = props => {
           input: {
             id: props.user.id,
             name: name,
-            email: email,
+            contactNumber: number,
           },
         },
       });
       console.log('success');
-
+      var temp = props.user;
+      temp.name = name;
+      temp.contactNumber = number;
+      props.setUserDetails(temp);
       setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
@@ -119,7 +122,7 @@ export const EditPersonal = props => {
               </Text>
             </View>
           </View>*/}
-          {/* <View
+          <View
             style={{
               top: hp('5%'),
               alignItems: 'center',
@@ -161,19 +164,10 @@ export const EditPersonal = props => {
                 />
               </View>
             )}
-          </View> */}
-          <Image
-            source={require('_assets/images/agridata.png')}
-            style={{
-              resizeMode: 'contain',
-              width: wp('80%'),
-              height: hp('30%'),
-              top: hp('0%'),
-            }}
-          />
+          </View>
           <View
             style={{
-              top: hp('0%'),
+              top: hp('10%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
               height: hp('27%'),
@@ -286,7 +280,7 @@ export const EditPersonal = props => {
             }}
             style={{
               alignSelf: 'center',
-              top: hp('10%'),
+              top: hp('18%'),
               width: wp('55%'),
               height: hp('5%'),
               backgroundColor: Colors.LIGHT_BLUE,

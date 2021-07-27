@@ -11,7 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		19F3B18126A5B29400E597A3 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		19F3B18126A5B29400E597A3 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F3B18026A5B29400E597A3 /* File.swift */; };
 		1EA299D1BE904796BE538B4D /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B04297CCA3C46E396017C81 /* Poppins-BlackItalic.ttf */; };
 		25746A0241C29C3066D7E436 /* libPods-Market-MarketTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5ED946F48493911F9679DF /* libPods-Market-MarketTests.a */; };
 		28F7B5AC7B2440C7AE5B88CB /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBC38FE2E8104ED7A0181F1B /* Poppins-SemiBoldItalic.ttf */; };
@@ -129,6 +129,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				19F3B18026A5B29400E597A3 /* File.swift */,
+				19F3B17F26A5B29400E597A3 /* AgriPasar-Bridging-Header.h */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -492,7 +494,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				19F3B18126A5B29400E597A3 /* BuildFile in Sources */,
+				19F3B18126A5B29400E597A3 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -659,7 +661,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -724,7 +726,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

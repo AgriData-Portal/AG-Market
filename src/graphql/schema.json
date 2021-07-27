@@ -2635,17 +2635,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "email",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "retailerCompanyID",
           "description" : null,
           "args" : [ ],
@@ -3304,17 +3293,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "bankAccount",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "BankDetails",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "registrationNumber",
           "description" : null,
           "args" : [ ],
@@ -3576,17 +3554,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "ContactDetails",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "logo",
           "description" : null,
           "args" : [ ],
@@ -3684,15 +3651,6 @@
           "defaultValue" : null
         }, {
           "name" : "role",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "email",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -4267,37 +4225,6 @@
         "possibleTypes" : null
       }, {
         "kind" : "OBJECT",
-        "name" : "BankDetails",
-        "description" : null,
-        "fields" : [ {
-          "name" : "bankName",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "accountNumber",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        } ],
-        "inputFields" : null,
-        "interfaces" : [ ],
-        "enumValues" : null,
-        "possibleTypes" : null
-      }, {
-        "kind" : "OBJECT",
         "name" : "Favourites",
         "description" : null,
         "fields" : [ {
@@ -4587,17 +4514,6 @@
           "type" : {
             "kind" : "OBJECT",
             "name" : "BankDetails",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "mostRecentInvoiceNumber",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -5088,17 +5004,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "ContactDetails",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "logo",
           "description" : null,
           "args" : [ ],
@@ -5127,6 +5032,37 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        } ],
+        "inputFields" : null,
+        "interfaces" : [ ],
+        "enumValues" : null,
+        "possibleTypes" : null
+      }, {
+        "kind" : "OBJECT",
+        "name" : "BankDetails",
+        "description" : null,
+        "fields" : [ {
+          "name" : "bankName",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "accountNumber",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -6015,17 +5951,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "bankAccount",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "BankDetails",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "rating",
           "description" : null,
           "args" : [ ],
@@ -6038,17 +5963,6 @@
           "deprecationReason" : null
         }, {
           "name" : "registrationNumber",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "mostRecentInvoiceNumber",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -6345,17 +6259,6 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "Boolean",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "ContactDetails",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -7732,37 +7635,6 @@
         "possibleTypes" : null
       }, {
         "kind" : "OBJECT",
-        "name" : "ContactDetails",
-        "description" : null,
-        "fields" : [ {
-          "name" : "email",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "phone",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        } ],
-        "inputFields" : null,
-        "interfaces" : [ ],
-        "enumValues" : null,
-        "possibleTypes" : null
-      }, {
-        "kind" : "OBJECT",
         "name" : "ModelPaymentTaskBetweenRandSConnection",
         "description" : null,
         "fields" : [ {
@@ -8977,15 +8849,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "mostRecentInvoiceNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "registrationNumber",
           "description" : null,
           "type" : {
@@ -9138,15 +9001,6 @@
           "defaultValue" : null
         }, {
           "name" : "registrationNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "mostRecentInvoiceNumber",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -11597,15 +11451,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "retailerCompanyID",
           "description" : null,
           "type" : {
@@ -11679,15 +11524,6 @@
           "defaultValue" : null
         }, {
           "name" : "role",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "email",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -11825,15 +11661,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "retailerCompanyID",
           "description" : null,
           "type" : {
@@ -11955,15 +11782,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bankAccount",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "BankDetailsInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "registrationNumber",
           "description" : null,
           "type" : {
@@ -11991,15 +11809,6 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ContactDetailsInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -12063,33 +11872,6 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "BankDetailsInput",
-        "description" : null,
-        "fields" : null,
-        "inputFields" : [ {
-          "name" : "bankName",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "accountNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Int",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        } ],
-        "interfaces" : null,
-        "enumValues" : null,
-        "possibleTypes" : null
-      }, {
-        "kind" : "INPUT_OBJECT",
         "name" : "FavouritesInput",
         "description" : null,
         "fields" : null,
@@ -12104,33 +11886,6 @@
           "defaultValue" : null
         }, {
           "name" : "name",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        } ],
-        "interfaces" : null,
-        "enumValues" : null,
-        "possibleTypes" : null
-      }, {
-        "kind" : "INPUT_OBJECT",
-        "name" : "ContactDetailsInput",
-        "description" : null,
-        "fields" : null,
-        "inputFields" : [ {
-          "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "phone",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -12295,15 +12050,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bankAccount",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "BankDetailsInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "registrationNumber",
           "description" : null,
           "type" : {
@@ -12331,15 +12077,6 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ContactDetailsInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -12447,15 +12184,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "mostRecentInvoiceNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "favouriteStores",
           "description" : null,
           "type" : {
@@ -12483,15 +12211,6 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ContactDetailsInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -12528,6 +12247,33 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
+        "name" : "BankDetailsInput",
+        "description" : null,
+        "fields" : null,
+        "inputFields" : [ {
+          "name" : "bankName",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "accountNumber",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        } ],
+        "interfaces" : null,
+        "enumValues" : null,
+        "possibleTypes" : null
+      }, {
+        "kind" : "INPUT_OBJECT",
         "name" : "ModelSupplierCompanyConditionInput",
         "description" : null,
         "fields" : null,
@@ -12542,15 +12288,6 @@
           "defaultValue" : null
         }, {
           "name" : "address",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "mostRecentInvoiceNumber",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -12697,15 +12434,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "mostRecentInvoiceNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "favouriteStores",
           "description" : null,
           "type" : {
@@ -12733,15 +12461,6 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ContactDetailsInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -12831,15 +12550,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bankAccount",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "BankDetailsInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "rating",
           "description" : null,
           "type" : {
@@ -12858,29 +12568,11 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "mostRecentInvoiceNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "verified",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
             "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ContactDetailsInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -12940,15 +12632,6 @@
           "defaultValue" : null
         }, {
           "name" : "registrationNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "mostRecentInvoiceNumber",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -13068,15 +12751,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "bankAccount",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "BankDetailsInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "rating",
           "description" : null,
           "type" : {
@@ -13095,29 +12769,11 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "mostRecentInvoiceNumber",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "verified",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
             "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "contactDetails",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ContactDetailsInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -18935,23 +18591,6 @@
         "onFragment" : false,
         "onField" : true
       }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
         "name" : "aws_auth",
         "description" : "Directs the schema to enforce authorization on a field",
         "locations" : [ "FIELD_DEFINITION" ],
@@ -19063,6 +18702,23 @@
             }
           },
           "defaultValue" : null
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
         } ],
         "onOperation" : false,
         "onFragment" : false,
