@@ -103,7 +103,7 @@ const SupplierNavigation = props => {
     <AppStack.Navigator
       screenOptions={{
         headerStyle: {
-          height: hp('8%'),
+          height: Platform.OS === 'ios' ? hp('9.5%') : hp('8%'),
         },
       }}>
       <AppStack.Screen

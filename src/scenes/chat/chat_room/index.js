@@ -24,6 +24,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {API, graphqlOperation} from 'aws-amplify';
 
@@ -190,116 +191,63 @@ export const ChatRoom = props => {
   return (
     <SafeAreaView
       style={{
-        flex: 1,
+        height: hp('100%'),
         backgroundColor: 'white',
         alignItems: 'center',
       }}>
-      {/* This is the Immovable chat name 
-      {Platform.OS == 'ios' ? (
-        <View // This is for status bar on ios chat
-          style={{
-            position: 'absolute',
-            backgroundColor: 'white',
-            top: hp('-1%'),
-            height: hp('7%'),
-            width: wp('100%'),
-            zIndex: 5,
-          }}></View>
-      ) : (
-        <View></View>
-      )}
-
-      <View
+      <KeyboardAwareScrollView
         style={{
-          zIndex: 2,
-          height: hp('10%'),
+          top: hp('1.5%'),
+          height: hp('100%'),
           width: wp('100%'),
-          backgroundColor: 'white',
-          alignItems: 'center',
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            left: wp('6%'),
-            top: hp('3.5%'),
-          }}>
-          <TouchableOpacity
-            onPress={() => [updateLastSeen(), console.log('test123')]}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Icon name="arrow-back-outline" size={wp('7%')} />
-          </TouchableOpacity>
-        </View>
-        {props.user.retailerCompanyID == null ? (
-          <Text style={[Typography.header, {top: hp('3%')}]}>{chatName}</Text>
-        ) : (
-          <TouchableOpacity
-            style={{top: hp('3%')}}
-            onPress={() =>
-              props.navigation.navigate('store', {
-                itemId: itemID.slice(36, 72),
-              })
-            }>
-            <Text style={[Typography.header]}>{chatName}</Text>
-          </TouchableOpacity>
-        )}
-
-        <View
-          style={{
-            position: 'absolute',
-            top: hp('-1%'),
-            right: wp('5%'),
-          }}>
-          <ChatInfo chatGroupID={itemID} />
-        </View>
-
-        <View
-          style={{
-            top: hp('6%'),
-            width: wp('100%'),
-            borderBottomWidth: 1,
-            height: 0,
-            borderColor: Colors.GRAY_MEDIUM,
-          }}></View>
-      </View>*/}
-      <KeyboardAvoidingView
+        {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
           Platform.OS === 'ios' ? hp('14%') : hp('12%')
-        } /* Keyboard Offset needs to be tested against multiple phones */
+        }  Keyboard Offset needs to be tested against multiple phones 
         style={{
           top: hp('3%'),
           height: hp('85%'),
           width: wp('95%'),
-        }}>
+        }}> */}
         <View
           style={{
-            height: hp('75%'),
+            height: hp('86.5%'),
           }}>
-          <ChatBubbleList
-            data={messages}
-            userID={props.user.id}
-            userName={props.user.name}
-            chatName={chatName}
-            chatGroupID={itemID}
-            type={type}
-            setMessages={setMessages}
-            messages={messages}
-            setRefresh={setRefresh}
-            navigation={props.navigation}
-          />
+          <View
+            style={{
+              height: hp('76.5%'),
+            }}>
+            <ChatBubbleList
+              data={messages}
+              userID={props.user.id}
+              userName={props.user.name}
+              chatName={chatName}
+              chatGroupID={itemID}
+              type={type}
+              setMessages={setMessages}
+              messages={messages}
+              setRefresh={setRefresh}
+              navigation={props.navigation}
+            />
+          </View>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: wp('100%'),
+            }}>
+            <MessageInput
+              userID={props.user.id}
+              chatGroupID={itemID}
+              userName={props.user.name}
+              setMessages={setMessages}
+              messages={messages}></MessageInput>
+          </View>
         </View>
-        <View style={{top: hp('2.5%')}}>
-          <MessageInput
-            userID={props.user.id}
-            chatGroupID={itemID}
-            userName={props.user.name}
-            setMessages={setMessages}
-            messages={messages}></MessageInput>
-        </View>
-      </KeyboardAvoidingView>
+        {/* </KeyboardAvoidingView> */}
+      </KeyboardAwareScrollView>
       <Modal isVisible={loading}>
         <LoadingModal />
       </Modal>
