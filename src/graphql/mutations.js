@@ -37,6 +37,10 @@ export const createUser = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -198,6 +202,10 @@ export const updateUser = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -361,6 +369,10 @@ export const deleteUser = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -515,6 +527,10 @@ export const createRetailerCompany = /* GraphQL */ `
         numberOfRatings
         currentRating
       }
+      bankAccount {
+        bankName
+        accountNumber
+      }
       registrationNumber
       favouriteStores {
         id
@@ -612,6 +628,10 @@ export const updateRetailerCompany = /* GraphQL */ `
         numberOfRatings
         currentRating
       }
+      bankAccount {
+        bankName
+        accountNumber
+      }
       registrationNumber
       favouriteStores {
         id
@@ -708,6 +728,10 @@ export const deleteRetailerCompany = /* GraphQL */ `
       rating {
         numberOfRatings
         currentRating
+      }
+      bankAccount {
+        bankName
+        accountNumber
       }
       registrationNumber
       favouriteStores {
@@ -1623,6 +1647,10 @@ export const createChatGroup = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -1797,6 +1825,10 @@ export const updateChatGroup = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -1970,6 +2002,10 @@ export const deleteChatGroup = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -3070,6 +3106,10 @@ export const createGoodsTaskBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -3186,6 +3226,10 @@ export const updateGoodsTaskBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -3301,6 +3345,10 @@ export const deleteGoodsTaskBetweenRandS = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -3778,6 +3826,10 @@ export const createPaymentTaskBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -3887,6 +3939,10 @@ export const updatePaymentTaskBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -3995,6 +4051,10 @@ export const deletePaymentTaskBetweenRandS = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -4444,6 +4504,10 @@ export const createInvoiceBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -4561,6 +4625,10 @@ export const updateInvoiceBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -4677,6 +4745,10 @@ export const deleteInvoiceBetweenRandS = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {

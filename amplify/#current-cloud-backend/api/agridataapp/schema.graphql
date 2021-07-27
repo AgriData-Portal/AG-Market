@@ -39,6 +39,7 @@ type RetailerCompany @model {
     @connection(keyName: "usersByRetailerCompany", fields: ["id"])
   address: String
   rating: Rating
+  bankAccount: BankDetails
   registrationNumber: String
   favouriteStores: [Favourites]
   goodsTask: [GoodsTaskBetweenRandS]

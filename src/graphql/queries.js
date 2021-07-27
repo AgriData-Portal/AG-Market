@@ -34,6 +34,10 @@ export const getUser = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -243,6 +247,10 @@ export const getRetailerCompany = /* GraphQL */ `
         numberOfRatings
         currentRating
       }
+      bankAccount {
+        bankName
+        accountNumber
+      }
       registrationNumber
       favouriteStores {
         id
@@ -333,6 +341,10 @@ export const listRetailerCompanys = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -770,6 +782,10 @@ export const getChatGroup = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -1486,6 +1502,10 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -1825,6 +1845,10 @@ export const getPaymentTaskBetweenRandS = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -2135,6 +2159,10 @@ export const getInvoiceBetweenRandS = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
