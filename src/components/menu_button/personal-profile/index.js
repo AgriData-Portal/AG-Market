@@ -147,7 +147,11 @@ export const PersonalProfile = props => {
               }}>
               <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
               <View>
-                <Text style={[Typography.normal]}>email@gmail.com</Text>
+                {props.user.email == null ? (
+                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                ) : (
+                  <Text style={[Typography.normal]}>{props.user.email}</Text>
+                )}
               </View>
             </View>
             <View

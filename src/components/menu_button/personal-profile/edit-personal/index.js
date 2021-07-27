@@ -70,15 +70,12 @@ export const EditPersonal = props => {
           input: {
             id: props.user.id,
             name: name,
-            contactNumber: number,
+            email: email,
           },
         },
       });
       console.log('success');
-      var temp = props.user;
-      temp.name = name;
-      temp.contactNumber = number;
-      props.setUserDetails(temp);
+
       setSuccessfulModal(true);
     } catch (e) {
       console.log(e);
