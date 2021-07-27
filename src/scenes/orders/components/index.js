@@ -40,6 +40,8 @@ export const OrderList = props => {
               id={item.id}
               amount={item.amount}
               company={company}
+              supplier={item.supplier}
+              retailer={item.retailer}
               goods={item.items}
               paid={item.paid}
               amount={item.amount}
@@ -181,6 +183,8 @@ const Order = props => {
           id={props.id}
           amount={props.amount}
           company={props.company}
+          supplier={props.supplier}
+          retailer={props.retailer}
           goods={props.goods}
           paid={props.paid}
           amount={props.amount}
@@ -370,7 +374,8 @@ const InvoiceModal = props => {
         onPress={() =>
           createPDF(
             (id = props.id),
-            (company = props.company),
+            (retailer = props.retailer),
+            (supplier = props.supplier),
             (createdAt = props.createdAt),
             (items = props.goods),
             (amount = props.amount),
