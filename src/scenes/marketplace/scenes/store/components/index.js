@@ -725,6 +725,7 @@ const PurchaseOrderList = props => {
 
 const PurchaseOrderComponent = props => {
   const [edit, setEdit] = useState(false);
+  const [number, setNumber] = useState(props.quantity.toString());
   const deleteItemFromPO = async () => {
     console.log('deleting item: ' + props.id);
     try {
@@ -741,6 +742,25 @@ const PurchaseOrderComponent = props => {
       e => console.log(e);
     }
   };
+  const updateitemFromPO = async () => {
+    try {
+      const updated = await API.graphql({
+        query: updateProductsInPurchaseOrder,
+        variables: {input: {id: props.id, quantity: number}},
+      });
+      var tempList = props.POList;
+      tempList.forEach((item, index, arr) => {
+        if (item.id == props.id) {
+          arr[index] = updated.data.updateProductsInPurchaseOrder;
+        }
+      });
+      props.setPOList(tempList);
+      console.log(updated.data.updateProductsInPurchaseOrder);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  console.log(typeof props.quantity);
   return (
     <View
       style={{
@@ -775,20 +795,66 @@ const PurchaseOrderComponent = props => {
             ]}>
             {Strings.variety}: {props.variety}
           </Text>
-          <Text style={[Typography.normal, {left: wp('50%')}]}>
-            {props.quantity} {props.siUnit}
-          </Text>
+          {edit ? (
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                style={{
+                  left: wp('50%'),
+                  backgroundColor: 'white',
+                  width: wp('10%'),
+                }}
+                onChangeText={item => setNumber(item)}
+                value={number}
+                keyboardType="number-pad"
+              />
+              <Text style={[Typography.normal, {left: wp('51%')}]}>
+                {props.siUnit}
+              </Text>
+            </View>
+          ) : (
+            <Text style={[Typography.normal, {left: wp('50%')}]}>
+              {number} {props.siUnit}
+            </Text>
+          )}
         </View>
 
-        <TouchableOpacity
-          style={{position: 'absolute', right: wp('12%'), bottom: hp('0.2%')}}>
-          <Icon name="create-outline" size={wp('6%')} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => deleteItemFromPO()}
-          style={{position: 'absolute', right: wp('5%'), bottom: hp('0.2%')}}>
-          <Icon name="trash-outline" size={wp('6%')} color={Colors.FAIL} />
-        </TouchableOpacity>
+        {edit ? (
+          <View>
+            <TouchableOpacity
+              onPress={() => [setEdit(false), updateitemFromPO()]}
+              style={{
+                left: wp('55%'),
+                bottom: hp('0.2%'),
+              }}>
+              <Icon
+                name="checkmark-circle-outline"
+                size={wp('6%')}
+                style={{color: 'green'}}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={{left: wp('70%')}}>
+            <TouchableOpacity
+              onPress={() => setEdit(true)}
+              style={{
+                position: 'absolute',
+                right: wp('12%'),
+                bottom: hp('0.2%'),
+              }}>
+              <Icon name="create-outline" size={wp('6%')} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => deleteItemFromPO()}
+              style={{
+                position: 'absolute',
+                right: wp('5%'),
+                bottom: hp('0.2%'),
+              }}>
+              <Icon name="trash-outline" size={wp('6%')} color={Colors.FAIL} />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
