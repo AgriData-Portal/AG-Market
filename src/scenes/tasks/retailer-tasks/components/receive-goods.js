@@ -27,7 +27,10 @@ import {
 } from '../../../../graphql/mutations';
 import {API} from 'aws-amplify';
 import Strings from '_utils';
-import {goodsTaskForRetailerByDate} from '../../../../graphql/queries';
+import {
+  goodsTaskForRetailerByDate,
+  getSupplierCompany,
+} from '../../../../graphql/queries';
 import {Rating} from 'react-native-ratings';
 
 const now = () => {
@@ -55,6 +58,32 @@ const ReceiveModal = props => {
       payBefore: dayjs().add(8, 'hour').add(30, 'day').format('DD-MM-YYYY'),
       receipt: null,
     };
+
+    var mostRecentInvoiceNum = null;
+    try {
+      const response = await API.graphql({
+        query: getSupplierCompany,
+        variables: {id: props.supplierID},
+      });
+      mostRecentInvoiceNum =
+        response.data.getSupplierCompany.mostRecentInvoiceNumber;
+      console.log('newnum: ' + mostRecentInvoiceNum);
+      if (mostRecentInvoiceNum) {
+        if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(0, 7)) {
+          var number = parseInt(mostRecentInvoiceNum.slice(8, 13));
+          var numberString = (number + 1).toString().padStart(5, '0');
+          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + numberString;
+        } else {
+          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '00001';
+        }
+      } else {
+        mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '00001';
+      }
+      console.log('updatednum: ' + mostRecentInvoiceNum);
+    } catch (e) {
+      console.log(e);
+    }
+
     try {
       const paymentTaskResponse = API.graphql({
         query: createPaymentTaskBetweenRandS,
@@ -65,7 +94,7 @@ const ReceiveModal = props => {
       console.log(e);
     }
     var input = {
-      id: props.taskID,
+      id: mostRecentInvoiceNum,
       retailerID: props.retailerID,
       supplierID: props.supplierID,
       items: props.goods,
@@ -79,6 +108,21 @@ const ReceiveModal = props => {
         variables: {input: input},
       });
       console.log('success!');
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      const supplierCompanyUpdate = await API.graphql({
+        query: updateSupplierCompany,
+        variables: {
+          input: {
+            id: props.supplierID,
+            mostRecentInvoiceNumber: mostRecentInvoiceNum,
+          },
+        },
+      });
+      console.log('update success');
     } catch (e) {
       console.log(e);
     }
