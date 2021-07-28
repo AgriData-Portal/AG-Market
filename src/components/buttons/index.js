@@ -53,7 +53,7 @@ export const BackButton = props => {
 };
 
 export const BlueButton = props => {
-  const [buttonWidth, setButtonWidth] = useState(40);
+  // const [buttonWidth, setButtonWidth] = useState(40);
   return (
     <TouchableOpacity
       onPress={props.onPress}
@@ -66,7 +66,7 @@ export const BlueButton = props => {
         paddingVertical: props.paddingVertical || hp('1%'),
         minWidth: props.minWidth || wp('20%'),
         backgroundColor: props.backgroundColor || Colors.LIGHT_BLUE,
-        borderRadius: props.borderRadius || buttonWidth / 2,
+        borderRadius: props.borderRadius || 40 / 2,
         maxWidth: props.maxWidth || wp('80%'),
         flexDirection: props.flexDirection || 'row',
         justifyContent: 'space-evenly',
