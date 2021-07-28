@@ -266,6 +266,7 @@ const AddItemModal = props => {
             }}>
             <View style={{bottom: hp('3%')}}>
               <Input
+                keyboardType="default"
                 placeholder={Strings.productName}
                 state={productName}
                 setState={setProductName}
@@ -283,6 +284,7 @@ const AddItemModal = props => {
               <Text style={[Typography.large, {top: hp('3%')}]}>RM</Text>
               <View style={{left: wp('3%')}}>
                 <Input
+                  keyboardType="numeric"
                   placeholder={Strings.minPrice}
                   state={minPrice}
                   setState={setMinPrice}
@@ -301,6 +303,7 @@ const AddItemModal = props => {
                 }}></View>
               <View style={{left: wp('7%')}}>
                 <Input
+                  keyboardType="numeric"
                   placeholder={Strings.maxPrice}
                   state={maxPrice}
                   setState={setMaxPrice}
@@ -312,6 +315,7 @@ const AddItemModal = props => {
             </View>
             <View style={{flexDirection: 'row', bottom: hp('1%')}}>
               <Input
+                keyboardType="default"
                 placeholder={Strings.grade}
                 state={grade}
                 setState={setGrade}
@@ -321,6 +325,7 @@ const AddItemModal = props => {
                 boxHeight={hp('6%')}></Input>
               <View style={{left: wp('5%')}}>
                 <Input
+                  keyboardType="default"
                   placeholder={Strings.variety}
                   state={variety}
                   setState={setVariety}
@@ -331,6 +336,7 @@ const AddItemModal = props => {
               </View>
             </View>
             <Input
+              keyboardType="numeric"
               placeholder={Strings.quantityAvailable}
               state={quantityAvailable}
               setState={setQuantityAvailable}
@@ -340,6 +346,7 @@ const AddItemModal = props => {
               boxHeight={hp('6%')}></Input>
             <View style={{flexDirection: 'row', top: hp('1%')}}>
               <Input
+                keyboardType="numeric"
                 placeholder={Strings.minimumOrder}
                 state={moq}
                 setState={setMOQ}
@@ -481,7 +488,6 @@ const ProductModal = props => {
       }
       console.log('test');
       setSuccessfulModal2(true);
-      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -786,11 +792,7 @@ const ProductModal = props => {
                   console.log('empty field');
                   setUnsuccessfulModal(true);
                 } else {
-                  try {
-                    updateListing();
-                  } catch {
-                    e => console.log('error ' + e);
-                  }
+                  updateListing();
                 }
               }}
               text={Strings.saveChanges}
@@ -1188,7 +1190,7 @@ const Input = props => {
       <TextInput
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        keyboardType="numeric"
+        keyboardType={props.keyboardType}
         placeholderTextColor={Colors.GRAY_DARK}
         placeholder={props.placeholder}
         underlineColorAndroid="transparent"

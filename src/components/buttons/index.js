@@ -61,7 +61,7 @@ export const BlueButton = props => {
       onPressIn={props.onPressIn} // for preventing double tap
       disabled={props.disabled}
       style={{
-        position: props.position,
+        position: props.position || 'relative',
         paddingHorizontal: wp('4%'),
         paddingVertical: props.paddingVertical || hp('1%'),
         minWidth: props.minWidth || wp('20%'),
@@ -83,7 +83,11 @@ export const BlueButton = props => {
         right: props.right,
         left: props.left,
       }}>
-      <Text style={[props.font, {color: props.textColor, alignSelf: 'center'}]}>
+      <Text
+        style={[
+          props.font,
+          {color: props.textColor || 'black', alignSelf: 'center'},
+        ]}>
         {props.text}
       </Text>
       {props.icon ? (

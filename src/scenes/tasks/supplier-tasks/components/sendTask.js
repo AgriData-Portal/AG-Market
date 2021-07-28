@@ -1051,6 +1051,7 @@ const RatingModal = props => {
         onPress={() => [updateRating()]}
         style={{
           backgroundColor: Colors.LIGHT_BLUE,
+          top: hp('28%'),
           width: wp('30%'),
           height: hp('5%'),
           alignSelf: 'center',

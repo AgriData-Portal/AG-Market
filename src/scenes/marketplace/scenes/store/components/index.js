@@ -949,7 +949,7 @@ export const DetailsModal = props => {
           alignItems: 'flex-start',
           backgroundColor: Colors.GRAY_LIGHT,
           width: wp('80%'),
-          height: hp('40%'),
+          height: hp('33%'),
           top: hp('3%'),
           borderRadius: 10,
         }}>
@@ -959,7 +959,7 @@ export const DetailsModal = props => {
               {Strings.companyRegistrationNum}
             </Text>
             <Text style={[Typography.normal]}>
-              {companyDetails.registrationNumber} 100200
+              {companyDetails.registrationNumber}
             </Text>
           </View>
           <View style={{top: hp('1%')}}>
@@ -972,11 +972,13 @@ export const DetailsModal = props => {
             <Text style={[Typography.placeholder]}>
               {Strings.contactNumber}
             </Text>
-            <Text style={[Typography.normal]}>{companyDetails.address}</Text>
-          </View>
-          <View style={{top: hp('3%')}}>
-            <Text style={[Typography.placeholder]}>{Strings.rating}</Text>
-            <Text style={[Typography.normal]}>{companyDetails.address}</Text>
+            {companyDetails.contactDetails != null ? (
+              <Text style={[Typography.normal]}>
+                {companyDetails.contactDetails.phone}
+              </Text>
+            ) : (
+              <Text style={[Typography.normal]}>Not Added Yet</Text>
+            )}
           </View>
         </View>
       </View>
