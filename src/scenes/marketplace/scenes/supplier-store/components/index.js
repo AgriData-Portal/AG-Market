@@ -124,7 +124,11 @@ const AddItemModal = props => {
     });
   }
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      resetScrollToCoords={{x: 0, y: 0}}
+      scrollEnabled={false}
+      extraHeight={hp('20%')}>
       <View
         style={{
           height: hp('90%'),
@@ -546,11 +550,15 @@ const ProductModal = props => {
 
   return (
     <View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-        keyboardVerticalOffset={
-          Platform.OS === 'ios' ? hp('-8%') : hp('-8%')
-        } /* Keyboard Offset needs to be tested against multiple phones */
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        resetScrollToCoords={{x: 0, y: 0}}
+        scrollEnabled={false}
+        extraHeight={hp('20%')}
+        // behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+        // keyboardVerticalOffset={
+        //   Platform.OS === 'ios' ? hp('-8%') : hp('-8%')
+        // } /* Keyboard Offset needs to be tested against multiple phones */
       >
         <View
           style={{
@@ -903,7 +911,7 @@ const ProductModal = props => {
             <SuccessfulModal text={Strings.successfullyDeleted} />
           </Modal>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
       <LoadingModal isVisible={loading} />
     </View>
   );
