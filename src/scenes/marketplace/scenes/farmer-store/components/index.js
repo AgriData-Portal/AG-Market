@@ -60,6 +60,7 @@ const AddItemModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [focus, setFocus] = useState('');
+  const [addProductButton, setAddProductButton] = useState(false);
 
   async function addListing() {
     try {
@@ -101,6 +102,7 @@ const AddItemModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setAddProductButton(false);
   }
 
   function selectImage() {
@@ -698,6 +700,8 @@ const AddItemModal = props => {
               }
             }
           }}
+          onPressIn={() => setAddProductButton(true)}
+          disabled={addProductButton}
           text={Strings.addProduct}
           icon={'add-circle-outline'}
           offsetCenter={wp('5%')}

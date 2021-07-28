@@ -226,19 +226,7 @@ const SendTask = props => {
           sendTask={props.sendTask}
           setSendTask={props.setSendTask}></SendTaskModal>
       </Modal>
-      <Modal isVisible={invoiceModal}>
-        <InvoiceModal
-          setInvoiceModal={setInvoiceModal}
-          goods={props.goods}
-          retailer={props.retailer}
-          deliverydate={props.deliverydate}
-          taskID={props.taskID}
-          invoiceList={props}
-          trigger={props.trigger}
-          setTrigger={props.setTrigger}
-          sendTask={props.sendTask}
-          setSendTask={props.setSendTask}></InvoiceModal>
-      </Modal>
+
       <Modal isVisible={ratingModal}>
         <RatingModal
           taskID={props.taskID}
@@ -555,6 +543,20 @@ const SendTaskModal = props => {
         onBackdropPress={() => [setSuccessfulModal(false)]}>
         <SuccessfulModal text={'Successfully chosen delivery date!'} />
       </Modal>
+      <Modal isVisible={invoiceModal}>
+        <InvoiceModal
+          setSendTaskModal={props.setSendTaskModal}
+          setInvoiceModal={setInvoiceModal}
+          goods={props.goods}
+          retailer={props.retailer}
+          deliverydate={props.deliverydate}
+          taskID={props.taskID}
+          invoiceList={props}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          sendTask={props.sendTask}
+          setSendTask={props.setSendTask}></InvoiceModal>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -564,6 +566,7 @@ const InvoiceModal = props => {
   const [toggle, setToggle] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [sum, setSum] = useState(0);
+  const [verifyDoubleButton, setVerifyDoubleButton] = useState(false);
   var tempSum = 0;
   useEffect(() => {
     console.log(itemList);
@@ -602,6 +605,7 @@ const InvoiceModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setVerifyDoubleButton(false);
   };
 
   const Seperator = () => {
@@ -724,6 +728,8 @@ const InvoiceModal = props => {
         position={'absolute'}
         top={hp('70%')}
         right={wp('5%')}
+        onPressIn={() => setVerifyDoubleButton(true)}
+        disabled={verifyDoubleButton}
       />
       <Modal
         isVisible={successfulModal}
