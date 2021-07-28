@@ -184,7 +184,12 @@ export const MessageInput = props => {
       enabled
       behaviour={Platform.OS === 'ios' ? 'padding' : 'height'}
       automaticallyAdjustContentInsets={false}>
-      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <View
           style={{
             height: hp('6%'),
@@ -365,7 +370,6 @@ export const MessageInput = props => {
             height: hp('5.5%'),
             width: hp('5.5%'),
             borderRadius: 100,
-            top: hp('1%'),
             left: wp('3%'),
             backgroundColor: Colors.PALE_BLUE,
             justifyContent: 'center',
