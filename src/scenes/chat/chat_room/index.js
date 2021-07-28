@@ -24,6 +24,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {API, graphqlOperation} from 'aws-amplify';
 
@@ -190,46 +191,63 @@ export const ChatRoom = props => {
   return (
     <SafeAreaView
       style={{
-        flex: 1,
+        height: hp('100%'),
         backgroundColor: 'white',
         alignItems: 'center',
       }}>
-      <KeyboardAvoidingView
+      <KeyboardAwareScrollView
+        style={{
+          top: hp('1.5%'),
+          height: hp('100%'),
+          width: wp('100%'),
+        }}>
+        {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
           Platform.OS === 'ios' ? hp('14%') : hp('12%')
-        } /* Keyboard Offset needs to be tested against multiple phones */
+        }  Keyboard Offset needs to be tested against multiple phones 
         style={{
           top: hp('3%'),
           height: hp('85%'),
           width: wp('95%'),
-        }}>
+        }}> */}
         <View
           style={{
-            height: hp('75%'),
+            height: hp('86.5%'),
           }}>
-          <ChatBubbleList
-            data={messages}
-            userID={props.user.id}
-            userName={props.user.name}
-            chatName={chatName}
-            chatGroupID={itemID}
-            type={type}
-            setMessages={setMessages}
-            messages={messages}
-            setRefresh={setRefresh}
-            navigation={props.navigation}
-          />
+          <View
+            style={{
+              height: hp('76.5%'),
+            }}>
+            <ChatBubbleList
+              data={messages}
+              userID={props.user.id}
+              userName={props.user.name}
+              chatName={chatName}
+              chatGroupID={itemID}
+              type={type}
+              setMessages={setMessages}
+              messages={messages}
+              setRefresh={setRefresh}
+              navigation={props.navigation}
+            />
+          </View>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: wp('100%'),
+            }}>
+            <MessageInput
+              userID={props.user.id}
+              chatGroupID={itemID}
+              userName={props.user.name}
+              setMessages={setMessages}
+              messages={messages}></MessageInput>
+          </View>
         </View>
-        <View style={{position: 'absolute', bottom: -hp('9%')}}>
-          <MessageInput
-            userID={props.user.id}
-            chatGroupID={itemID}
-            userName={props.user.name}
-            setMessages={setMessages}
-            messages={messages}></MessageInput>
-        </View>
-      </KeyboardAvoidingView>
+        {/* </KeyboardAvoidingView> */}
+      </KeyboardAwareScrollView>
       <Modal isVisible={loading}>
         <LoadingModal />
       </Modal>
