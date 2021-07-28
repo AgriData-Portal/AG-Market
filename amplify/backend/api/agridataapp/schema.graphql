@@ -97,7 +97,7 @@ type FarmerCompany @model {
   bankAccount: BankDetails
   rating: Rating
   registrationNumber: String
-  mostRecentInvoiceNumber:String
+  mostRecentInvoiceNumber:String "YYYY-MM-XXXXX"
   listings: [FarmerListing]
     @connection(keyName: "listingsByFarmer", fields: ["id"])
   goodsTask: [GoodsTaskBetweenSandF]
