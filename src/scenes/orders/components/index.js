@@ -21,6 +21,7 @@ import Strings from '_utils';
 
 import dayjs from 'dayjs';
 import {createPDF, createCSV} from './file-creation';
+import {BlueButton} from '_components';
 
 export const OrderList = props => {
   return (
@@ -350,27 +351,15 @@ const InvoiceModal = props => {
         ]}>
         {Strings.recievedBy}: {props.receivedBy}
       </Text>
-
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('23%'),
-          height: hp('5%'),
-          bottom: hp('5%'),
-          right: wp('7%'),
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          borderRadius: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+      <BlueButton
+        position={'absolute'}
+        borderRadius={10}
+        text={'PDF'}
+        font={Typography.normal}
+        icon="cloud-download-outline"
+        offsetCenter={wp('2%')}
+        top={hp('70%')}
+        left={wp('61%')}
         onPress={() =>
           createPDF(
             (id = props.id),
@@ -381,32 +370,17 @@ const InvoiceModal = props => {
             (amount = props.amount),
             (receivedBy = props.receivedBy),
           )
-        }>
-        <Text style={[Typography.normal, {left: wp('3%')}]}>PDF</Text>
-        <View style={{position: 'absolute', right: wp('3%')}}>
-          <Icon name="cloud-download-outline" size={wp('5.5%')} />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          backgroundColor: Colors.PALE_GREEN,
-          width: wp('23%'),
-          height: hp('5%'),
-          bottom: hp('5%'),
-          right: wp('35%'),
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          borderRadius: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+        }
+      />
+      <BlueButton
+        position={'absolute'}
+        backgroundColor={Colors.PALE_GREEN}
+        text="CSV"
+        font={Typography.normal}
+        borderRadius={10}
+        icon="cloud-download-outline"
+        offsetCenter={wp('2%')}
+        top={hp('70%')}
         onPress={() =>
           createCSV(
             (id = props.id),
@@ -416,12 +390,8 @@ const InvoiceModal = props => {
             (amount = props.amount),
             (receivedBy = props.receivedBy),
           )
-        }>
-        <Text style={[Typography.normal, {left: wp('3%')}]}>CSV</Text>
-        <View style={{position: 'absolute', right: wp('3%')}}>
-          <Icon name="cloud-download-outline" size={wp('5.5%')} />
-        </View>
-      </TouchableOpacity>
+        }
+      />
     </View>
   );
 };

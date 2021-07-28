@@ -29,6 +29,7 @@ import {
 } from '../../../../graphql/mutations';
 import {goodsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
+import {BlueButton} from '_components';
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 const now = () => {
@@ -104,10 +105,10 @@ export const SendTaskList = props => {
 // Supplier create invoice
 const SendTask = props => {
   const [sendTaskModal, setSendTaskModal] = useState(false);
-  const [invoiceModal, setInvoiceModal] = useState(false);
+
   const [ratingModal, setRatingModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
-  console.log(props.status);
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -222,26 +223,13 @@ const SendTask = props => {
           retailer={props.retailer}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
-          setInvoiceModal={setInvoiceModal}
           setSendTaskModal={setSendTaskModal}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
           sendTask={props.sendTask}
           setSendTask={props.setSendTask}></SendTaskModal>
       </Modal>
-      <Modal isVisible={invoiceModal}>
-        <InvoiceModal
-          setInvoiceModal={setInvoiceModal}
-          goods={props.goods}
-          retailer={props.retailer}
-          deliverydate={props.deliverydate}
-          taskID={props.taskID}
-          invoiceList={props}
-          trigger={props.trigger}
-          setTrigger={props.setTrigger}
-          sendTask={props.sendTask}
-          setSendTask={props.setSendTask}></InvoiceModal>
-      </Modal>
+
       <Modal isVisible={ratingModal}>
         <RatingModal
           taskID={props.taskID}
@@ -261,6 +249,7 @@ const SendTask = props => {
 const SendTaskModal = props => {
   const [deliverydate, setDate] = useState(props.deliverydate);
   const [confirmedDate, setConfirmedDate] = useState(false);
+  const [invoiceModal, setInvoiceModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
 
   const updateDeliveryDate = async () => {
@@ -542,37 +531,35 @@ const SendTaskModal = props => {
           ]}>
           {props.retailer.name}
         </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: Colors.LIGHT_BLUE,
-            width: wp('30%'),
-            height: hp('5%'),
-            alignSelf: 'center',
-            justifyContent: 'center',
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-            position: 'absolute',
-            bottom: hp('8%'),
-            borderRadius: 10,
-          }}
+        <BlueButton
           onPress={() => {
-            [props.setInvoiceModal(true), props.setSendTaskModal(false)];
-          }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.createInvoice}
-          </Text>
-        </TouchableOpacity>
+            [setInvoiceModal(true)];
+          }}
+          text={Strings.createInvoice}
+          font={Typography.normal}
+          borderRadius={10}
+          top={hp('70%')}
+          position={'absolute'}
+        />
       </View>
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [setSuccessfulModal(false)]}>
         <SuccessfulModal text={'Successfully chosen delivery date!'} />
+      </Modal>
+      <Modal isVisible={invoiceModal}>
+        <InvoiceModal
+          setSendTaskModal={props.setSendTaskModal}
+          setInvoiceModal={setInvoiceModal}
+          goods={props.goods}
+          retailer={props.retailer}
+          deliverydate={props.deliverydate}
+          taskID={props.taskID}
+          invoiceList={props}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          sendTask={props.sendTask}
+          setSendTask={props.setSendTask}></InvoiceModal>
       </Modal>
     </SafeAreaView>
   );
@@ -583,6 +570,7 @@ const InvoiceModal = props => {
   const [toggle, setToggle] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [sum, setSum] = useState(0);
+  const [verifyDoubleButton, setVerifyDoubleButton] = useState(false);
   var tempSum = 0;
   useEffect(() => {
     console.log(itemList);
@@ -621,6 +609,7 @@ const InvoiceModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setVerifyDoubleButton(false);
   };
 
   const Seperator = () => {
@@ -735,28 +724,22 @@ const InvoiceModal = props => {
           </Text>
         </View>
       </View>
-      <TouchableOpacity
+      <BlueButton
         onPress={() => [sendForVerfication()]}
-        style={{
-          position: 'absolute',
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('35%'),
-          height: hp('5%'),
-          bottom: hp('5%'),
-          right: wp('5%'),
-          elevation: 3,
-          borderRadius: 10,
-          justifyContent: 'center',
-        }}>
-        <Text style={[Typography.normal, {left: wp('5%')}]}>
-          Send to Verify
-        </Text>
-      </TouchableOpacity>
+        text={Strings.sendToVerify}
+        borderRadius={10}
+        font={Typography.normal}
+        position={'absolute'}
+        top={hp('70%')}
+        right={wp('5%')}
+        onPressIn={() => setVerifyDoubleButton(true)}
+        disabled={verifyDoubleButton}
+      />
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [
           setSuccessfulModal(false),
-          props.setInvoiceModal(false),
+          props.setSendTaskModal(false),
         ]}>
         <SuccessfulModal />
       </Modal>

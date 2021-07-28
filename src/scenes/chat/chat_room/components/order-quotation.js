@@ -28,6 +28,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
+import {BlueButton} from '_components';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -36,6 +37,8 @@ export const OrderQuotationModal = props => {
   }, []);
   const [succesfulModal, setSuccesfulModal] = useState(false);
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
+  const [acceptButton, setAcceptButton] = useState(false);
+  const [declineButton, setDeclineButton] = useState(false);
 
   console.log('quotation' + props.chatGroupID);
   const fetchQuotation = async () => {
@@ -84,7 +87,9 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setDeclineButton(false);
   };
+
   const accept = async () => {
     try {
       const acceptanceMessage = await API.graphql({
@@ -136,6 +141,7 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       console.log(e);
     }
+    setAcceptButton(false);
   };
   return (
     <View>
@@ -143,12 +149,13 @@ export const OrderQuotationModal = props => {
         <View
           style={{
             flexDirection: 'column',
-            width: wp('100%'),
-            height: hp('95%'),
-            right: wp('5%'),
+            width: wp('95%'),
+            height: hp('90%'),
+
             backgroundColor: Colors.GRAY_LIGHT,
             borderRadius: 15,
             alignItems: 'center',
+            alignSelf: 'center',
           }}>
           <View
             style={{
@@ -197,24 +204,28 @@ export const OrderQuotationModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Text style={[Typography.normal]}>
-              Logistics Provided: {'\t'}
-              {'\t'}
-              {'\t'}
-              <Text style={{left: wp('20%')}}>
+            <View style={{flexDirection: 'row', width: wp('80')}}>
+              <Text style={[Typography.normal, {textAlign: 'left'}]}>
+                Logistics Provided: {'\t'}
+                {'\t'}
+                {'\t'}
+              </Text>
+              <Text style={[Typography.normal, {textAlign: 'right'}]}>
                 {orderDetails.logisticsProvided ? 'Provided' : 'Not Provided'}
               </Text>
-            </Text>
-            <Text style={[Typography.normal]}>
-              Payment Terms:{'\t'}
-              {'\t'}
-              {'\t'}
-              <Text style={{left: wp('20%')}}>
+            </View>
+            <View style={{flexDirection: 'row', width: wp('80')}}>
+              <Text style={[Typography.normal]}>
+                Payment Terms:{'\t'}
+                {'\t'}
+                {'\t'}
+              </Text>
+              <Text style={[Typography.normal]}>
                 {orderDetails.paymentTerms == 'cashOnDelivery'
                   ? 'Cash on Delivery'
                   : 'Credit Terms'}
               </Text>
-            </Text>
+            </View>
           </View>
 
           {props.type != 'supplier' ? (
@@ -223,49 +234,29 @@ export const OrderQuotationModal = props => {
                 flexDirection: 'row',
                 top: hp('53%'),
               }}>
-              <TouchableOpacity
+              <BlueButton
+                text={Strings.accept}
+                font={Typography.small}
+                borderRadius={10}
                 onPress={() => [accept()]}
-                style={{
-                  backgroundColor: Colors.LIGHT_BLUE,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
-                  right: wp('5%'),
-                  width: wp('25%'),
-                  height: hp('5%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                }}>
-                <Text style={[Typography.small]}>{Strings.accept}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+                minWidth={wp('25%')}
+                right={wp('5%')}
+                position={'absolute'}
+                onPressIn={() => setAcceptButton(true)}
+                disabled={acceptButton}
+              />
+              <BlueButton
+                text={Strings.decline}
+                font={Typography.small}
+                borderRadius={10}
                 onPress={() => [reject(), setUnsuccesfulModal(true)]}
-                style={{
-                  backgroundColor: Colors.LIGHT_BLUE,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
+                minWidth={wp('25%')}
+                left={wp('5%')}
+                position={'absolute'}
+                onPressIn={() => setDeclineButton(true)}
+                disabled={declineButton}
+              />
 
-                  elevation: 5,
-                  left: wp('5%'),
-                  width: wp('25%'),
-                  height: hp('5%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                }}>
-                <Text style={[Typography.small]}>{Strings.decline}</Text>
-              </TouchableOpacity>
               <Modal
                 isVisible={succesfulModal}
                 onBackdropPress={() => [

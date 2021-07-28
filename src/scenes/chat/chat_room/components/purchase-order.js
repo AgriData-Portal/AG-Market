@@ -31,6 +31,7 @@ import {
 } from 'react-native-responsive-screen';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Strings from '_utils';
+import {BlueButton} from '_components';
 
 const OrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
@@ -277,20 +278,14 @@ export const PurchaseOrder = props => {
           <CloseButton setModal={props.setPurchaseOrderModal} />
         </View>
         {props.type == 'supplier' ? (
-          <TouchableOpacity
+          <BlueButton
             onPress={() => [setOrderQuotation(true)]}
-            style={{
-              position: 'absolute',
-              borderRadius: 15,
-              bottom: hp('7%'),
-              height: hp('5%'),
-              width: wp('50%'),
-              backgroundColor: Colors.LIGHT_BLUE,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={Typography.normal}>Create Order Quotation</Text>
-          </TouchableOpacity>
+            text={'Create Order Quotation'}
+            font={Typography.normal}
+            borderRadius={10}
+            position={'absolute'}
+            top={hp('70%')}
+          />
         ) : (
           <View></View>
         )}
@@ -430,7 +425,7 @@ const NewOrderQuotation = props => {
         flexDirection: 'column',
         width: wp('95%'),
         right: wp('2%'),
-        height: hp('95%'),
+        height: hp('90%'),
         backgroundColor: Colors.GRAY_LIGHT,
         borderRadius: 15,
         alignItems: 'center',
@@ -464,14 +459,14 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          height: hp('40%'),
+          height: hp('35%'),
           top: hp('14%'),
           alignItems: 'center',
           position: 'absolute',
         }}>
         <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
-      <View style={{position: 'absolute', left: wp('50%'), top: hp('55%')}}>
+      <View style={{position: 'absolute', left: wp('50%'), top: hp('50%')}}>
         <Text
           style={[
             Typography.normal,
@@ -484,7 +479,7 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('60%'),
+          top: hp('55%'),
           alignItems: 'center',
           height: hp('24%'),
           width: wp('85%'),
@@ -575,29 +570,15 @@ const NewOrderQuotation = props => {
       <View
         style={{
           position: 'absolute',
-          top: hp('86%'),
+          top: hp('81%'),
         }}>
-        <TouchableOpacity
+        <BlueButton
           onPress={() => [sendQuotation()]}
-          style={{
-            backgroundColor: Colors.LIGHT_BLUE,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-            width: wp('40%'),
-            height: hp('5%'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-          }}>
-          {/* //translation */}
-          <Text style={[Typography.normal]}>Send Quotation</Text>
-        </TouchableOpacity>
+          text={Strings.sendQuotation}
+          borderRadius={10}
+          font={Typography.normal}
+        />
+
         <Modal
           isVisible={successfulModal}
           onBackdropPress={() => [

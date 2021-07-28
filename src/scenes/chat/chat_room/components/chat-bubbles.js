@@ -22,6 +22,7 @@ import {
 import Strings from '_utils';
 import {OrderQuotationModal} from './order-quotation';
 import {PurchaseOrder} from './purchase-order';
+import {BlueButton} from '_components';
 
 var dayjs = require('dayjs');
 
@@ -265,29 +266,14 @@ const ChatBubble = props => {
             marginTop: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.purchaseOrder}</Text>
-
-          <TouchableOpacity
+          <BlueButton
             onPress={() => setPurchaseOrderModal(true)}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 10,
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('33%'),
-              height: hp('3%'),
-              top: hp('1%'),
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
-            }}>
-            <Text style={[Typography.small]}>{Strings.inspect}</Text>
-          </TouchableOpacity>
+            text={Strings.inspect}
+            font={Typography.small}
+            minWidth={wp('33%')}
+            top={hp('0.5%')}
+            borderRadius={10}
+          />
 
           <Text
             style={[
@@ -366,29 +352,14 @@ const ChatBubble = props => {
             marginTop: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
-
-          <TouchableOpacity
+          <BlueButton
             onPress={() => setOrderQuotationModal(true)}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 10,
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('33%'),
-              height: hp('3%'),
-              top: hp('1%'),
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
-            }}>
-            <Text style={[Typography.small]}>{Strings.inspect}</Text>
-          </TouchableOpacity>
+            text={Strings.inspect}
+            font={Typography.small}
+            minWidth={wp('33%')}
+            top={wp('0.5%')}
+            borderRadius={10}
+          />
 
           <Text
             style={[

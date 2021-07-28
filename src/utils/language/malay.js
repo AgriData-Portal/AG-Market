@@ -214,4 +214,8 @@ export default {
   sendQuotationToRetailer: 'Hantar sebut harga kepada peruncit',
   edit: 'Edit',
   bankName: 'Nama Bank',
+  editCompanyProfile: 'Edit Profil Syarikat',
+  editPersonalProfile: 'Edit Profil Peribadi',
+  sendQuotation: 'Hantar Sebut Harga',
+  sendToVerify: 'Hantar Untuk Disahkan',
 };

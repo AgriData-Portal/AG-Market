@@ -14,6 +14,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {BlueButton} from '_components';
 
 export const Landing = props => {
   return (
@@ -29,78 +30,38 @@ export const Landing = props => {
           source={require('_assets/images/agridata.png')}
           style={{
             resizeMode: 'contain',
-            height: Mixins.scaleHeight(140),
-            width: Mixins.scaleWidth(200),
+            height: hp('23%'),
+            width: wp('70%'),
           }}
         />
       </View>
-      <TouchableOpacity
+      <BlueButton
         onPress={() => props.navigation.navigate('signup')}
-        style={{
-          position: 'absolute',
-          top: hp('45%'),
-          width: wp('50%'),
-          height: hp('5%'),
-          backgroundColor: '#E2EDFE',
-          borderRadius: 20,
-          elevation: 3,
-          alignItems: 'center',
-          flexDirection: 'row',
-          zIndex: 2,
-        }}>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              marginLeft: wp('4%'),
-            },
-          ]}>
-          {Strings.signUp}
-        </Text>
-        <View style={{position: 'absolute', right: wp('3%')}}>
-          <Icon size={wp('6%')} name="arrow-forward-outline" />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
+        text={Strings.signUp}
+        icon={'arrow-forward-outline'}
+        minWidth={wp('50')}
+        top={hp('15%')}
+        font={Typography.normal}
+      />
+      <BlueButton
         onPress={() => props.navigation.navigate('signin')}
-        style={{
-          position: 'absolute',
-          top: hp('53%'),
-          width: wp('50%'),
-          height: hp('5%'),
-          backgroundColor: '#E2EDFE',
-          borderRadius: 20,
-          elevation: 3,
-          alignItems: 'center',
-          flexDirection: 'row',
-          zIndex: 2,
-        }}>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              marginLeft: wp('4%'),
-            },
-          ]}>
-          {Strings.logIn}
-        </Text>
-        <View style={{position: 'absolute', right: wp('3%')}}>
-          <Icon size={wp('6%')} name="arrow-forward-outline" />
-        </View>
-      </TouchableOpacity>
+        text={Strings.logIn}
+        icon={'arrow-forward-outline'}
+        minWidth={wp('50')}
+        top={hp('20%')}
+        offsetCenter={wp('24%')}
+        font={Typography.normal}
+      />
 
-      <View
+      <Image
+        source={require('_assets/images/greenproduce.png')}
         style={{
+          resizeMode: 'contain',
+          width: wp('80%'),
+          height: hp('30%'),
           top: hp('30%'),
-        }}>
-        <Image
-          source={require('_assets/images/greenproduce.png')}
-          style={{
-            resizeMode: 'contain',
-            width: wp('80%'),
-          }}
-        />
-      </View>
+        }}
+      />
     </SafeAreaView>
   );
 };

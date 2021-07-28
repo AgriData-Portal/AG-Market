@@ -93,7 +93,7 @@ export const HumanResource = props => {
               setTeamList={setTeamList}
             />
           </View>
-          <View style={{top: hp('8%'), width: wp('85%'), alignItems: 'center'}}>
+          <View style={{top: hp('6%'), width: wp('85%'), alignItems: 'center'}}>
             <AddEmployeeButton user={props.user} setTeamList={setTeamList} />
           </View>
         </View>
