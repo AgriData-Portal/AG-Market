@@ -901,84 +901,88 @@ export const DetailsModal = props => {
       <View style={{position: 'absolute', right: hp('1%'), top: hp('1%')}}>
         <CloseButton setModal={props.setDetailsModal} />
       </View>
+      <View style={{alignItems: 'center', top: hp('3%')}}>
+        <Text style={[Typography.header, {top: hp('2%')}]}>{props.name}</Text>
 
-      <Text style={[Typography.header, {top: hp('2%')}]}>{props.name}</Text>
-
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: wp('80%'),
-          height: hp('25%'),
-        }}>
-        {imageSource == null ? (
-          <Image
-            source={require('_assets/images/company-logo.png')}
-            style={{
-              resizeMode: 'contain',
-              width: wp('80%'),
-              height: hp('20%'),
-            }}
-          />
-        ) : (
-          <Image
-            source={imageSource}
-            style={{
-              resizeMode: 'contain',
-              width: wp('80%'),
-              height: hp('20%'),
-            }}
-          />
-        )}
-      </View>
-      {companyDetails.rating == null ? (
-        <Text style={[Typography.normal]}>No ratings yet</Text>
-      ) : (
-        <View style={{flexDirection: 'row'}}>
-          <Rating
-            imageSize={wp('6%')}
-            readonly={true}
-            startingValue={companyDetails.rating.currentRating}></Rating>
-          <Text style={[Typography.normal, {left: wp('1%')}]}>
-            ( {companyDetails.rating.numberOfRatings} )
-          </Text>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: wp('80%'),
+            height: hp('25%'),
+          }}>
+          {imageSource == null ? (
+            <Image
+              source={require('_assets/images/company-logo.png')}
+              style={{
+                resizeMode: 'contain',
+                width: wp('80%'),
+                height: hp('20%'),
+              }}
+            />
+          ) : (
+            <Image
+              source={imageSource}
+              style={{
+                resizeMode: 'contain',
+                width: wp('80%'),
+                height: hp('20%'),
+              }}
+            />
+          )}
         </View>
-      )}
-      <View
-        style={{
-          alignItems: 'flex-start',
-          backgroundColor: Colors.GRAY_LIGHT,
-          width: wp('80%'),
-          height: hp('33%'),
-          top: hp('3%'),
-          borderRadius: 10,
-        }}>
-        <View style={{alignItems: 'flex-start', top: hp('5%'), left: wp('5%')}}>
-          <View>
-            <Text style={[Typography.placeholder]}>
-              {Strings.companyRegistrationNum}
-            </Text>
-            <Text style={[Typography.normal]}>
-              {companyDetails.registrationNumber}
+        {companyDetails.rating == null ? (
+          <Text style={[Typography.normal]}>No ratings yet</Text>
+        ) : (
+          <View style={{flexDirection: 'row'}}>
+            <Rating
+              imageSize={wp('6%')}
+              readonly={true}
+              startingValue={companyDetails.rating.currentRating}></Rating>
+            <Text style={[Typography.normal, {left: wp('1%')}]}>
+              ( {companyDetails.rating.numberOfRatings} )
             </Text>
           </View>
-          <View style={{top: hp('1%')}}>
-            <Text style={[Typography.placeholder]}>
-              {Strings.companyAddress}
-            </Text>
-            <Text style={[Typography.normal]}>{companyDetails.address}</Text>
-          </View>
-          <View style={{top: hp('2%')}}>
-            <Text style={[Typography.placeholder]}>
-              {Strings.contactNumber}
-            </Text>
-            {companyDetails.contactDetails != null ? (
-              <Text style={[Typography.normal]}>
-                {companyDetails.contactDetails.phone}
+        )}
+        <View
+          style={{
+            alignItems: 'flex-start',
+            backgroundColor: Colors.GRAY_LIGHT,
+            width: wp('80%'),
+            height: hp('33%'),
+            top: hp('3%'),
+            borderRadius: 10,
+          }}>
+          <View
+            style={{alignItems: 'flex-start', top: hp('2%'), left: wp('5%')}}>
+            <View>
+              <Text style={[Typography.placeholder]}>
+                {Strings.companyRegistrationNum}
               </Text>
-            ) : (
-              <Text style={[Typography.normal]}>Not Added Yet</Text>
-            )}
+              <Text style={[Typography.normal]}>
+                {companyDetails.registrationNumber} 100200
+              </Text>
+            </View>
+            <View style={{top: hp('1%')}}>
+              <Text style={[Typography.placeholder]}>
+                {Strings.companyAddress}
+              </Text>
+              <Text style={[Typography.normal, {width: wp('70%')}]}>
+                {companyDetails.address}
+              </Text>
+            </View>
+            <View style={{top: hp('2%')}}>
+              <Text style={[Typography.placeholder]}>
+                {Strings.contactNumber}
+              </Text>
+              {companyDetails.contactDetails != null ? (
+                <Text style={[Typography.normal]}>
+                  {companyDetails.contactDetails.phone}
+                </Text>
+              ) : (
+                <Text style={[Typography.normal]}>Not Added Yet</Text>
+              )}
+            </View>
           </View>
         </View>
       </View>
