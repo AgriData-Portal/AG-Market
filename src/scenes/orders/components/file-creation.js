@@ -11,7 +11,8 @@ import dayjs from 'dayjs';
 
 export const createPDF = async (
   id,
-  company,
+  retailer,
+  supplier,
   createdAt,
   items,
   amount,
@@ -39,7 +40,7 @@ export const createPDF = async (
       fontName: 'Poppins-Regular',
       fontSize: 150,
     })
-    .drawText('Invoice#: ' + id.slice(0, 6), {
+    .drawText('Invoice#: ' + id, {
       x: 100,
       y: 2900,
       fontName: 'Poppins-Regular',
@@ -54,9 +55,15 @@ export const createPDF = async (
         fontSize: 80,
       },
     )
-    .drawText('Transacted With: ' + company.name, {
+    .drawText('Bought By: ' + retailer.name, {
       x: 100,
       y: 2800,
+      fontName: 'Poppins-Regular',
+      fontSize: 80,
+    })
+    .drawText('Sold By: ' + supplier.name, {
+      x: 100,
+      y: 2700,
       fontName: 'Poppins-Regular',
       fontSize: 80,
     })
@@ -239,18 +246,17 @@ export const createPDF = async (
       });
   }
 
-  var filePath =
-    RNFS.DocumentDirectoryPath + '/AgriDataInvoice' + id.slice(0, 6) + '.pdf';
+  var filePath = RNFS.DocumentDirectoryPath + '/AG-MarketInvoice' + id + '.pdf';
   if (noProduct <= 6) {
     PDFDocument.create(filePath)
       .addPages(page1)
       .write() // Returns a promise that resolves with the PDF's path
       .then(path => {
         console.log('PDF created at: ' + path);
-        alert('PDF created');
+        // alert('PDF created');
       })
       .catch(e => {
-        alert('PDF fail to create');
+        // alert('PDF fail to create');
       });
   } else {
     PDFDocument.create(filePath)
@@ -258,17 +264,17 @@ export const createPDF = async (
       .write() // Returns a promise that resolves with the PDF's path
       .then(path => {
         console.log('PDF created at: ' + path);
-        alert('PDF created');
+        // alert('PDF created');
       })
       .catch(e => {
-        alert('PDF fail to create');
+        // alert('PDF fail to create');
       });
   }
   const shareOptions = {
     message: 'Share PDF Test',
     url:
-      'file:///data/user/0/com.agridata_app/files/AgriDataInvoice' +
-      id.slice(0, 6) +
+      'file:///data/user/0/com.agridata_app/files/AG-MarketInvoice' +
+      id +
       '.pdf',
   };
   try {

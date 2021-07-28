@@ -27,6 +27,7 @@ import {DismissKeyboardView} from '_components';
 import Modal from 'react-native-modal';
 import {useIsFocused} from '@react-navigation/native';
 import {BlueButton} from '_components';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -111,9 +112,14 @@ export const Registration = props => {
   var hasNumber = /\d/;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-25%')}>
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      resetScrollToCoords={{x: 0, y: 0}}
+      scrollEnabled={false}
+      extraHeight={hp('20%')}>
+      {/* // <KeyboardAvoidingView
+    //   behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+    //   keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-25%')}> */}
       <SafeAreaView
         style={{
           backgroundColor: 'white',
@@ -122,13 +128,12 @@ export const Registration = props => {
         <View style={{flex: 1}}>
           <ScrollView
             contentContainerStyle={{flexGrow: 1}}
-            contentInset={Platform.OS == 'ios' ? {} : {bottom: 50}}
             nestedScrollEnabled={true}
             scrollToOverflowEnabled={true}
             contentContainerStyle={
               Platform.OS == 'ios '
                 ? {paddingBottom: 0}
-                : {paddingBottom: hp('30%')}
+                : {paddingBottom: hp('10%')}
             }>
             <View style={{flex: 1}}>
               <View
@@ -439,7 +444,8 @@ export const Registration = props => {
           </ScrollView>
         </View>
       </SafeAreaView>
-    </KeyboardAvoidingView>
+      {/* //</KeyboardAvoidingView> */}
+    </KeyboardAwareScrollView>
   );
 };
 

@@ -7,6 +7,7 @@ import {
   FlatList,
   Text,
   Image,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';

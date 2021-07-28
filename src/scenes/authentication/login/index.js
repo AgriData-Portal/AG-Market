@@ -24,6 +24,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {BlueButton} from '_components';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const Login = props => {
   const [secure, setSecure] = useState(true);
@@ -67,9 +68,7 @@ export const Login = props => {
     }
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-40%') : hp('-30%%')}>
+    <KeyboardAwareScrollView>
       <SafeAreaView
         style={{
           backgroundColor: 'white',
@@ -272,7 +271,7 @@ export const Login = props => {
         <UnsuccessfulModal text={errorText} />
       </Modal>
       <LoadingModal isVisible={loading} />
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 

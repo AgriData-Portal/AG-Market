@@ -57,13 +57,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
-import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 import Modal from 'react-native-modal';
-import {header} from '_styles';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -104,7 +103,7 @@ const SupplierNavigation = props => {
     <AppStack.Navigator
       screenOptions={{
         headerStyle: {
-          height: hp('8%'),
+          height: Platform.OS === 'ios' ? hp('9.5%') : hp('8%'),
         },
       }}>
       <AppStack.Screen

@@ -86,14 +86,15 @@ export const PersonalProfile = props => {
               height: hp('25%'),
             }}>
             <Image
-              source={require('_assets/images/company-logo.png')}
+              source={require('_assets/images/agridata.png')}
               style={{
                 resizeMode: 'contain',
                 width: wp('80%'),
-                height: hp('20%'),
+                height: hp('30%'),
+                top: hp('0%'),
               }}
             />
-            <Text style={[Typography.header, {top: hp('2%')}]}>
+            <Text style={[Typography.header, {top: hp('0%')}]}>
               {props.user.name}
             </Text>
           </View>
@@ -148,7 +149,11 @@ export const PersonalProfile = props => {
               }}>
               <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
               <View>
-                <Text style={[Typography.normal]}>email@gmail.com</Text>
+                {props.user.email == null ? (
+                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                ) : (
+                  <Text style={[Typography.normal]}>{props.user.email}</Text>
+                )}
               </View>
             </View>
             <View

@@ -174,7 +174,13 @@ export const CompanyProfile = props => {
           }}>
           <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
           <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}>citygrocerkk@gmail.com</Text>
+            {company.contactDetails != null ? (
+              <Text style={[Typography.normal]}>
+                {company.contactDetails.email}
+              </Text>
+            ) : (
+              <Text style={[Typography.normal]}>Not Added Yet</Text>
+            )}
           </View>
         </View>
         <View
@@ -187,9 +193,13 @@ export const CompanyProfile = props => {
           <Text style={[Typography.placeholderSmall]}>
             {Strings.bankDetails}
           </Text>
-          <Text style={[Typography.normal, {top: hp('0.5%')}]}>
-            13812641234146194672136417
-          </Text>
+          {company.bankAccount != null ? (
+            <Text style={[Typography.normal]}>
+              {company.bankAccount.accountNumber}
+            </Text>
+          ) : (
+            <Text style={[Typography.normal]}>Not Added Yet</Text>
+          )}
         </View>
         <View
           style={{
@@ -199,7 +209,13 @@ export const CompanyProfile = props => {
             height: hp('5%'),
           }}>
           <Text style={[Typography.placeholderSmall]}>{Strings.bankName}</Text>
-          <Text style={[Typography.normal, {top: '0.5%'}]}>Maybank</Text>
+          {company.bankAccount != null ? (
+            <Text style={[Typography.normal]}>
+              {company.bankAccount.bankName}
+            </Text>
+          ) : (
+            <Text style={[Typography.normal]}>Not Added Yet</Text>
+          )}
         </View>
       </View>
       <BlueButton
