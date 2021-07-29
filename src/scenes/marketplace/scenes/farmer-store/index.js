@@ -51,7 +51,7 @@ export const FarmerStore = props => {
         style={{
           width: wp('90%'),
           height: hp('80%'),
-          top: hp('1%'),
+          top: hp('0%'),
         }}>
         <SupplierplaceList
           productList={productList}

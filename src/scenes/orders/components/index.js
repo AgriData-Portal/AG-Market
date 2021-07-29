@@ -157,7 +157,7 @@ const Order = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('6%'),
+              top: hp('7.3%'),
               right: hp('2%'),
               position: 'absolute',
             },
@@ -169,7 +169,7 @@ const Order = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('8%'),
+              top: hp('9%'),
               right: hp('2%'),
               position: 'absolute',
               fontStyle: 'italic',

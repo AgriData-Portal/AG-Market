@@ -108,7 +108,7 @@ export const Inbox = props => {
         alignItems: 'center',
       }}>
       <DismissKeyboardView>
-        <View style={{top: hp('2%')}}>
+        <View style={{top: hp('0%')}}>
           <Searchbar />
         </View>
       </DismissKeyboardView>
@@ -116,9 +116,8 @@ export const Inbox = props => {
       <View
         style={{
           height: hp('70%'),
-
           width: wp('95%'),
-          top: hp('2%'),
+          top: hp('0%'),
         }}>
         <ChatList
           data={chatRooms}

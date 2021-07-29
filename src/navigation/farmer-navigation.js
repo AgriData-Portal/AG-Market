@@ -78,6 +78,8 @@ const FarmerNavigation = props => {
       screenOptions={{
         headerStyle: {
           height: hp('8%'),
+          elevation: 0,
+          shadowOpacity: 0,
         },
       }}>
       <AppStack.Screen

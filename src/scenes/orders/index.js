@@ -95,7 +95,7 @@ export const Orders = props => {
         style={{
           width: wp('80%'),
           height: hp('5%'),
-          top: hp('3%'),
+          top: hp('0%'),
           flexDirection: 'row',
         }}>
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
@@ -109,8 +109,8 @@ export const Orders = props => {
       </View>
       <View
         style={{
-          top: hp('5%'),
-          height: hp('64%'),
+          top: hp('0%'),
+          height: hp('72%'),
         }}>
         <OrderList invoiceList={invoiceList} user={props.user} />
       </View>

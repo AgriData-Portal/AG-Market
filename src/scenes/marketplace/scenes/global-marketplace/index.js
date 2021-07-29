@@ -128,7 +128,7 @@ export const Marketplace = props => {
       }}>
       <View
         style={{
-          top: hp('1%'),
+          top: hp('0%'),
           width: wp('100%'),
           height: hp('4%'),
           flexDirection: 'row',
@@ -207,7 +207,7 @@ export const Marketplace = props => {
           </TouchableOpacity>
         )}
       </View>
-      <View style={{top: hp('1%'), zIndex: 100}}>
+      <View style={{top: hp('0%'), zIndex: 100}}>
         {choice == 'product' ? (
           <View
             style={{
@@ -292,7 +292,7 @@ export const Marketplace = props => {
           style={{
             width: wp('95%'),
             height: hp('80%'),
-            top: hp('1%'),
+            top: hp('0%'),
           }}>
           <FavouritesList
             data={props.user.retailerCompany.favouriteStores}
@@ -304,7 +304,7 @@ export const Marketplace = props => {
           style={{
             width: wp('95%'),
             height: hp('70%'),
-            top: hp('3%'),
+            top: hp('0%'),
           }}>
           <MarketplaceList
             chatGroups={props.user.retailerCompany.chatGroups.items}

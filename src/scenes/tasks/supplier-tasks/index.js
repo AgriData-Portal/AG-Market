@@ -90,7 +90,7 @@ export const SupplierTasks = props => {
           <View
             style={{
               right: wp('15%'),
-              top: hp('2%'),
+              top: hp('0%'),
             }}>
             <Text
               style={[
@@ -107,7 +107,7 @@ export const SupplierTasks = props => {
             onPress={() => setTask('send')}
             style={{
               right: wp('15%'),
-              top: hp('2%'),
+              top: hp('0%'),
             }}>
             <Text
               style={[
@@ -125,7 +125,7 @@ export const SupplierTasks = props => {
           <View
             style={{
               left: wp('15%'),
-              top: hp('2%'),
+              top: hp('0%'),
             }}>
             <Text
               style={[
@@ -141,7 +141,7 @@ export const SupplierTasks = props => {
           <TouchableOpacity
             onPress={() => setTask('claim')}
             style={{
-              top: hp('2%'),
+              top: hp('0%'),
               left: wp('15%'),
             }}>
             <Text
@@ -159,7 +159,7 @@ export const SupplierTasks = props => {
       </View>
       <View
         style={{
-          top: hp('3%'),
+          top: hp('0%'),
           width: wp('100%'),
           borderBottomWidth: wp('0.5%'),
           height: hp('0%'),
@@ -169,7 +169,7 @@ export const SupplierTasks = props => {
         style={{
           width: wp('80%'),
           height: hp('5%'),
-          top: hp('5%'),
+          top: hp('1%'),
           flexDirection: 'row',
         }}>
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
@@ -183,8 +183,8 @@ export const SupplierTasks = props => {
       </View>
       <View
         style={{
-          top: hp('6%'),
-          height: hp('56%'),
+          top: hp('0%'),
+          height: hp('68%'),
         }}>
         {task == 'claim' ? (
           <ReceivePaymentTaskList

@@ -197,7 +197,6 @@ export const ChatRoom = props => {
       }}>
       <KeyboardAwareScrollView
         style={{
-          top: hp('1.5%'),
           height: hp('100%'),
           width: wp('100%'),
         }}>
@@ -213,11 +212,11 @@ export const ChatRoom = props => {
         }}> */}
         <View
           style={{
-            height: hp('86.5%'),
+            height: hp('88%'),
           }}>
           <View
             style={{
-              height: hp('76.5%'),
+              height: hp('80%'),
             }}>
             <ChatBubbleList
               data={messages}
