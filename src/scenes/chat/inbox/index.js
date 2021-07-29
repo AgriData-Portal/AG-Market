@@ -17,9 +17,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {onUpdateChatGroup} from '../../../graphql/subscriptions';
+import {log} from '_utils';
 
 export const Inbox = props => {
-  //console.log(props.user.role);
+  //log(props.user.role);
   const [chatRooms, setChatRooms] = useState(null);
   if (props.user.supplierCompanyID != null) {
     var companyID = props.user.supplierCompanyID;
@@ -34,14 +35,14 @@ export const Inbox = props => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
-      console.log('Refreshed!');
+      log('Refreshed!');
       fetchChats();
     });
     return unsubscribe;
   }, [props.navigation]);
 
   useEffect(() => {
-    console.log(chatRooms);
+    log(chatRooms);
     const subscription = API.graphql(
       graphqlOperation(onUpdateChatGroup),
     ).subscribe({
@@ -64,7 +65,7 @@ export const Inbox = props => {
             sortDirection: 'DESC',
           },
         });
-        console.log('fetching chats');
+        log('fetching chats');
         setChatRooms(
           chats.data.getChatGroupsContainingRetailersByUpdatedAt.items,
         );
@@ -76,7 +77,7 @@ export const Inbox = props => {
             sortDirection: 'DESC',
           },
         });
-        console.log('fetching chats');
+        log('fetching chats');
         setChatRooms(
           chats.data.getChatGroupsContainingSuppliersByUpdatedAt.items,
         );
@@ -88,14 +89,14 @@ export const Inbox = props => {
             sortDirection: 'DESC',
           },
         });
-        console.log('fetching chats');
+        log('fetching chats');
         setChatRooms(
           chats.data.getChatGroupsContainingFarmersByUpdatedAt.items,
         );
       }
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
   };
 

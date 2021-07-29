@@ -23,6 +23,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {MenuButton} from '_components';
+import {log} from '_utils';
 
 export const RetailerTasks = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -47,11 +48,11 @@ export const RetailerTasks = props => {
           sortDirection: 'ASC',
         },
       });
-      console.log(task.data.goodsTaskForRetailerByDate.items);
+      log(task.data.goodsTaskForRetailerByDate.items);
       setReceiveTask(task.data.goodsTaskForRetailerByDate.items);
-      console.log('goods task');
+      log('goods task');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -64,11 +65,11 @@ export const RetailerTasks = props => {
           sortDirection: 'ASC',
         },
       });
-      console.log(task.data.paymentsTaskForRetailerByDate.items);
+      log(task.data.paymentsTaskForRetailerByDate.items);
       setPayTask(task.data.paymentsTaskForRetailerByDate.items);
-      console.log('payment task');
+      log('payment task');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 

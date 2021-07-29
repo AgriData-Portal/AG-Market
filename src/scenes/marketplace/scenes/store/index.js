@@ -15,6 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import {updateRetailerCompany} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid
@@ -22,28 +23,28 @@ export const Store = props => {
   const [POList, setPOList] = useState([]);
   const [storeName, setStoreName] = useState('');
   const retailerID = props.user.retailerCompanyID;
-  console.log('retailer id:' + retailerID);
+  log('retailer id:' + retailerID);
   const purchaseOrder = retailerID + itemId;
-  console.log('purchase Order:' + purchaseOrder);
+  log('purchase Order:' + purchaseOrder);
   const [isFavourite, setIsFavourite] = useState(false);
   useEffect(() => {
-    console.log('Fetching Products from ' + itemId);
+    log('Fetching Products from ' + itemId);
     fetchProducts();
-    console.log('Fetching PO from ' + purchaseOrder);
+    log('Fetching PO from ' + purchaseOrder);
     getPOList();
   }, []);
 
   const getPOList = async () => {
-    console.log('gettingPO');
+    log('gettingPO');
     try {
       const list = await API.graphql({
         query: purchaseOrderItems,
         variables: {purchaseOrderID: purchaseOrder},
       });
-      console.log(list.data.purchaseOrderItems.items);
+      log(list.data.purchaseOrderItems.items);
       setPOList(list.data.purchaseOrderItems.items);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
   };
 
@@ -52,7 +53,7 @@ export const Store = props => {
       query: getSupplierCompany,
       variables: {id: itemId},
     });
-    console.log(supplier.data.getSupplierCompany.listings.items);
+    log(supplier.data.getSupplierCompany.listings.items);
     setProducts(supplier.data.getSupplierCompany.listings.items);
     setStoreName(supplier.data.getSupplierCompany.name);
   };
@@ -72,7 +73,7 @@ export const Store = props => {
           },
         });
         setIsFavourite(true);
-        console.log('success');
+        log('success');
       } else {
         var updated = await API.graphql({
           query: updateRetailerCompany,
@@ -84,23 +85,23 @@ export const Store = props => {
           },
         });
         setIsFavourite(true);
-        console.log('success');
+        log('success');
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
   const unfavourite = async () => {
     try {
       var currentFavList = props.user.retailerCompany.favouriteStores;
-      console.log(currentFavList.length);
+      log(currentFavList.length);
       currentFavList.forEach((item, index, arr) => {
         if (item.id == itemId) {
           arr.splice(index, 1);
         }
       });
-      console.log(currentFavList.length);
+      log(currentFavList.length);
       var updated = await API.graphql({
         query: updateRetailerCompany,
         variables: {
@@ -111,9 +112,9 @@ export const Store = props => {
         },
       });
       setIsFavourite(false);
-      console.log('success');
+      log('success');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 

@@ -1,32 +1,33 @@
 import React from 'react';
 import {Auth} from 'aws-amplify';
+import {log} from '_utils';
 
 export const signIn = async (username, password) => {
   try {
     const user = await Auth.signIn(username, password);
-    console.log('Success');
+    log('Success');
     return user.attributes;
   } catch (error) {
     setError('signin');
     setModalVisible2(true);
-    console.log('Error signing in...', error);
+    log('Error signing in...', error);
   }
 };
 
 export const sendVerification = async phone => {
   Auth.forgotPassword(phone)
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+    .then(data => log(data))
+    .catch(err => log(err));
 };
 
 export const changePassword = async (phone, code, password) => {
   Auth.forgotPasswordSubmit(phone, code, password)
     .then(data => {
-      console.log(data);
+      log(data);
       setModalVisible3(true);
     })
     .catch(err => {
-      console.log(err);
+      log(err);
       setError('verify');
       setModalVisible4(true);
     });
@@ -43,9 +44,9 @@ export const signUp = async (email, phone, password) => {
       },
     });
     setSuccessModalVisible(true);
-    console.log(user.userSub);
+    log(user.userSub);
   } catch (error) {
-    console.log('❌ Error signing up...', error);
+    log('❌ Error signing up...', error);
   }
 };
 
@@ -53,8 +54,8 @@ export const signOut = async () => {
   try {
     await Auth.signOut();
     updateAuthState('loggedOut');
-    console.log('Logged Out');
+    log('Logged Out');
   } catch (error) {
-    console.log('Error signing out: ', error);
+    log('Error signing out: ', error);
   }
 };

@@ -34,6 +34,7 @@ import {
 } from 'react-native-responsive-screen';
 import {createUser} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 //modal issues
 export const AddEmployeeButton = props => {
@@ -90,18 +91,18 @@ export const AddEmployeeButtonModal = props => {
     var user = null;
     try {
       user = await Auth.signUp({
-        username: phone,
+        username: '+60' + phone,
         password: 'agridata2020',
         attributes: {
           email,
-          phone_number: phone,
+          phone_number: '+60' + phone,
           'custom:role': role,
           name: name,
         },
       });
-      console.log(user.userSub);
+      log(user.userSub);
     } catch (error) {
-      console.log('❌ Error signing up...', error);
+      log('❌ Error signing up...', error);
     }
     try {
       const createdUser = await API.graphql({
@@ -110,7 +111,7 @@ export const AddEmployeeButtonModal = props => {
           input: {
             name: name,
             retailerCompanyID: props.user.retailerCompanyID,
-            contactNumber: phone,
+            contactNumber: '+60' + phone,
             id: user.userSub,
             role: role,
           },
@@ -118,7 +119,7 @@ export const AddEmployeeButtonModal = props => {
       });
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     //props.setTeamList(list => [...list, user]);
   };
@@ -162,21 +163,23 @@ export const AddEmployeeButtonModal = props => {
             <View
               style={{
                 width: wp('70%'),
+                top: hp('2%'),
               }}>
               <Text style={[Typography.placeholder]}>{Strings.fullName}</Text>
               <TextInput
+                placeholder={'eg. Hannah Wong'}
                 onChangeText={item => setName(item)}
                 underlineColorAndroid="transparent"
                 style={{
+                  paddingVertical: 0,
                   borderBottomColor: 'transparent',
                   width: wp('70%'),
-                  height: hp('7%'),
+                  height: hp('4%'),
                   color: 'black',
                 }}></TextInput>
               <View
                 style={{
                   borderColor: Colors.GRAY_DARK,
-                  bottom: hp('2%'),
                   borderBottomWidth: 1,
                 }}
               />
@@ -184,21 +187,23 @@ export const AddEmployeeButtonModal = props => {
             <View
               style={{
                 width: wp('70%'),
+                top: hp('4%'),
               }}>
               <Text style={[Typography.placeholder]}>{Strings.email}</Text>
               <TextInput
                 onChangeText={item => setEmail(item)}
                 underlineColorAndroid="transparent"
+                placeholder="eg. example@gmail.com"
                 style={{
                   borderBottomColor: 'transparent',
                   width: wp('70%'),
-                  height: hp('7%'),
+                  paddingVertical: 0,
+                  height: hp('4%'),
                   color: 'black',
                 }}></TextInput>
               <View
                 style={{
                   borderColor: Colors.GRAY_DARK,
-                  bottom: hp('2%'),
                   borderBottomWidth: 1,
                 }}
               />
@@ -206,56 +211,63 @@ export const AddEmployeeButtonModal = props => {
             <View
               style={{
                 width: wp('70%'),
+                top: hp('6%'),
               }}>
               <Text style={[Typography.placeholder]}>
                 {Strings.contactNumber}
               </Text>
-              <TextInput
-                onChangeText={item => setPhone(item)}
-                underlineColorAndroid="transparent"
-                style={{
-                  borderBottomColor: 'transparent',
-                  width: wp('70%'),
-                  height: hp('7%'),
-                  color: 'black',
-                }}></TextInput>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[Typography.small, {top: hp('1%')}]}>+60</Text>
+                <TextInput
+                  onChangeText={item => setPhone(item)}
+                  underlineColorAndroid="transparent"
+                  style={{
+                    paddingVertical: 0,
+                    borderBottomColor: 'transparent',
+                    width: wp('60%'),
+                    height: hp('4%'),
+                    color: 'black',
+                    left: wp('0.5%'),
+                  }}></TextInput>
+              </View>
               <View
                 style={{
                   borderColor: Colors.GRAY_DARK,
-                  bottom: hp('2%'),
                   borderBottomWidth: 1,
                 }}
               />
             </View>
-            <DropDownPicker
-              open={open}
-              value={role}
-              items={items}
-              placeholder={Strings.roleInCompany}
-              setOpen={setOpen}
-              setValue={setRole}
-              setItems={setItems}
-              style={{
-                width: wp('60%'),
-                height: hp('6%'),
-                borderColor: 'white',
-                borderRadius: 3,
-                backgroundColor: Colors.GRAY_LIGHT,
-              }}
-              dropDownDirection="BOTTOM"
-              listItemContainerStyle={{height: hp('4%')}}
-              dropDownContainerStyle={{
-                borderWidth: 1,
-                width: wp('60%'),
-                backgroundColor: Colors.GRAY_LIGHT,
-              }}></DropDownPicker>
+            <View style={{top: hp('8%')}}>
+              <DropDownPicker
+                open={open}
+                value={role}
+                items={items}
+                placeholder={Strings.roleInCompany}
+                setOpen={setOpen}
+                setValue={setRole}
+                setItems={setItems}
+                style={{
+                  width: wp('60%'),
+                  height: hp('6%'),
+                  borderColor: 'white',
+                  borderRadius: 3,
+                  backgroundColor: Colors.GRAY_LIGHT,
+                }}
+                dropDownDirection="BOTTOM"
+                listItemContainerStyle={{height: hp('4%')}}
+                dropDownContainerStyle={{
+                  borderWidth: 1,
+                  width: wp('60%'),
+                  backgroundColor: Colors.GRAY_LIGHT,
+                }}></DropDownPicker>
+            </View>
           </View>
         </View>
 
         <TouchableOpacity
           onPress={() => {
             if (name == '' || email == '' || phone == '') {
-              console.log('empty field');
+              log('empty field');
               setUnsuccessfulModal(true);
               setErrorText('Please fill in all empty spaces!');
             } else if (

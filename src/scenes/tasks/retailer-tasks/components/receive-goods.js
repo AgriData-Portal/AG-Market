@@ -32,6 +32,7 @@ import {
   getSupplierCompany,
 } from '../../../../graphql/queries';
 import {Rating} from 'react-native-ratings';
+import {log} from '_utils';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -67,7 +68,7 @@ const ReceiveModal = props => {
       });
       mostRecentInvoiceNum =
         response.data.getSupplierCompany.mostRecentInvoiceNumber;
-      console.log('newnum: ' + mostRecentInvoiceNum);
+      log('newnum: ' + mostRecentInvoiceNum);
       if (mostRecentInvoiceNum) {
         if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(0, 7)) {
           var number = parseInt(mostRecentInvoiceNum.slice(8, 13));
@@ -79,9 +80,9 @@ const ReceiveModal = props => {
       } else {
         mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '00001';
       }
-      console.log('updatednum: ' + mostRecentInvoiceNum);
+      log('updatednum: ' + mostRecentInvoiceNum);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
 
     try {
@@ -89,9 +90,9 @@ const ReceiveModal = props => {
         query: createPaymentTaskBetweenRandS,
         variables: {input: input},
       });
-      console.log('payment success!');
+      log('payment success!');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     var input = {
       id: mostRecentInvoiceNum,
@@ -107,9 +108,9 @@ const ReceiveModal = props => {
         query: createInvoiceBetweenRandS,
         variables: {input: input},
       });
-      console.log('success!');
+      log('success!');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
 
     try {
@@ -122,9 +123,9 @@ const ReceiveModal = props => {
           },
         },
       });
-      console.log('update success');
+      log('update success');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const invoiceResponse = await API.graphql({
@@ -139,9 +140,9 @@ const ReceiveModal = props => {
       });
       props.setReceiveTask(tempList);
       setRatingModal(true);
-      console.log('deleted!');
+      log('deleted!');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -493,7 +494,7 @@ const Receive = props => {
 
 export const ReceiveList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  console.log('render flatlist');
+  log('render flatlist');
   return (
     <View>
       <FlatList
@@ -514,13 +515,13 @@ export const ReceiveList = props => {
                     sortDirection: 'ASC',
                   },
                 });
-                console.log(task.data.goodsTaskForRetailerByDate.items);
+                log(task.data.goodsTaskForRetailerByDate.items);
                 props.setReceiveTask(
                   task.data.goodsTaskForRetailerByDate.items,
                 );
-                console.log('goods task');
+                log('goods task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -532,7 +533,7 @@ export const ReceiveList = props => {
           />
         }
         renderItem={({item}) => {
-          console.log(item.supplier);
+          log(item.supplier);
           if (item.status == 'received') {
             return <View />;
           } else {
@@ -578,7 +579,7 @@ const ProductList = props => {
         numColumns={1}
         data={props.data}
         keyExtractor={item => {
-          console.log('productss;' + item);
+          log('productss;' + item);
           return (
             item.name + item.grade + item.variety + item.quantity.toString()
           );
@@ -694,7 +695,7 @@ const RatingModal = props => {
           currentRating: newRating,
         };
       }
-      console.log(props.supplier, sendRating);
+      log(props.supplier, sendRating);
       const update = await API.graphql({
         query: updateSupplierCompany,
         variables: {
@@ -705,10 +706,10 @@ const RatingModal = props => {
         },
       });
       props.setRatingModal(false);
-      console.log(rating);
+      log(rating);
       props.setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     if (props.trigger) {
       props.setTrigger(false);

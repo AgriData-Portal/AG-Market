@@ -27,6 +27,8 @@ import {
 import Modal from 'react-native-modal';
 import {DismissKeyboardView} from '_components';
 import {BlueButton} from '_components';
+import {log} from '_utils';
+
 export {EditPersonal};
 
 export const PersonalProfile = props => {
@@ -217,7 +219,7 @@ export const ChangePassword = props => {
       const changePassword = await Auth.changePassword(user, old, password);
       setResendCodeSuccessModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
