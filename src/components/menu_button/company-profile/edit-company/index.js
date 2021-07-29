@@ -53,7 +53,7 @@ export const EditCompany = props => {
     };
 
     launchImageLibrary(options, response => {
-      console.log(response.assets[0]);
+      console.log(response);
       if (response.didCancel) {
         console.log('User cancelled photo picker');
       } else if (response.error) {

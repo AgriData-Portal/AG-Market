@@ -1063,7 +1063,7 @@ const RetailerCard = props => {
         sendStoreDetails();
       }}
       disabled={supermarketButton}
-      onPressIn={() => setSupermarketButton(true)}
+      onPressOut={() => setSupermarketButton(true)}
       style={{
         marginBottom: hp('2%'),
         width: wp('80%'),
