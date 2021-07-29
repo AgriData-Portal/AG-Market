@@ -27,6 +27,7 @@ import {
 } from '../../../../graphql/mutations';
 import Strings from '_utils';
 import {paymentsTaskForFarmerByDate} from '../../../../graphql/queries';
+import {log} from '_utils';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -55,10 +56,10 @@ export const ReceivePaymentTaskList = props => {
                   },
                 });
                 props.setClaimTask(task.data.paymentsTaskForFarmerByDate.items);
-                console.log(task.data.paymentsTaskForFarmerByDate.items);
-                console.log('payment task');
+                log(task.data.paymentsTaskForFarmerByDate.items);
+                log('payment task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -252,7 +253,7 @@ const ReceivePaymentModal = props => {
         query: deletePaymentTaskBetweenSandF,
         variables: {input: {id: props.id}},
       });
-      console.log(removed);
+      log(removed);
       var tempList = props.claimTask;
       for (let [i, temp] of tempList.entries()) {
         if (temp.id == props.id) {
@@ -261,17 +262,17 @@ const ReceivePaymentModal = props => {
       }
       props.setClaimTask(tempList);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updated = await API.graphql({
         query: updateInvoiceBetweenSandF,
         variables: {input: {id: props.id, paid: true}},
       });
-      console.log(updated);
+      log(updated);
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (

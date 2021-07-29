@@ -34,7 +34,7 @@ import {
 } from 'react-native-responsive-screen';
 import {createUser} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
-import english from '_utils';
+import {log} from '_utils';
 
 //modal issues
 export const AddEmployeeButton = props => {
@@ -100,9 +100,9 @@ export const AddEmployeeButtonModal = props => {
           name: name,
         },
       });
-      console.log(user.userSub);
+      log(user.userSub);
     } catch (error) {
-      console.log('❌ Error signing up...', error);
+      log('❌ Error signing up...', error);
     }
     try {
       const createdUser = await API.graphql({
@@ -119,7 +119,7 @@ export const AddEmployeeButtonModal = props => {
       });
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     //props.setTeamList(list => [...list, user]);
   };
@@ -267,7 +267,7 @@ export const AddEmployeeButtonModal = props => {
         <TouchableOpacity
           onPress={() => {
             if (name == '' || email == '' || phone == '') {
-              console.log('empty field');
+              log('empty field');
               setUnsuccessfulModal(true);
               setErrorText('Please fill in all empty spaces!');
             } else if (

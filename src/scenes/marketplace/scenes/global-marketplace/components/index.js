@@ -25,6 +25,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const ProductCard = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -34,14 +35,14 @@ export const ProductCard = props => {
       setImageSource({
         uri: imageURL,
       });
-      console.log(imageSource);
+      log(imageSource);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   useEffect(() => {
     getImage();
-    console.log('Image...');
+    log('Image...');
   }, []);
   const [productModal, setProductModal] = useState(false);
   return (
@@ -106,7 +107,7 @@ export const MarketplaceList = props => {
       '%20but%20your%20platform%20does%20not%20currently%20have%20it.%20Please%20help%20me%20source%20it.%20Thank%20you';
     Linking.openURL(url)
       .then(data => {
-        console.log('WhatsApp Opened successfully ' + data); //<---Success
+        log('WhatsApp Opened successfully ' + data); //<---Success
       })
       .catch(() => {
         alert('Make sure WhatsApp installed on your device'); //<---Error
@@ -203,9 +204,9 @@ export const ProductPopUp = props => {
           },
         },
       });
-      console.log('chat group already exist');
+      log('chat group already exist');
     } catch (e) {
-      console.log(e);
+      log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
           const chatGroup = {
@@ -216,21 +217,21 @@ export const ProductPopUp = props => {
             mostRecentMessage: 'Product Inquiry',
             mostRecentMessageSender: props.user.name,
           };
-          console.log(chatGroup);
+          log(chatGroup);
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
             variables: {input: chatGroup},
           });
-          console.log(createdChatGroup);
+          log(createdChatGroup);
         } catch (e) {
-          console.log(e.errors[0].errorType);
+          log(e.errors[0].errorType);
         }
       } else {
-        console.log(e.errors[0].errorType);
+        log(e.errors[0].errorType);
       }
     }
 
-    console.log('creating product inquiry');
+    log('creating product inquiry');
 
     const inquiry = {
       chatGroupID: props.user.retailerCompanyID + props.supplierID,
@@ -253,10 +254,10 @@ export const ProductPopUp = props => {
         query: createMessage,
         variables: {input: inquiry},
       });
-      console.log(message.data.createMessage);
+      log(message.data.createMessage);
       setSuccessfulModal(true);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
   };
   return (
@@ -459,7 +460,7 @@ export const FavouritesList = props => {
 };
 
 const StoreCard = props => {
-  console.log(props);
+  log(props);
   const image = null;
   return (
     <TouchableOpacity

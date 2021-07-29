@@ -25,6 +25,7 @@ import {
 import Strings from '_utils';
 import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {log} from '_utils';
 
 export const Login = props => {
   const [secure, setSecure] = useState(true);
@@ -39,8 +40,8 @@ export const Login = props => {
     try {
       setLoading(true);
       const user = await Auth.signIn('+60' + phone, password);
-      console.log(user);
-      console.log('Successful sign in');
+      log(user);
+      log('Successful sign in');
       props.updateUserID(user.username);
       props.setUserAttributes(user.attributes);
 
@@ -49,7 +50,7 @@ export const Login = props => {
       setLoading(false);
       setTimeout(() => {
         if (error.code == 'UserNotConfirmedException') {
-          console.log('here');
+          log('here');
           setVerified(true);
         } else if (error.code == 'UserNotFoundException') {
           setUnsuccessfulModal(true);
@@ -64,7 +65,7 @@ export const Login = props => {
         }
       }, 400);
 
-      console.log('Error signing in...', error);
+      log('Error signing in...', error);
     }
   };
   return (
@@ -212,7 +213,7 @@ export const Login = props => {
         <BlueButton
           onPress={() => {
             if (password == '' || phone == '') {
-              console.log('empty input');
+              log('empty input');
               setUnsuccessfulModal(true);
               setErrorText('Please fill in all empty spaces!');
             } else {

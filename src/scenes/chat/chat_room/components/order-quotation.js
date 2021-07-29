@@ -29,6 +29,7 @@ import {
 import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -40,17 +41,17 @@ export const OrderQuotationModal = props => {
   const [acceptButton, setAcceptButton] = useState(false);
   const [declineButton, setDeclineButton] = useState(false);
 
-  console.log('quotation' + props.chatGroupID);
+  log('quotation' + props.chatGroupID);
   const fetchQuotation = async () => {
     try {
       const quotation = await API.graphql({
         query: getOrderQuotation,
         variables: {id: props.chatGroupID},
       });
-      console.log(quotation.data.getOrderQuotation);
+      log(quotation.data.getOrderQuotation);
       setOrderDetails(quotation.data.getOrderQuotation);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   const reject = async () => {
@@ -67,9 +68,9 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('message sent');
+      log('message sent');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updatedChatGroup = await API.graphql({
@@ -83,9 +84,9 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('chat group update successful');
+      log('chat group update successful');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     setDeclineButton(false);
   };
@@ -105,9 +106,9 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('message sent');
+      log('message sent');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updatedChatGroup = await API.graphql({
@@ -121,9 +122,9 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('chat group update successful');
+      log('chat group update successful');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const goodsTask = await API.graphql({
@@ -136,10 +137,10 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('goods task created');
+      log('goods task created');
       setSuccesfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     setAcceptButton(false);
   };

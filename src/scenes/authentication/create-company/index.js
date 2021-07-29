@@ -28,6 +28,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {log} from '_utils';
 
 export const CreateCompany = props => {
   const [open, setOpen] = useState(false);
@@ -42,8 +43,8 @@ export const CreateCompany = props => {
   const [companyAddress, setCompanyAddress] = useState('');
   const [companyRegistrationNum, setCompanyRegistrationNum] = useState('');
   const registerCompany = async () => {
-    console.log('registering');
-    console.log(props.user.id);
+    log('registering');
+    log(props.user.id);
     if (value == 'supermarket') {
       try {
         const supermarket = await API.graphql({
@@ -57,7 +58,7 @@ export const CreateCompany = props => {
             },
           },
         });
-        console.log(supermarket);
+        log(supermarket);
         const user = await API.graphql({
           query: updateUser,
           variables: {
@@ -67,11 +68,11 @@ export const CreateCompany = props => {
             },
           },
         });
-        console.log(user);
-        console.log('add retailer success');
+        log(user);
+        log('add retailer success');
         setCreateAccountButton(true);
       } catch {
-        e => console.log(e);
+        e => log(e);
       }
     } else {
       try {
@@ -86,7 +87,7 @@ export const CreateCompany = props => {
             },
           },
         });
-        console.log(supplier);
+        log(supplier);
         const user = await API.graphql({
           query: updateUser,
           variables: {
@@ -96,11 +97,11 @@ export const CreateCompany = props => {
             },
           },
         });
-        console.log(user);
-        console.log('add supplier success');
+        log(user);
+        log('add supplier success');
         setCreateAccountButton(true);
       } catch {
-        e => console.log(e);
+        e => log(e);
       }
     }
   };
@@ -299,7 +300,7 @@ export const CreateCompany = props => {
                   companyRegistrationNum == '' ||
                   companyAddress == ''
                 ) {
-                  console.log('oops');
+                  log('oops');
                 } else {
                   registerCompany();
                 }

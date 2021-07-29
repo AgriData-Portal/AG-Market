@@ -27,6 +27,7 @@ import {
 import Strings from '_utils';
 import {paymentsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const ReceivePaymentTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -52,12 +53,10 @@ export const ReceivePaymentTaskList = props => {
                 props.setClaimTask(
                   task.data.paymentsTaskRetailerForSupplierByDate.items,
                 );
-                console.log(
-                  task.data.paymentsTaskRetailerForSupplierByDate.items,
-                );
-                console.log('payment task');
+                log(task.data.paymentsTaskRetailerForSupplierByDate.items);
+                log('payment task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -243,7 +242,7 @@ const ReceivePaymentModal = props => {
         query: deletePaymentTaskBetweenRandS,
         variables: {input: {id: props.id}},
       });
-      console.log(removed);
+      log(removed);
       var tempList = props.claimTask;
       for (let [i, temp] of tempList.entries()) {
         if (temp.id == props.id) {
@@ -252,17 +251,17 @@ const ReceivePaymentModal = props => {
       }
       props.setClaimTask(tempList);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updated = await API.graphql({
         query: updateInvoiceBetweenRandS,
         variables: {input: {id: props.id, paid: true}},
       });
-      console.log(updated);
+      log(updated);
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (

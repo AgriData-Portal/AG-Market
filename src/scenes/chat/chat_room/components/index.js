@@ -32,6 +32,7 @@ import {
   listUsersInChat,
   purchaseOrderItems,
 } from '../../../../graphql/queries';
+import {log} from '_utils';
 
 var dayjs = require('dayjs');
 
@@ -78,11 +79,11 @@ export const MessageInput = props => {
 
     launchImageLibrary(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         setImageSource(response.assets[0].uri);
         setImageModal(true);
@@ -101,7 +102,7 @@ export const MessageInput = props => {
   //     AVNumberOfChannelsKeyIOS: 2,
   //     AVFormatIDKeyIOS: AVEncodingOption.aac,
   //   };
-  //   console.log('audioSet', audioSet);
+  //   log('audioSet', audioSet);
   //   const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
   //   audioRecorderPlayer.addRecordBackListener(e => {
   //     setRecording({
@@ -109,7 +110,7 @@ export const MessageInput = props => {
   //       recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
   //     });
   //   });
-  //   console.log(`uri: ${uri}`);
+  //   log(`uri: ${uri}`);
   // };
 
   // onStopRecord = async () => {
@@ -118,18 +119,18 @@ export const MessageInput = props => {
   //   setRecording({
   //     recordSecs: 0,
   //   });
-  //   console.log(result);
+  //   log(result);
   // };
 
   // onStartPlay = async () => {
-  //   console.log('onStartPlay');
+  //   log('onStartPlay');
   //   const path = 'hello.mp4';
   //   const msg = await audioRecorderPlayer.startPlayer(path);
   //   audioRecorderPlayer.setVolume(1.0);
-  //   console.log(msg);
+  //   log(msg);
   //   audioRecorderPlayer.addPlayBackListener(e => {
   //     if (e.current_position === e.duration) {
-  //       console.log('finished');
+  //       log('finished');
   //       audioRecorderPlayer.stopPlayer();
   //     }
   //     setRecording({
@@ -146,12 +147,12 @@ export const MessageInput = props => {
   // };
 
   // onStopPlay = async () => {
-  //   console.log('onStopPlay');
+  //   log('onStopPlay');
   //   audioRecorderPlayer.stopPlayer();
   //   audioRecorderPlayer.removePlayBackListener();
   // };
   const createNewMessage = async () => {
-    console.log('creating new message');
+    log('creating new message');
     try {
       const newMessage = await API.graphql({
         query: createMessage,
@@ -176,11 +177,11 @@ export const MessageInput = props => {
         },
       });
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     setMessage('');
     setSendButtonDisabled(false);
-    console.log('hello');
+    log('hello');
   };
   return (
     <KeyboardAwareScrollView
@@ -417,15 +418,15 @@ const PreviewImageModal = props => {
   const uploadImage = async () => {
     try {
       let photo = props.imageSource;
-      console.log(photo);
+      log(photo);
       const response = await fetch(photo);
       const blob = await response.blob();
-      console.log('FileName: \n');
+      log('FileName: \n');
       var fileName = props.chatGroupID + dayjs().format('YYYYMMDDhhmmss');
       await Storage.put(fileName, blob, {
         contentType: 'image/jpeg',
       });
-      console.log(props.userID, props.chatGroupID, props.userName, fileName);
+      log(props.userID, props.chatGroupID, props.userName, fileName);
       const newMessage = await API.graphql({
         query: createMessage,
         variables: {
@@ -451,7 +452,7 @@ const PreviewImageModal = props => {
 
       props.setImageModal(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -613,7 +614,7 @@ const PreviewImageModal = props => {
 //         PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
 //       ]);
 
-//       console.log('write external stroage', grants);
+//       log('write external stroage', grants);
 
 //       if (
 //         grants['android.permission.WRITE_EXTERNAL_STORAGE'] ===
@@ -623,9 +624,9 @@ const PreviewImageModal = props => {
 //         grants['android.permission.RECORD_AUDIO'] ===
 //           PermissionsAndroid.RESULTS.GRANTED
 //       ) {
-//         console.log('Permissions granted');
+//         log('Permissions granted');
 //       } else {
-//         console.log('All required permissions not granted');
+//         log('All required permissions not granted');
 //         return;
 //       }
 //     } catch (err) {
@@ -648,7 +649,7 @@ const PreviewImageModal = props => {
 //       recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
 //     });
 //   });
-//   console.log(`uri: ${uri}`);
+//   log(`uri: ${uri}`);
 // };
 
 // onStopRecord = async () => {
@@ -657,18 +658,18 @@ const PreviewImageModal = props => {
 //   setRecording({
 //     recordSecs: 0,
 //   });
-//   console.log(result);
+//   log(result);
 // };
 
 // onStartPlay = async () => {
-//   console.log('onStartPlay');
+//   log('onStartPlay');
 //   const path = 'hello.mp4';
 //   const msg = await audioRecorderPlayer.startPlayer(path);
 //   audioRecorderPlayer.setVolume(1.0);
-//   console.log(msg);
+//   log(msg);
 //   audioRecorderPlayer.addPlayBackListener(e => {
 //     if (e.current_position === e.duration) {
-//       console.log('finished');
+//       log('finished');
 //       audioRecorderPlayer.stopPlayer();
 //     }
 //     setRecording({
@@ -685,7 +686,7 @@ const PreviewImageModal = props => {
 // };
 
 // onStopPlay = async () => {
-//   console.log('onStopPlay');
+//   log('onStopPlay');
 //   audioRecorderPlayer.stopPlayer();
 //   audioRecorderPlayer.removePlayBackListener();
 // };

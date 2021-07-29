@@ -22,6 +22,7 @@ import Strings from '_utils';
 import dayjs from 'dayjs';
 import {createPDF, createCSV} from './file-creation';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const OrderList = props => {
   return (
@@ -311,7 +312,7 @@ const InvoiceModal = props => {
             numColumns={1}
             ItemSeparatorComponent={Seperator}
             renderItem={({item}) => {
-              console.log(item);
+              log(item);
               return (
                 <InvoiceItem
                   name={item.name}

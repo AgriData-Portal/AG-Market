@@ -23,6 +23,7 @@ import Strings from '_utils';
 import {OrderQuotationModal} from './order-quotation';
 import {PurchaseOrder} from './purchase-order';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 var dayjs = require('dayjs');
 
@@ -393,12 +394,12 @@ const ChatBubble = props => {
           uri: imageURL,
         });
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     };
     useEffect(() => {
       getImage();
-      console.log('Image...');
+      log('Image...');
     }, []);
     return (
       <View>
@@ -496,7 +497,7 @@ const ChatBubble = props => {
     );
   } else if (contentType == 'store') {
     const storeDetails = props.content.split('+');
-    console.log(storeDetails);
+    log(storeDetails);
     return (
       <View>
         <View>
@@ -618,7 +619,7 @@ export const ChatBubbleList = props => {
         numColumns={1}
         onEndReached={() => {
           props.setRefresh(state => state + 1);
-          console.log('endReached');
+          log('endReached');
         }}
         onEndReachedThreshold={0.6}
         renderItem={item => {

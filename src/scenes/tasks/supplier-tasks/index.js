@@ -22,6 +22,7 @@ import {
   paymentsTaskRetailerForSupplierByDate,
 } from '../../../graphql/queries';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const SupplierTasks = props => {
   const [sendTask, setSendTask] = useState([]);
@@ -49,11 +50,11 @@ export const SupplierTasks = props => {
         },
       });
       setSendTask(task.data.goodsTaskRetailerForSupplierByDate.items);
-      console.log(task.data.goodsTaskRetailerForSupplierByDate.items);
-      console.log('goods task');
+      log(task.data.goodsTaskRetailerForSupplierByDate.items);
+      log('goods task');
       setLoading(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -68,14 +69,14 @@ export const SupplierTasks = props => {
         },
       });
       setClaimTask(task.data.paymentsTaskRetailerForSupplierByDate.items);
-      console.log(task.data.paymentsTaskRetailerForSupplierByDate.items);
-      console.log('payment task');
+      log(task.data.paymentsTaskRetailerForSupplierByDate.items);
+      log('payment task');
       setLoading(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
-  console.log(sendTask);
+  log(sendTask);
   return (
     <SafeAreaView
       style={{

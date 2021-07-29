@@ -23,6 +23,7 @@ import Strings from '_utils';
 import {CompanyProfile, EditCompany} from './company-profile';
 import {PersonalProfile, EditPersonal} from './personal-profile';
 import {HumanResource} from './human-resource';
+import {log} from '_utils';
 
 export {
   CompanyProfile,
@@ -37,7 +38,7 @@ export const MenuButton = props => {
 
   return (
     <TouchableOpacity
-      onPress={() => [setMenuButtonModal(true), console.log(props.userType)]}
+      onPress={() => [setMenuButtonModal(true), log(props.userType)]}
       style={{left: wp('5%')}}>
       <Icon
         color={Colors.GRAY_DARK}
@@ -65,9 +66,9 @@ export const MenuButtonModal = props => {
     try {
       await Auth.signOut();
       props.updateAuthState('loggedOut');
-      console.log('Logged Out');
+      log('Logged Out');
     } catch (error) {
-      console.log('Error signing out: ', error);
+      log('Error signing out: ', error);
     }
   };
   return (

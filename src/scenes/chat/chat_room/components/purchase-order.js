@@ -32,6 +32,7 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import Strings from '_utils';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 const OrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
@@ -85,9 +86,9 @@ const OrderCard = props => {
         }
       });
     } catch (e) {
-      console.log(e);
+      log(e);
     }
-    console.log('updating Price to the list');
+    log('updating Price to the list');
     setQuotationItems(tempList);
     setPrice(item2);
     if (props.trigger) {
@@ -104,7 +105,7 @@ const OrderCard = props => {
         array[index] = item;
       }
     });
-    console.log('updating quantity to the list');
+    log('updating quantity to the list');
     setQuotationItems(tempList);
     setQuantity(item2);
     if (props.trigger) {
@@ -327,15 +328,15 @@ const NewOrderQuotation = props => {
 
   var productsWIndex = quotationItems;
   productsWIndex.forEach((item, index, arr) => {
-    console.log('adding index to check back later');
+    log('adding index to check back later');
     item['index'] = index;
     arr[index] = item;
   });
   setQuotationItems(productsWIndex);
-  console.log('printing productsWIndex');
+  log('printing productsWIndex');
   var tempSum = 0;
   useEffect(() => {
-    console.log('useEffect to calculate sum Triggered');
+    log('useEffect to calculate sum Triggered');
     quotationItems.forEach((item, index, arr) => {
       var product = parseFloat(
         (parseFloat(item.price) * parseFloat(item.quantity)).toFixed(2),
@@ -343,7 +344,7 @@ const NewOrderQuotation = props => {
       tempSum = tempSum + product;
     });
     setSum(tempSum);
-    console.log(tempSum);
+    log(tempSum);
   }, [trigger, quotationItems]);
 
   const sendQuotation = async () => {
@@ -355,7 +356,7 @@ const NewOrderQuotation = props => {
       delete item.purchaseOrderID, delete item.updatedAt;
       array[index] = item;
     });
-    console.log('removing key and value pairs like index for order quotation');
+    log('removing key and value pairs like index for order quotation');
     try {
       const updatedValue = await API.graphql({
         query: updateOrderQuotation,
@@ -370,9 +371,9 @@ const NewOrderQuotation = props => {
         },
       });
     } catch (e) {
-      console.log(e);
+      log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        console.log('order quotation has not been created, creating now');
+        log('order quotation has not been created, creating now');
         const createdValue = await API.graphql({
           query: createOrderQuotation,
           variables: {
@@ -388,7 +389,7 @@ const NewOrderQuotation = props => {
       }
     }
     try {
-      console.log('sending order quotation');
+      log('sending order quotation');
       const createdMessage = await API.graphql({
         query: createMessage,
         variables: {
@@ -401,7 +402,7 @@ const NewOrderQuotation = props => {
           },
         },
       });
-      console.log('message created');
+      log('message created');
       const updatedChat = await API.graphql({
         query: updateChatGroup,
         variables: {
@@ -412,11 +413,11 @@ const NewOrderQuotation = props => {
           },
         },
       });
-      console.log('Updated chat');
+      log('Updated chat');
 
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -606,7 +607,7 @@ const PurchaseOrderList = props => {
       variables: {purchaseOrderID: props.chatGroupID},
     });
 
-    console.log('successful fetch for PO items');
+    log('successful fetch for PO items');
     setQuotationItems(prodList.data.purchaseOrderItems.items);
   };
   useEffect(() => {

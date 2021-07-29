@@ -29,6 +29,8 @@ import {
 } from '../../../../graphql/mutations';
 import {goodsTaskForFarmerByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
+import {log} from '_utils';
+
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 const now = () => {
@@ -38,7 +40,7 @@ const now = () => {
 
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  console.log('send task list render');
+  log('send task list render');
   return (
     <View>
       <FlatList
@@ -60,10 +62,10 @@ export const SendTaskList = props => {
                   },
                 });
                 props.setSendTask(task.data.goodsTaskForFarmerByDate.items);
-                console.log(task.data.goodsTaskForFarmerByDate.items);
-                console.log('goods task');
+                log(task.data.goodsTaskForFarmerByDate.items);
+                log('goods task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -279,7 +281,7 @@ const SendTaskModal = props => {
 
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -288,7 +290,7 @@ const SendTaskModal = props => {
     var product = item.price * item.quantity;
     sum = sum + product;
   });
-  console.log(sum);
+  log(sum);
 
   return (
     <SafeAreaView style={{height: hp('100%'), width: wp('100%')}}>
@@ -473,10 +475,7 @@ const SendTaskModal = props => {
                 left: wp('78%'),
                 elevation: 5,
               }}
-              onPress={item => [
-                updateDeliveryDate(),
-                console.log(deliverydate),
-              ]}>
+              onPress={item => [updateDeliveryDate(), log(deliverydate)]}>
               <Icon name="checkmark-outline" size={wp('5%')} />
             </TouchableOpacity>
           </View>
@@ -569,12 +568,12 @@ const InvoiceModal = props => {
   const [verifyDoubleButton, setVerifyDoubleButton] = useState(false);
   var tempSum = 0;
   useEffect(() => {
-    console.log(itemList);
+    log(itemList);
     var tempList = itemList.forEach((item, index, array) => {
       var product = parseFloat((item.price * item.quantity).toFixed(2));
       tempSum = tempSum + product;
     });
-    console.log(tempSum);
+    log(tempSum);
     setSum(tempSum);
   }, [itemList, toggle]);
 
@@ -603,7 +602,7 @@ const InvoiceModal = props => {
         props.setTrigger(true);
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     setVerifyDoubleButton(false);
   };
@@ -758,7 +757,7 @@ const InvoiceItem = props => {
         array[index] = item;
       }
     });
-    console.log('updating quantity to the list');
+    log('updating quantity to the list');
     props.setItemList(tempList);
     setQuantity(item2);
     if (props.toggle) {
@@ -827,7 +826,7 @@ const ProductList = props => {
         data={props.data}
         ItemSeparatorComponent={Seperator}
         renderItem={({item}) => {
-          console.log(item.name + item.variety + item.grade);
+          log(item.name + item.variety + item.grade);
           return (
             <Product
               name={item.name}
@@ -944,7 +943,7 @@ const RatingModal = props => {
           currentRating: newRating,
         };
       }
-      console.log(props.retailer, sendRating);
+      log(props.retailer, sendRating);
       const update = await API.graphql({
         query: updateSupplierCompany,
         variables: {
@@ -955,14 +954,14 @@ const RatingModal = props => {
         },
       });
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const invoiceResponse = await API.graphql({
         query: deleteGoodsTaskBetweenSandF,
         variables: {input: {id: props.taskID}},
       });
-      console.log('done');
+      log('done');
       var tempList = props.sendTask;
       for (let [i, temp] of tempList.entries()) {
         if (temp.id == props.taskID) {
@@ -973,8 +972,8 @@ const RatingModal = props => {
       props.setRatingModal(false);
       props.setSuccessfulModal(true);
     } catch (e) {
-      console.log('failed to delete');
-      console.log(e);
+      log('failed to delete');
+      log(e);
     }
     if (props.trigger) {
       props.setTrigger(false);

@@ -27,6 +27,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const ChatInfo = props => {
   const [chatInfoModal, setChatInfoModal] = useState(false);
@@ -39,13 +40,13 @@ export const ChatInfo = props => {
           filter: {chatGroupID: {eq: props.chatGroupID}},
         },
       });
-      //console.log(products.data.listChatGroupUserss.items);
+      //log(products.data.listChatGroupUserss.items);
       if (products.data) {
         setChatParticipants(products.data.listChatGroupUserss.items);
       }
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
   };
   return (
@@ -78,34 +79,34 @@ const ChatInfoModal = props => {
   const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
   const fetchMembers = async () => {
     if (props.user.retailerCompanyID == null) {
-      console.log('supplier');
+      log('supplier');
       try {
         const members = await API.graphql({
           query: getUsersBySupplierCompany,
           variables: {supplierCompanyID: props.user.supplierCompanyID},
         });
-        console.log(members.data.getUsersBySupplierCompany.items);
+        log(members.data.getUsersBySupplierCompany.items);
         setTeamList(members.data.getUsersBySupplierCompany.items);
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else {
-      console.log('retailer');
+      log('retailer');
       try {
         const members = await API.graphql({
           query: getUsersByRetailerCompany,
           variables: {retailerCompanyID: props.user.retailerCompanyID},
         });
-        console.log(members.data.getUsersByRetailerCompany.items);
+        log(members.data.getUsersByRetailerCompany.items);
         setTeamList(members.data.getUsersByRetailerCompany.items);
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
   };
   useEffect(() => {
     fetchMembers();
-    console.log('useEffect Triggered');
+    log('useEffect Triggered');
   }, []);
 
   return (
@@ -210,7 +211,7 @@ const ChatParticipantList = props => {
               <TouchableOpacity
                 onPress={() => [
                   setAddPersonModal(true),
-                  console.log('addperson: ', addPersonModal),
+                  log('addperson: ', addPersonModal),
                 ]}
                 style={{
                   backgroundColor: Colors.GRAY_MEDIUM,
@@ -329,7 +330,7 @@ const RemovePersonModal = props => {
       props.setChatParticipants(chatParticipants);
       props.setRemovePersonModal(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (

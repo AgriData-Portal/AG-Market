@@ -17,6 +17,7 @@ import {
 import Strings from '_utils';
 import Modal from 'react-native-modal';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import {log} from '_utils';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -27,7 +28,7 @@ export const Marketplace = props => {
   const [loading, setLoading] = useState(false);
   const [searchable, setSearchable] = useState([]);
 
-  console.log('marketplace initial render' + props.user);
+  log('marketplace initial render' + props.user);
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -38,33 +39,31 @@ export const Marketplace = props => {
           sortDirection: 'ASC',
         },
       });
-      console.log(products);
+      log(products);
       if (products.data.supplierListingByNameStartingWithLowestPrice) {
-        console.log('Products: \n');
-        console.log(
-          products.data.supplierListingByNameStartingWithLowestPrice.items,
-        );
+        log('Products: \n');
+        log(products.data.supplierListingByNameStartingWithLowestPrice.items);
         setProducts(
           products.data.supplierListingByNameStartingWithLowestPrice.items,
         );
       }
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
     setLoading(false);
   };
   useEffect(() => {
     if (searchPressed && choice == 'product') {
-      console.log('useEffectTriggered');
-      console.log('searching for ' + searchValue);
+      log('useEffectTriggered');
+      log('searching for ' + searchValue);
       setSearchPressed(false);
       fetchProducts();
     }
     //potentially do a search for favourites but must have a way to remove the filter
   }, [searchPressed]);
   useEffect(() => {
-    console.log('resetting search');
+    log('resetting search');
     setSearchValue('');
   }, [choice]);
 
@@ -74,18 +73,18 @@ export const Marketplace = props => {
       const listings = await API.graphql({
         query: listSupplierListings,
       });
-      console.log(listings.data.listSupplierListings.items);
+      log(listings.data.listSupplierListings.items);
       var responseList = listings.data.listSupplierListings.items;
       responseList = responseList.map(item => {
         return item.productName.toUpperCase();
       });
 
-      console.log(responseList);
+      log(responseList);
       var array = Array.from(new Set(responseList));
       array.sort();
       setSearchable(array);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -97,22 +96,22 @@ export const Marketplace = props => {
           limit: 10,
         },
       });
-      console.log(listings.data.listSupplierListings.items);
+      log(listings.data.listSupplierListings.items);
       var responseList = listings.data.listSupplierListings.items;
       setProducts(listings.data.listSupplierListings.items);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   useEffect(() => {
-    console.log('All listings');
+    log('All listings');
     getAllListings();
     getFirstTenListings();
   }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
-      console.log('Refreshed!');
+      log('Refreshed!');
       getFirstTenListings();
     });
     return unsubscribe;
@@ -273,7 +272,7 @@ export const Marketplace = props => {
               onPress={() => {
                 if (searchValue != '') {
                   setSearchPressed(true);
-                  console.log(searchValue);
+                  log(searchValue);
                 }
               }}>
               <Text style={[Typography.normal]}>{Strings.search}</Text>

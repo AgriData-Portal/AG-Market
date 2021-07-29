@@ -8,6 +8,7 @@ import XLSX from 'xlsx';
 
 import agridataLogo from '_styles/image';
 import dayjs from 'dayjs';
+import {log} from '_utils';
 
 export const createPDF = async (
   id,
@@ -252,7 +253,7 @@ export const createPDF = async (
       .addPages(page1)
       .write() // Returns a promise that resolves with the PDF's path
       .then(path => {
-        console.log('PDF created at: ' + path);
+        log('PDF created at: ' + path);
         // alert('PDF created');
       })
       .catch(e => {
@@ -263,7 +264,7 @@ export const createPDF = async (
       .addPages(page1, page2)
       .write() // Returns a promise that resolves with the PDF's path
       .then(path => {
-        console.log('PDF created at: ' + path);
+        log('PDF created at: ' + path);
         // alert('PDF created');
       })
       .catch(e => {
@@ -281,7 +282,7 @@ export const createPDF = async (
     const ShareResponse = await Share.open(shareOptions);
     //RNFS.unlink(filePath);
   } catch (error) {
-    console.log('Error: ', error);
+    log('Error: ', error);
     RNFS.unlink(filePath);
   }
 };
@@ -306,7 +307,7 @@ export const createCSV = async (
     RNFS.DocumentDirectoryPath + '/AgriDataInvoice' + id.slice(0, 6) + '.xlsx';
   RNFS.writeFile(file, wbout, 'ascii')
     .then(r => {
-      console.log('CSV created at: ' + file);
+      log('CSV created at: ' + file);
       alert('CSV created');
     })
     .catch(e => {
@@ -321,10 +322,10 @@ export const createCSV = async (
   };
   try {
     const ShareResponse = await Share.open(shareOptions);
-    console.log(ShareResponse);
+    log(ShareResponse);
     //RNFS.unlink(file);
   } catch (error) {
-    console.log('Error1: ', error);
+    log('Error1: ', error);
     RNFS.unlink(file);
   }
 };

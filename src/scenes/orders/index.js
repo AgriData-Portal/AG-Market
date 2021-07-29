@@ -22,6 +22,7 @@ import {
   invoiceForFarmerByDate,
 } from '../../graphql/queries';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const Orders = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -42,12 +43,12 @@ export const Orders = props => {
             sortDirection: 'ASC',
           },
         });
-        console.log(invoice.data.invoiceRetailerForSupplierByDate.items);
+        log(invoice.data.invoiceRetailerForSupplierByDate.items);
         setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
         setLoading(false);
-        console.log('supplierCompanyInvoices');
+        log('supplierCompanyInvoices');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else if (props.user.retailerCompanyID != null) {
       try {
@@ -58,12 +59,12 @@ export const Orders = props => {
             sortDirection: 'ASC',
           },
         });
-        console.log(invoice.data.invoiceForRetailerByDate.items);
+        log(invoice.data.invoiceForRetailerByDate.items);
         setInvoiceList(invoice.data.invoiceForRetailerByDate.items);
         setLoading(false);
-        console.log('retailerCompanyInvoices');
+        log('retailerCompanyInvoices');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else {
       try {
@@ -74,15 +75,15 @@ export const Orders = props => {
             sortDirection: 'ASC',
           },
         });
-        console.log(invoice.data.invoiceForFarmerByDate.items);
+        log(invoice.data.invoiceForFarmerByDate.items);
         setInvoiceList(invoice.data.invoiceForFarmerByDate.items);
         setLoading(false);
-        console.log('farmerCompanyInvoices');
+        log('farmerCompanyInvoices');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
-    console.log('first run');
+    log('first run');
   };
   return (
     <SafeAreaView
