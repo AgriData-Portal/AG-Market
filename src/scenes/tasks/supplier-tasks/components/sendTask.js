@@ -123,7 +123,12 @@ const SendTask = props => {
       }}>
       <View
         style={{
-          backgroundColor: Colors.GRAY_LIGHT,
+          backgroundColor:
+            props.status == 'sent'
+              ? '#d4f8d4'
+              : props.status == 'received'
+              ? '#ffff76'
+              : Colors.GRAY_LIGHT,
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
@@ -146,24 +151,19 @@ const SendTask = props => {
           }}></View>
         <View
           style={{
-            backgroundColor: Colors.GRAY_LIGHT,
+            backgroundColor:
+              props.status == 'sent'
+                ? '#d4f8d4'
+                : props.status == 'received'
+                ? '#ffff76'
+                : Colors.GRAY_LIGHT,
             height: hp('12%'),
             width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <View style={{bottom: hp('0.5%')}}>
-            {props.status == 'sent' ? (
-              <Icon
-                name="cube-outline"
-                size={wp('11%')}
-                color={Colors.LIME_GREEN}
-              />
-            ) : props.status == 'received' ? (
-              <Icon name="cube-outline" size={wp('11%')} color="gold" />
-            ) : (
-              <Icon name="cube-outline" size={wp('11%')} />
-            )}
+            <Icon name="cube-outline" size={wp('11%')} color="black" />
           </View>
         </View>
         <Text
