@@ -36,6 +36,7 @@ import {
   getRetailerCompany,
 } from '../../../../../graphql/queries';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -46,14 +47,14 @@ const ProductCard = props => {
       setImageSource({
         uri: imageURL,
       });
-      console.log(imageSource);
+      log(imageSource);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   useEffect(() => {
     getImage();
-    console.log('Image...');
+    log('Image...');
   }, []);
   return (
     <TouchableOpacity
@@ -184,7 +185,7 @@ const ProductPopUp = props => {
           },
         },
       });
-      console.log('chat group already exist');
+      log('chat group already exist');
     } catch (e) {
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
@@ -196,24 +197,24 @@ const ProductPopUp = props => {
             mostRecentMessage: 'Product Inquiry',
             mostRecentMessageSender: props.user.name,
           };
-          console.log(chatGroup);
+          log(chatGroup);
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
             variables: {input: chatGroup},
           });
-          console.log(createdChatGroup);
+          log(createdChatGroup);
         } catch (e) {
-          console.log(e.errors[0].errorType);
+          log(e.errors[0].errorType);
         }
       } else {
-        console.log(e.errors[0].errorType);
+        log(e.errors[0].errorType);
       }
     }
 
-    console.log('creating product inquiry');
-    console.log(props.user);
-    console.log(props.id);
-    console.log(props.purchaseOrder);
+    log('creating product inquiry');
+    log(props.user);
+    log(props.id);
+    log(props.purchaseOrder);
     const inquiry = {
       chatGroupID: props.purchaseOrder,
       type: 'inquiry',
@@ -235,15 +236,15 @@ const ProductPopUp = props => {
         query: createMessage,
         variables: {input: inquiry},
       });
-      console.log(message.data.createMessage);
+      log(message.data.createMessage);
       setInquirySuccessfulModal(true);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
     props.navigation.navigate('inbox'), setProductInquire(false);
   };
   const addToPurchaseOrder = async () => {
-    console.log('addingToPO ' + props.purchaseOrder);
+    log('addingToPO ' + props.purchaseOrder);
     try {
       const added = await API.graphql({
         query: createProductsInPurchaseOrder,
@@ -258,15 +259,15 @@ const ProductPopUp = props => {
           },
         },
       });
-      console.log(added.data.createProductsInPurchaseOrder);
+      log(added.data.createProductsInPurchaseOrder);
       var poList = props.POList;
-      console.log(poList);
+      log(poList);
       poList.push(added.data.createProductsInPurchaseOrder);
-      console.log(poList);
+      log(poList);
       props.setPOList(poList);
       setSuccessfulModal(true);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
     setAddPO(false);
   };
@@ -323,7 +324,7 @@ const ProductPopUp = props => {
           }}
           source={props.productPicture}></Image>
         <View
-          onPress={() => console.log('navigate')}
+          onPress={() => log('navigate')}
           style={{
             width: wp('35%'),
             flexDirection: 'row',
@@ -532,7 +533,7 @@ const PurchaseOrder = props => {
           },
         },
       });
-      console.log('chat group already exist');
+      log('chat group already exist');
     } catch (e) {
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
@@ -544,17 +545,17 @@ const PurchaseOrder = props => {
             mostRecentMessage: 'Purchase Order',
             mostRecentMessageSender: props.user.name,
           };
-          console.log(chatGroup);
+          log(chatGroup);
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
             variables: {input: chatGroup},
           });
-          console.log(createdChatGroup);
+          log(createdChatGroup);
         } catch (e) {
-          console.log(e.errors[0].errorType);
+          log(e.errors[0].errorType);
         }
       } else {
-        console.log(e.errors[0].errorType);
+        log(e.errors[0].errorType);
       }
     }
 
@@ -566,17 +567,17 @@ const PurchaseOrder = props => {
       senderID: props.user.id,
     };
 
-    console.log('creating purchase order');
+    log('creating purchase order');
     try {
       const message = await API.graphql({
         query: createMessage,
         variables: {input: inquiry},
       });
-      console.log(message.data.createMessage);
+      log(message.data.createMessage);
 
       setpoSuccessfulModal(true);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
     setSendPOButton(false);
   };
@@ -711,7 +712,7 @@ const PurchaseOrderComponent = props => {
   const [edit, setEdit] = useState(false);
   const [number, setNumber] = useState(props.quantity.toString());
   const deleteItemFromPO = async () => {
-    console.log('deleting item: ' + props.id);
+    log('deleting item: ' + props.id);
     try {
       const deleted = await API.graphql({
         query: deleteProductsInPurchaseOrder,
@@ -719,11 +720,11 @@ const PurchaseOrderComponent = props => {
       });
       var poList = props.POList;
       const tempList = poList.filter(item => item.id !== props.id);
-      console.log(tempList);
+      log(tempList);
       props.setPOList(tempList);
-      console.log(deleted.data.deleteProductsInPurchaseOrder);
+      log(deleted.data.deleteProductsInPurchaseOrder);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
   };
   const updateitemFromPO = async () => {
@@ -739,12 +740,12 @@ const PurchaseOrderComponent = props => {
         }
       });
       props.setPOList(tempList);
-      console.log(updated.data.updateProductsInPurchaseOrder);
+      log(updated.data.updateProductsInPurchaseOrder);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
-  console.log(typeof props.quantity);
+  log(typeof props.quantity);
   return (
     <View
       style={{
@@ -854,10 +855,10 @@ export const DetailsModal = props => {
           query: getSupplierCompany,
           variables: {id: props.id},
         });
-        console.log('retailer');
+        log('retailer');
         setCompanyDetails(storeDetails.data.getSupplierCompany);
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else if (props.companyType == 'supplier') {
       try {
@@ -865,16 +866,16 @@ export const DetailsModal = props => {
           query: getRetailerCompany,
           variables: {id: props.id},
         });
-        console.log('supplier');
+        log('supplier');
         setCompanyDetails(storeDetails.data.getRetailerCompany);
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
   };
   useEffect(() => {
     getStoreDetails();
-    console.log('Fetching Details');
+    log('Fetching Details');
   }, []);
   useEffect(async () => {
     if (companyDetails.logo) {
@@ -884,7 +885,7 @@ export const DetailsModal = props => {
           uri: imageURL,
         });
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
   }, [companyDetails]);

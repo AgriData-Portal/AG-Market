@@ -8,6 +8,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const Searchbar = props => {
   return (
@@ -47,7 +48,7 @@ export const Searchbar = props => {
         onPress={() => {
           if (props.searchValue != '') {
             props.setSearchPressed(true);
-            console.log(props.searchValue);
+            log(props.searchValue);
           }
         }}>
         <Text style={[Typography.normal, {top: hp('0.2%')}]}>Search</Text>

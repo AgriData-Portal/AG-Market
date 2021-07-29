@@ -28,6 +28,7 @@ import Modal from 'react-native-modal';
 import {useIsFocused} from '@react-navigation/native';
 import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {log} from '_utils';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -64,11 +65,11 @@ export const Registration = props => {
         {label: Strings.owner, value: 'owner'},
         {label: Strings.retailManager, value: 'retailmanager'},
       ]);
-      console.log('works');
+      log('works');
     } else {
       setItems([{label: Strings.owner, value: 'owner'}]);
-      console.log('hi');
-      console.log(items2[1]);
+      log('hi');
+      log(items2[1]);
     }
   }, [value2]);
   const signUp = async () => {
@@ -87,7 +88,7 @@ export const Registration = props => {
           'custom:companyAddress': companyAddress,
         },
       });
-      console.log(user.userSub);
+      log(user.userSub);
       props.navigation.navigate('confirmsignup', {phone: phone});
       return user.userSub;
     } catch (error) {
@@ -106,7 +107,7 @@ export const Registration = props => {
         );
         setUnsuccessfulModal(true);
       }
-      console.log('❌ Error signing up...', error);
+      log('❌ Error signing up...', error);
     }
   };
   var hasNumber = /\d/;
@@ -384,7 +385,7 @@ export const Registration = props => {
                       items == null ||
                       items2 == null
                     ) {
-                      console.log('error');
+                      log('error');
                       setUnsuccessfulModal(true);
                       setErrorText('Please fill in all empty spaces!');
                     } else if (
@@ -412,7 +413,7 @@ export const Registration = props => {
                         'Sorry you have entered an invalid password. Password must contain at least 1 number.',
                       );
                     } else {
-                      console.log('succes');
+                      log('succes');
                       signUp();
                     }
                   }}

@@ -33,6 +33,7 @@ import {
   updateSupplierCompany,
 } from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -53,13 +54,13 @@ export const EditCompany = props => {
     };
 
     launchImageLibrary(options, response => {
-      console.log(response.assets[0]);
+      log(response.assets[0]);
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         let photo = {uri: response.assets[0].uri};
         setImageSource(photo);
@@ -73,7 +74,7 @@ export const EditCompany = props => {
         let photo = imageSource;
         const response = await fetch(photo.uri);
         const blob = await response.blob();
-        console.log('FileName: \n');
+        log('FileName: \n');
         photo.fileName = props.user.supplierCompany.name + '_logo';
         await Storage.put(photo.fileName, blob, {
           contentType: 'image/jpeg',
@@ -93,15 +94,15 @@ export const EditCompany = props => {
 
         setSuccessfulModal(true);
       } catch (e) {
-        console.log(e);
-        console.log(props.user.supplierCompanyID);
+        log(e);
+        log(props.user.supplierCompanyID);
       }
     } else if (props.user.supplierCompanyID == null) {
       try {
         let photo = imageSource;
         const response = await fetch(photo.uri);
         const blob = await response.blob();
-        console.log('FileName: \n');
+        log('FileName: \n');
         photo.fileName = props.user.retailerCompany.name + '_logo';
         await Storage.put(photo.fileName, blob, {
           contentType: 'image/jpeg',
@@ -121,8 +122,8 @@ export const EditCompany = props => {
 
         setSuccessfulModal(true);
       } catch (e) {
-        console.log(e);
-        console.log(props.user.retailerCompanyID);
+        log(e);
+        log(props.user.retailerCompanyID);
       }
     }
   };
@@ -304,7 +305,7 @@ export const EditCompany = props => {
                   bankDetails == '' ||
                   bankName == ''
                 ) {
-                  console.log('empty field');
+                  log('empty field');
                   setErrorText('Please fill in all empty spaces!');
                   setUnsuccessfulModal(true);
                 } else if (

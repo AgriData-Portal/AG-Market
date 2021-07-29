@@ -24,6 +24,7 @@ import {
 } from '../../../graphql/queries';
 import Strings from '_utils';
 import {MenuButton} from '_components';
+import {log} from '_utils';
 
 export const FarmerTasks = props => {
   const [sendTask, setSendTask] = useState([]);
@@ -51,11 +52,11 @@ export const FarmerTasks = props => {
         },
       });
       setSendTask(task.data.goodsTaskForFarmerByDate.items);
-      console.log(task.data.goodsTaskForFarmerByDate.items);
-      console.log('goods task');
+      log(task.data.goodsTaskForFarmerByDate.items);
+      log('goods task');
       setLoading(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -70,14 +71,14 @@ export const FarmerTasks = props => {
         },
       });
       setClaimTask(task.data.paymentsTaskForFarmerByDate.items);
-      console.log(task.data.paymentsTaskForFarmerByDate.items);
-      console.log('payment task');
+      log(task.data.paymentsTaskForFarmerByDate.items);
+      log('payment task');
       setLoading(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
-  console.log(sendTask);
+  log(sendTask);
   return (
     <SafeAreaView
       style={{

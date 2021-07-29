@@ -41,6 +41,7 @@ import {
 import Strings from '_utils';
 import {listSupplierCompanys} from '../../../../../graphql/queries';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -67,7 +68,7 @@ const AddItemModal = props => {
       let photo = imageSource;
       const response = await fetch(photo.uri);
       const blob = await response.blob();
-      console.log('FileName: \n');
+      log('FileName: \n');
       photo.fileName =
         productName + '_' + variety + '_' + props.user.supplierCompany.name;
       await Storage.put(photo.fileName, blob, {
@@ -97,10 +98,10 @@ const AddItemModal = props => {
         productListing.data.createFarmerListing,
         ...products,
       ]);
-      console.log('Added product');
+      log('Added product');
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     setAddProductButton(false);
   }
@@ -114,11 +115,11 @@ const AddItemModal = props => {
 
     launchImageLibrary(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         let photo = {uri: response.uri};
         setImageSource(response.assets[0]);
@@ -690,13 +691,13 @@ const AddItemModal = props => {
               quantityAvailable == '' ||
               moq == ''
             ) {
-              console.log('empty field');
+              log('empty field');
               setUnsuccessfulModal(true);
             } else {
               try {
                 addListing();
               } catch {
-                e => console.log('error ' + e);
+                e => log('error ' + e);
               }
             }
           }}
@@ -773,25 +774,25 @@ const ProductModal = props => {
         variables: {input: {id: props.id}},
       });
       var products = props.productList;
-      console.log(products.length);
+      log(products.length);
       for (let [i, product] of products.entries()) {
         if (product.id == props.id) {
           products.splice(i, 1);
         }
       }
-      console.log(products.length);
-      console.log(deletedListing);
+      log(products.length);
+      log(deletedListing);
       props.setProducts(products);
       if (props.trigger) {
         props.setTrigger(false);
       } else {
         props.setTrigger(true);
       }
-      console.log('test');
+      log('test');
       setSuccessfulModal2(true);
       setLoading(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   const updateListing = async () => {
@@ -809,7 +810,7 @@ const ProductModal = props => {
         },
       });
       var products = props.productList;
-      console.log(products);
+      log(products);
       for (let [i, product] of products.entries()) {
         if (product.id == props.id) {
           products.splice(i, 1);
@@ -829,7 +830,7 @@ const ProductModal = props => {
         siUnit: props.siUnit,
       };
       products.push(item);
-      console.log(products);
+      log(products);
       props.setProducts(products);
       if (props.trigger) {
         props.setTrigger(false);
@@ -838,7 +839,7 @@ const ProductModal = props => {
       }
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -1086,14 +1087,14 @@ const ProductModal = props => {
                   available == '' ||
                   moq == ''
                 ) {
-                  console.log('empty field');
+                  log('empty field');
                   setUnsuccessfulModal(true);
                 } else {
                   try {
                     updateListing();
                     setEditMode(false);
                   } catch {
-                    e => console.log('error ' + e);
+                    e => log('error ' + e);
                   }
                 }
               }}
@@ -1161,22 +1162,22 @@ const ProductCard = props => {
   const getImage = async () => {
     try {
       if (typeof props.productPicture == 'string') {
-        console.log(props.productPicture);
+        log(props.productPicture);
         const imageURL = await Storage.get(props.productPicture);
         setImageSource({
           uri: imageURL,
         });
       } else {
-        console.log('found a bogey');
+        log('found a bogey');
         setImageSource(props.productPicture);
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   useEffect(() => {
     getImage();
-    console.log('Image...');
+    log('Image...');
   }, []);
   return (
     <TouchableOpacity
@@ -1290,7 +1291,7 @@ export const RetailerList = props => {
     <FlatList
       data={props.supermarkets}
       renderItem={({item}) => {
-        console.log(item);
+        log(item);
 
         return (
           <RetailerCard
@@ -1306,7 +1307,7 @@ export const RetailerList = props => {
 const RetailerCard = props => {
   const sendStoreDetails = async () => {
     try {
-      console.log(props.id + props.user.supplierCompanyID);
+      log(props.id + props.user.supplierCompanyID);
       const updateChat = await API.graphql({
         query: updateChatGroup,
         variables: {
@@ -1317,9 +1318,9 @@ const RetailerCard = props => {
           },
         },
       });
-      console.log('chat group already exist');
+      log('chat group already exist');
     } catch (e) {
-      console.log(e);
+      log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
           const chatGroup = {
@@ -1330,21 +1331,21 @@ const RetailerCard = props => {
             mostRecentMessage: 'Store Catalog',
             mostRecentMessageSender: props.user.name,
           };
-          console.log(chatGroup);
+          log(chatGroup);
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
             variables: {input: chatGroup},
           });
-          console.log(createdChatGroup);
+          log(createdChatGroup);
         } catch (e) {
-          console.log(e.errors[0].errorType);
+          log(e.errors[0].errorType);
         }
       } else {
-        console.log(e.errors[0].errorType);
+        log(e.errors[0].errorType);
       }
     }
 
-    console.log('creating store ' + props.user.supplierCompany.name);
+    log('creating store ' + props.user.supplierCompany.name);
 
     const store = {
       chatGroupID: props.id + props.user.supplierCompanyID,
@@ -1359,10 +1360,10 @@ const RetailerCard = props => {
         query: createMessage,
         variables: {input: store},
       });
-      console.log(message.data.createMessage);
+      log(message.data.createMessage);
       //setSuccessfulModal(true);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
   };
   return (
@@ -1430,7 +1431,7 @@ const RetailerModal = props => {
 
       setSupermarkets(listSupplier.data.listSupplierCompanys.items);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 

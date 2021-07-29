@@ -10,6 +10,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {MenuButton} from '_components';
+import {log} from '_utils';
 
 export const SupplierStore = props => {
   const [productList, setProducts] = useState([]);
@@ -24,20 +25,20 @@ export const SupplierStore = props => {
       });
 
       if (products.data.listSupplierListings) {
-        console.log('Products: \n');
-        console.log(products);
+        log('Products: \n');
+        log(products);
         setProducts(products.data.listSupplierListings.items);
       }
       setLoading(false);
-      console.log(products.data.listSupplierListings.items);
+      log(products.data.listSupplierListings.items);
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
   };
   useEffect(() => {
     fetchProducts();
-    console.log('Refreshing...');
+    log('Refreshing...');
   }, []);
   return (
     <SafeAreaView

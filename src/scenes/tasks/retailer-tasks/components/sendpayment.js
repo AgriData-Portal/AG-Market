@@ -29,6 +29,7 @@ const now = () => {
 };
 import {paymentsTaskForRetailerByDate} from '../../../../graphql/queries';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 //Retailer upload receipt
 const UploadReceiptModal = props => {
@@ -39,7 +40,7 @@ const UploadReceiptModal = props => {
         query: updatePaymentTaskBetweenRandS,
         variables: {input: {id: props.id, receipt: 'some receipt'}},
       });
-      console.log(updated);
+      log(updated);
       setSuccessfulModal(true);
       var tempList = props.payTask;
       tempList.forEach((item, index, arr) => {
@@ -53,7 +54,7 @@ const UploadReceiptModal = props => {
         props.setTrigger(true);
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -384,11 +385,11 @@ export const UploadReceiptList = props => {
                     sortDirection: 'ASC',
                   },
                 });
-                console.log(task.data.paymentsTaskForRetailerByDate.items);
+                log(task.data.paymentsTaskForRetailerByDate.items);
                 props.setPayTask(task.data.paymentsTaskForRetailerByDate.items);
-                console.log('payment task');
+                log('payment task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);

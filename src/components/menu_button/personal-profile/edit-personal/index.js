@@ -29,6 +29,7 @@ import {API, Auth} from 'aws-amplify';
 import Strings from '_utils';
 import {updateUser} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const EditPersonal = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -47,17 +48,17 @@ export const EditPersonal = props => {
     };
 
     launchImageLibrary(options, response => {
-      console.log({response});
+      log({response});
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         let photo = {uri: response.uri};
-        console.log({photo});
-        console.log(response.uri);
+        log({photo});
+        log(response.uri);
         setImageSource(response.uri);
       }
     });
@@ -75,11 +76,11 @@ export const EditPersonal = props => {
           },
         },
       });
-      console.log('success');
+      log('success');
 
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -259,7 +260,7 @@ export const EditPersonal = props => {
           <BlueButton
             onPress={() => {
               if (name == '' || email == '' || number == '') {
-                console.log('empty field');
+                log('empty field');
                 setErrorText('Please fill in all empty spaces!');
               } else if (
                 !number.startsWith('+') ||
@@ -280,7 +281,7 @@ export const EditPersonal = props => {
                   saveChanges();
                   setSuccessfulModal(true);
                 } catch {
-                  e => console.log('error ' + e);
+                  e => log('error ' + e);
                 }
               }
             }}
