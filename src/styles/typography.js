@@ -26,9 +26,9 @@ const divide = num => {
 const byWidth = num => {
   var width = Dimensions.get('screen').width;
   var height = Dimensions.get('screen').height;
-  console.log(Math.sqrt(Math.log10(height / width)));
+  // console.log(Math.sqrt(Math.log10(height / width)));
   var aspectRatioLog = Math.sqrt(Math.log10(height / width));
-  console.log(PixelRatio.get());
+  // console.log(PixelRatio.get());
   var factor = null;
   if (PixelRatio.get() == 1) {
     factor = 1.7 / aspectRatioLog;
