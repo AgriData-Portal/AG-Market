@@ -161,7 +161,7 @@ export const Registration = props => {
                   style={[
                     Typography.largestSize,
                     {
-                      width: wp('70%'),
+                      width: wp('90%'),
                       left: wp('8%'),
                       top: hp('3%'),
                       lineHeight: hp('6%'),
@@ -201,6 +201,7 @@ export const Registration = props => {
                   setState={setPhone}
                   left={wp('%')}
                   text="yes"
+                  top={hp('2%')}
                 />
 
                 <Input
@@ -208,10 +209,11 @@ export const Registration = props => {
                   placeholder="eg. example@example.com"
                   state={email}
                   setState={setEmail}
+                  top={hp('4%')}
                 />
                 <View
                   style={{
-                    top: hp('0%'),
+                    top: hp('6%'),
                     left: wp('8%'),
                   }}>
                   <Text
@@ -241,7 +243,7 @@ export const Registration = props => {
                   <View
                     style={{
                       bottom: hp('2.5%'),
-                      width: wp('85%'),
+                      width: wp('80%'),
                       borderBottomWidth: 1,
                       borderColor: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
                     }}></View>
@@ -254,7 +256,7 @@ export const Registration = props => {
                       }
                     }}
                     style={{
-                      right: wp('15%'),
+                      right: wp('20%'),
                       position: 'absolute',
                       bottom: hp('3%'),
                     }}>
@@ -266,12 +268,13 @@ export const Registration = props => {
                   placeholder="eg. City Grocer"
                   state={companyName}
                   setState={setCompanyName}
+                  top={hp('5%')}
                 />
                 <View
                   style={
                     Platform.OS == 'ios'
-                      ? {left: wp('7%'), zIndex: 1000}
-                      : {top: hp('-1%'), left: wp('8%')}
+                      ? {left: wp('7%'), zIndex: 1000, top: hp('7%')}
+                      : {top: hp('7%'), left: wp('7%')}
                   }>
                   <View>
                     <Text style={[Typography.placeholder]}>
@@ -318,7 +321,12 @@ export const Registration = props => {
                 {value2 == null ? (
                   <View />
                 ) : (
-                  <View style={Platform.OS == 'ios' ? {zIndex: 100} : {}}>
+                  <View
+                    style={
+                      Platform.OS == 'ios'
+                        ? {zIndex: 100, top: hp('8%')}
+                        : {top: hp('8%')}
+                    }>
                     <View style={{top: hp('0%'), left: wp('8%')}}>
                       <Text style={[Typography.placeholder]}>
                         {Strings.roleInCompany}
@@ -368,12 +376,14 @@ export const Registration = props => {
                   placeholder="######"
                   state={companyRegistrationNum}
                   setState={setCompanyRegistrationNum}
+                  top={hp('9%')}
                 />
                 <Input
                   name={Strings.companyAddress}
                   placeholder="eg. T1 Bundusan, Penampang Sabah"
                   state={companyAddress}
                   setState={setCompanyAddress}
+                  top={hp('11%')}
                 />
                 <BlueButton
                   onPress={async () => {
@@ -426,7 +436,7 @@ export const Registration = props => {
                   borderRadius={10}
                   icon="arrow-forward-outline"
                   offsetCenter={wp('5%')}
-                  top={hp('5%')}
+                  top={hp('14%')}
                 />
               </View>
               <Modal
@@ -513,7 +523,7 @@ const Input = props => {
     <View
       style={{
         left: wp('8%'),
-        top: hp('0%'),
+        top: props.top,
       }}>
       <Text
         style={[
