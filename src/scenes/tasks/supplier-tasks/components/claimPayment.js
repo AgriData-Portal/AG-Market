@@ -237,6 +237,7 @@ const ReceivePaymentTask = props => {
 const ReceivePaymentModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const receivedPayment = async () => {
+    log(props.id);
     try {
       const removed = await API.graphql({
         query: deletePaymentTaskBetweenRandS,
@@ -250,6 +251,7 @@ const ReceivePaymentModal = props => {
         }
       }
       props.setClaimTask(tempList);
+      setSuccessfulModal(true);
     } catch (e) {
       log(e);
     }
@@ -262,6 +264,7 @@ const ReceivePaymentModal = props => {
       setSuccessfulModal(true);
     } catch (e) {
       log(e);
+      log('fail to update');
     }
   };
   return (

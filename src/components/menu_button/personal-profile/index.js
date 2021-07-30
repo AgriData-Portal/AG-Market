@@ -92,11 +92,11 @@ export const PersonalProfile = props => {
               style={{
                 resizeMode: 'contain',
                 width: wp('80%'),
-                height: hp('30%'),
-                top: hp('0%'),
+                height: hp('40%'),
+                top: hp('5%'),
               }}
             />
-            <Text style={[Typography.header, {top: hp('0%')}]}>
+            <Text style={[Typography.header, {bottom: hp('5%'), zIndex: 10}]}>
               {props.user.name}
             </Text>
           </View>

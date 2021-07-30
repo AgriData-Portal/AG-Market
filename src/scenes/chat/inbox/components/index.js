@@ -73,9 +73,14 @@ export const ChatList = props => {
   };
   const Footer = () => {
     return (
-      <View style={{width: wp('100%'), alignItems: 'center'}}>
-        <Image source={require('_assets/images/agridata.png')}></Image>
-      </View>
+      <Image
+        style={{
+          width: wp('70%'),
+          height: hp('35%'),
+          resizeMode: 'contain',
+          alignSelf: 'center',
+        }}
+        source={require('_assets/images/agridata.png')}></Image>
     );
   };
   return (

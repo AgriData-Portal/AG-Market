@@ -75,7 +75,7 @@ export const ChatRoom = props => {
   useEffect(() => {
     fetchMessages();
     log('useEffect Triggered');
-  }, [itemID]);
+  }, []);
 
   useEffect(() => {
     const subscription = API.graphql(
