@@ -23,6 +23,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {MenuButton} from '_components';
+import {log} from '_utils';
 
 export const RetailerTasks = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -47,11 +48,11 @@ export const RetailerTasks = props => {
           sortDirection: 'ASC',
         },
       });
-      console.log(task.data.goodsTaskForRetailerByDate.items);
+      log(task.data.goodsTaskForRetailerByDate.items);
       setReceiveTask(task.data.goodsTaskForRetailerByDate.items);
-      console.log('goods task');
+      log('goods task');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -64,11 +65,11 @@ export const RetailerTasks = props => {
           sortDirection: 'ASC',
         },
       });
-      console.log(task.data.paymentsTaskForRetailerByDate.items);
+      log(task.data.paymentsTaskForRetailerByDate.items);
       setPayTask(task.data.paymentsTaskForRetailerByDate.items);
-      console.log('payment task');
+      log('payment task');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -84,7 +85,7 @@ export const RetailerTasks = props => {
       {props.user.role == 'receiver' ? (
         <View
           style={{
-            top: hp('2%'),
+            top: hp('0%'),
           }}>
           <Text
             style={[
@@ -103,7 +104,7 @@ export const RetailerTasks = props => {
             <View
               style={{
                 right: wp('15%'),
-                top: hp('2%'),
+                top: hp('0%'),
               }}>
               <Text
                 style={[
@@ -121,7 +122,7 @@ export const RetailerTasks = props => {
               onPress={() => setTask('receive')}
               style={{
                 right: wp('15%'),
-                top: hp('2%'),
+                top: hp('0%'),
               }}>
               <Text style={[Typography.normal, {color: 'grey'}]}>
                 {Strings.toRecieve}
@@ -132,7 +133,7 @@ export const RetailerTasks = props => {
             <View
               style={{
                 left: wp('15%'),
-                top: hp('2%'),
+                top: hp('0%'),
               }}>
               <Text
                 style={[
@@ -149,7 +150,7 @@ export const RetailerTasks = props => {
             <TouchableOpacity
               onPress={() => setTask('pay')}
               style={{
-                top: hp('2%'),
+                top: hp('0%'),
                 left: wp('15%'),
               }}>
               <Text style={[Typography.normal, {color: 'grey'}]}>
@@ -161,7 +162,7 @@ export const RetailerTasks = props => {
       )}
       <View
         style={{
-          top: hp('4%'),
+          top: hp('0%'),
           width: wp('100%'),
           borderBottomWidth: wp('0.5%'),
           height: hp('0%'),
@@ -171,7 +172,7 @@ export const RetailerTasks = props => {
         style={{
           width: wp('80%'),
           height: hp('5%'),
-          top: hp('6%'),
+          top: hp('1%'),
           flexDirection: 'row',
         }}>
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
@@ -185,8 +186,8 @@ export const RetailerTasks = props => {
       </View>
       <View
         style={{
-          top: hp('5%'),
-          height: hp('56%'),
+          top: hp('0%'),
+          height: hp('68%'),
         }}>
         {task == 'pay' ? (
           <UploadReceiptList

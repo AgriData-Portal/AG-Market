@@ -27,6 +27,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Auth} from 'aws-amplify';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const ForgetPassword = props => {
   const [changePassword, setChangePassword] = useState(false);
@@ -36,12 +37,12 @@ export const ForgetPassword = props => {
   const sendConfirmation = async props => {
     await Auth.forgotPassword(phone)
       .then(data => {
-        console.log(data);
-        console.log(phone);
+        log(data);
+        log(phone);
       })
       .catch(err => {
-        console.log(err);
-        console.log(phone);
+        log(err);
+        log(phone);
       });
     setChangePassword(true);
   };
@@ -172,27 +173,27 @@ export const ChangePassword = props => {
     } catch (e) {
       if (e.code == 'CodeMismatchException') {
         setWrongAuthCode(true);
-        console.log('code error');
+        log('code error');
       } else if (e.code == 'InvalidPasswordException') {
         setPasswordFormat(true);
-        console.log('code error');
+        log('code error');
       } else if (e.code == 'LimitExceededException') {
         setLimitExceeded(true);
-        console.log('code error');
+        log('code error');
       }
-      console.log(e);
+      log(e);
     }
   };
 
   const sendConfirmation = async => {
     // await Auth.forgotPassword(props.phone)
     //   .then(data => {
-    //     console.log(data);
-    //     console.log(phone);
+    //     log(data);
+    //     log(phone);
     //   })
     //   .catch(err => {
-    //     console.log(err);
-    //     console.log(phone);
+    //     log(err);
+    //     log(phone);
     //   });
     setResendCodeModal(true);
   };

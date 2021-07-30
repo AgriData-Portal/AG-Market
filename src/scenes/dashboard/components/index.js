@@ -20,6 +20,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const MarketplaceButton = props => (
   <TouchableOpacity
@@ -187,9 +188,9 @@ export const MenuButtonModal = props => {
     try {
       await Auth.signOut();
       props.updateAuthState('loggedOut');
-      console.log('Logged Out');
+      log('Logged Out');
     } catch (error) {
-      console.log('Error signing out: ', error);
+      log('Error signing out: ', error);
     }
   };
   return (

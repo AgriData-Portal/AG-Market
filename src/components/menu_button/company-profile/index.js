@@ -16,6 +16,7 @@ import {
   getFarmerCompany,
 } from '../../../graphql/queries';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export {EditCompany};
 
@@ -33,7 +34,7 @@ export const CompanyProfile = props => {
           uri: imageURL,
         });
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
   }, [company]);
@@ -47,11 +48,11 @@ export const CompanyProfile = props => {
           },
         });
         setCompany(companyProfile.data.getSupplierCompany);
-        console.log('Get suppplier company profile');
+        log('Get suppplier company profile');
       } catch (e) {
-        console.log('fail');
-        console.log(props.user.supplierCompanyID);
-        console.log(e);
+        log('fail');
+        log(props.user.supplierCompanyID);
+        log(e);
       }
     } else if (props.user.retailerCompanyID != null) {
       try {
@@ -62,9 +63,9 @@ export const CompanyProfile = props => {
           },
         });
         setCompany(companyProfile.data.getRetailerCompany);
-        console.log('Get retailer company profile');
+        log('Get retailer company profile');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else {
       try {
@@ -75,12 +76,12 @@ export const CompanyProfile = props => {
           },
         });
         setCompany(companyProfile.data.getFarmerCompany);
-        console.log('Get retailer company profile');
+        log('Get retailer company profile');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
-    console.log(companyProfile.data);
+    log(companyProfile.data);
   };
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>

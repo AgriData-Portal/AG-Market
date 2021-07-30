@@ -28,6 +28,7 @@ import Modal from 'react-native-modal';
 import {useIsFocused} from '@react-navigation/native';
 import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {log} from '_utils';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -64,11 +65,11 @@ export const Registration = props => {
         {label: Strings.owner, value: 'owner'},
         {label: Strings.retailManager, value: 'retailmanager'},
       ]);
-      console.log('works');
+      log('works');
     } else {
       setItems([{label: Strings.owner, value: 'owner'}]);
-      console.log('hi');
-      console.log(items2[1]);
+      log('hi');
+      log(items2[1]);
     }
   }, [value2]);
   const signUp = async () => {
@@ -78,7 +79,7 @@ export const Registration = props => {
         password: password,
         attributes: {
           email: email,
-          phone_number: phone,
+          phone_number: '+60' + phone,
           name: name,
           'custom:role': value,
           'custom:companyName': companyName,
@@ -87,7 +88,7 @@ export const Registration = props => {
           'custom:companyAddress': companyAddress,
         },
       });
-      console.log(user.userSub);
+      log(user.userSub);
       props.navigation.navigate('confirmsignup', {phone: phone});
       return user.userSub;
     } catch (error) {
@@ -106,7 +107,7 @@ export const Registration = props => {
         );
         setUnsuccessfulModal(true);
       }
-      console.log('❌ Error signing up...', error);
+      log('❌ Error signing up...', error);
     }
   };
   var hasNumber = /\d/;
@@ -192,12 +193,16 @@ export const Registration = props => {
                   state={name}
                   setState={setName}
                 />
+
                 <Input
                   name={Strings.contactNumber}
-                  placeholder="eg. +60123456789"
+                  placeholder="123456789"
                   state={phone}
                   setState={setPhone}
+                  left={wp('%')}
+                  text="yes"
                 />
+
                 <Input
                   name={Strings.email}
                   placeholder="eg. example@example.com"
@@ -384,7 +389,7 @@ export const Registration = props => {
                       items == null ||
                       items2 == null
                     ) {
-                      console.log('error');
+                      log('error');
                       setUnsuccessfulModal(true);
                       setErrorText('Please fill in all empty spaces!');
                     } else if (
@@ -412,7 +417,7 @@ export const Registration = props => {
                         'Sorry you have entered an invalid password. Password must contain at least 1 number.',
                       );
                     } else {
-                      console.log('succes');
+                      log('succes');
                       signUp();
                     }
                   }}
@@ -517,26 +522,56 @@ const Input = props => {
         ]}>
         {props.name}
       </Text>
-      <TextInput
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        placeholderTextColor={Colors.GRAY_DARK}
-        keyboardType="default"
-        placeholder={props.placeholder}
-        underlineColorAndroid="transparent"
-        onChangeText={item => props.setState(item)}
-        value={props.state}
-        style={{
-          width: wp('80%'),
-          height: hp('6%'),
-          bottom: hp('1%'),
-          color: 'black',
-          borderBottomColor: 'transparent',
-        }}></TextInput>
       <View
         style={{
-          bottom: hp('2.5%'),
-          width: wp('85%'),
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: wp('80%'),
+          height: hp('4%'),
+        }}>
+        {props.text ? (
+          <View
+            style={{
+              alignItems: 'center',
+              height: hp('4%'),
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={[
+                Typography.small,
+                {
+                  top: hp('0.15%'),
+                  color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
+                },
+              ]}>
+              +60
+            </Text>
+          </View>
+        ) : null}
+        <TextInput
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          placeholderTextColor={Colors.GRAY_DARK}
+          keyboardType="default"
+          placeholder={props.placeholder}
+          underlineColorAndroid="transparent"
+          onChangeText={item => props.setState(item)}
+          value={props.state}
+          style={{
+            paddingVertical: 0,
+
+            left: props.left || 0,
+            width: wp('80%'),
+            height: hp('4%'),
+            bottom: hp('0%'),
+            color: 'black',
+            borderBottomColor: 'transparent',
+          }}></TextInput>
+      </View>
+      <View
+        style={{
+          bottom: hp('0%'),
+          width: wp('80%'),
           borderBottomWidth: 1,
           borderColor: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
         }}></View>

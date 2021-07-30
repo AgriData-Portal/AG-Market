@@ -24,6 +24,7 @@ import {
   getUsersByRetailerCompany,
   getUsersBySupplierCompany,
 } from '../../../graphql/queries';
+import {log} from '_utils';
 
 export const HumanResource = props => {
   const [teamList, setTeamList] = useState([]);
@@ -31,34 +32,34 @@ export const HumanResource = props => {
   const [trigger, setTrigger] = useState(false);
   const fetchMembers = async () => {
     if (props.user.retailerCompanyID == null) {
-      console.log('supplier');
+      log('supplier');
       try {
         const members = await API.graphql({
           query: getUsersBySupplierCompany,
           variables: {supplierCompanyID: props.user.supplierCompanyID},
         });
-        console.log(members.data.getUsersBySupplierCompany.items);
+        log(members.data.getUsersBySupplierCompany.items);
         setTeamList(members.data.getUsersBySupplierCompany.items);
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else {
-      console.log('retailer');
+      log('retailer');
       try {
         const members = await API.graphql({
           query: getUsersByRetailerCompany,
           variables: {retailerCompanyID: props.user.retailerCompanyID},
         });
-        console.log(members.data.getUsersByRetailerCompany.items);
+        log(members.data.getUsersByRetailerCompany.items);
         setTeamList(members.data.getUsersByRetailerCompany.items);
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
   };
   useEffect(() => {
     fetchMembers();
-    console.log('useEffect Triggered');
+    log('useEffect Triggered');
   }, []);
   return (
     <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -160,9 +161,9 @@ const ConfirmRemoveModal = props => {
         query: deleteUser,
         variables: {id: props.user.id},
       });
-      console.log(members.data.getUsersBySupplierCompany.items);
+      log(members.data.getUsersBySupplierCompany.items);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -275,28 +276,28 @@ const ParticipantList = props => {
           onRefresh={async () => {
             setRefreshing(true);
             if (props.user.retailerCompanyID == null) {
-              console.log('supplier');
+              log('supplier');
               try {
                 const members = await API.graphql({
                   query: getUsersBySupplierCompany,
                   variables: {supplierCompanyID: props.user.supplierCompanyID},
                 });
-                console.log(members.data.getUsersBySupplierCompany.items);
+                log(members.data.getUsersBySupplierCompany.items);
                 props.setTeamList(members.data.getUsersBySupplierCompany.items);
               } catch (e) {
-                console.log(e);
+                log(e);
               }
             } else {
-              console.log('retailer');
+              log('retailer');
               try {
                 const members = await API.graphql({
                   query: getUsersByRetailerCompany,
                   variables: {retailerCompanyID: props.user.retailerCompanyID},
                 });
-                console.log(members.data.getUsersByRetailerCompany.items);
+                log(members.data.getUsersByRetailerCompany.items);
                 props.setTeamList(members.data.getUsersByRetailerCompany.items);
               } catch (e) {
-                console.log(e);
+                log(e);
               }
             }
             if (props.trigger) {
@@ -309,7 +310,7 @@ const ParticipantList = props => {
         />
       }
       renderItem={({item}) => {
-        console.log(item);
+        log(item);
         return (
           <Participant name={item.name} role={item.role} user={props.user} />
         );

@@ -29,6 +29,7 @@ const now = () => {
 };
 import {paymentsTaskForRetailerByDate} from '../../../../graphql/queries';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 //Retailer upload receipt
 const UploadReceiptModal = props => {
@@ -39,7 +40,7 @@ const UploadReceiptModal = props => {
         query: updatePaymentTaskBetweenRandS,
         variables: {input: {id: props.id, receipt: 'some receipt'}},
       });
-      console.log(updated);
+      log(updated);
       setSuccessfulModal(true);
       var tempList = props.payTask;
       tempList.forEach((item, index, arr) => {
@@ -53,7 +54,7 @@ const UploadReceiptModal = props => {
         props.setTrigger(true);
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -181,25 +182,75 @@ const UploadReceiptModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.bank}:
+        {Strings.bankName}:
       </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('38%'),
-            left: wp('43%'),
-          },
-        ]}>
-        MayBank
-      </Text>
+      {props.supplier.bankAccount == null ? (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('38%'),
+              left: wp('43%'),
+            },
+          ]}>
+          Not Added Yet
+        </Text>
+      ) : (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('38%'),
+              left: wp('43%'),
+            },
+          ]}>
+          {props.supplier.bankAccount.bankName}
+        </Text>
+      )}
       <Text
         style={[
           Typography.placeholder,
           {
             position: 'absolute',
             top: hp('43%'),
+            left: wp('5%'),
+          },
+        ]}>
+        {Strings.bankDetails}:
+      </Text>
+      {props.supplier.bankAccount == null ? (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('43%'),
+              left: wp('43%'),
+            },
+          ]}>
+          Not Added Yet
+        </Text>
+      ) : (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('43%'),
+              left: wp('43%'),
+            },
+          ]}>
+          {props.supplier.bankAccount.accountNumber}
+        </Text>
+      )}
+      <Text
+        style={[
+          Typography.placeholder,
+          {
+            position: 'absolute',
+            top: hp('48%'),
             left: wp('5%'),
           },
         ]}>
@@ -210,7 +261,7 @@ const UploadReceiptModal = props => {
           Typography.normal,
           {
             position: 'absolute',
-            top: hp('43%'),
+            top: hp('48%'),
             left: wp('43%'),
           },
         ]}>
@@ -250,7 +301,8 @@ const UploadReceipt = props => {
       }}>
       <View
         style={{
-          backgroundColor: Colors.GRAY_LIGHT,
+          backgroundColor:
+            props.receipt != null ? '#d4f8d4' : Colors.GRAY_LIGHT,
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
@@ -273,25 +325,16 @@ const UploadReceipt = props => {
           }}></View>
         <View
           style={{
-            backgroundColor: Colors.GRAY_LIGHT,
+            backgroundColor:
+              props.receipt != null ? '#d4f8d4' : Colors.GRAY_LIGHT,
             height: hp('12%'),
             width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {props.receipt != null ? (
-            <View style={{bottom: hp('0.5%')}}>
-              <Icon
-                name="cash-outline"
-                size={wp('11%')}
-                color={Colors.LIME_GREEN}
-              />
-            </View>
-          ) : (
-            <View style={{bottom: hp('0.5%')}}>
-              <Icon name="cash-outline" size={wp('11%')} />
-            </View>
-          )}
+          <View style={{bottom: hp('0.5%')}}>
+            <Icon name="cash-outline" size={wp('11%')} color="black" />
+          </View>
         </View>
         <Text
           style={[
@@ -322,7 +365,7 @@ const UploadReceipt = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('6%'),
+              top: hp('7.5%'),
               right: hp('2%'),
               position: 'absolute',
             },
@@ -334,7 +377,7 @@ const UploadReceipt = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('8%'),
+              top: hp('9%'),
               right: hp('2%'),
               position: 'absolute',
               fontStyle: 'italic',
@@ -384,11 +427,11 @@ export const UploadReceiptList = props => {
                     sortDirection: 'ASC',
                   },
                 });
-                console.log(task.data.paymentsTaskForRetailerByDate.items);
+                log(task.data.paymentsTaskForRetailerByDate.items);
                 props.setPayTask(task.data.paymentsTaskForRetailerByDate.items);
-                console.log('payment task');
+                log('payment task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);

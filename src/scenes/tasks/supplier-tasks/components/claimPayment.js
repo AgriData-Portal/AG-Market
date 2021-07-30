@@ -27,6 +27,7 @@ import {
 import Strings from '_utils';
 import {paymentsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const ReceivePaymentTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -52,12 +53,10 @@ export const ReceivePaymentTaskList = props => {
                 props.setClaimTask(
                   task.data.paymentsTaskRetailerForSupplierByDate.items,
                 );
-                console.log(
-                  task.data.paymentsTaskRetailerForSupplierByDate.items,
-                );
-                console.log('payment task');
+                log(task.data.paymentsTaskRetailerForSupplierByDate.items);
+                log('payment task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -103,7 +102,8 @@ const ReceivePaymentTask = props => {
       }}>
       <View
         style={{
-          backgroundColor: Colors.GRAY_LIGHT,
+          backgroundColor:
+            props.receipt != null ? '#d4f8d4' : Colors.GRAY_LIGHT,
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
@@ -126,25 +126,16 @@ const ReceivePaymentTask = props => {
           }}></View>
         <View
           style={{
-            backgroundColor: Colors.GRAY_LIGHT,
+            backgroundColor:
+              props.receipt != null ? '#d4f8d4' : Colors.GRAY_LIGHT,
             height: hp('12.5%'),
             width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {props.receipt != null ? (
-            <View style={{bottom: hp('0.5%')}}>
-              <Icon
-                name="cash-outline"
-                size={wp('11%')}
-                color={Colors.LIME_GREEN}
-              />
-            </View>
-          ) : (
-            <View style={{bottom: hp('0.5%')}}>
-              <Icon name="cash-outline" size={wp('11%')} />
-            </View>
-          )}
+          <View style={{bottom: hp('0.5%')}}>
+            <Icon name="cash-outline" size={wp('11%')} color="black" />
+          </View>
         </View>
         <Text
           style={[
@@ -202,7 +193,7 @@ const ReceivePaymentTask = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('6%'),
+              top: hp('7.5%'),
               right: hp('2%'),
               position: 'absolute',
             },
@@ -214,7 +205,7 @@ const ReceivePaymentTask = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('8%'),
+              top: hp('9%'),
               right: hp('2%'),
               position: 'absolute',
               fontStyle: 'italic',
@@ -251,7 +242,7 @@ const ReceivePaymentModal = props => {
         query: deletePaymentTaskBetweenRandS,
         variables: {input: {id: props.id}},
       });
-      console.log(removed);
+      log(removed);
       var tempList = props.claimTask;
       for (let [i, temp] of tempList.entries()) {
         if (temp.id == props.id) {
@@ -260,17 +251,17 @@ const ReceivePaymentModal = props => {
       }
       props.setClaimTask(tempList);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updated = await API.graphql({
         query: updateInvoiceBetweenRandS,
         variables: {input: {id: props.id, paid: true}},
       });
-      console.log(updated);
+      log(updated);
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -398,25 +389,76 @@ const ReceivePaymentModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.bank}:
+        {Strings.bankName}:
       </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('38%'),
-            left: wp('45%'),
-          },
-        ]}>
-        Bank
-      </Text>
+      {props.supplier.bankAccount == null ? (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('38%'),
+              left: wp('45%'),
+            },
+          ]}>
+          Not Added Yet
+        </Text>
+      ) : (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('38%'),
+              left: wp('45%'),
+            },
+          ]}>
+          {props.supplier.bankAccount.bankName}
+        </Text>
+      )}
       <Text
         style={[
           Typography.placeholder,
           {
             position: 'absolute',
             top: hp('43%'),
+            left: wp('5%'),
+          },
+        ]}>
+        {Strings.bankDetails}:
+      </Text>
+      {props.supplier.bankAccount == null ? (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('43%'),
+              left: wp('45%'),
+            },
+          ]}>
+          Not Added Yet
+        </Text>
+      ) : (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('43%'),
+              left: wp('45%'),
+            },
+          ]}>
+          {props.supplier.bankAccount.accountNumber}
+        </Text>
+      )}
+
+      <Text
+        style={[
+          Typography.placeholder,
+          {
+            position: 'absolute',
+            top: hp('48%'),
             left: wp('5%'),
           },
         ]}>
@@ -427,7 +469,7 @@ const ReceivePaymentModal = props => {
           Typography.normal,
           {
             position: 'absolute',
-            top: hp('43%'),
+            top: hp('48%'),
             left: wp('45%'),
           },
         ]}>

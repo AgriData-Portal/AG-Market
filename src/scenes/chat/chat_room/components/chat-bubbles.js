@@ -12,7 +12,7 @@ import {
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+
 import {API, Storage} from 'aws-amplify';
 
 import {
@@ -23,6 +23,7 @@ import Strings from '_utils';
 import {OrderQuotationModal} from './order-quotation';
 import {PurchaseOrder} from './purchase-order';
 import {BlueButton} from '_components';
+import {log} from '_utils';
 
 var dayjs = require('dayjs');
 
@@ -54,8 +55,8 @@ const ChatBubble = props => {
   const contentType = props.contentType;
   if (contentType == 'text') {
     return (
-      <View style={{margin: wp('2%')}}>
-        {!isMyMessage() && (
+      <View style={{width: wp('100%')}}>
+        {/* {!isMyMessage() && (
           <View
             style={{
               top: hp('3%'),
@@ -74,7 +75,6 @@ const ChatBubble = props => {
               },
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
-
               elevation: 5,
             }}>
             <Text
@@ -86,29 +86,36 @@ const ChatBubble = props => {
               {getInitials(props.sender)}
             </Text>
           </View>
-        )}
+        )} */}
         <View
           style={{
-            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_LIGHT,
-            marginLeft: isMyMessage() ? wp('13%') : wp('2%'),
-
-            borderRadius: 15,
-            left: isMyMessage() ? wp('20%') : wp('9%'),
-            width: isMyMessage() ? wp('60%') : wp('50%'),
+            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
+            justifyContent: 'space-evenly',
+            minWidth: wp('20%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
-          <View style={{marginTop: hp('2%')}}>
-            <Text
-              style={[Typography.normal, {margin: wp('1%'), left: wp('2%')}]}>
-              {props.content}
-            </Text>
-            <Text
-              style={[
-                Typography.small,
-                {alignSelf: 'flex-end', right: wp('3%')},
-              ]}>
-              {createdAt}
-            </Text>
-          </View>
+          <Text
+            style={[
+              Typography.normal,
+              {
+                alignSelf: 'flex-start',
+                maxWidth: wp('60%'),
+              },
+            ]}>
+            {props.content}
+          </Text>
+          <Text
+            style={[
+              Typography.small,
+              {alignSelf: 'flex-end', marginLeft: wp('10%')},
+            ]}>
+            {createdAt}
+          </Text>
         </View>
       </View>
     );
@@ -117,7 +124,7 @@ const ChatBubble = props => {
     return (
       <View>
         <View>
-          {!isMyMessage() && (
+          {/* {!isMyMessage() && (
             <View
               style={{
                 left: wp('1%'),
@@ -137,7 +144,6 @@ const ChatBubble = props => {
                 },
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
-
                 elevation: 5,
               }}>
               <Text
@@ -149,27 +155,27 @@ const ChatBubble = props => {
                 {getInitials(props.sender)}
               </Text>
             </View>
-          )}
+          )} */}
         </View>
         <View
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: 'space-evenly',
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            marginTop: hp('1%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
             width: wp('45%'),
             height: hp('19%'),
             borderRadius: 10,
+            minWidth: wp('20%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
           <Text
             style={[
               Typography.normal,
               {
-                top: hp('0%'),
-                textAlign: 'center',
+                alignSelf: 'center',
               },
             ]}>
             {content[0]}
@@ -177,17 +183,16 @@ const ChatBubble = props => {
           <View
             style={{
               backgroundColor: Colors.GRAY_LIGHT,
-              width: wp('40%'),
+              minWidth: wp('30%'),
               height: hp('11%'),
               alignItems: 'center',
-              top: hp('0%'),
               borderRadius: 10,
             }}>
             <Text
               style={[
                 Typography.small,
                 {
-                  top: hp('1%'),
+                  maxWidth: wp('60%'),
                 },
               ]}>
               {Strings.grade}: {content[3]}
@@ -205,7 +210,7 @@ const ChatBubble = props => {
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
+                marginLeft: wp('10%'),
                 top: hp('1%'),
               },
             ]}>
@@ -218,7 +223,7 @@ const ChatBubble = props => {
     return (
       <View>
         <View>
-          {!isMyMessage() && (
+          {/* {!isMyMessage() && (
             <View
               style={{
                 left: wp('1%'),
@@ -250,20 +255,19 @@ const ChatBubble = props => {
                 {getInitials(props.sender)}
               </Text>
             </View>
-          )}
+          )} */}
         </View>
         <View
           style={{
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
             alignItems: 'center',
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            width: wp('50%'),
-            height: hp('13%'),
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            borderRadius: 15,
-            marginTop: hp('1%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('1%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
+            marginVertical: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.purchaseOrder}</Text>
           <BlueButton
@@ -271,17 +275,15 @@ const ChatBubble = props => {
             text={Strings.inspect}
             font={Typography.small}
             minWidth={wp('33%')}
-            top={hp('0.5%')}
+            top={hp('0%')}
             borderRadius={10}
           />
-
           <Text
             style={[
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
-                top: hp('1.5%'),
+                marginTop: hp('1%'),
               },
             ]}>
             {createdAt}
@@ -304,7 +306,7 @@ const ChatBubble = props => {
     return (
       <View>
         <View>
-          {!isMyMessage() && (
+          {/* {!isMyMessage() && (
             <View
               style={{
                 left: wp('1%'),
@@ -336,20 +338,19 @@ const ChatBubble = props => {
                 {getInitials(props.sender)}
               </Text>
             </View>
-          )}
+          )} */}
         </View>
         <View
           style={{
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
             alignItems: 'center',
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            width: wp('50%'),
-            height: hp('13%'),
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            borderRadius: 15,
-            marginTop: hp('1%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('1%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
+            marginVertical: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
           <BlueButton
@@ -357,7 +358,6 @@ const ChatBubble = props => {
             text={Strings.inspect}
             font={Typography.small}
             minWidth={wp('33%')}
-            top={wp('0.5%')}
             borderRadius={10}
           />
 
@@ -366,8 +366,7 @@ const ChatBubble = props => {
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
-                top: hp('1.5%'),
+                marginTop: hp('1%'),
               },
             ]}>
             {createdAt}
@@ -395,17 +394,17 @@ const ChatBubble = props => {
           uri: imageURL,
         });
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     };
     useEffect(() => {
       getImage();
-      console.log('Image...');
+      log('Image...');
     }, []);
     return (
       <View>
         <View>
-          {!isMyMessage() && (
+          {/* {!isMyMessage() && (
             <View
               style={{
                 left: wp('1%'),
@@ -437,23 +436,23 @@ const ChatBubble = props => {
                 {getInitials(props.sender)}
               </Text>
             </View>
-          )}
+          )} */}
         </View>
         <View
           style={{
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            width: wp('50%'),
-            height: hp('15%'),
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            borderRadius: 15,
-            marginTop: hp('1%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
+            justifyContent: 'space-evenly',
+            borderRadius: 10,
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
           <TouchableOpacity
             style={{
-              height: wp('20%'),
-              width: wp('20%'),
+              height: wp('40%'),
+              width: wp('40%'),
             }}
             onPress={() => {
               setImageModal(true);
@@ -461,11 +460,9 @@ const ChatBubble = props => {
             <Image
               resizeMode="cover"
               style={{
-                height: wp('20%'),
-                width: wp('20%'),
-                position: 'absolute',
-                top: hp('1%'),
-                left: wp('5%'),
+                height: wp('40%'),
+                width: wp('40%'),
+                alignSelf: 'center',
               }}
               source={imageSource}
             />
@@ -474,9 +471,8 @@ const ChatBubble = props => {
             style={[
               Typography.small,
               {
-                right: wp('2%'),
-                bottom: hp('0.5%'),
-                position: 'absolute',
+                alignSelf: 'flex-end',
+                marginTop: wp('2%'),
               },
             ]}>
             {createdAt}
@@ -501,11 +497,11 @@ const ChatBubble = props => {
     );
   } else if (contentType == 'store') {
     const storeDetails = props.content.split('+');
-    console.log(storeDetails);
+    log(storeDetails);
     return (
       <View>
         <View>
-          {!isMyMessage() && (
+          {/* {!isMyMessage() && (
             <View
               style={{
                 left: wp('1%'),
@@ -537,20 +533,20 @@ const ChatBubble = props => {
                 {getInitials(props.sender)}
               </Text>
             </View>
-          )}
+          )} */}
         </View>
         <View
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            marginTop: hp('1%'),
-            width: wp('45%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            minWidth: wp('45%'),
             height: hp('19%'),
             borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
+            justifyContent: 'space-evenly',
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
           <Text
             style={[
@@ -558,7 +554,7 @@ const ChatBubble = props => {
               {
                 top: hp('-1%'),
                 textAlign: 'center',
-                width: wp('43%'),
+                width: wp('40%'),
               },
             ]}>
             Come and view my store by pressing the image!
@@ -572,6 +568,7 @@ const ChatBubble = props => {
                   height: hp('6%'),
                   resizeMode: 'contain',
                   top: hp('1%'),
+                  alignSelf: 'center',
                 }}
               />
             </View>
@@ -590,6 +587,7 @@ const ChatBubble = props => {
                   height: hp('6%'),
                   resizeMode: 'contain',
                   top: hp('1%'),
+                  alignSelf: 'center',
                 }}
               />
             </TouchableOpacity>
@@ -600,8 +598,7 @@ const ChatBubble = props => {
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
-                top: hp('2%'),
+                marginTop: hp('2%'),
               },
             ]}>
             {createdAt}
@@ -622,7 +619,7 @@ export const ChatBubbleList = props => {
         numColumns={1}
         onEndReached={() => {
           props.setRefresh(state => state + 1);
-          console.log('endReached');
+          log('endReached');
         }}
         onEndReachedThreshold={0.6}
         renderItem={item => {

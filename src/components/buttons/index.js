@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Typography} from '_styles';
@@ -7,7 +7,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useState} from 'react/cjs/react.development';
 
 export const CloseButton = props => {
   return (
@@ -57,8 +56,8 @@ export const BlueButton = props => {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      //onLayout={layout => setButtonWidth(layout.nativeEvent.layout.width)}
-      onPressIn={props.onPressIn} // for preventing double tap
+      onLayout={layout => setButtonWidth(layout.nativeEvent.layout.width)}
+      onPressOut={props.onPressIn} // for preventing double tap
       disabled={props.disabled}
       style={{
         position: props.position || 'relative',

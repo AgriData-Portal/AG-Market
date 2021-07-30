@@ -13,6 +13,7 @@ import {
   createRetailerCompany,
 } from './graphql/mutations';
 import {StatusBar} from 'react-native';
+import {log} from '_utils';
 
 import {
   GMNavigation,
@@ -30,29 +31,29 @@ import {
 Amplify.configure(config);
 
 // PushNotification.onRegister(token => {
-//   console.log('onRegister', token);
+//   log('onRegister', token);
 // });
 // PushNotification.onNotification(notification => {
 //   if (notification.foreground) {
-//     console.log('onNotification foreground', notification);
+//     log('onNotification foreground', notification);
 //   } else {
-//     console.log('onNotification background or closed', notification);
+//     log('onNotification background or closed', notification);
 //   }
 //   // extract the data passed in the push notification
 //   const data = JSON.parse(notification.data['pinpoint.jsonBody']);
-//   console.log('onNotification data', data);
+//   log('onNotification data', data);
 //   // iOS only
 //   notification.finish(PushNotificationIOS.FetchResult.NoData);
 // });
 // PushNotification.onNotificationOpened(notification => {
-//   console.log('onNotificationOpened', notification);
+//   log('onNotificationOpened', notification);
 //   // extract the data passed in the push notification
 //   const data = JSON.parse(notification['pinpoint.jsonBody']);
-//   console.log('onNotificationOpened data', data);
+//   log('onNotificationOpened data', data);
 // });
 
 const AppNavigator = props => {
-  console.log('user:' + props.user);
+  log('user:' + props.user);
   const type = props.user.role;
   //to remove create comp nav thing
 
@@ -61,7 +62,7 @@ const AppNavigator = props => {
     props.user.retailerCompany.verified != undefined
   ) {
     if (type == 'retailmanager') {
-      console.log('Retail Manager \n');
+      log('Retail Manager \n');
       return (
         <RMNavigation
           user={props.user}
@@ -70,7 +71,7 @@ const AppNavigator = props => {
         />
       );
     } else if (type == 'accounts') {
-      console.log('Accounts \n');
+      log('Accounts \n');
       return (
         <AccountsNavigation
           user={props.user}
@@ -79,7 +80,7 @@ const AppNavigator = props => {
         />
       );
     } else if (type == 'owner') {
-      console.log('Owner \n');
+      log('Owner \n');
       return (
         <OwnerNavigation
           user={props.user}
@@ -88,7 +89,7 @@ const AppNavigator = props => {
         />
       );
     } else if (type == 'receiver') {
-      console.log('Receiver \n');
+      log('Receiver \n');
       return (
         <RetailEmployeeNavigation
           user={props.user}
@@ -97,7 +98,7 @@ const AppNavigator = props => {
         />
       );
     } else if (type == 'generalmanager') {
-      console.log('General Manager \n');
+      log('General Manager \n');
       return (
         <GMNavigation
           user={props.user}
@@ -110,7 +111,7 @@ const AppNavigator = props => {
     props.user.supplierCompanyID != null &&
     props.user.supplierCompany.verified != undefined
   ) {
-    console.log('Supplier \n');
+    log('Supplier \n');
     const type = 'supplier';
     return (
       <SupplierNavigation
@@ -123,7 +124,7 @@ const AppNavigator = props => {
     props.user.farmerCompanyID != null &&
     props.user.farmerCompany.verified != undefined
   ) {
-    console.log('Farmer \n');
+    log('Farmer \n');
     const type = 'farmer';
     return (
       <FarmerNavigation
@@ -164,10 +165,10 @@ const App = () => {
     var companyID = null;
     try {
       user = await Auth.currentAuthenticatedUser();
-      console.log('attempting to fix the problem');
-      console.log(user.attributes);
+      log('attempting to fix the problem');
+      log(user.attributes);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     var type = user.attributes['custom:companyType'];
     //createing new company
@@ -183,7 +184,7 @@ const App = () => {
             },
           },
         });
-        console.log('FarmCreated!');
+        log('FarmCreated!');
         companyID = response.data.createFarmerCompany.id;
       } else if (type == 'supermarket') {
         var response = await API.graphql({
@@ -196,8 +197,8 @@ const App = () => {
             },
           },
         });
-        console.log(response);
-        console.log('Supermarket Created!');
+        log(response);
+        log('Supermarket Created!');
         companyID = response.data.createRetailerCompany.id;
       } else if (type == 'supplier') {
         var response = await API.graphql({
@@ -210,13 +211,13 @@ const App = () => {
             },
           },
         });
-        console.log('Supplier Created!');
+        log('Supplier Created!');
         companyID = response.data.createSupplierCompany.id;
       } else {
-        console.log('Nothing was Created', type);
+        log('Nothing was Created', type);
       }
     } catch (err) {
-      console.log(err);
+      log(err);
     }
     try {
       var input = {
@@ -239,11 +240,11 @@ const App = () => {
           input,
         },
       });
-      console.log('newuser: ' + newUserInfo.data.createUser);
+      log('newuser: ' + newUserInfo.data.createUser);
       setUserDetails(newUserInfo.data.createUser);
       setUserLoggedIn('loggedIn');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -254,25 +255,25 @@ const App = () => {
           query: getUser,
           variables: {id: id},
         });
-        console.log('getuser' + id);
-        console.log(userInfo);
+        log('getuser' + id);
+        log(userInfo);
         if (userInfo.data.getUser) {
-          console.log('loggingin');
+          log('loggingin');
           setUserDetails(userInfo.data.getUser);
           setUserLoggedIn('loggedIn');
         } else {
-          console.log('no user found');
-          console.log(userAttributes);
+          log('no user found');
+          log(userAttributes);
 
-          console.log('attempting to create new user');
+          log('attempting to create new user');
           createNewUser();
         }
       } else {
         setRunAgain(true);
       }
-      console.log(userID + 'not found');
+      log(userID + 'not found');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -285,13 +286,13 @@ const App = () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
       setUserID(user.attributes.sub);
-      console.log(user.attributes);
+      log(user.attributes);
       setUserAttributes(user.attributes);
-      console.log('✅ User is alreadry signed in: ' + user.attributes.sub);
+      log('✅ User is alreadry signed in: ' + user.attributes.sub);
       getUserAttributes(user.attributes.sub);
     } catch (err) {
-      console.log(err);
-      console.log('❌ User is not signed in');
+      log(err);
+      log('❌ User is not signed in');
       setUserLoggedIn('loggedOut');
     }
   }

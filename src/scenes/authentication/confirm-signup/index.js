@@ -18,6 +18,7 @@ import {
 import Modal from 'react-native-modal';
 import {Auth} from 'aws-amplify';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const ConfirmSignUp = props => {
   const [phone, setPhone] = useState(props.route.params.phone);
@@ -28,11 +29,11 @@ export const ConfirmSignUp = props => {
   const [resendCode, setResendCode] = useState(false);
   const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
   const [wrongCode, setWrongCode] = useState(false);
-  console.log(phone);
+  log(phone);
   async function confirmSignUp() {
     try {
       const user = await Auth.confirmSignUp(phone, authCode);
-      console.log('✅ Code confirmed' + phone);
+      log('✅ Code confirmed' + phone);
       setSuccessfulModal(true);
       setTimeout(() => {
         props.navigation.navigate('signin');
@@ -40,7 +41,7 @@ export const ConfirmSignUp = props => {
     } catch (error) {
       setError(true);
       setWrongCode(true);
-      console.log(
+      log(
         '❌ Verification code does not match. Please enter a valid verification code.',
         error.code,
       );
@@ -50,10 +51,10 @@ export const ConfirmSignUp = props => {
   async function resendConfirmationCode() {
     try {
       await Auth.resendSignUp(phone);
-      console.log('code resent successfully');
+      log('code resent successfully');
       setResendCode(true);
     } catch (err) {
-      console.log('error resending code: ', err);
+      log('error resending code: ', err);
     }
   }
 
@@ -187,7 +188,7 @@ export const ConfirmSignUp = props => {
               'https://wa.me/601165691998?text=Hi%20I%20am%20experiencing%20problems%20verifying%20my%20phone%20number.%20Please%20help!%20Thank%20you';
             Linking.openURL(url)
               .then(data => {
-                console.log('WhatsApp Opened successfully ' + data); //<---Success
+                log('WhatsApp Opened successfully ' + data); //<---Success
               })
               .catch(() => {
                 alert('Make sure WhatsApp installed on your device'); //<---Error
