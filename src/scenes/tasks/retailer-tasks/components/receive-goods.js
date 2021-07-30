@@ -50,16 +50,6 @@ const ReceiveModal = props => {
     sum = sum + product;
   });
   const received = async () => {
-    var input = {
-      id: props.taskID,
-      retailerID: props.retailerID,
-      supplierID: props.supplierID,
-      paid: false,
-      amount: sum,
-      payBefore: dayjs().add(8, 'hour').add(30, 'day').format('DD-MM-YYYY'),
-      receipt: null,
-    };
-
     var mostRecentInvoiceNum = null;
     try {
       const response = await API.graphql({
@@ -84,7 +74,15 @@ const ReceiveModal = props => {
     } catch (e) {
       log(e);
     }
-
+    var input = {
+      id: mostRecentInvoiceNum,
+      retailerID: props.retailerID,
+      supplierID: props.supplierID,
+      paid: false,
+      amount: sum,
+      payBefore: dayjs().add(8, 'hour').add(30, 'day').format('DD-MM-YYYY'),
+      receipt: null,
+    };
     try {
       const paymentTaskResponse = API.graphql({
         query: createPaymentTaskBetweenRandS,

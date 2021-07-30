@@ -93,11 +93,11 @@ export const MenuButtonModal = props => {
       <View>
         <Image
           style={{
-            left: wp('43%'),
+            left: wp('35%'),
             top: hp('11%'),
             resizeMode: 'contain',
-            width: wp('30%'),
-            height: hp('13%'),
+            width: wp('50%'),
+            height: hp('30%'),
           }}
           source={require('_assets/images/agridata.png')}
         />
@@ -106,7 +106,7 @@ export const MenuButtonModal = props => {
         style={{
           borderBottomColor: Colors.GRAY_MEDIUM,
           borderBottomWidth: wp('0.5%'),
-          top: hp('10%'),
+          top: hp('2%'),
         }}
       />
 
@@ -120,7 +120,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('companyprofile'),
             ]}
             style={{
-              top: hp('16%'),
+              top: hp('5%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -146,7 +146,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('personalprofile'),
             ]}
             style={{
-              top: hp('19%'),
+              top: hp('8%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -171,7 +171,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('humanresource'),
             ]}
             style={{
-              top: hp('22%'),
+              top: hp('11%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -194,7 +194,7 @@ export const MenuButtonModal = props => {
           <TouchableOpacity
             onPress={() => signOut()}
             style={{
-              top: hp('25%'),
+              top: hp('14%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),

@@ -12,25 +12,104 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {CloseButton} from '_components';
-
+import {
+  invoiceForRetailerByDate,
+  invoiceRetailerForSupplierByDate,
+  invoiceForFarmerByDate,
+} from '../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-
+import {API} from 'aws-amplify';
 import dayjs from 'dayjs';
 import {createPDF, createCSV} from './file-creation';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 
 export const OrderList = props => {
+  const [refreshing, setRefreshing] = useState(false);
   return (
     <View>
       <FlatList
         keyExtractor={item => item.id}
         data={props.invoiceList}
         numColumns={1}
+        onEndReached={() => {
+          props.setRefresh(state => state + 1);
+          log('endReached');
+        }}
+        onEndReachedThreshold={0.6}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={async () => {
+              setRefreshing(true);
+              if (props.user.supplierCompanyID != null) {
+                try {
+                  const invoice = await API.graphql({
+                    query: invoiceRetailerForSupplierByDate,
+                    variables: {
+                      supplierID: props.user.supplierCompanyID,
+                      sortDirection: 'DESC',
+                    },
+                  });
+                  log(invoice.data.invoiceRetailerForSupplierByDate.items);
+                  props.setInvoiceList(
+                    invoice.data.invoiceRetailerForSupplierByDate.items,
+                  );
+                  props.setLoading(false);
+                  log('supplierCompanyInvoices');
+                } catch (e) {
+                  log(e);
+                }
+              } else if (props.user.retailerCompanyID != null) {
+                try {
+                  const invoice = await API.graphql({
+                    query: invoiceForRetailerByDate,
+                    variables: {
+                      retailerID: props.user.retailerCompanyID,
+                      sortDirection: 'DESC',
+                    },
+                  });
+                  log(invoice.data.invoiceForRetailerByDate.items);
+                  props.setInvoiceList(
+                    invoice.data.invoiceForRetailerByDate.items,
+                  );
+                  props.setLoading(false);
+                  log('retailerCompanyInvoices');
+                } catch (e) {
+                  log(e);
+                }
+              } else {
+                try {
+                  const invoice = await API.graphql({
+                    query: invoiceForFarmerByDate,
+                    variables: {
+                      farmerID: props.user.farmerCompanyID,
+                      sortDirection: 'DESC',
+                    },
+                  });
+                  log(invoice.data.invoiceForFarmerByDate.items);
+                  props.setInvoiceList(
+                    invoice.data.invoiceForFarmerByDate.items,
+                  );
+                  props.setLoading(false);
+                  log('farmerCompanyInvoices');
+                } catch (e) {
+                  log(e);
+                }
+              }
+              if (props.trigger) {
+                props.setTrigger(false);
+              } else {
+                props.setTrigger(true);
+              }
+              setRefreshing(false);
+            }}
+          />
+        }
         renderItem={({item}) => {
           if (props.user.retailerCompanyID == null) {
             var company = item.retailer;
