@@ -224,6 +224,7 @@ const App = () => {
         name: user.attributes.name,
         role: user.attributes['custom:role'],
         contactNumber: user.attributes.phone_number,
+        email: user.attributes.email,
       };
       if (type == 'farm') {
         input['farmerCompanyID'] = companyID;
