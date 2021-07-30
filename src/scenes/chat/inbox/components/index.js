@@ -15,22 +15,17 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Strings from '_utils';
+import Strings, {log} from '_utils';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone'); // dependent on utc plugin
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('Asia/Singapore');
-
-const now = () => {
-  const now = dayjs().format('YYYY-MM-DD');
-  return now;
-};
+// var utc = require('dayjs/plugin/utc');
+// var timezone = require('dayjs/plugin/timezone'); // dependent on utc plugin
+// dayjs.extend(utc);
+// dayjs.extend(timezone);
+// dayjs.tz.setDefault('Asia/Singapore');
 
 export const Searchbar = props => {
   return (
@@ -138,6 +133,7 @@ export const ChatList = props => {
 const ChatRoom = props => {
   const lastUpdated = dayjs(props.updatedAt).add(8, 'hour');
   var listOfParticipants = props.chatParticipants;
+
   if (listOfParticipants != undefined || listOfParticipants != null) {
     var tempList = listOfParticipants.filter(item => {
       return item.userID == props.userID;
@@ -203,12 +199,12 @@ const ChatRoom = props => {
           top: hp('1.5%'),
           right: wp('5%'),
         }}>
-        {lastUpdated.fromNow().includes('day') ||
-        lastUpdated.fromNow().includes('days') ||
-        lastUpdated.fromNow().includes('month') ||
-        lastUpdated.fromNow().includes('months') ||
-        lastUpdated.fromNow().includes('year') ||
-        lastUpdated.fromNow().includes('years') ? (
+        {lastUpdated.subtract(8, 'hour').fromNow().includes('day') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('days') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('month') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('months') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('year') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('years') ? (
           <Text style={[Typography.small, {color: Colors.GRAY_DARK}]}>
             {lastUpdated.format('DD-MM-YYYY')}
           </Text>

@@ -9,6 +9,7 @@ import {
   PermissionsAndroid,
   Image,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -181,13 +182,11 @@ export const MessageInput = props => {
     }
     setMessage('');
     setSendButtonDisabled(false);
-    log('hello');
   };
   return (
     <KeyboardAwareScrollView
-      enabled
-      behaviour={Platform.OS === 'ios' ? 'padding' : 'height'}
-      automaticallyAdjustContentInsets={false}>
+      extraHeight={Platform.OS == 'ios' ? hp('6%') : 0}
+      enableAutomaticScroll={true}>
       <View
         style={{
           flexDirection: 'row',

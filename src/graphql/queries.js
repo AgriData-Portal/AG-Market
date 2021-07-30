@@ -2747,6 +2747,10 @@ export const getChatGroupsContainingRetailersByUpdatedAt = /* GraphQL */ `
         }
         chatParticipants {
           nextToken
+          items {
+            userID
+            lastOnline
+          }
         }
         messages {
           nextToken
@@ -2817,6 +2821,10 @@ export const getChatGroupsContainingSuppliersByUpdatedAt = /* GraphQL */ `
         }
         chatParticipants {
           nextToken
+          items {
+            userID
+            lastOnline
+          }
         }
         messages {
           nextToken
@@ -2887,6 +2895,10 @@ export const getChatGroupsContainingFarmersByUpdatedAt = /* GraphQL */ `
         }
         chatParticipants {
           nextToken
+          items {
+            userID
+            lastOnline
+          }
         }
         messages {
           nextToken

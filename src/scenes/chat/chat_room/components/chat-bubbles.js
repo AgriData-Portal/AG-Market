@@ -47,7 +47,7 @@ const ChatBubble = props => {
     }
   };
 
-  const createdAt = dayjs(props.createdAt).add(8, 'hour').format('HH:mm D/M');
+  const createdAt = dayjs(props.createdAt).format('HH:mm D/M');
   const isMyMessage = () => {
     if (props.senderID == props.userID) return true;
     else return false;
@@ -112,7 +112,10 @@ const ChatBubble = props => {
           <Text
             style={[
               Typography.small,
-              {alignSelf: 'flex-end', marginLeft: wp('10%')},
+              {
+                alignSelf: 'flex-end',
+                marginLeft: wp('10%'),
+              },
             ]}>
             {createdAt}
           </Text>
@@ -399,7 +402,6 @@ const ChatBubble = props => {
     };
     useEffect(() => {
       getImage();
-      log('Image...');
     }, []);
     return (
       <View>
@@ -598,7 +600,7 @@ const ChatBubble = props => {
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                marginTop: hp('2%'),
+                marginTop: hp('2.5%'),
               },
             ]}>
             {createdAt}

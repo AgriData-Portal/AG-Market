@@ -597,6 +597,7 @@ const updateLastSeen = async (userID, chatGroupID, navigation) => {
       variables: {input: {id: uniqueID, lastOnline: dayjs()}},
     });
     log('updated last seen');
+    log(updatedLastSeen);
     navigation.navigate('inbox');
   } catch (e) {
     log(e);
