@@ -29,6 +29,20 @@ type User
   farmerCompany: FarmerCompany @connection(fields: ["farmerCompanyID"])
   updatedAt: String
   createdAt: String
+  deviceEndpointID: [PushNotificationDeviceToken]
+}
+
+
+type PushNotificationDeviceToken {
+  service: PushNotificationService
+  deviceTokens: [String]
+}
+
+enum PushNotificationService {
+  APNS,
+  GCM,
+  BAIDU,
+  ADM
 }
 
 type RetailerCompany @model {

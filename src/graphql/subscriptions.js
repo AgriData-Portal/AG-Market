@@ -138,6 +138,10 @@ export const onCreateUser = /* GraphQL */ `
       }
       updatedAt
       createdAt
+      deviceEndpointID {
+        service
+        deviceTokens
+      }
     }
   }
 `;
@@ -278,6 +282,10 @@ export const onUpdateUser = /* GraphQL */ `
       }
       updatedAt
       createdAt
+      deviceEndpointID {
+        service
+        deviceTokens
+      }
     }
   }
 `;
@@ -418,6 +426,10 @@ export const onDeleteUser = /* GraphQL */ `
       }
       updatedAt
       createdAt
+      deviceEndpointID {
+        service
+        deviceTokens
+      }
     }
   }
 `;
@@ -2045,6 +2057,10 @@ export const onCreateChatGroupUsers = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       updatedAt
       createdAt
@@ -2148,6 +2164,10 @@ export const onUpdateChatGroupUsers = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       updatedAt
       createdAt
@@ -2251,6 +2271,10 @@ export const onDeleteChatGroupUsers = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       updatedAt
       createdAt

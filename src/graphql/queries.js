@@ -138,6 +138,10 @@ export const getUser = /* GraphQL */ `
       }
       updatedAt
       createdAt
+      deviceEndpointID {
+        service
+        deviceTokens
+      }
     }
   }
 `;
@@ -191,6 +195,10 @@ export const listUsers = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       nextToken
     }
@@ -1036,6 +1044,10 @@ export const getChatGroupUsers = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       updatedAt
       createdAt
@@ -2341,6 +2353,10 @@ export const getUsersByRetailerCompany = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       nextToken
     }
@@ -2404,6 +2420,10 @@ export const getUsersBySupplierCompany = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       nextToken
     }
@@ -2467,6 +2487,10 @@ export const getUsersByFarmerCompany = /* GraphQL */ `
         }
         updatedAt
         createdAt
+        deviceEndpointID {
+          service
+          deviceTokens
+        }
       }
       nextToken
     }
