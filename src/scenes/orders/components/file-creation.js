@@ -272,7 +272,12 @@ export const createPDF = async (
       });
   }
   const shareOptions = {
-    url: filePath,
+    url:
+      Platform.OS == 'ios'
+        ? filePath
+        : 'file:///data/user/0/com.agridata_app/files/AG-MarketInvoice' +
+          id +
+          '.pdf',
   };
   try {
     const ShareResponse = await Share.open(shareOptions);
@@ -304,13 +309,19 @@ export const createCSV = async (
   RNFS.writeFile(file, wbout, 'ascii')
     .then(r => {
       log('CSV created at: ' + file);
-      //alert('CSV created');
+      alert('CSV created');
     })
     .catch(e => {
       alert('CSV failed to create');
     });
   const shareOptions = {
-    url: file,
+    message: 'Share CSV Test',
+    url:
+      Platform.OS == 'ios'
+        ? file
+        : 'file:///data/user/0/com.agridata_app/files/AgriDataInvoice' +
+          id.slice(0, 6) +
+          '.xlsx',
   };
   try {
     const ShareResponse = await Share.open(shareOptions);
