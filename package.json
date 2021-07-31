@@ -13,7 +13,8 @@
     "chrisiphone-ios": "react-native run-ios --udid 00008030-00016D4E0E82802E && react-native run-ios --udid 291ECD41-D4F5-4D9F-A058-9E14AEA6CCD0",
     "sexy-tits-ios": "react-native run-ios --udid 00008020-000C346E3CF1002E && react-native run-ios --udid D181104A-C6AF-4732-A0C0-9402933AFC50",
     "postinstall": "jetify",
-    "jetify": "npx jetify"
+    "jetify": "npx jetify",
+    "ios-android": "react-native run-android && react-native run-ios"
   },
   "dependencies": {
     "@aws-amplify/pushnotification": "^4.1.2",
@@ -42,7 +43,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-localization": "^2.1.7",
     "react-native-modal": "^11.10.0",
-    "react-native-pdf-lib": "^1.0.0",
+    "react-native-pdf-lib": "github:zilicon/react-native-pdf-lib#fix-fonts",
     "react-native-permissions": "^3.0.4",
     "react-native-push-notification": "^7.4.0",
     "react-native-qrcode-scanner": "^1.5.4",
