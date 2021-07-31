@@ -184,40 +184,37 @@ export const MessageInput = props => {
     setSendButtonDisabled(false);
   };
   return (
-    <KeyboardAwareScrollView
-      extraHeight={Platform.OS == 'ios' ? hp('6%') : 0}
-      enableAutomaticScroll={true}>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
       <View
         style={{
+          height: hp('6%'),
+          borderRadius: 40,
+          backgroundColor: Colors.GRAY_LIGHT,
           flexDirection: 'row',
-          justifyContent: 'center',
           alignItems: 'center',
+          width: wp('80%'),
         }}>
-        <View
+        <TextInput
+          placeholderTextColor={Colors.GRAY_DARK}
+          placeholder={Strings.typeMessage}
+          underlineColorAndroid={'transparent'}
+          multiline={true}
+          onChangeText={text => setMessage(text)}
+          value={message}
           style={{
-            height: hp('6%'),
-            borderRadius: 40,
-            backgroundColor: Colors.GRAY_LIGHT,
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: wp('80%'),
-          }}>
-          <TextInput
-            placeholderTextColor={Colors.GRAY_DARK}
-            placeholder={Strings.typeMessage}
-            underlineColorAndroid={'transparent'}
-            multiline={true}
-            onChangeText={text => setMessage(text)}
-            value={message}
-            style={{
-              width: wp('60%'),
-              height: hp('7%'),
-              borderBottomColor: 'transparent',
-              left: wp('2%'),
-              color: 'black',
-            }}
-          />
-          {/* <TouchableOpacity
+            width: wp('60%'),
+            height: hp('7%'),
+            borderBottomColor: 'transparent',
+            left: wp('2%'),
+            color: 'black',
+          }}
+        />
+        {/* <TouchableOpacity
             onPressIn={() => [onStartRecord(), setMicPressed(true)]}
             onPressOut={() => [onStopRecord(), setAudio(true)]}
             style={{
@@ -341,49 +338,15 @@ export const MessageInput = props => {
               </TouchableOpacity>
             </View>
           </Modal>*/}
-          <TouchableOpacity
-            onPress={() => {
-              selectImage();
-            }}
-            style={{
-              height: hp('8%'),
-              width: hp('8%'),
-              right: wp('0%'),
-              top: hp('0.5%'),
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-              position: 'absolute',
-            }}>
-            <Icon name="images-outline" size={wp('7%')} />
-          </TouchableOpacity>
-        </View>
-
         <TouchableOpacity
           onPress={() => {
-            if (message.length > 0) {
-              createNewMessage();
-            }
+            selectImage();
           }}
-          onPressIn={() => {
-            if (message.length > 0) {
-              setSendButtonDisabled(true);
-            }
-          }}
-          disabled={sendButtonDisabled}
           style={{
-            height: hp('5.5%'),
-            width: hp('5.5%'),
-            borderRadius: 100,
-            left: wp('3%'),
-            backgroundColor: Colors.PALE_BLUE,
-            justifyContent: 'center',
-            alignItems: 'center',
+            height: hp('8%'),
+            width: hp('8%'),
+            right: wp('0%'),
+            top: hp('0.5%'),
             shadowColor: '#000',
             shadowOffset: {
               width: 0,
@@ -392,24 +355,57 @@ export const MessageInput = props => {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
+            position: 'absolute',
           }}>
-          <Icon
-            name="paper-plane-outline"
-            size={wp('6%')}
-            color={Colors.LIGHT_BLUE}
-          />
+          <Icon name="images-outline" size={wp('7%')} />
         </TouchableOpacity>
-        <PreviewImageModal
-          imageModal={imageModal}
-          setImageModal={setImageModal}
-          imageSource={imageSource}
-          selectImage={selectImage}
-          userID={props.userID}
-          chatGroupID={props.chatGroupID}
-          userName={props.userName}
-        />
       </View>
-    </KeyboardAwareScrollView>
+
+      <TouchableOpacity
+        onPress={() => {
+          if (message.length > 0) {
+            createNewMessage();
+          }
+        }}
+        onPressIn={() => {
+          if (message.length > 0) {
+            setSendButtonDisabled(true);
+          }
+        }}
+        disabled={sendButtonDisabled}
+        style={{
+          height: hp('5.5%'),
+          width: hp('5.5%'),
+          borderRadius: 100,
+          left: wp('3%'),
+          backgroundColor: Colors.PALE_BLUE,
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>
+        <Icon
+          name="paper-plane-outline"
+          size={wp('6%')}
+          color={Colors.LIGHT_BLUE}
+        />
+      </TouchableOpacity>
+      <PreviewImageModal
+        imageModal={imageModal}
+        setImageModal={setImageModal}
+        imageSource={imageSource}
+        selectImage={selectImage}
+        userID={props.userID}
+        chatGroupID={props.chatGroupID}
+        userName={props.userName}
+      />
+    </View>
   );
 };
 

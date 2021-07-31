@@ -200,7 +200,8 @@ export const ChatRoom = props => {
         style={{
           height: hp('100%'),
           width: wp('100%'),
-        }}>
+        }}
+        extraScrollHeight={Platform.OS == 'ios' ? hp('6%') : 0}>
         {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
