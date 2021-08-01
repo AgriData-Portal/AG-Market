@@ -976,7 +976,7 @@ export const SupplierplaceList = props => {
   );
 };
 
-export const RetailerList = props => {
+const RetailerList = props => {
   return (
     <FlatList
       data={props.supermarkets}
@@ -988,6 +988,7 @@ export const RetailerList = props => {
             name={item.name}
             id={item.id}
             navigation={props.navigation}
+            setRetailerModal={props.setRetailerModal}
             user={user}></RetailerCard>
         );
       }}
@@ -997,6 +998,7 @@ export const RetailerList = props => {
 
 const RetailerCard = props => {
   const [supermarketButton, setSupermarketButton] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
   const sendStoreDetails = async () => {
     try {
       log(props.id + props.user.supplierCompanyID);
@@ -1011,6 +1013,7 @@ const RetailerCard = props => {
         },
       });
       log('chat group already exist');
+      setSuccessModal(true);
     } catch (e) {
       log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
@@ -1029,6 +1032,7 @@ const RetailerCard = props => {
             variables: {input: chatGroup},
           });
           log(createdChatGroup);
+          setSuccessModal(true);
         } catch (e) {
           log(e.errors[0].errorType);
         }
@@ -1094,8 +1098,17 @@ const RetailerCard = props => {
           <Text style={[Typography.normal]}>{props.name}</Text>
         </View>
       </View>
-      <Modal>
+      <Modal
+        isVisible={successModal}
+        onBackdropPress={() => setSuccessModal(false)}>
         <SuccessNavigateChatModal
+          onPress={() => [
+            props.navigation.navigate('chatroom', {
+              itemID: props.id + props.user.supplierCompanyID,
+              chatName: props.name,
+            }),
+            props.setRetailerModal(false),
+          ]}
           navigation={props.navigation}
           text="Catalog sent!"
           chatGroupID={props.id + props.user.supplierCompanyID}
@@ -1162,6 +1175,7 @@ const RetailerModal = props => {
         <RetailerList
           supermarkets={supermarkets}
           navigation={props.navigation}
+          setRetailerModal={props.setRetailerModal}
         />
       </View>
     </View>

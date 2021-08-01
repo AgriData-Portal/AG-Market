@@ -450,6 +450,14 @@ const ProductPopUp = props => {
           chatGroupID={props.purchaseOrder}
           chatName={props.storeName}
           navigation={props.navigation}
+          onPress={() => [
+            props.navigation.navigate('chatroom', {
+              itemID: props.purchaseOrder,
+              chatName: props.storeName,
+            }),
+            props.setProductModal(false),
+            setInquirySuccessfulModal(false),
+          ]}
           text="Your product inquiry has been sent"
         />
       </Modal>
@@ -623,6 +631,13 @@ const PurchaseOrder = props => {
           chatGroupID={props.purchaseOrder}
           chatName={props.storeName}
           navigation={props.navigation}
+          onPress={() => [
+            props.navigation.navigate('chatroom', {
+              itemID: props.purchaseOrder,
+              chatName: props.storeName,
+            }),
+            props.setPurchaseOrderModal(false),
+          ]}
           text="You have successfully sent your purchase order, wait for the supplier to get back"
         />
       </Modal>

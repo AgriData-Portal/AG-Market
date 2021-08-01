@@ -93,8 +93,8 @@ export const MenuButtonModal = props => {
       <View>
         <Image
           style={{
-            left: wp('35%'),
-            top: hp('11%'),
+            left: wp('40%'),
+            top: hp('4%'),
             resizeMode: 'contain',
             width: wp('40%'),
             height: hp('20%'),
@@ -106,7 +106,7 @@ export const MenuButtonModal = props => {
         style={{
           borderBottomColor: Colors.GRAY_MEDIUM,
           borderBottomWidth: wp('0.5%'),
-          top: hp('10%'),
+          top: hp('2%'),
         }}
       />
 
@@ -218,7 +218,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('personalprofile'),
             ]}
             style={{
-              top: hp('16%'),
+              top: hp('4%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -239,7 +239,7 @@ export const MenuButtonModal = props => {
           <TouchableOpacity
             onPress={() => signOut()}
             style={{
-              top: hp('19%'),
+              top: hp('6%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),

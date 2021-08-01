@@ -91,12 +91,7 @@ export const SuccessNavigateChatModal = props => {
         </Text>
       </View>
       <BlueButton
-        onPress={() =>
-          props.navigation.navigate('chatroom', {
-            itemID: props.chatGroupID,
-            chatName: props.chatName,
-          })
-        }
+        onPress={props.onPress}
         top={hp('10%')}
         text={'View In Chat'}></BlueButton>
     </View>
