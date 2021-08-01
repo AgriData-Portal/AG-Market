@@ -241,7 +241,7 @@ const ProductPopUp = props => {
     } catch {
       e => log(e);
     }
-    props.navigation.navigate('inbox'), setProductInquire(false);
+    setProductInquire(false);
   };
   const addToPurchaseOrder = async () => {
     log('addingToPO ' + props.purchaseOrder);
@@ -449,6 +449,7 @@ const ProductPopUp = props => {
         <SuccessNavigateChatModal
           chatGroupID={props.purchaseOrder}
           chatName={props.storeName}
+          navigation={props.navigation}
           text="Your product inquiry has been sent"
         />
       </Modal>
@@ -478,6 +479,7 @@ export const PurchaseOrderButton = props => {
           setPOList={props.setPOList}
           user={props.user}
           purchaseOrder={props.purchaseOrder}
+          navigation={props.navigation}
           storeName={props.storeName}></PurchaseOrder>
       </Modal>
     </View>
@@ -620,6 +622,7 @@ const PurchaseOrder = props => {
         <SuccessNavigateChatModal
           chatGroupID={props.purchaseOrder}
           chatName={props.storeName}
+          navigation={props.navigation}
           text="You have successfully sent your purchase order, wait for the supplier to get back"
         />
       </Modal>

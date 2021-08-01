@@ -97,6 +97,7 @@ export const SuccessNavigateChatModal = props => {
             chatName: props.chatName,
           })
         }
+        top={hp('10%')}
         text={'View In Chat'}></BlueButton>
     </View>
   );

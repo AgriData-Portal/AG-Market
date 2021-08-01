@@ -23,13 +23,13 @@ export const Searchbar = props => {
       }}>
       {/* Add searchable dropdown */}
       <TextInput
-        value={props.searchValue}
         onChangeText={item => props.setSearchValue(item)}
         placeholderTextColor={Colors.GRAY_DARK}
         placeholder={Strings.search}
         underlineColorAndroid="transparent"
         style={{
           position: 'absolute',
+          color: 'black',
           borderBottomColor: 'transparent',
           height: hp('6%'),
           left: wp('13%'),

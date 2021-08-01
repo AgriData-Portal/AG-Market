@@ -16,11 +16,11 @@ import {
   SuccessfulModal,
   UnsuccessfulModal,
   LoadingModal,
+  SuccessNavigateChatModal,
 } from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
-import {Rating} from 'react-native-ratings';
-import {ChatButton} from '../../../components';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -987,6 +987,7 @@ export const RetailerList = props => {
           <RetailerCard
             name={item.name}
             id={item.id}
+            navigation={props.navigation}
             user={user}></RetailerCard>
         );
       }}
@@ -1093,6 +1094,14 @@ const RetailerCard = props => {
           <Text style={[Typography.normal]}>{props.name}</Text>
         </View>
       </View>
+      <Modal>
+        <SuccessNavigateChatModal
+          navigation={props.navigation}
+          text="Catalog sent!"
+          chatGroupID={props.id + props.user.supplierCompanyID}
+          chatName={props.name}
+        />
+      </Modal>
     </TouchableOpacity>
   );
 };
@@ -1109,7 +1118,10 @@ export const RetailerModalButton = props => {
       <Modal
         isVisible={retailerModal}
         onBackdropPress={() => setRetailerModal(false)}>
-        <RetailerModal setRetailerModal={setRetailerModal} />
+        <RetailerModal
+          setRetailerModal={setRetailerModal}
+          navigation={props.navigation}
+        />
       </Modal>
     </View>
   );
@@ -1147,7 +1159,10 @@ const RetailerModal = props => {
         <Text style={[Typography.large]}>Supermarkets</Text>
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
-        <RetailerList supermarkets={supermarkets} />
+        <RetailerList
+          supermarkets={supermarkets}
+          navigation={props.navigation}
+        />
       </View>
     </View>
   );

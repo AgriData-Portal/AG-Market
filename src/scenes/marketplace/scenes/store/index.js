@@ -202,6 +202,7 @@ export const Store = props => {
           bottom: hp('14%'),
         }}>
         <PurchaseOrderButton
+          navigation={props.navigation}
           purchaseOrder={purchaseOrder}
           storeName={storeName}
           storeID={itemId}

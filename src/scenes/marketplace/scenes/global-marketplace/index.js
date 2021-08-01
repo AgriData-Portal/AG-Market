@@ -228,7 +228,7 @@ export const Marketplace = props => {
               <SearchableDropdown
                 items={searchable}
                 placeholder={Strings.search}
-                placeholderTextColor={Colors.DARK_GRAY}
+                placeholderTextColor={'black'}
                 itemsContainerStyle={{
                   zIndex: 10,
                   height: hp('80%'),
@@ -253,6 +253,7 @@ export const Marketplace = props => {
                   width: wp('55%'),
                   height: hp('6%'),
                   borderBottomWidth: 0,
+                  color: 'black',
                 }}
                 textInputProps={{
                   value: searchValue,
