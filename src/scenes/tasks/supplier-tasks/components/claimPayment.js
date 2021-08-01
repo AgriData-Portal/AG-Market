@@ -381,7 +381,7 @@ const ReceivePaymentModal = props => {
             left: wp('45%'),
           },
         ]}>
-        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMMM YYYY')}
       </Text>
       <Text
         style={[

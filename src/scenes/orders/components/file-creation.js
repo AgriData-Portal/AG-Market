@@ -5,7 +5,7 @@ import PDFLib, {PDFDocument, PDFPage} from 'react-native-pdf-lib';
 import * as RNFS from 'react-native-fs';
 
 import XLSX from 'xlsx';
-import Platform from 'react-native';
+
 import agridataLogo from '_styles/image';
 import dayjs from 'dayjs';
 import {log} from '_utils';
@@ -47,15 +47,12 @@ export const createPDF = async (
       fontName: 'Poppins-Regular',
       fontSize: 80,
     })
-    .drawText(
-      'Date : ' + dayjs(createdAt).add(8, 'hour').format('DD MMMM YYYY'),
-      {
-        x: 100,
-        y: 2600,
-        fontName: 'Poppins-Regular',
-        fontSize: 80,
-      },
-    )
+    .drawText('Date : ' + dayjs(createdAt).format('DD MMMM YYYY'), {
+      x: 100,
+      y: 2600,
+      fontName: 'Poppins-Regular',
+      fontSize: 80,
+    })
     .drawText('Bought By: ' + retailer.name, {
       x: 100,
       y: 2800,

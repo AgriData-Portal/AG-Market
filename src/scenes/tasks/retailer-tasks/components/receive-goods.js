@@ -80,7 +80,7 @@ const ReceiveModal = props => {
       supplierID: props.supplierID,
       paid: false,
       amount: sum,
-      payBefore: dayjs().add(8, 'hour').add(30, 'day').format('DD-MM-YYYY'),
+      payBefore: dayjs().add(30, 'day').format('DD-MM-YYYY'),
       receipt: null,
     };
     try {
@@ -191,7 +191,7 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM, YYYY')}
+        {dayjs(props.createdAt).format('DD MMMM, YYYY')}
       </Text>
       <View
         style={{
@@ -464,7 +464,7 @@ const Receive = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).add(8, 'hours').format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveModal}>

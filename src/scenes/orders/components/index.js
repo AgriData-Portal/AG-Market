@@ -325,7 +325,7 @@ const InvoiceModal = props => {
             top: hp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMMM YYYY')}
       </Text>
       <Text
         style={[

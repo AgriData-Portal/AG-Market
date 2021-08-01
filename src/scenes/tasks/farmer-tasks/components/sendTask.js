@@ -211,7 +211,7 @@ const SendTask = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).add(8, 'hours').format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MM YYYY')}
         </Text>
       </View>
       <Modal isVisible={sendTaskModal}>
