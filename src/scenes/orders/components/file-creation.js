@@ -5,7 +5,7 @@ import PDFLib, {PDFDocument, PDFPage} from 'react-native-pdf-lib';
 import * as RNFS from 'react-native-fs';
 
 import XLSX from 'xlsx';
-
+import Platform from 'react-native';
 import agridataLogo from '_styles/image';
 import dayjs from 'dayjs';
 import {log} from '_utils';
@@ -309,10 +309,10 @@ export const createCSV = async (
   RNFS.writeFile(file, wbout, 'ascii')
     .then(r => {
       log('CSV created at: ' + file);
-      alert('CSV created');
+      //alert('CSV created');
     })
     .catch(e => {
-      alert('CSV failed to create');
+      //alert('CSV failed to create');
     });
   const shareOptions = {
     message: 'Share CSV Test',
