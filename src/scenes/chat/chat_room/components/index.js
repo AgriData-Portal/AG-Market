@@ -68,6 +68,7 @@ export const MessageInput = props => {
   const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
   const [audio, setAudio] = useState(false);
   const [whenMicPressed, setMicPressed] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   // audioRecorderPlayer.setSubscriptionDuration(0.09);
 
@@ -189,6 +190,12 @@ export const MessageInput = props => {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        bottom:
+          Platform.OS == 'ios' && focused
+            ? hp('35')
+            : Platform.OS == 'ios' && !focused
+            ? 0
+            : null,
       }}>
       <View
         style={{
@@ -200,6 +207,8 @@ export const MessageInput = props => {
           width: wp('80%'),
         }}>
         <TextInput
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           placeholderTextColor={Colors.GRAY_DARK}
           placeholder={Strings.typeMessage}
           underlineColorAndroid={'transparent'}
@@ -208,6 +217,7 @@ export const MessageInput = props => {
           value={message}
           style={{
             width: wp('60%'),
+
             height: hp('7%'),
             borderBottomColor: 'transparent',
             left: wp('2%'),

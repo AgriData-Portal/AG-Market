@@ -1,5 +1,5 @@
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-
+import {Platform} from 'react-native';
 import Share from 'react-native-share';
 import PDFLib, {PDFDocument, PDFPage} from 'react-native-pdf-lib';
 import * as RNFS from 'react-native-fs';
