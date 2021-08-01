@@ -13,7 +13,7 @@ import {BackButton} from '_components/buttons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {AddEmployeeButton} from './add-member';
 import Modal from 'react-native-modal';
-import {API} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 import {SuccesfulChangesModal} from '_components/modals';
 import {
   widthPercentageToDP as wp,
@@ -23,6 +23,9 @@ import Strings from '_utils';
 import {
   getUsersByRetailerCompany,
   getUsersBySupplierCompany,
+  getSupplierCompany,
+  getRetailerCompany,
+  getFarmerCompany,
 } from '../../../graphql/queries';
 import {log} from '_utils';
 
@@ -30,83 +33,178 @@ export const HumanResource = props => {
   const [teamList, setTeamList] = useState([]);
   const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
   const [trigger, setTrigger] = useState(false);
-  const fetchMembers = async () => {
-    if (props.user.retailerCompanyID == null) {
-      log('supplier');
+  const [company, setCompany] = useState('');
+  const [imageSource, setImageSource] = useState(null);
+  useEffect(() => {
+    getCompanyProfile();
+  }, []);
+
+  const getCompanyProfile = async () => {
+    var companyLogo = null;
+    if (props.user.supplierCompanyID != null) {
       try {
-        const members = await API.graphql({
-          query: getUsersBySupplierCompany,
-          variables: {supplierCompanyID: props.user.supplierCompanyID},
+        var companyProfile = await API.graphql({
+          query: getSupplierCompany,
+          variables: {
+            id: props.user.supplierCompanyID,
+          },
         });
-        log(members.data.getUsersBySupplierCompany.items);
-        setTeamList(members.data.getUsersBySupplierCompany.items);
+        setCompany(companyProfile.data.getSupplierCompany);
+        setTeamList(companyProfile.data.getSupplierCompany.employees.items);
+        companyLogo = companyProfile.data.getSupplierCompany.logo;
+        log('Get suppplier company profile');
+      } catch (e) {
+        log('fail');
+        log(props.user.supplierCompanyID);
+        log(e);
+      }
+    } else if (props.user.retailerCompanyID != null) {
+      try {
+        var companyProfile = await API.graphql({
+          query: getRetailerCompany,
+          variables: {
+            id: props.user.retailerCompanyID,
+          },
+        });
+        setCompany(companyProfile.data.getRetailerCompany);
+        setTeamList(companyProfile.data.getRetailerCompany.employees.items);
+        companyLogo = companyProfile.data.getRetailerCompany.logo;
+        log('Get retailer company profile');
       } catch (e) {
         log(e);
       }
     } else {
-      log('retailer');
       try {
-        const members = await API.graphql({
-          query: getUsersByRetailerCompany,
-          variables: {retailerCompanyID: props.user.retailerCompanyID},
+        var companyProfile = await API.graphql({
+          query: getFarmerCompany,
+          variables: {
+            id: props.user.farmerCompanyID,
+          },
         });
-        log(members.data.getUsersByRetailerCompany.items);
-        setTeamList(members.data.getUsersByRetailerCompany.items);
+        setCompany(companyProfile.data.getFarmerCompany);
+        setTeamList(companyProfile.data.getFarmerCompany.employees.items);
+        companyLogo = companyProfile.data.getFarmerCompany.logo;
+        log('Get retailer company profile');
+      } catch (e) {
+        log(e);
+      }
+    }
+
+    if (companyLogo) {
+      try {
+        const imageURL = await Storage.get(companyLogo);
+        setImageSource({
+          uri: imageURL,
+        });
       } catch (e) {
         log(e);
       }
     }
   };
-  useEffect(() => {
-    fetchMembers();
-    log('useEffect Triggered');
-  }, []);
+  // const fetchMembers = async () => {
+  //   if (props.user.retailerCompanyID == null) {
+  //     log('supplier');
+  //     try {
+  //       const members = await API.graphql({
+  //         query: getUsersBySupplierCompany,
+  //         variables: {supplierCompanyID: props.user.supplierCompanyID},
+  //       });
+  //       log(members.data.getUsersBySupplierCompany.items);
+  //       setTeamList(members.data.getUsersBySupplierCompany.items);
+  //     } catch (e) {
+  //       log(e);
+  //     }
+  //   } else {
+  //     log('retailer');
+  //     try {
+  //       const members = await API.graphql({
+  //         query: getUsersByRetailerCompany,
+  //         variables: {retailerCompanyID: props.user.retailerCompanyID},
+  //       });
+  //       log(members.data.getUsersByRetailerCompany.items);
+  //       setTeamList(members.data.getUsersByRetailerCompany.items);
+  //     } catch (e) {
+  //       log(e);
+  //     }
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchMembers();
+  //   log('useEffect Triggered');
+  // }, []);
   return (
-    <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
-      <View style={{top: hp('0%')}}>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp('100%'),
-            height: hp('30%'),
-          }}>
-          <Image source={require('_assets/images/company-logo.png')} />
-          <Text style={[Typography.header, {top: hp('2%')}]}>City Grocer</Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: Colors.GRAY_MEDIUM,
-            width: wp('85%'),
-            height: hp('45%'),
-            borderRadius: 10,
-            alignSelf: 'center',
-          }}>
-          <View style={{top: hp('3%'), left: wp('5%')}}>
-            <Text style={[Typography.placeholderSmall]}>{Strings.team}</Text>
-          </View>
-          <View style={{height: hp('30%'), top: hp('3%')}}>
-            <ParticipantList
-              data={teamList}
-              trigger={trigger}
-              setTrigger={setTrigger}
-              user={props.user}
-              setTeamList={setTeamList}
-            />
-          </View>
-          <View style={{top: hp('6%'), width: wp('85%'), alignItems: 'center'}}>
-            <AddEmployeeButton user={props.user} setTeamList={setTeamList} />
-          </View>
-        </View>
-        <Modal
-          isVisible={succesfulChangesModal}
-          onBackdropPress={() => [setSuccesfulChangesModal(false)]}>
-          <SuccesfulChangesModal
-            setSuccesfulChangesModal={setSuccesfulChangesModal}
-            navigation={props.navigation}
+    <SafeAreaView
+      style={{
+        alignItems: 'center',
+
+        backgroundColor: 'white',
+        height: hp('100%'),
+      }}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: wp('100%'),
+
+          height: hp('30%'),
+        }}>
+        {imageSource == null ? (
+          <Image
+            source={require('_assets/images/company-logo.png')}
+            style={{
+              resizeMode: 'contain',
+              width: wp('80%'),
+              height: hp('20%'),
+            }}
           />
-        </Modal>
+        ) : (
+          <Image
+            source={imageSource}
+            style={{
+              resizeMode: 'contain',
+              width: wp('80%'),
+              height: hp('20%'),
+            }}
+          />
+        )}
+        <Text style={[Typography.header, {top: hp('2%')}]}>{company.name}</Text>
       </View>
+      <View
+        style={{
+          backgroundColor: Colors.GRAY_MEDIUM,
+          width: wp('85%'),
+          height: hp('55%'),
+          borderRadius: 10,
+          alignSelf: 'center',
+        }}>
+        <View style={{top: hp('3%'), left: wp('5%')}}>
+          <Text style={[Typography.placeholderSmall]}>{Strings.team}</Text>
+        </View>
+        <View style={{height: hp('40%'), top: hp('3%')}}>
+          <ParticipantList
+            data={teamList}
+            trigger={trigger}
+            setTrigger={setTrigger}
+            user={props.user}
+            setTeamList={setTeamList}
+          />
+        </View>
+        <View style={{top: hp('5%'), width: wp('85%'), alignItems: 'center'}}>
+          <AddEmployeeButton
+            user={props.user}
+            company={company}
+            setTeamList={setTeamList}
+          />
+        </View>
+      </View>
+      <Modal
+        isVisible={succesfulChangesModal}
+        onBackdropPress={() => [setSuccesfulChangesModal(false)]}>
+        <SuccesfulChangesModal
+          setSuccesfulChangesModal={setSuccesfulChangesModal}
+          navigation={props.navigation}
+        />
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -128,7 +226,7 @@ const Participant = props => {
           {props.role}
         </Text>
       </View>
-      {props.role == 'generalmanager' || props.role == 'owner' ? (
+      {props.role == 'General Manager' || props.role == 'Owner' ? (
         <View />
       ) : (
         <TouchableOpacity

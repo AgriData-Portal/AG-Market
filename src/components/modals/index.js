@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {CloseButton, AddButton} from '_components';
+import {BlueButton} from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
@@ -53,15 +53,51 @@ export const SuccessfulModal = props => {
           {props.text}
         </Text>
       </View>
-      {/*<View style={{width: wp('50%'), top: hp('8%')}}>
+    </View>
+  );
+};
+
+export const SuccessNavigateChatModal = props => {
+  return (
+    <View
+      style={{
+        height: hp('65%'),
+        width: wp('85%'),
+        backgroundColor: Colors.PALE_GREEN,
+        borderRadius: 20,
+        alignItems: 'center',
+        alignSelf: 'center',
+      }}>
+      <View style={{top: hp('2%')}}>
+        <Image
+          source={require('_assets/images/Good-Vege.png')}
+          style={{
+            resizeMode: 'contain',
+            width: wp('55%'),
+            height: hp('25%'),
+          }}
+        />
+      </View>
+      <View style={{top: hp('2%')}}>
+        <Text style={[Typography.header]}>SUCCESS!</Text>
+      </View>
+      <View style={{width: wp('70%'), top: hp('4%')}}>
         <Text
           style={[
-            {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.small,
+            {textAlign: 'center', lineHeight: wp('5%')},
+            Typography.normal,
           ]}>
-          Keep adding for more!
+          {props.text}
         </Text>
-        </View>*/}
+      </View>
+      <BlueButton
+        onPress={() =>
+          props.navigation.navigate('chatroom', {
+            itemID: props.chatGroupID,
+            chatName: props.chatName,
+          })
+        }
+        text={'View In Chat'}></BlueButton>
     </View>
   );
 };

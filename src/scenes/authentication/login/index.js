@@ -62,10 +62,20 @@ export const Login = props => {
           setErrorText(
             'Sorry the password you entered is invalid. Please try again.',
           );
+        } else if (error.code == 'NetworkError') {
+          setUnsuccessfulModal(true);
+          setErrorText(
+            'Sorry your network seems to be down. Please try again when internet connectivity has been restored.',
+          );
+        } else {
+          setUnsuccessfulModal(true);
+          setErrorText(
+            'Something has gone horribly wrong. Please contact us by clicking the prompt below after dismissing this modal',
+          );
         }
       }, 400);
 
-      log('Error signing in...', error);
+      log(error);
     }
   };
   return (
@@ -305,7 +315,9 @@ const VerificationModal = props => {
         <TouchableOpacity
           onPress={() => [
             props.setVerified(false),
-            props.navigation.navigate('confirmsignup', {phone: props.phone}),
+            props.navigation.navigate('confirmsignup', {
+              phone: '+60' + props.phone,
+            }),
           ]}
           style={{
             height: hp('5%'),

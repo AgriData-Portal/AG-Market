@@ -30,8 +30,8 @@ export const Landing = props => {
           source={require('_assets/images/agridata.png')}
           style={{
             resizeMode: 'contain',
-            height: hp('23%'),
-            width: wp('70%'),
+            height: hp('20%'),
+            width: wp('50%'),
           }}
         />
       </View>

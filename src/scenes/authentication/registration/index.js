@@ -75,7 +75,7 @@ export const Registration = props => {
   const signUp = async () => {
     try {
       const user = await Auth.signUp({
-        username: phone,
+        username: '+60' + phone,
         password: password,
         attributes: {
           email: email,

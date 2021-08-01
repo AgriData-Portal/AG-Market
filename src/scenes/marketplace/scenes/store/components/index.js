@@ -9,11 +9,11 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {CloseButton, AddButton} from '_components';
+import {CloseButton, SuccessNavigateChatModal, BlueButton} from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
 import {Rating} from 'react-native-ratings';
-import {ChatButton} from '../../../components';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import {API, Storage} from 'aws-amplify';
 
@@ -35,7 +35,7 @@ import {
   getSupplierCompany,
   getRetailerCompany,
 } from '../../../../../graphql/queries';
-import {BlueButton} from '_components';
+
 import {log} from '_utils';
 
 const ProductCard = props => {
@@ -432,11 +432,7 @@ const ProductPopUp = props => {
           disabled={addPO}
         />
       </View>
-      <Modal
-        isVisible={inquirySuccessfulModal}
-        onBackdropPress={() => setInquirySuccessfulModal(false)}>
-        <InquirySuccessfulModal />
-      </Modal>
+
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [
@@ -447,46 +443,16 @@ const ProductPopUp = props => {
           text={'You have successfully added the items to your purchase order'}
         />
       </Modal>
-    </KeyboardAvoidingView>
-  );
-};
-
-const InquirySuccessfulModal = props => {
-  return (
-    <View
-      style={{
-        height: Mixins.scaleHeight(330),
-        width: Mixins.scaleWidth(290),
-        backgroundColor: Colors.PALE_GREEN,
-        borderRadius: 20,
-        alignItems: 'center',
-        alignSelf: 'center',
-      }}>
-      <View style={{top: Mixins.scaleWidth(30)}}>
-        <Image
-          source={require('_assets/images/Good-Vege.png')}
-          style={{
-            resizeMode: 'contain',
-            width: Mixins.scaleWidth(200),
-            height: Mixins.scaleHeight(150),
-          }}
+      <Modal
+        isVisible={inquirySuccessfulModal}
+        onBackdropPress={() => setInquirySuccessfulModal(false)}>
+        <SuccessNavigateChatModal
+          chatGroupID={props.purchaseOrder}
+          chatName={props.storeName}
+          text="Your product inquiry has been sent"
         />
-      </View>
-      <View style={{top: Mixins.scaleHeight(15)}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
-      </View>
-      <View
-        style={{width: Mixins.scaleWidth(260), top: Mixins.scaleHeight(25)}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: Mixins.scaleHeight(15)},
-            Typography.small,
-          ]}>
-          You have successfully sent your product inquiry, wait for the supplier
-          to get back
-        </Text>
-      </View>
-    </View>
+      </Modal>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -651,10 +617,10 @@ const PurchaseOrder = props => {
           setpoSuccessfulModal(false),
           props.setPurchaseOrderModal(false),
         ]}>
-        <SuccessfulModal
-          text={
-            'You have successfully sent your purchase order, wait for the supplier to get back'
-          }
+        <SuccessNavigateChatModal
+          chatGroupID={props.purchaseOrder}
+          chatName={props.storeName}
+          text="You have successfully sent your purchase order, wait for the supplier to get back"
         />
       </Modal>
     </View>

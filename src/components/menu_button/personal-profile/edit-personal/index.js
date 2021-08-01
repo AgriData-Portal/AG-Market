@@ -36,7 +36,7 @@ export const EditPersonal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [name, setName] = useState(props.user.name);
-  const [email, setEmail] = useState(props.route.params.email);
+  const [email, setEmail] = useState(props.user.email);
   const [number, setNumber] = useState(props.user.contactNumber);
   const [errorText, setErrorText] = useState('');
 
@@ -86,9 +86,9 @@ export const EditPersonal = props => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('0%') : hp('-20%')
+        Platform.OS === 'ios' ? hp('0%') : null
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <SafeAreaView
@@ -96,6 +96,7 @@ export const EditPersonal = props => {
           alignItems: 'center',
           justifyContent: 'center',
           height: hp('100%'),
+          backgroundColor: 'white',
         }}>
         <DismissKeyboardView
           style={{
@@ -168,8 +169,8 @@ export const EditPersonal = props => {
             source={require('_assets/images/agridata.png')}
             style={{
               resizeMode: 'contain',
-              width: wp('80%'),
-              height: hp('30%'),
+              width: wp('50%'),
+              height: hp('20%'),
               top: hp('0%'),
             }}
           />

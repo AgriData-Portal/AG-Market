@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -35,7 +35,6 @@ import {
 import {createUser} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-
 //modal issues
 export const AddEmployeeButton = props => {
   const [addEmployeeButtonModal, setAddEmployeeButtonModal] = useState(false);
@@ -63,6 +62,7 @@ export const AddEmployeeButton = props => {
           setAddEmployeeButtonModal={setAddEmployeeButtonModal}
           navigation={props.navigation}
           user={props.user}
+          company={props.company}
           setSuccesfulChangesModal={setSuccesfulChangesModal}
           setTeamList={props.setTeamList}
         />
@@ -78,56 +78,124 @@ export const AddEmployeeButtonModal = props => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [errorText, setErrorText] = useState('');
-  const [role, setRole] = useState('receiver');
+
   const [items, setItems] = useState([
-    {label: 'Receiver', value: 'receiver'},
-    {label: 'Retail Manager', value: 'retailmanager'},
-    {label: 'General Manager', value: 'generalmanager'},
-    {label: 'Accounts', value: 'accounts'},
-    {label: 'Owner', value: 'owner'},
+    {label: 'Receiver', value: 'Receiver'},
+    {label: 'Retail Manager', value: 'Retail Manager'},
+    {label: 'General Manager', value: 'General Manager'},
+    {label: 'Accounts', value: 'Accounts'},
+    {label: 'Owner', value: 'Owner'},
   ]);
+  const [role, setRole] = useState(items[0].value);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+
+  useEffect(() => {
+    log('useEffect');
+    if (props.user.retailerCompanyID != null) {
+    } else if (props.user.supplierCompanyID != null) {
+      setItems([
+        {label: 'Sales Manager', value: 'Sales Manager'},
+        {label: 'Delivery Man', value: 'Delivery Man'},
+        {label: 'Accounts', value: 'Accounts'},
+        {label: 'Owner', value: 'Owner'},
+      ]);
+    } else if (props.user.farmerCompanyID != null) {
+      setItems([
+        {label: 'Accounts', value: 'Accounts'},
+        {label: 'Owner', value: 'Owner'},
+      ]);
+    }
+  }, []);
+
   const addUser = async () => {
-    var user = null;
     try {
-      user = await Auth.signUp({
+      log('+60' + phone);
+      const user = await Auth.signUp({
         username: '+60' + phone,
         password: 'agridata2020',
         attributes: {
-          email,
+          email: email,
           phone_number: '+60' + phone,
           'custom:role': role,
+          'custom:companyName': props.company.name,
+          'custom:companyType': 'AGRIDATA2020',
+          'custom:companyRegNum': props.company.registrationNumber,
+          'custom:companyAddress': props.company.address,
           name: name,
         },
       });
-      log(user.userSub);
-    } catch (error) {
-      log('❌ Error signing up...', error);
-    }
-    try {
-      const createdUser = await API.graphql({
-        query: createUser,
-        variables: {
-          input: {
-            name: name,
-            retailerCompanyID: props.user.retailerCompanyID,
-            contactNumber: '+60' + phone,
-            id: user.userSub,
-            role: role,
-          },
-        },
-      });
-      setSuccessfulModal(true);
+      log(user);
+      if (props.user.retailerCompanyID != null) {
+        try {
+          const createdUser = await API.graphql({
+            query: createUser,
+            variables: {
+              input: {
+                name: name,
+                retailerCompanyID: props.user.retailerCompanyID,
+                contactNumber: '+60' + phone,
+                id: user.userSub,
+                role: role,
+                email: email,
+              },
+            },
+          });
+          setSuccessfulModal(true);
+        } catch (e) {
+          log(e);
+        }
+      } else if (props.user.supplierCompanyID != null) {
+        try {
+          const createdUser = await API.graphql({
+            query: createUser,
+            variables: {
+              input: {
+                name: name,
+                supplierCompanyID: props.user.supplierCompanyID,
+                contactNumber: '+60' + phone,
+                id: user.userSub,
+                role: role,
+                email: email,
+              },
+            },
+          });
+          setSuccessfulModal(true);
+        } catch (e) {
+          log(e);
+        }
+      } else if (props.user.farmerCompanyID != null) {
+        try {
+          const createdUser = await API.graphql({
+            query: createUser,
+            variables: {
+              input: {
+                name: name,
+                farmerCompanyID: props.user.farmerCompanyID,
+                contactNumber: '+60' + phone,
+                id: user.userSub,
+                role: role,
+                email: email,
+              },
+            },
+          });
+          setSuccessfulModal(true);
+        } catch (e) {
+          log(e);
+        }
+      } else {
+        log('no company id was found');
+      }
     } catch (e) {
       log(e);
     }
+
     //props.setTeamList(list => [...list, user]);
   };
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('-10%') : hp('-200%')
+        Platform.OS === 'ios' ? hp('-10%') : null
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <View
@@ -169,6 +237,7 @@ export const AddEmployeeButtonModal = props => {
               <TextInput
                 placeholder={'eg. Hannah Wong'}
                 onChangeText={item => setName(item)}
+                value={name}
                 underlineColorAndroid="transparent"
                 style={{
                   paddingVertical: 0,
@@ -192,6 +261,7 @@ export const AddEmployeeButtonModal = props => {
               <Text style={[Typography.placeholder]}>{Strings.email}</Text>
               <TextInput
                 onChangeText={item => setEmail(item)}
+                value={email}
                 underlineColorAndroid="transparent"
                 placeholder="eg. example@gmail.com"
                 style={{
@@ -220,6 +290,7 @@ export const AddEmployeeButtonModal = props => {
                 <Text style={[Typography.small, {top: hp('1%')}]}>+60</Text>
                 <TextInput
                   onChangeText={item => setPhone(item)}
+                  value={phone}
                   underlineColorAndroid="transparent"
                   style={{
                     paddingVertical: 0,
@@ -240,7 +311,7 @@ export const AddEmployeeButtonModal = props => {
             <View style={{top: hp('8%')}}>
               <DropDownPicker
                 open={open}
-                value={role}
+                value={items[0].value}
                 items={items}
                 placeholder={Strings.roleInCompany}
                 setOpen={setOpen}
@@ -270,11 +341,8 @@ export const AddEmployeeButtonModal = props => {
               log('empty field');
               setUnsuccessfulModal(true);
               setErrorText('Please fill in all empty spaces!');
-            } else if (
-              !phone.startsWith('+') ||
-              !phone.length > 5 ||
-              isNaN(phone.slice(1))
-            ) {
+            } else if (phone.length < 7 || isNaN(phone.slice(1))) {
+              log(phone);
               setUnsuccessfulModal(true);
               setErrorText(
                 'Sorry you have entered an invalid phone number. Please try again.',

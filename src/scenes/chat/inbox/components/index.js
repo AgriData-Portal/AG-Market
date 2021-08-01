@@ -70,10 +70,11 @@ export const ChatList = props => {
     return (
       <Image
         style={{
-          width: wp('70%'),
-          height: hp('35%'),
+          width: wp('50%'),
+          height: hp('20%'),
           resizeMode: 'contain',
           alignSelf: 'center',
+          marginTop: hp('2%'),
         }}
         source={require('_assets/images/agridata.png')}></Image>
     );

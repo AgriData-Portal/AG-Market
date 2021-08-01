@@ -25,7 +25,7 @@ import {
   getUsersByRetailerCompany,
 } from '../../../graphql/queries';
 import Modal from 'react-native-modal';
-import {DismissKeyboardView} from '_components';
+import {DismissKeyboardView, UnsuccessfulModal} from '_components';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 
@@ -43,8 +43,9 @@ export const PersonalProfile = props => {
       <SafeAreaView
         style={{
           alignItems: 'center',
-          justifyContent: 'center',
+
           height: hp('100%'),
+          backgroundColor: 'white',
         }}>
         <DismissKeyboardView
           style={{
@@ -81,7 +82,6 @@ export const PersonalProfile = props => {
         </View>*/}
           <View
             style={{
-              top: hp('5%'),
               alignItems: 'center',
               justifyContent: 'center',
               width: wp('80%'),
@@ -91,18 +91,18 @@ export const PersonalProfile = props => {
               source={require('_assets/images/agridata.png')}
               style={{
                 resizeMode: 'contain',
-                width: wp('80%'),
-                height: hp('40%'),
+                width: wp('50%'),
+                height: hp('20%'),
                 top: hp('5%'),
               }}
             />
-            <Text style={[Typography.header, {bottom: hp('5%'), zIndex: 10}]}>
+            <Text style={[Typography.header, {top: hp('5%'), zIndex: 10}]}>
               {props.user.name}
             </Text>
           </View>
           <View
             style={{
-              top: hp('10%'),
+              top: hp('5%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
               height: hp('35%'),
@@ -128,20 +128,7 @@ export const PersonalProfile = props => {
                 </View>
               )}
             </View>
-            {/* <View
-              style={{
-                top: hp('5%'),
-                left: wp('6%'),
-                width: wp('73%'),
-                height: hp('5%'),
-              }}>
-              <Text style={[Typography.placeholderSmall]}>
-                {Strings.address}
-              </Text>
-              <View>
-                <Text style={[Typography.normal]}>STREET, CITY, STATE</Text>
-              </View>
-            </View> */}
+
             <View
               style={{
                 top: hp('5%'),
@@ -174,18 +161,15 @@ export const PersonalProfile = props => {
                 </Text>
               </View>
             </View>
+            <BlueButton
+              onPress={() => props.navigation.navigate('editprofile')}
+              text={Strings.editPersonalProfile}
+              font={Typography.normal}
+              borderRadius={10}
+              top={hp('10%')}
+            />
           </View>
-          <BlueButton
-            onPress={() =>
-              props.navigation.navigate('editprofile', {
-                email: 'email@test.com',
-              })
-            }
-            text={Strings.editPersonalProfile}
-            font={Typography.normal}
-            borderRadius={10}
-            top={hp('1%')}
-          />
+
           <BlueButton
             onPress={() => setChangePassword(true)}
             text={Strings.changePass}
@@ -208,6 +192,8 @@ export const PersonalProfile = props => {
 export const ChangePassword = props => {
   const [passwordCodeModal, setPasswordCodeModal] = useState(false);
   const [passwordDiffModal, setPasswordDiffModal] = useState(false);
+  const [backendReject, setBackendReject] = useState(false);
+  const [errorText, setErrorText] = useState('');
   const [resendCodeSuccessModal, setResendCodeSuccessModal] = useState(false);
   const [old, setOld] = useState('');
   const [password, setPassword] = useState('');
@@ -219,13 +205,15 @@ export const ChangePassword = props => {
       const changePassword = await Auth.changePassword(user, old, password);
       setResendCodeSuccessModal(true);
     } catch (e) {
+      setErrorText(e.error);
+      setBackendReject(true);
       log(e);
     }
   };
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : -180}>
+      behavior={Platform.OS === 'ios' ? 'position' : null}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : null}>
       <SafeAreaView>
         <DismissKeyboardView>
           <View
@@ -373,6 +361,11 @@ export const ChangePassword = props => {
               setResendCodeSuccessModal={setResendCodeSuccessModal}
               setForgetPassword={props.setForgetPassword}
             />
+          </Modal>
+          <Modal
+            isVisible={backendReject}
+            onBackdropPress={() => setBackendReject(false)}>
+            <UnsuccessfulModal text={errorText} />
           </Modal>
         </DismissKeyboardView>
       </SafeAreaView>

@@ -84,7 +84,12 @@ export const CompanyProfile = props => {
     log(companyProfile.data);
   };
   return (
-    <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
+    <SafeAreaView
+      style={{
+        alignItems: 'center',
+        height: hp('100%'),
+        backgroundColor: 'white',
+      }}>
       <View
         style={{
           top: hp('4%'),
@@ -163,7 +168,13 @@ export const CompanyProfile = props => {
             {Strings.contactNumber}
           </Text>
           <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}> {props.user.contactNumber}</Text>
+            {company.contactDetails != null ? (
+              <Text style={[Typography.normal]}>
+                {company.contactDetails.phone}
+              </Text>
+            ) : (
+              <Text style={[Typography.normal]}>Not Added Yet</Text>
+            )}
           </View>
         </View>
         <View
@@ -222,10 +233,11 @@ export const CompanyProfile = props => {
       <BlueButton
         onPress={() =>
           props.navigation.navigate('editcompany', {
-            contactNumber: props.user.contactNumber,
-            email: 'email@test.com',
-            bankNumber: '123521',
-            bankName: 'maybank',
+            contactNumber: company.contactDetails.phone,
+            email: company.contactDetails.email,
+            bankNumber: company.bankAccount.accountNumber,
+            bankName: company.bankAccount.bankName,
+            logo: imageSource,
           })
         }
         font={Typography.small}

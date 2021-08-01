@@ -36,13 +36,14 @@ import {BlueButton} from '_components';
 import {log} from '_utils';
 
 export const EditCompany = props => {
-  const [imageSource, setImageSource] = useState(null);
+  const [imageSource, setImageSource] = useState(props.route.params.logo);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
-  const [address, setAddress] = useState('');
   const [number, setNumber] = useState(props.route.params.contactNumber);
   const [email, setEmail] = useState(props.route.params.email);
-  const [bankDetails, setBankDetails] = useState(props.route.params.bankNumber);
+  const [bankDetails, setBankDetails] = useState(
+    props.route.params.bankNumber.toString(),
+  );
   const [bankName, setBankName] = useState(props.route.params.bankName);
   const [errorText, setErrorText] = useState('');
 
@@ -87,7 +88,10 @@ export const EditCompany = props => {
               id: props.user.supplierCompanyID,
               logo: photo.fileName,
               contactDetails: {email: email, phone: number},
-              bankAccount: {bankName: bankName, accountNumber: bankDetails},
+              bankAccount: {
+                bankName: bankName,
+                accountNumber: parseInt(bankDetails),
+              },
             },
           },
         });
@@ -130,9 +134,9 @@ export const EditCompany = props => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('0%') : hp('-10%')
+        Platform.OS === 'ios' ? hp('0%') : null
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <DismissKeyboardView>
@@ -142,6 +146,7 @@ export const EditCompany = props => {
             justifyContent: 'center',
             width: wp('100%'),
             height: hp('100%'),
+            backgroundColor: 'white',
           }}>
           <View
             style={{
@@ -168,15 +173,6 @@ export const EditCompany = props => {
                       borderRadius: 10,
                     }}
                   />
-                  <TouchableOpacity
-                    onPress={() => {
-                      selectImage();
-                    }}
-                    style={{top: hp('2%')}}>
-                    <Text style={{textAlign: 'center'}}>
-                      {Strings.changeImage}
-                    </Text>
-                  </TouchableOpacity>
                 </View>
               ) : (
                 <View>
@@ -191,6 +187,13 @@ export const EditCompany = props => {
                   />
                 </View>
               )}
+              <TouchableOpacity
+                onPress={() => {
+                  selectImage();
+                }}
+                style={{top: hp('1%')}}>
+                <Text style={{textAlign: 'center'}}>{Strings.changeImage}</Text>
+              </TouchableOpacity>
             </View>
             <View
               style={{

@@ -96,8 +96,8 @@ export const MenuButtonModal = props => {
             left: wp('35%'),
             top: hp('11%'),
             resizeMode: 'contain',
-            width: wp('50%'),
-            height: hp('30%'),
+            width: wp('40%'),
+            height: hp('20%'),
           }}
           source={require('_assets/images/agridata.png')}
         />
@@ -106,13 +106,11 @@ export const MenuButtonModal = props => {
         style={{
           borderBottomColor: Colors.GRAY_MEDIUM,
           borderBottomWidth: wp('0.5%'),
-          top: hp('2%'),
+          top: hp('10%'),
         }}
       />
 
-      {props.userType == 'supplier' ||
-      props.userType == 'generalmanager' ||
-      props.userType == 'owner' ? (
+      {props.userType == 'General Manager' || props.userType == 'Owner' ? (
         <View>
           <TouchableOpacity
             onPress={() => [

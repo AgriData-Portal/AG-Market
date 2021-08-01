@@ -55,84 +55,129 @@ Amplify.configure(config);
 const AppNavigator = props => {
   log('user:' + props.user);
   const type = props.user.role;
+  const retailer = props.user.retailerCompany;
+  const supplier = props.user.supplierCompany;
+  const farmer = props.user.farmerCompany;
+  const company = {type: '', verified: '', role: ''};
+  if (retailer != null && retailer.verified == true) {
+    log('Retailer Verified\n');
+    company.type = 'retailer';
+    company.verified = true;
+  } else if (retailer != null && retailer.verified == undefined) {
+    log('Retailer Not Verified\n');
+    company.type = 'retailer';
+    company.verified = false;
+  } else if (supplier != null && supplier.verified == true) {
+    log('Supplier Verified\n');
+    company.type = 'supplier';
+    company.verified = true;
+  } else if (supplier != null && supplier.verified == undefined) {
+    log('Supplier Not Verified\n');
+    company.type = 'supplier';
+    company.verified = false;
+  } else if (farmer != null && farmer.verified == true) {
+    log('Farmer Verified\n');
+    company.type = 'farmer';
+    company.verified = true;
+  } else if (farmer != null && farmer.verified == undefined) {
+    log('Farmer Not Verified\n');
+    company.type = 'farmer';
+    company.verified = false;
+  }
+  company.role = props.user.role;
   //to remove create comp nav thing
 
-  if (
-    props.user.retailerCompanyID != null &&
-    props.user.retailerCompany.verified != undefined
-  ) {
-    if (type == 'retailmanager') {
-      log('Retail Manager \n');
+  if (company.verified) {
+    if (company.type == 'retailer') {
+      if (company.role == 'Retail Manager') {
+        log('Retail Manager \n');
+        return (
+          <RMNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Accounts') {
+        log('Accounts \n');
+        return (
+          <AccountsNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Owner') {
+        log('Owner \n');
+        return (
+          <OwnerNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Receiver') {
+        log('Receiver \n');
+        return (
+          <RetailEmployeeNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'General Manager') {
+        log('General Manager \n');
+        return (
+          <GMNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      }
+    } else if (company.type == 'supplier') {
+      if (company.role == 'Owner') {
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Sales Manager') {
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Delivery Man') {
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Accounts') {
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      }
+    } else if (company.type == 'farmer') {
       return (
-        <RMNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'accounts') {
-      log('Accounts \n');
-      return (
-        <AccountsNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'owner') {
-      log('Owner \n');
-      return (
-        <OwnerNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'receiver') {
-      log('Receiver \n');
-      return (
-        <RetailEmployeeNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'generalmanager') {
-      log('General Manager \n');
-      return (
-        <GMNavigation
+        <FarmerNavigation
           user={props.user}
           updateAuthState={props.updateAuthState}
           setUserDetails={props.setUserDetails}
         />
       );
     }
-  } else if (
-    props.user.supplierCompanyID != null &&
-    props.user.supplierCompany.verified != undefined
-  ) {
-    log('Supplier \n');
-    const type = 'supplier';
-    return (
-      <SupplierNavigation
-        user={props.user}
-        updateAuthState={props.updateAuthState}
-        setUserDetails={props.setUserDetails}
-      />
-    );
-  } else if (
-    props.user.farmerCompanyID != null &&
-    props.user.farmerCompany.verified != undefined
-  ) {
-    log('Farmer \n');
-    const type = 'farmer';
-    return (
-      <FarmerNavigation
-        user={props.user}
-        updateAuthState={props.updateAuthState}
-        setUserDetails={props.setUserDetails}
-      />
-    );
   } else {
     return (
       <VerificationNavigation
@@ -263,6 +308,7 @@ const App = () => {
           setUserLoggedIn('loggedIn');
         } else {
           log('no user found');
+          log(userID + 'not found');
           log(userAttributes);
 
           log('attempting to create new user');
@@ -271,7 +317,6 @@ const App = () => {
       } else {
         setRunAgain(true);
       }
-      log(userID + 'not found');
     } catch (e) {
       log(e);
     }
