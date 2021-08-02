@@ -832,6 +832,7 @@ const PurchaseOrderComponent = props => {
 export const DetailsModal = props => {
   const [companyDetails, setCompanyDetails] = useState([]);
   const [imageSource, setImageSource] = useState(null);
+
   const getStoreDetails = async () => {
     if (props.companyType == 'retailer') {
       try {
@@ -878,7 +879,7 @@ export const DetailsModal = props => {
       style={{
         backgroundColor: 'white',
         width: wp('90%'),
-        height: hp('80%'),
+        height: hp('85%'),
         borderRadius: 10,
         alignSelf: 'center',
         alignItems: 'center',
@@ -945,7 +946,7 @@ export const DetailsModal = props => {
                 {Strings.companyRegistrationNum}
               </Text>
               <Text style={[Typography.normal]}>
-                {companyDetails.registrationNumber} 100200
+                {companyDetails.registrationNumber}
               </Text>
             </View>
             <View style={{top: hp('1%')}}>
@@ -970,6 +971,19 @@ export const DetailsModal = props => {
             </View>
           </View>
         </View>
+        {props.button == 'true' ? (
+          <BlueButton
+            top={hp('5%')}
+            borderRadius={10}
+            text={'Send Catalog'}
+            font={Typography.normal}
+            onPress={props.onSend}
+            onPressIn={props.onOut}
+            disabled={props.disabled}
+          />
+        ) : (
+          <View />
+        )}
       </View>
     </View>
   );

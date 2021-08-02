@@ -111,7 +111,11 @@ export const ForgetPassword = props => {
                   placeholderTextColor={Colors.GRAY_DARK}
                   value={phone}
                   placeholder={Strings.phoneNumber}
-                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
+                  style={{
+                    height: hp('6%'),
+                    borderBottomWidth: 0,
+                    color: 'black',
+                  }}></TextInput>
               </View>
             </View>
             <TouchableOpacity
@@ -261,7 +265,11 @@ export const ChangePassword = props => {
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
                   placeholder={Strings.authenticationCode}
-                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
+                  style={{
+                    height: hp('6%'),
+                    borderBottomWidth: 0,
+                    color: 'black',
+                  }}></TextInput>
               </View>
               <View
                 style={{
@@ -280,7 +288,11 @@ export const ChangePassword = props => {
                   placeholderTextColor={Colors.GRAY_DARK}
                   placeholder={Strings.newPassword}
                   underlineColorAndroid="transparent"
-                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
+                  style={{
+                    height: hp('6%'),
+                    borderBottomWidth: 0,
+                    color: 'black',
+                  }}></TextInput>
               </View>
             </View>
             <TouchableOpacity
