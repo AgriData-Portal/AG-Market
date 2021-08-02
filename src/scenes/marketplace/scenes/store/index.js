@@ -191,7 +191,7 @@ export const Store = props => {
           onPress={() => updateFavourites()}
           backgroundColor={Colors.GRAY_MEDIUM}
           text={'Add to Favourites'}
-          top={hp('3%')}
+          top={Platform.OS === 'ios' ? hp('3%') : hp('1%')}
           left={wp('25%')}
           minWidth={wp('44%')}
           font={Typography.normal}
