@@ -23,7 +23,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import Modal from 'react-native-modal';
-import SearchableDropdown from 'react-native-searchable-dropdown';
+
 import {log} from '_utils';
 
 export const Marketplace = props => {
@@ -35,7 +35,7 @@ export const Marketplace = props => {
   const [loading, setLoading] = useState(false);
   const [searchable, setSearchable] = useState([]);
 
-  log('marketplace initial render' + props.user);
+  log('marketplace render');
   const fetchProducts = async () => {
     setLoading(true);
     try {

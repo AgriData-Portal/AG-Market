@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   FlatList,
   Image,
   Linking,
-  RefreshControl,
   TextInput,
 } from 'react-native';
 import {CloseButton, SuccessfulModal} from '_components';
@@ -15,12 +14,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Rating} from 'react-native-ratings';
 
-import {
-  API,
-  sectionFooter,
-  sectionFooterPrimaryContent,
-  Storage,
-} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 import {
   createMessage,
   createChatGroup,
@@ -32,7 +26,6 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {log} from '_utils';
-import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 export const ProductCard = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -526,7 +519,7 @@ const StoreCard = props => {
 export const ProductSearchBar = props => {
   const [focus, setFocus] = useState(false);
   const [productChosen, setProductChosen] = useState('');
-
+  const searchBar = useRef();
   var theProduct = props.searchable.filter(name =>
     name.includes(props.searchValue),
   );
@@ -545,30 +538,33 @@ export const ProductSearchBar = props => {
           style={{
             position: 'absolute',
             left: wp('5%'),
-            top: hp('0.75%'),
+            height: hp('5%'),
+            justifyContent: 'center',
           }}>
           <Icon name="search" size={wp('7%')} color={Colors.GRAY_DARK} />
         </View>
         <View
           style={{
             left: wp('13%'),
+            justifyContent: 'center',
+
+            height: hp('5%'),
           }}>
           <TextInput
-            onFocus={() => setFocus(true)}
-            onBlur={() =>
-              setTimeout(() => {
-                setFocus(false);
-              }, 500)
-            }
+            ref={searchBar}
+            onFocus={() => [setFocus(true), log('into focus')]}
+            onBlur={() => [setFocus(false), log('out of focus')]}
             placeholder={Strings.search}
             onChangeText={item => [
               setProductChosen(item.toUpperCase()),
               props.setSearchValue(item.toUpperCase()),
+              log(item.toUpperCase()),
             ]}
             value={productChosen}
             style={{
               width: wp('55%'),
               height: hp('5%'),
+              padding: 0,
             }}></TextInput>
         </View>
 
@@ -581,7 +577,7 @@ export const ProductSearchBar = props => {
           onPress={() => {
             if (props.searchValue != '') {
               props.setSearchPressed(true);
-              setFocus(false);
+              searchBar.current.blur();
               log(props.searchValue);
             }
           }}>
@@ -594,14 +590,25 @@ export const ProductSearchBar = props => {
             backgroundColor: 'white',
             left: wp('13%'),
             maxHeight: hp('50%'),
-            minHeight: hp('10%'),
-
             width: wp('55%'),
             alignItems: 'center',
           }}>
           <FlatList
             keyExtractor={item => item}
+            keyboardShouldPersistTaps="always"
             data={theProduct}
+            ItemSeparatorComponent={() => {
+              return (
+                <View
+                  style={{
+                    height: 0,
+                    width: wp('55%'),
+                    borderBottomColor: Colors.GRAY_DARK,
+                    borderBottomWidth: 1,
+                  }}
+                />
+              );
+            }}
             renderItem={({item}) => {
               return (
                 <ListOfItems
@@ -609,6 +616,7 @@ export const ProductSearchBar = props => {
                   setFocus={setFocus}
                   setProductChosen={setProductChosen}
                   setSearchValue={props.setSearchValue}
+                  searchBar={searchBar}
                 />
               );
             }}></FlatList>
@@ -627,13 +635,14 @@ const ListOfItems = props => {
         width: wp('55%'),
         left: wp('2%'),
         height: hp('5%'),
-        backgroundColor: 'pink',
+        backgroundColor: 'white',
+        justifyContent: 'center',
       }}
       disabled={false}
       onPress={() => [
         props.setProductChosen(props.text),
-        props.setFocus(false),
         props.setSearchValue(props.text),
+        props.searchBar.current.blur(),
       ]}>
       <Text>{props.text}</Text>
     </TouchableOpacity>
