@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 
 import {MarketplaceList, PurchaseOrderButton} from './components';
@@ -153,33 +159,6 @@ export const Store = props => {
         <BackButton navigation={props.navigation} />
       </View>
       <Text style={[Typography.header, {top: hp('4%')}]}>{storeName}</Text> */}
-
-      {isFavourite ? (
-        <BlueButton
-          onPress={() => unfavourite()}
-          text={'Favourited'}
-          font={Typography.normal}
-          backgroundColor={'gold'}
-          borderRadius={10}
-          paddingVertical={hp('1.5%')}
-          top={hp('73%')}
-          left={wp('25%')}
-          minWidth={wp('44%')}
-        />
-      ) : (
-        <BlueButton
-          onPress={() => updateFavourites()}
-          backgroundColor={Colors.GRAY_MEDIUM}
-          text={'Add to Favourites'}
-          top={hp('73%')}
-          left={wp('25%')}
-          minWidth={wp('44%')}
-          font={Typography.normal}
-          paddingVertical={hp('1.5%')}
-          borderRadius={10}
-        />
-      )}
-
       <View
         style={{
           width: wp('93%'),
@@ -195,6 +174,31 @@ export const Store = props => {
           user={props.user}
         />
       </View>
+      {isFavourite ? (
+        <BlueButton
+          onPress={() => unfavourite()}
+          text={'Favourited'}
+          font={Typography.normal}
+          backgroundColor={'gold'}
+          borderRadius={10}
+          paddingVertical={hp('1.5%')}
+          top={Platform.OS === 'ios' ? hp('3%') : hp('1%')}
+          left={wp('25%')}
+          minWidth={wp('44%')}
+        />
+      ) : (
+        <BlueButton
+          onPress={() => updateFavourites()}
+          backgroundColor={Colors.GRAY_MEDIUM}
+          text={'Add to Favourites'}
+          top={hp('3%')}
+          left={wp('25%')}
+          minWidth={wp('44%')}
+          font={Typography.normal}
+          paddingVertical={hp('1.5%')}
+          borderRadius={10}
+        />
+      )}
       <View
         style={{
           position: 'absolute',
@@ -211,7 +215,6 @@ export const Store = props => {
           user={props.user}
         />
       </View>
-
       {/* <View style={{position: 'absolute', top: hp('80%')}}>
         <NavBar navigation={props.navigation} />
       </View> */}

@@ -49,8 +49,8 @@ export const ForgetPassword = props => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : -180}>
+      behavior={Platform.OS === 'ios' ? 'position' : null}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : null}>
       <SafeAreaView>
         <DismissKeyboardView>
           <View
@@ -291,11 +291,13 @@ export const ChangePassword = props => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => [
-                code == '' || password == ''
-                  ? setPasswordCodeModal(true)
-                  : changePassword(),
-              ]}
+              onPress={() => {
+                if (code == '' || password == '') {
+                  setPasswordCodeModal(true);
+                } else {
+                  changePassword();
+                }
+              }}
               style={{top: hp('10%')}}>
               <Text
                 style={[Typography.small, {textDecorationLine: 'underline'}]}>

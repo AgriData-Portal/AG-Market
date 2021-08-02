@@ -10,6 +10,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Linking,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -78,6 +79,7 @@ export const Login = props => {
       log(error);
     }
   };
+  var hasNumber = /\d/;
   return (
     <KeyboardAwareScrollView>
       <SafeAreaView
@@ -226,6 +228,21 @@ export const Login = props => {
               log('empty input');
               setUnsuccessfulModal(true);
               setErrorText('Please fill in all empty spaces!');
+            } else if (!phone.length > 5 || isNaN(phone.slice(1))) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid phone number. Please try again.',
+              );
+            } else if (password.length < 8) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+              );
+            } else if (!hasNumber.test(password)) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+              );
             } else {
               signIn();
             }
@@ -258,6 +275,17 @@ export const Login = props => {
           </TouchableOpacity>*/}
 
         <TouchableOpacity
+          onPress={() => {
+            let url =
+              'https://wa.me/601165691998?text=Hi%20I%20am%20experiencing%20problems%20verifying%20my%20phone%20number.%20Please%20help!%20Thank%20you';
+            Linking.openURL(url)
+              .then(data => {
+                log('WhatsApp Opened successfully ' + data); //<---Success
+              })
+              .catch(() => {
+                alert('Make sure WhatsApp installed on your device'); //<---Error
+              });
+          }}
           style={{
             alignItems: 'center',
             position: 'absolute',

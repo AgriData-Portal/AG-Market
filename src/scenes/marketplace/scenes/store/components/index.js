@@ -595,7 +595,7 @@ const PurchaseOrder = props => {
           height: hp('55%'),
           top: hp('5%'),
           borderRadius: 10,
-          width: wp('80%'),
+          width: wp('85%'),
         }}>
         <PurchaseOrderList
           POList={props.POList}
@@ -652,7 +652,7 @@ const PurchaseOrderList = props => {
         style={{
           height: 0,
           borderBottomWidth: 1,
-          width: wp('80%'),
+          width: wp('85%'),
           borderColor: Colors.GRAY_MEDIUM,
         }}></View>
     );
@@ -771,6 +771,9 @@ const PurchaseOrderComponent = props => {
                   left: wp('50%'),
                   backgroundColor: 'white',
                   width: wp('10%'),
+                  height: hp('3%'),
+                  padding: 0,
+                  color: 'black',
                 }}
                 onChangeText={item => setNumber(item)}
                 value={number}
@@ -811,7 +814,11 @@ const PurchaseOrderComponent = props => {
                 right: wp('12%'),
                 bottom: hp('0.2%'),
               }}>
-              <Icon name="create-outline" size={wp('6%')} />
+              <Icon
+                name="create-outline"
+                size={wp('6%')}
+                style={{color: 'black'}}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => deleteItemFromPO()}

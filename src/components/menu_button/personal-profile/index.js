@@ -198,6 +198,7 @@ export const ChangePassword = props => {
   const [old, setOld] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
 
   const updatePassword = async () => {
     try {
@@ -210,6 +211,7 @@ export const ChangePassword = props => {
       log(e);
     }
   };
+  var hasNumber = /\d/;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : null}
@@ -333,6 +335,16 @@ export const ChangePassword = props => {
                   setPasswordCodeModal(true);
                 } else if (password != password2) {
                   setPasswordDiffModal(true);
+                } else if (password.length < 8) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+                  );
+                } else if (!hasNumber.test(password)) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+                  );
                 } else {
                   updatePassword();
                 }
@@ -365,6 +377,11 @@ export const ChangePassword = props => {
           <Modal
             isVisible={backendReject}
             onBackdropPress={() => setBackendReject(false)}>
+            <UnsuccessfulModal text={errorText} />
+          </Modal>
+          <Modal
+            isVisible={unsuccessfulModal}
+            onBackdropPress={() => setUnsuccessfulModal(false)}>
             <UnsuccessfulModal text={errorText} />
           </Modal>
         </DismissKeyboardView>
