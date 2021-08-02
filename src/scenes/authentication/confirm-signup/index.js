@@ -29,10 +29,10 @@ export const ConfirmSignUp = props => {
   const [resendCode, setResendCode] = useState(false);
   const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
   const [wrongCode, setWrongCode] = useState(false);
-  log(phone);
+  log('+60' + phone);
   async function confirmSignUp() {
     try {
-      const user = await Auth.confirmSignUp(phone, authCode);
+      const user = await Auth.confirmSignUp('+60' + phone, authCode);
       log('✅ Code confirmed' + phone);
       setSuccessfulModal(true);
       setTimeout(() => {

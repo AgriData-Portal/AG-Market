@@ -97,8 +97,7 @@ export const Registration = props => {
           'Sorry you have entered an invalid phone number. Please try again.',
         );
         setUnsuccessfulModal(true);
-      }
-      if (
+      } else if (
         error.message ==
         'An account with the given phone_number already exists.'
       ) {
@@ -402,11 +401,7 @@ export const Registration = props => {
                       log('error');
                       setUnsuccessfulModal(true);
                       setErrorText('Please fill in all empty spaces!');
-                    } else if (
-                      !phone.startsWith('+') ||
-                      !phone.length > 5 ||
-                      isNaN(phone.slice(1))
-                    ) {
+                    } else if (!phone.length > 5 || isNaN(phone)) {
                       setUnsuccessfulModal(true);
                       setErrorText(
                         'Sorry you have entered an invalid phone number. Please try again.',
