@@ -7,6 +7,7 @@ import {
   Image,
   Linking,
   RefreshControl,
+  TextInput,
 } from 'react-native';
 import {CloseButton, SuccessfulModal} from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
@@ -14,7 +15,12 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Rating} from 'react-native-ratings';
 
-import {API, Storage} from 'aws-amplify';
+import {
+  API,
+  sectionFooter,
+  sectionFooterPrimaryContent,
+  Storage,
+} from 'aws-amplify';
 import {
   createMessage,
   createChatGroup,
@@ -26,6 +32,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {log} from '_utils';
+import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 export const ProductCard = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -512,6 +519,123 @@ const StoreCard = props => {
       <Text style={[Typography.normal, {top: hp('1%')}]}>
         {props.storeName}
       </Text>
+    </TouchableOpacity>
+  );
+};
+
+export const ProductSearchBar = props => {
+  const [focus, setFocus] = useState(false);
+  const [productChosen, setProductChosen] = useState('');
+
+  var theProduct = props.searchable.filter(name =>
+    name.includes(props.searchValue),
+  );
+
+  return (
+    <View style={{zIndex: 100}}>
+      <View
+        style={{
+          backgroundColor: Colors.GRAY_MEDIUM,
+          borderRadius: 30,
+          width: wp('90%'),
+          height: hp('5%'),
+          flexDirection: 'row',
+        }}>
+        <View
+          style={{
+            position: 'absolute',
+            left: wp('5%'),
+            top: hp('0.75%'),
+          }}>
+          <Icon name="search" size={wp('7%')} color={Colors.GRAY_DARK} />
+        </View>
+        <View
+          style={{
+            left: wp('13%'),
+          }}>
+          <TextInput
+            onFocus={() => setFocus(true)}
+            onBlur={() =>
+              setTimeout(() => {
+                setFocus(false);
+              }, 500)
+            }
+            placeholder={Strings.search}
+            onChangeText={item => [
+              setProductChosen(item.toUpperCase()),
+              props.setSearchValue(item.toUpperCase()),
+            ]}
+            value={productChosen}
+            style={{
+              width: wp('55%'),
+              height: hp('5%'),
+            }}></TextInput>
+        </View>
+
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            left: wp('70%'),
+            top: hp('1%'),
+          }}
+          onPress={() => {
+            if (props.searchValue != '') {
+              props.setSearchPressed(true);
+              setFocus(false);
+              log(props.searchValue);
+            }
+          }}>
+          <Text style={[Typography.normal]}>{Strings.search}</Text>
+        </TouchableOpacity>
+      </View>
+      {focus == true ? (
+        <View
+          style={{
+            backgroundColor: 'white',
+            left: wp('13%'),
+            maxHeight: hp('50%'),
+            minHeight: hp('10%'),
+
+            width: wp('55%'),
+            alignItems: 'center',
+          }}>
+          <FlatList
+            keyExtractor={item => item}
+            data={theProduct}
+            renderItem={({item}) => {
+              return (
+                <ListOfItems
+                  text={item}
+                  setFocus={setFocus}
+                  setProductChosen={setProductChosen}
+                  setSearchValue={props.setSearchValue}
+                />
+              );
+            }}></FlatList>
+        </View>
+      ) : (
+        <View />
+      )}
+    </View>
+  );
+};
+
+const ListOfItems = props => {
+  return (
+    <TouchableOpacity
+      style={{
+        width: wp('55%'),
+        left: wp('2%'),
+        height: hp('5%'),
+        backgroundColor: 'pink',
+      }}
+      disabled={false}
+      onPress={() => [
+        props.setProductChosen(props.text),
+        props.setFocus(false),
+        props.setSearchValue(props.text),
+      ]}>
+      <Text>{props.text}</Text>
     </TouchableOpacity>
   );
 };
