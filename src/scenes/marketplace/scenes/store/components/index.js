@@ -30,7 +30,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {SuccessfulModal} from '_components/modals';
+import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {
   getSupplierCompany,
   getRetailerCompany,
@@ -170,6 +170,7 @@ const ProductPopUp = props => {
   const [desiredQuantity, setDesiredQuantity] = useState('');
   const [inquirySuccessfulModal, setInquirySuccessfulModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [addPO, setAddPO] = useState(false);
   const [productInquire, setProductInquire] = useState(false);
 
@@ -426,13 +427,22 @@ const ProductPopUp = props => {
           flexDirection="row-reverse"
           offsetCenter={wp('5%')}
           borderRadius={10}
-          onPress={() => addToPurchaseOrder()}
+          onPress={() => {
+            desiredQuantity > 0
+              ? addToPurchaseOrder()
+              : setUnsuccessfulModal(true),
+              setAddPO(false);
+          }}
           top={hp('12%')}
           onPressIn={() => setAddPO(true)}
           disabled={addPO}
         />
       </View>
-
+      <Modal
+        isVisible={unsuccessfulModal}
+        onBackdropPress={() => setUnsuccessfulModal(false)}>
+        <UnsuccessfulModal text={'Only positive numbers are allowed'} />
+      </Modal>
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [

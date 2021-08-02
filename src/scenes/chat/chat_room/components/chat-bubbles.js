@@ -31,6 +31,7 @@ const ChatBubble = props => {
   const [orderQuotationModal, setOrderQuotationModal] = useState(false);
   const [purchaseOrderModal, setPurchaseOrderModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
+  const [nameColour, setNameColour] = useState('black');
   const getInitials = name => {
     if (name) {
       let initials = name.split(' ');
@@ -47,6 +48,36 @@ const ChatBubble = props => {
     }
   };
 
+  const mapColour = () => {
+    var colourObject = props.colourID;
+    var counter = 0;
+
+    //get the user id
+    //check whether user id is a value in the JSON
+    //if yes, get the key of that value
+    //if no
+    log(colourObject);
+    if (props.senderID != props.userID)
+      try {
+        for (let i = 0; i < colourObject.length; i++) {
+          counter = counter + 1;
+          if (colourObject[i].id == props.senderID) {
+            log('same ' + counter);
+            setNameColour(colourObject[i].colour);
+            return false;
+          } else if (colourObject[i].id == '') {
+            log('empty ' + counter);
+            setNameColour(colourObject[i].colour);
+            colourObject[i].id = props.senderID;
+            props.setColourID(colourObject);
+            return false;
+          }
+        }
+      } catch (e) {
+        log(e);
+      }
+  };
+  useEffect(() => mapColour(), []);
   const createdAt = dayjs(props.createdAt).format('HH:mm D/M');
   const isMyMessage = () => {
     if (props.senderID == props.userID) return true;
@@ -56,37 +87,18 @@ const ChatBubble = props => {
   if (contentType == 'text') {
     return (
       <View style={{width: wp('100%')}}>
-        {/* {!isMyMessage() && (
-          <View
+        {!isMyMessage() && (
+          <Text
             style={{
-              top: hp('3%'),
-              borderColor: 'white',
-              borderWidth: 0.2,
-              width: wp('8%'),
-              height: wp('8%'),
-              position: 'absolute',
-              borderRadius: 100,
-              justifyContent: 'center',
-              backgroundColor: Colors.GRAY_WHITE,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
             }}>
-            <Text
-              style={{
-                color: Colors.GRAY_DARK,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              {getInitials(props.sender)}
-            </Text>
-          </View>
-        )} */}
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
@@ -126,40 +138,18 @@ const ChatBubble = props => {
     var content = props.content.split('+');
     return (
       <View>
-        <View>
-          {/* {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('16%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )} */}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
             justifyContent: 'space-evenly',
@@ -225,41 +215,18 @@ const ChatBubble = props => {
   } else if (contentType == 'purchaseorder') {
     return (
       <View>
-        <View>
-          {/* {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('8%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )} */}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
             justifyContent: 'space-evenly',
@@ -308,41 +275,18 @@ const ChatBubble = props => {
   } else if (contentType == 'quotation') {
     return (
       <View>
-        <View>
-          {/* {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('8%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )} */}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
             justifyContent: 'space-evenly',
@@ -405,41 +349,18 @@ const ChatBubble = props => {
     }, []);
     return (
       <View>
-        <View>
-          {/* {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('8%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )} */}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
@@ -502,41 +423,18 @@ const ChatBubble = props => {
     log(storeDetails);
     return (
       <View>
-        <View>
-          {/* {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('16%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )} */}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
@@ -554,7 +452,6 @@ const ChatBubble = props => {
             style={[
               Typography.small,
               {
-                top: hp('-1%'),
                 textAlign: 'center',
                 width: wp('40%'),
               },
@@ -612,6 +509,16 @@ const ChatBubble = props => {
 };
 
 export const ChatBubbleList = props => {
+  const [colourID, setColourID] = useState([
+    {colour: '#D25BD2', id: ''},
+    {colour: '#D25B7B', id: ''},
+    {colour: '#E0912C', id: ''},
+    {colour: '#9CD25B', id: ''},
+    {colour: '#D2CE5B', id: ''},
+    {colour: '#FA7D7D', id: ''},
+    {colour: '#765BD2', id: ''},
+    {colour: '#5BB9D2', id: ''},
+  ]);
   return (
     <View>
       <FlatList
@@ -641,6 +548,8 @@ export const ChatBubbleList = props => {
               setMessages={props.setMessages}
               messages={props.messages}
               navigation={props.navigation}
+              colourID={colourID}
+              setColourID={setColourID}
             />
           );
         }}

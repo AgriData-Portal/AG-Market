@@ -65,6 +65,7 @@ const AddItemModal = props => {
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [focus, setFocus] = useState('');
   const [addProductButton, setAddProductButton] = useState(false);
+  const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
 
   async function addListing() {
     try {
@@ -393,6 +394,13 @@ const AddItemModal = props => {
             ) {
               log('empty field');
               setUnsuccessfulModal(true);
+            } else if (
+              minPrice <= 0 ||
+              maxPrice <= 0 ||
+              quantityAvailable <= 0 ||
+              moq <= 0
+            ) {
+              setUnsuccessfulModal2(true);
             } else {
               try {
                 addListing();
@@ -424,6 +432,11 @@ const AddItemModal = props => {
         isVisible={unsuccessfulModal}
         onBackdropPress={() => setUnsuccessfulModal(false)}>
         <UnsuccessfulModal text={Strings.pleaseFillIn} />
+      </Modal>
+      <Modal
+        isVisible={unsuccessfulModal2}
+        onBackdropPress={() => setUnsuccessfulModal2(false)}>
+        <UnsuccessfulModal text={'Only positive numbers are allowed'} />
       </Modal>
     </KeyboardAwareScrollView>
   );
@@ -465,6 +478,7 @@ const ProductModal = props => {
   const [editMode, setEditMode] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
 
   const deleteListing = async () => {
     try {
@@ -483,13 +497,13 @@ const ProductModal = props => {
       log(products.length);
       log(deletedListing);
       props.setProducts(products);
+      log('test');
+      setSuccessfulModal2(true);
       if (props.trigger) {
         props.setTrigger(false);
       } else {
         props.setTrigger(true);
       }
-      log('test');
-      setSuccessfulModal2(true);
     } catch (e) {
       log(e);
     }
@@ -531,11 +545,6 @@ const ProductModal = props => {
       products.push(item);
       log(products);
       props.setProducts(products);
-      if (props.trigger) {
-        props.setTrigger(false);
-      } else {
-        props.setTrigger(true);
-      }
       setSuccessfulModal(true);
       setEditMode(false);
     } catch (e) {
@@ -793,6 +802,13 @@ const ProductModal = props => {
                 ) {
                   log('empty field');
                   setUnsuccessfulModal(true);
+                } else if (
+                  lowPrice <= 0 ||
+                  highPrice <= 0 ||
+                  available <= 0 ||
+                  moq <= 0
+                ) {
+                  setUnsuccessfulModal2(true);
                 } else {
                   updateListing();
                 }
@@ -825,6 +841,11 @@ const ProductModal = props => {
               />
             </View>
           )}
+          <Modal
+            isVisible={unsuccessfulModal2}
+            onBackdropPress={() => setUnsuccessfulModal2(false)}>
+            <UnsuccessfulModal text={'Only positive number'} />
+          </Modal>
           <Modal
             isVisible={unsuccessfulModal}
             onBackdropPress={() => setUnsuccessfulModal(false)}>
