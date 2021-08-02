@@ -44,6 +44,7 @@ import {BlueButton} from '_components';
 import {listSupplierCompanys} from '../../../../../graphql/queries';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
+import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -985,6 +986,7 @@ const RetailerList = props => {
 
         return (
           <RetailerCard
+            user={props.user}
             name={item.name}
             id={item.id}
             navigation={props.navigation}
@@ -998,6 +1000,7 @@ const RetailerList = props => {
 
 const RetailerCard = props => {
   const [supermarketButton, setSupermarketButton] = useState(false);
+  const [detailsModal, setDetailsModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const sendStoreDetails = async () => {
     try {
@@ -1013,7 +1016,7 @@ const RetailerCard = props => {
         },
       });
       log('chat group already exist');
-      setSuccessModal(true);
+      setDetailsModal(true);
     } catch (e) {
       log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
@@ -1032,7 +1035,7 @@ const RetailerCard = props => {
             variables: {input: chatGroup},
           });
           log(createdChatGroup);
-          setSuccessModal(true);
+          setDetailsModal(true);
         } catch (e) {
           log(e.errors[0].errorType);
         }
@@ -1062,14 +1065,13 @@ const RetailerCard = props => {
       e => log(e);
     }
     setSupermarketButton(false);
+    setSuccessModal(true);
   };
   return (
     <TouchableOpacity
       onPress={() => {
-        sendStoreDetails();
+        setDetailsModal(true);
       }}
-      disabled={supermarketButton}
-      onPressOut={() => setSupermarketButton(true)}
       style={{
         marginBottom: hp('2%'),
         width: wp('80%'),
@@ -1098,6 +1100,22 @@ const RetailerCard = props => {
           <Text style={[Typography.normal]}>{props.name}</Text>
         </View>
       </View>
+      <Modal
+        isVisible={detailsModal}
+        onBackdropPress={() => setDetailsModal(false)}>
+        <DetailsModal
+          setDetailsModal={setDetailsModal}
+          navigation={props.navigation}
+          user={props.user}
+          companyType="supplier"
+          id={props.id}
+          name={props.name}
+          button="true"
+          onSend={() => sendStoreDetails()}
+          onOut={() => setSupermarketButton(true)}
+          disabled={supermarketButton}
+        />
+      </Modal>
       <Modal
         isVisible={successModal}
         onBackdropPress={() => setSuccessModal(false)}>
@@ -1134,6 +1152,7 @@ export const RetailerModalButton = props => {
         <RetailerModal
           setRetailerModal={setRetailerModal}
           navigation={props.navigation}
+          user={props.user}
         />
       </Modal>
     </View>
@@ -1173,6 +1192,7 @@ const RetailerModal = props => {
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
         <RetailerList
+          user={props.user}
           supermarkets={supermarkets}
           navigation={props.navigation}
           setRetailerModal={props.setRetailerModal}
