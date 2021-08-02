@@ -1,10 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, TouchableOpacity, Image} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Searchbar} from '../../components';
 import {LoadingModal} from '_components';
-import {MarketplaceList, FavouritesList} from './components';
+import {MarketplaceList, FavouritesList, ProductSearchBar} from './components';
 import {API} from 'aws-amplify';
 import {
   listSupplierListings,
@@ -52,6 +59,7 @@ export const Marketplace = props => {
       log("there's a problem");
     }
     setLoading(false);
+    //TODO CHECK
   };
   useEffect(() => {
     if (searchPressed && choice == 'product') {
@@ -206,79 +214,13 @@ export const Marketplace = props => {
           </TouchableOpacity>
         )}
       </View>
-      <View style={{top: hp('0%'), zIndex: 100}}>
+      <View style={{zIndex: 100}}>
         {choice == 'product' ? (
-          <View
-            style={{
-              backgroundColor: Colors.GRAY_MEDIUM,
-              borderRadius: 30,
-              width: wp('90%'),
-              height: hp('5%'),
-              flexDirection: 'row',
-            }}>
-            <View
-              style={{
-                position: 'absolute',
-                left: wp('5%'),
-                top: hp('0.75%'),
-              }}>
-              <Icon name="search" size={wp('7%')} color={Colors.GRAY_DARK} />
-            </View>
-            <View style={{left: wp('13%')}}>
-              <SearchableDropdown
-                items={searchable}
-                placeholder={Strings.search}
-                placeholderTextColor={'black'}
-                itemsContainerStyle={{
-                  zIndex: 10,
-                  height: hp('80%'),
-                }}
-                itemTextStyle={{
-                  //text style of a single dropdown item
-                  color: 'black',
-                }}
-                itemStyle={{
-                  padding: 10,
-                  backgroundColor: '#ddd',
-                  borderColor: '#bbb',
-                  borderWidth: 1,
-                  borderRadius: 5,
-                }}
-                containerStyle={{
-                  padding: 1,
-                  width: wp('75%'),
-                  borderRadius: 20,
-                }}
-                textInputStyle={{
-                  width: wp('55%'),
-                  height: hp('6%'),
-                  borderBottomWidth: 0,
-                  color: 'black',
-                }}
-                textInputProps={{
-                  value: searchValue,
-                  underlineColorAndroid: 'transparent',
-                }}
-                resetValue={false}
-                onItemSelect={item => [setSearchValue(item)]}
-                onTextChange={item => setSearchValue(item)}
-              />
-            </View>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                left: wp('70%'),
-                top: hp('1%'),
-              }}
-              onPress={() => {
-                if (searchValue != '') {
-                  setSearchPressed(true);
-                  log(searchValue);
-                }
-              }}>
-              <Text style={[Typography.normal]}>{Strings.search}</Text>
-            </TouchableOpacity>
-          </View>
+          <ProductSearchBar
+            searchable={searchable}
+            setSearchValue={setSearchValue}
+            searchValue={searchValue}
+            setSearchPressed={setSearchPressed}></ProductSearchBar>
         ) : (
           <Searchbar
             setSearchPressed={setSearchPressed}
@@ -293,6 +235,7 @@ export const Marketplace = props => {
             width: wp('95%'),
             height: hp('80%'),
             top: hp('0%'),
+            zIndex: 1,
           }}>
           <FavouritesList
             data={props.user.retailerCompany.favouriteStores}
@@ -304,7 +247,9 @@ export const Marketplace = props => {
           style={{
             width: wp('95%'),
             height: hp('70%'),
-            top: hp('0%'),
+            top: hp('10%'),
+            position: 'absolute',
+            zIndex: 1,
           }}>
           <MarketplaceList
             chatGroups={props.user.retailerCompany.chatGroups.items}

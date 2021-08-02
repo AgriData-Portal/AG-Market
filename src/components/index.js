@@ -1,4 +1,10 @@
-import {CloseButton, AddButton, BackButton, BlueButton} from './buttons';
+import {
+  CloseButton,
+  AddButton,
+  BackButton,
+  BlueButton,
+  ProductSearchBar,
+} from './buttons';
 import {NavBar} from './navigation_panel';
 import {
   SuccessfulModal,
