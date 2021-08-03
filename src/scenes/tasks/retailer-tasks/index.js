@@ -24,6 +24,7 @@ import {
 import Strings from '_utils';
 import {MenuButton} from '_components';
 import {log} from '_utils';
+import {RatingModal} from './components/receive-goods';
 
 export const RetailerTasks = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -178,11 +179,12 @@ export const RetailerTasks = props => {
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
           {Strings.allResults}
         </Text>
-        <TouchableOpacity
+        {/* TODO sortmodal */}
+        {/* <TouchableOpacity
           onPress={() => setSortModal(true)}
           style={{position: 'absolute', right: wp('0%')}}>
           <Icon name="funnel-outline" size={wp('5%')}></Icon>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{

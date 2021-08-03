@@ -33,6 +33,7 @@ import {
 } from '../../../../graphql/queries';
 import {Rating} from 'react-native-ratings';
 import {log} from '_utils';
+import {BlueButton} from '_components';
 
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
@@ -159,6 +160,7 @@ const ReceiveModal = props => {
         }}>
         <CloseButton setModal={props.setReceiveModal} />
       </View>
+
       <Text
         style={[
           Typography.normal,
@@ -671,7 +673,7 @@ const Product = props => {
   );
 };
 
-const RatingModal = props => {
+export const RatingModal = props => {
   const [rating, setRating] = useState(2.5);
 
   const updateRating = async () => {
@@ -716,10 +718,11 @@ const RatingModal = props => {
     }
   };
   return (
+    // TRANSLATION ratingsmodal
     <View
       style={{
         width: wp('80%'),
-        height: wp('70%'),
+        minHeight: hp('40%'),
         backgroundColor: Colors.PALE_GREEN,
         borderRadius: 10,
         alignSelf: 'center',
@@ -728,18 +731,12 @@ const RatingModal = props => {
         <Text
           style={[
             Typography.large,
-            {
-              justifyContent: 'center',
-              alignSelf: 'center',
-              top: hp('5%'),
-              marginRight: wp('5%'),
-              marginLeft: wp('5%'),
-            },
+            {textAlign: 'center', top: hp('5%'), marginHorizontal: wp('5%')},
           ]}>
           Transaction completed. Please give the supplier a rating.
         </Text>
       </View>
-      <View style={{top: hp('4%')}}>
+      <View style={{top: hp('5%')}}>
         <Rating
           showRating
           count={5}
@@ -750,29 +747,13 @@ const RatingModal = props => {
           tintColor={Colors.PALE_GREEN}
         />
       </View>
-      <TouchableOpacity
-        onPress={() => [updateRating()]}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('30%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('5%'),
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-        }}>
-        <Text style={[Typography.normal, {}]}>Submit rating</Text>
-      </TouchableOpacity>
+      <BlueButton
+        onPress={() => updateRating()}
+        text={'Submit Rating'}
+        font={Typography.normal}
+        borderRadius={10}
+        top={hp('8%')}
+      />
     </View>
   );
 };

@@ -746,6 +746,7 @@ const PurchaseOrderComponent = props => {
         height: hp('8%'),
         width: wp('80%'),
         justifyContent: 'center',
+        paddingVertical: hp('2%'),
       }}>
       <View style={{flexDirection: 'row'}}>
         <View>
@@ -753,94 +754,113 @@ const PurchaseOrderComponent = props => {
             style={[
               Typography.normal,
               {
-                position: 'absolute',
                 left: wp('5%'),
-                width: wp('30%'),
-                bottom: hp('1%'),
+                minWidth: wp('35%'),
+                height: hp('3%'),
               },
             ]}>
             {props.name} ({props.grade})
           </Text>
-
+          {/* TODO word length */}
           <Text
             style={[
               Typography.normal,
               {
-                position: 'absolute',
                 left: wp('5%'),
-                top: hp('1.5%'),
-                width: wp('30%'),
+                minWidth: wp('35%'),
+                height: hp('3%'),
               },
             ]}>
             {Strings.variety}: {props.variety}
           </Text>
           {edit ? (
-            <View style={{flexDirection: 'row'}}>
-              <TextInput
+            <View
+              style={{
+                position: 'absolute',
+                flexDirection: 'row',
+              }}>
+              <View
                 style={{
-                  left: wp('50%'),
-                  backgroundColor: 'white',
-                  width: wp('10%'),
-                  height: hp('3%'),
-                  padding: 0,
-                  color: 'black',
-                }}
-                onChangeText={item => setNumber(item)}
-                value={number}
-                keyboardType="number-pad"
-              />
-              <Text style={[Typography.normal, {left: wp('51%')}]}>
-                {props.siUnit}
-              </Text>
+                  position: 'absolute',
+                  flexDirection: 'row',
+                  top: hp('1.5%'),
+                }}>
+                <TextInput
+                  style={{
+                    left: wp('50%'),
+                    backgroundColor: 'white',
+                    width: wp('10%'),
+                    height: hp('3%'),
+                    padding: 0,
+                    color: 'black',
+                  }}
+                  onChangeText={item => setNumber(item)}
+                  value={number}
+                  keyboardType="number-pad"
+                />
+                <Text style={[Typography.normal, {left: wp('50%')}]}>
+                  {props.siUnit}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => [setEdit(false), updateitemFromPO()]}
+                style={{
+                  left: wp('70%'),
+                  top: hp('1.2%'),
+                }}>
+                <Icon
+                  name="checkmark-circle-outline"
+                  size={wp('7%')}
+                  style={{color: 'green'}}
+                />
+              </TouchableOpacity>
             </View>
           ) : (
-            <Text style={[Typography.normal, {left: wp('50%')}]}>
-              {number} {props.siUnit}
-            </Text>
+            <View style={{position: 'absolute', flexDirection: 'row'}}>
+              <Text
+                style={[
+                  Typography.normal,
+                  {
+                    position: 'absolute',
+                    right: wp('-68%'),
+                    top: hp('1.5%'),
+                  },
+                ]}>
+                {number} {props.siUnit}
+              </Text>
+              <View
+                style={{
+                  left: wp('88%'),
+                  top: hp('1.3%'),
+                }}>
+                <TouchableOpacity
+                  onPress={() => setEdit(true)}
+                  style={{
+                    position: 'absolute',
+                    right: wp('12%'),
+                  }}>
+                  <Icon
+                    name="create-outline"
+                    size={wp('6%')}
+                    style={{color: 'black'}}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => deleteItemFromPO()}
+                  style={{
+                    position: 'absolute',
+                    right: wp('5%'),
+                  }}>
+                  <Icon
+                    name="trash-outline"
+                    size={wp('6%')}
+                    color={Colors.FAIL}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
           )}
         </View>
-
-        {edit ? (
-          <View>
-            <TouchableOpacity
-              onPress={() => [setEdit(false), updateitemFromPO()]}
-              style={{
-                left: wp('55%'),
-                bottom: hp('0.2%'),
-              }}>
-              <Icon
-                name="checkmark-circle-outline"
-                size={wp('6%')}
-                style={{color: 'green'}}
-              />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={{left: wp('70%')}}>
-            <TouchableOpacity
-              onPress={() => setEdit(true)}
-              style={{
-                position: 'absolute',
-                right: wp('12%'),
-                bottom: hp('0.2%'),
-              }}>
-              <Icon
-                name="create-outline"
-                size={wp('6%')}
-                style={{color: 'black'}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => deleteItemFromPO()}
-              style={{
-                position: 'absolute',
-                right: wp('5%'),
-                bottom: hp('0.2%'),
-              }}>
-              <Icon name="trash-outline" size={wp('6%')} color={Colors.FAIL} />
-            </TouchableOpacity>
-          </View>
-        )}
       </View>
     </View>
   );

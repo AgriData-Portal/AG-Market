@@ -176,11 +176,12 @@ export const SupplierTasks = props => {
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
           {Strings.allResults}
         </Text>
-        <TouchableOpacity
+        {/* TODO sortmodal */}
+        {/* <TouchableOpacity
           onPress={() => setSortModal(true)}
           style={{position: 'absolute', right: wp('0%')}}>
           <Icon name="funnel-outline" size={wp('5%')}></Icon>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{
