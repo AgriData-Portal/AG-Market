@@ -141,7 +141,7 @@ type Address {
 
 type BankDetails {
   bankName: String
-  accountNumber: Int
+  accountNumber: String
 }
 
 type ChatGroup
