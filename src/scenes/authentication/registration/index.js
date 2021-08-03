@@ -107,6 +107,7 @@ export const Registration = props => {
         setUnsuccessfulModal(true);
       }
       log('❌ Error signing up...', error);
+      // TRANSLATION for registration
     }
   };
   var hasNumber = /\d/;

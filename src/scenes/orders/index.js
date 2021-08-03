@@ -181,11 +181,12 @@ export const Orders = props => {
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
           {Strings.results}
         </Text>
-        <TouchableOpacity
+        {/* TODO code for sort modal */}
+        {/* <TouchableOpacity
           onPress={() => setSortModal(true)}
           style={{position: 'absolute', right: wp('0%')}}>
           <Icon name="funnel-outline" size={wp('5%')}></Icon>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{

@@ -1046,30 +1046,13 @@ const RatingModal = props => {
           tintColor={Colors.PALE_GREEN}
         />
       </View>
-      <TouchableOpacity
-        onPress={() => [updateRating()]}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          top: hp('28%'),
-          width: wp('30%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('5%'),
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-        }}>
-        <Text style={[Typography.normal, {}]}>Submit rating</Text>
-      </TouchableOpacity>
+      <BlueButton
+        onPress={() => updateRating()}
+        text={'Submit Rating'}
+        font={Typography.normal}
+        borderRadius={10}
+        top={hp('8%')}
+      />
     </View>
   );
 };
