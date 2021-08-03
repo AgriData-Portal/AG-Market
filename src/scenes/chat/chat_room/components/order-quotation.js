@@ -169,9 +169,6 @@ export const OrderQuotationModal = props => {
             <Text style={[Typography.header]}>
               <Text style={{color: '#8EAB3D'}}>{props.chatName}</Text>
             </Text>
-            <Text style={[Typography.small]}>
-              #{orderDetails.id.slice(0, 8)}
-            </Text>
           </View>
           <View
             style={{
@@ -205,27 +202,26 @@ export const OrderQuotationModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <View style={{flexDirection: 'row', width: wp('80')}}>
-              <Text style={[Typography.normal, {textAlign: 'left'}]}>
-                Logistics Provided: {'\t'}
-                {'\t'}
-                {'\t'}
-              </Text>
-              <Text style={[Typography.normal, {textAlign: 'right'}]}>
-                {orderDetails.logisticsProvided ? 'Provided' : 'Not Provided'}
-              </Text>
-            </View>
-            <View style={{flexDirection: 'row', width: wp('80')}}>
-              <Text style={[Typography.normal]}>
-                Payment Terms:{'\t'}
-                {'\t'}
-                {'\t'}
-              </Text>
-              <Text style={[Typography.normal]}>
-                {orderDetails.paymentTerms == 'cashOnDelivery'
-                  ? 'Cash on Delivery'
-                  : 'Credit Terms'}
-              </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: wp('80'),
+                justifyContent: 'space-between',
+              }}>
+              <View>
+                <Text style={[Typography.normal]}>Logistics Provided:</Text>
+                <Text style={[Typography.normal]}>Payment Terms:</Text>
+              </View>
+              <View style={{alignItems: 'flex-end'}}>
+                <Text style={[Typography.normal]}>
+                  {orderDetails.logisticsProvided ? 'Provided' : 'Not Provided'}
+                </Text>
+                <Text style={[Typography.normal]}>
+                  {orderDetails.paymentTerms == 'cashOnDelivery'
+                    ? 'Cash on Delivery'
+                    : 'Credit Terms'}
+                </Text>
+              </View>
             </View>
           </View>
 
@@ -233,7 +229,7 @@ export const OrderQuotationModal = props => {
             <View
               style={{
                 flexDirection: 'row',
-                top: hp('53%'),
+                top: hp('52%'),
               }}>
               <BlueButton
                 text={Strings.accept}

@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -33,6 +34,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Strings from '_utils';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {UnsuccessfulModal} from '_components';
 
 const OrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
@@ -126,22 +128,27 @@ const OrderCard = props => {
         flexDirection: 'row',
       }}>
       <View style={{left: wp('1%'), width: wp('22%')}}>
-        <Text style={[Typography.normal, {}]}>{props.name} </Text>
+        <Text style={[Typography.normal, {width: wp(200)}]}>{props.name} </Text>
         <Text style={[Typography.small]}>
           {Strings.grade}: {props.grade}
         </Text>
 
         <Text style={[Typography.small]}>{props.variety}</Text>
       </View>
-      <View style={{flexDirection: 'row', left: wp('3%')}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          left: wp('3%'),
+        }}>
         <TextInput
           value={quantity}
           underlineColorAndroid="transparent"
           onChangeText={item => updateQuantity(item)}
           keyboardType="numeric"
           style={{
+            top: Platform.OS == 'ios' ? hp('1%') : hp('0%'),
+            padding: 0,
             width: wp('10%'),
-
             borderBottomColor: 'transparent',
             color: 'black',
             alignSelf: 'center',
@@ -183,6 +190,8 @@ const OrderCard = props => {
           onChangeText={item => updatePrice(item)}
           keyboardType="numeric"
           style={{
+            top: Platform.OS == 'ios' ? hp('1%') : hp('0%'),
+            padding: 0,
             left: wp('1%'),
             width: wp('9%'),
             borderBottomColor: 'transparent',
@@ -325,7 +334,7 @@ const NewOrderQuotation = props => {
     {label: 'Cash', value: 'cashOnDelivery'},
     {label: 'Credit Term', value: 'creditTerm'},
   ]);
-
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   var productsWIndex = quotationItems;
   productsWIndex.forEach((item, index, arr) => {
     log('adding index to check back later');
@@ -348,34 +357,27 @@ const NewOrderQuotation = props => {
   }, [trigger, quotationItems]);
 
   const sendQuotation = async () => {
-    var tempList = quotationItems;
-    tempList.forEach((item, index, array) => {
-      delete item.createdAt;
-      delete item.id;
-      delete item.index;
-      delete item.purchaseOrderID, delete item.updatedAt;
-      array[index] = item;
-    });
-    log('removing key and value pairs like index for order quotation');
-    try {
-      const updatedValue = await API.graphql({
-        query: updateOrderQuotation,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            items: tempList,
-            sum: sum,
-            logisticsProvided: deliveryValue,
-            paymentTerms: paymentValue,
-          },
-        },
+    if (isNaN(sum)) {
+      setUnsuccessfulModal(true);
+      var valid = false;
+    } else {
+      var valid = true;
+    }
+
+    log(valid);
+    if (valid == true) {
+      var tempList = quotationItems;
+      tempList.forEach((item, index, array) => {
+        delete item.createdAt;
+        delete item.id;
+        delete item.index;
+        delete item.purchaseOrderID, delete item.updatedAt;
+        array[index] = item;
       });
-    } catch (e) {
-      log(e);
-      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        log('order quotation has not been created, creating now');
-        const createdValue = await API.graphql({
-          query: createOrderQuotation,
+      log('removing key and value pairs like index for order quotation');
+      try {
+        const updatedValue = await API.graphql({
+          query: updateOrderQuotation,
           variables: {
             input: {
               id: props.chatGroupID,
@@ -386,38 +388,57 @@ const NewOrderQuotation = props => {
             },
           },
         });
+      } catch (e) {
+        log(e);
+        if (
+          e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException'
+        ) {
+          log('order quotation has not been created, creating now');
+          const createdValue = await API.graphql({
+            query: createOrderQuotation,
+            variables: {
+              input: {
+                id: props.chatGroupID,
+                items: tempList,
+                sum: sum,
+                logisticsProvided: deliveryValue,
+                paymentTerms: paymentValue,
+              },
+            },
+          });
+        }
       }
-    }
-    try {
-      log('sending order quotation');
-      const createdMessage = await API.graphql({
-        query: createMessage,
-        variables: {
-          input: {
-            chatGroupID: props.chatGroupID,
-            type: 'quotation',
-            content: props.chatGroupID,
-            sender: props.userName,
-            senderID: props.userID,
+      try {
+        log('sending order quotation');
+        const createdMessage = await API.graphql({
+          query: createMessage,
+          variables: {
+            input: {
+              chatGroupID: props.chatGroupID,
+              type: 'quotation',
+              content: props.chatGroupID,
+              sender: props.userName,
+              senderID: props.userID,
+            },
           },
-        },
-      });
-      log('message created');
-      const updatedChat = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            mostRecentMessage: 'Quotation',
-            mostRecentMessageSender: props.userName,
+        });
+        log('message created');
+        const updatedChat = await API.graphql({
+          query: updateChatGroup,
+          variables: {
+            input: {
+              id: props.chatGroupID,
+              mostRecentMessage: 'Quotation',
+              mostRecentMessageSender: props.userName,
+            },
           },
-        },
-      });
-      log('Updated chat');
+        });
+        log('Updated chat');
 
-      setSuccessfulModal(true);
-    } catch (e) {
-      log(e);
+        setSuccessfulModal(true);
+      } catch (e) {
+        log(e);
+      }
     }
   };
   return (
@@ -579,7 +600,6 @@ const NewOrderQuotation = props => {
           borderRadius={10}
           font={Typography.normal}
         />
-
         <Modal
           isVisible={successfulModal}
           onBackdropPress={() => [
@@ -593,6 +613,12 @@ const NewOrderQuotation = props => {
               'You have successfully sent the order quotation to the customer!'
             }
           />
+        </Modal>
+        {/*TRANSLATION */}
+        <Modal
+          isVisible={unsuccessfulModal}
+          onBackdropPress={() => setUnsuccessfulModal(false)}>
+          <UnsuccessfulModal text={'Please input the price for your items'} />
         </Modal>
       </View>
     </View>
