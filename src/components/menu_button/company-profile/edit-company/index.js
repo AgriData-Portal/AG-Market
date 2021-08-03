@@ -74,9 +74,12 @@ export const EditCompany = props => {
 
   const saveChanges = async () => {
     if (props.user.retailerCompanyID == null) {
+      var photo;
       try {
         if (imageSource) {
-          let photo = imageSource;
+          photo = imageSource;
+          log('here');
+          log(photo);
           const response = await fetch(photo.uri);
           const blob = await response.blob();
           log('FileName: \n');
@@ -109,6 +112,7 @@ export const EditCompany = props => {
       try {
         if (imageSource) {
           let photo = imageSource;
+          log(photo);
           const response = await fetch(photo.uri);
           const blob = await response.blob();
           log('FileName: \n');

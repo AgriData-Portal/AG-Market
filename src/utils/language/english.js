@@ -216,4 +216,5 @@ export default {
   editPersonalProfile: 'Edit Personal Profile',
   sendQuotation: 'Send Quotation',
   sendToVerify: 'Send to Verify',
+  thisFeature: 'This Feature is coming soon! Stay tuned!',
 };

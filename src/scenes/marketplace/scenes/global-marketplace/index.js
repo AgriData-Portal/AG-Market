@@ -51,7 +51,6 @@ export const Marketplace = props => {
       log("there's a problem");
     }
     setLoading(false);
-    //TODO CHECK
   };
   useEffect(() => {
     if (searchPressed && choice == 'product') {

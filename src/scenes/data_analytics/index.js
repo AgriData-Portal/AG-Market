@@ -25,11 +25,26 @@ export const DataAnalytics = props => {
         alignItems: 'center',
         height: hp('100%'),
         width: wp('100%'),
+        justifyContent: 'center',
       }}>
+      <View
+        style={{
+          width: wp('80%'),
+          backgroundColor: Colors.PALE_GREEN,
+          borderRadius: 10,
+          minHeight: hp('10%'),
+          justifyContent: 'center',
+          alignItems: 'center',
+          bottom: hp('15%'),
+        }}>
+        <Text style={[Typography.large, {textAlign: 'center'}]}>
+          {Strings.thisFeature}
+        </Text>
+      </View>
       {/*<Text style={[Typography.header, {top: hp('3%'), right: wp('25%')}]}>
         {Strings.analytics}
     </Text>*/}
-      <View
+      {/* <View
         style={{
           height: hp('80%'),
 
@@ -65,7 +80,7 @@ export const DataAnalytics = props => {
       </View>
       <View style={{position: 'absolute', top: hp('90%')}}>
         <NavBar navigation={props.navigation} />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

@@ -218,4 +218,5 @@ export default {
   editPersonalProfile: 'Edit Profil Peribadi',
   sendQuotation: 'Hantar Sebut Harga',
   sendToVerify: 'Hantar Untuk Disahkan',
+  thisFeature: 'Fungsi ini akan datang! Sila bersabar.',
 };
