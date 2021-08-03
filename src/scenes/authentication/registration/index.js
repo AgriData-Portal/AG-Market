@@ -39,9 +39,9 @@ export const Registration = props => {
   const [value, setValue] = useState(null);
   const [secure, setSecure] = useState(true);
   const [items, setItems] = useState([
-    {label: Strings.generalManager, value: 'generalmanager'},
-    {label: Strings.owner, value: 'owner'},
-    {label: Strings.retailManager, value: 'retailmanager'},
+    {label: Strings.generalManager, value: 'General Manager'},
+    {label: Strings.owner, value: 'Owner'},
+    {label: Strings.retailManager, value: 'Retail Manager'},
   ]);
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
@@ -61,13 +61,13 @@ export const Registration = props => {
   useEffect(() => {
     if (value2 == 'supermarket') {
       setItems([
-        {label: Strings.generalManager, value: 'generalmanager'},
-        {label: Strings.owner, value: 'owner'},
-        {label: Strings.retailManager, value: 'retailmanager'},
+        {label: Strings.generalManager, value: 'General Manager'},
+        {label: Strings.owner, value: 'Owner'},
+        {label: Strings.retailManager, value: 'Retail Manager'},
       ]);
       log('works');
     } else {
-      setItems([{label: Strings.owner, value: 'owner'}]);
+      setItems([{label: Strings.owner, value: 'Owner'}]);
       log('hi');
       log(items2[1]);
     }

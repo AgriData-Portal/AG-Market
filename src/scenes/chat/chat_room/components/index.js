@@ -69,6 +69,7 @@ export const MessageInput = props => {
   const [audio, setAudio] = useState(false);
   const [whenMicPressed, setMicPressed] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [inputHeight, setInputHeight] = useState(hp('6%'));
 
   // audioRecorderPlayer.setSubscriptionDuration(0.09);
 
@@ -184,6 +185,7 @@ export const MessageInput = props => {
     setMessage('');
     setSendButtonDisabled(false);
   };
+
   return (
     <View
       style={{
@@ -217,8 +219,8 @@ export const MessageInput = props => {
           value={message}
           style={{
             width: wp('60%'),
+            height: hp('6%'),
 
-            height: hp('7%'),
             borderBottomColor: 'transparent',
             left: wp('2%'),
             color: 'black',

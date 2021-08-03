@@ -1,14 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  TextInput,
-} from 'react-native';
+import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {Searchbar} from '../../components';
 import {LoadingModal} from '_components';
 import {MarketplaceList, FavouritesList, ProductSearchBar} from './components';

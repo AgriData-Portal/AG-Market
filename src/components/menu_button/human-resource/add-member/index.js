@@ -99,17 +99,20 @@ export const AddEmployeeButtonModal = props => {
         {label: 'Accounts', value: 'Accounts'},
         {label: 'Owner', value: 'Owner'},
       ]);
+      setRole('Sales Manager');
     } else if (props.user.farmerCompanyID != null) {
       setItems([
         {label: 'Accounts', value: 'Accounts'},
         {label: 'Owner', value: 'Owner'},
       ]);
+      setRole('Accounts');
     }
   }, []);
 
   const addUser = async () => {
     try {
       log('+60' + phone);
+      log(role);
       const user = await Auth.signUp({
         username: '+60' + phone,
         password: 'agridata2020',
@@ -311,7 +314,7 @@ export const AddEmployeeButtonModal = props => {
             <View style={{top: hp('8%')}}>
               <DropDownPicker
                 open={open}
-                value={items[0].value}
+                value={role}
                 items={items}
                 placeholder={Strings.roleInCompany}
                 setOpen={setOpen}

@@ -99,7 +99,7 @@ const AppNavigator = props => {
           />
         );
       } else if (company.role == 'Accounts') {
-        log('Accounts \n');
+        log('Retail Accounts \n');
         return (
           <AccountsNavigation
             user={props.user}
@@ -108,7 +108,7 @@ const AppNavigator = props => {
           />
         );
       } else if (company.role == 'Owner') {
-        log('Owner \n');
+        log('Retail Owner \n');
         return (
           <OwnerNavigation
             user={props.user}
@@ -117,7 +117,7 @@ const AppNavigator = props => {
           />
         );
       } else if (company.role == 'Receiver') {
-        log('Receiver \n');
+        log('Retail Receiver \n');
         return (
           <RetailEmployeeNavigation
             user={props.user}
@@ -126,7 +126,7 @@ const AppNavigator = props => {
           />
         );
       } else if (company.role == 'General Manager') {
-        log('General Manager \n');
+        log('Retail General Manager \n');
         return (
           <GMNavigation
             user={props.user}
@@ -137,6 +137,7 @@ const AppNavigator = props => {
       }
     } else if (company.type == 'supplier') {
       if (company.role == 'Owner') {
+        log('Supplier Owner \n');
         return (
           <SupplierNavigation
             user={props.user}
@@ -145,6 +146,7 @@ const AppNavigator = props => {
           />
         );
       } else if (company.role == 'Sales Manager') {
+        log('Supplier Sales Manager\n');
         return (
           <SupplierNavigation
             user={props.user}
@@ -153,6 +155,7 @@ const AppNavigator = props => {
           />
         );
       } else if (company.role == 'Delivery Man') {
+        log('Supplier Delivery Man\n');
         return (
           <SupplierNavigation
             user={props.user}
@@ -161,6 +164,7 @@ const AppNavigator = props => {
           />
         );
       } else if (company.role == 'Accounts') {
+        log('Supplier Accounts \n');
         return (
           <SupplierNavigation
             user={props.user}
@@ -170,6 +174,7 @@ const AppNavigator = props => {
         );
       }
     } else if (company.type == 'farmer') {
+      log('Farmer \n');
       return (
         <FarmerNavigation
           user={props.user}

@@ -41,11 +41,14 @@ export const EditCompany = props => {
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [number, setNumber] = useState(props.route.params.contactNumber);
   const [email, setEmail] = useState(props.route.params.email);
-  const [bankDetails, setBankDetails] = useState(
-    props.route.params.bankNumber.toString(),
-  );
+  const [bankDetails, setBankDetails] = useState(props.route.params.bankNumber);
   const [bankName, setBankName] = useState(props.route.params.bankName);
   const [errorText, setErrorText] = useState('');
+
+  if (number.includes('+60')) {
+    var temp = number.slice(3);
+    setNumber(temp);
+  }
 
   function selectImage() {
     let options = {
@@ -72,25 +75,26 @@ export const EditCompany = props => {
   const saveChanges = async () => {
     if (props.user.retailerCompanyID == null) {
       try {
-        let photo = imageSource;
-        const response = await fetch(photo.uri);
-        const blob = await response.blob();
-        log('FileName: \n');
-        photo.fileName = props.user.supplierCompany.name + '_logo';
-        await Storage.put(photo.fileName, blob, {
-          contentType: 'image/jpeg',
-        });
-
+        if (imageSource) {
+          let photo = imageSource;
+          const response = await fetch(photo.uri);
+          const blob = await response.blob();
+          log('FileName: \n');
+          photo.fileName = props.user.supplierCompany.name + '_logo';
+          await Storage.put(photo.fileName, blob, {
+            contentType: 'image/jpeg',
+          });
+        }
         var companyProfile = await API.graphql({
           query: updateSupplierCompany,
           variables: {
             input: {
               id: props.user.supplierCompanyID,
-              logo: photo.fileName,
-              contactDetails: {email: email, phone: number},
+              logo: imageSource == null ? null : photo.fileName,
+              contactDetails: {email: email, phone: '+60' + number},
               bankAccount: {
                 bankName: bankName,
-                accountNumber: parseInt(bankDetails),
+                accountNumber: bankDetails,
               },
             },
           },
@@ -103,21 +107,22 @@ export const EditCompany = props => {
       }
     } else if (props.user.supplierCompanyID == null) {
       try {
-        let photo = imageSource;
-        const response = await fetch(photo.uri);
-        const blob = await response.blob();
-        log('FileName: \n');
-        photo.fileName = props.user.retailerCompany.name + '_logo';
-        await Storage.put(photo.fileName, blob, {
-          contentType: 'image/jpeg',
-        });
-
+        if (imageSource) {
+          let photo = imageSource;
+          const response = await fetch(photo.uri);
+          const blob = await response.blob();
+          log('FileName: \n');
+          photo.fileName = props.user.retailerCompany.name + '_logo';
+          await Storage.put(photo.fileName, blob, {
+            contentType: 'image/jpeg',
+          });
+        }
         var companyProfile = await API.graphql({
           query: updateRetailerCompany,
           variables: {
             input: {
               id: props.user.retailerCompanyID,
-              logo: photo.fileName,
+              logo: imageSource == null ? null : photo.fileName,
               contactDetails: {email: email, phone: number},
               bankAccount: {bankName: bankName, accountNumber: bankDetails},
             },
@@ -216,16 +221,25 @@ export const EditCompany = props => {
                 <Text style={[Typography.placeholderSmall]}>
                   {Strings.contactNumber}
                 </Text>
-                <TextInput
-                  underlineColorAndroid="transparent"
-                  value={number}
-                  onChangeText={item => setNumber(item)}
+                <View
                   style={{
-                    borderBottomColor: 'transparent',
-                    width: wp('75%'),
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     height: hp('6%'),
-                    color: 'black',
-                  }}></TextInput>
+                  }}>
+                  <Text>+60</Text>
+                  <TextInput
+                    underlineColorAndroid="transparent"
+                    value={number}
+                    keyboardType={'number-pad'}
+                    onChangeText={item => setNumber(item)}
+                    style={{
+                      borderBottomColor: 'transparent',
+                      width: wp('75%'),
+                      height: hp('6%'),
+                      color: 'black',
+                    }}></TextInput>
+                </View>
               </View>
               <View
                 style={{
@@ -262,7 +276,7 @@ export const EditCompany = props => {
                   justifyContent: 'center',
                 }}>
                 <Text style={[Typography.placeholderSmall]}>
-                  {Strings.bankDetails}
+                  Bank Account Number {/*FIXME translation for bankDetails */}
                 </Text>
                 <TextInput
                   underlineColorAndroid="transparent"
@@ -311,11 +325,7 @@ export const EditCompany = props => {
                   log('empty field');
                   setErrorText('Please fill in all empty spaces!');
                   setUnsuccessfulModal(true);
-                } else if (
-                  !number.startsWith('+') ||
-                  !number.length > 5 ||
-                  isNaN(number.slice(1))
-                ) {
+                } else if (!number.length > 7 || isNaN(number)) {
                   setUnsuccessfulModal(true);
                   setErrorText(
                     'Sorry you have entered an invalid phone number. Please try again.',
@@ -328,7 +338,7 @@ export const EditCompany = props => {
                 } else if (isNaN(bankDetails)) {
                   setUnsuccessfulModal(true);
                   setErrorText(
-                    'Sorry you have entered an invalid bank detail . Please try again.',
+                    'Sorry you have entered an invalid bank number . Please try again.',
                   );
                 } else {
                   saveChanges();

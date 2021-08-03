@@ -231,15 +231,35 @@ export const CompanyProfile = props => {
         </View>
       </View>
       <BlueButton
-        onPress={() =>
-          props.navigation.navigate('editcompany', {
-            contactNumber: company.contactDetails.phone,
-            email: company.contactDetails.email,
-            bankNumber: company.bankAccount.accountNumber,
-            bankName: company.bankAccount.bankName,
-            logo: imageSource,
-          })
-        }
+        onPress={() => {
+          if (company.contactDetails && company.bankAccount) {
+            if (imageSource) {
+              props.navigation.navigate('editcompany', {
+                contactNumber: company.contactDetails.phone,
+                email: company.contactDetails.email,
+                bankNumber: company.bankAccount.accountNumber,
+                bankName: company.bankAccount.bankName,
+                logo: imageSource,
+              });
+            } else {
+              props.navigation.navigate('editcompany', {
+                contactNumber: company.contactDetails.phone,
+                email: company.contactDetails.email,
+                bankNumber: company.bankAccount.accountNumber,
+                bankName: company.bankAccount.bankName,
+                logo: null,
+              });
+            }
+          } else {
+            props.navigation.navigate('editcompany', {
+              contactNumber: '',
+              email: '',
+              bankNumber: '',
+              bankName: '',
+              logo: null,
+            });
+          }
+        }}
         font={Typography.small}
         text={Strings.editCompanyProfile}
         maxWidth={wp('80%')}

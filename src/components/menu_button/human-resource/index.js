@@ -218,11 +218,13 @@ const Participant = props => {
       }}>
       <View
         style={{
+          height: hp('6%'),
           left: wp('5%'),
           alignSelf: 'flex-start',
+          paddingVertical: hp('0.5%'),
         }}>
         <Text style={[Typography.normal]}>{props.name}</Text>
-        <Text style={[Typography.placeholderSmall, {fontStyle: 'italic'}]}>
+        <Text style={[Typography.placeholderSmall, {bottom: hp('1%')}]}>
           {props.role}
         </Text>
       </View>
@@ -358,7 +360,10 @@ const ParticipantList = props => {
       <View
         style={{
           alignSelf: 'center',
-          width: wp('70%'),
+          height: 0,
+          borderBottomColor: Colors.GRAY_DARK,
+          borderBottomWidth: 1,
+          width: wp('80%'),
         }}></View>
     );
   };

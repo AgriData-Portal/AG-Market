@@ -525,7 +525,7 @@ export const ProductSearchBar = props => {
   );
 
   return (
-    <View style={{zIndex: 100}}>
+    <View>
       <View
         style={{
           backgroundColor: Colors.GRAY_MEDIUM,
@@ -560,11 +560,14 @@ export const ProductSearchBar = props => {
               props.setSearchValue(item.toUpperCase()),
               log(item.toUpperCase()),
             ]}
+            underlineColorAndroid="transparent"
             value={productChosen}
             style={{
+              flex: 1,
               width: wp('55%'),
               height: hp('5%'),
               padding: 0,
+              color: 'black',
             }}></TextInput>
         </View>
 
