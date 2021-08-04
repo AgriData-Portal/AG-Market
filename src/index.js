@@ -14,7 +14,7 @@ import {
 } from './graphql/mutations';
 import {StatusBar} from 'react-native';
 import {log} from '_utils';
-
+import RNBootSplash from 'react-native-bootsplash';
 import {
   GMNavigation,
   RMNavigation,
@@ -208,7 +208,11 @@ const App = () => {
   const [userAttributes, setUserAttributes] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [runAgain, setRunAgain] = useState(false);
-
+  useEffect(() => {
+    setTimeout(() => {
+      RNBootSplash.hide();
+    }, 1000);
+  });
   const createNewUser = async () => {
     var user = null;
 
