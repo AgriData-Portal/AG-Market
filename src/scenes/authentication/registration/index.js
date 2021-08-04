@@ -89,7 +89,7 @@ export const Registration = props => {
         },
       });
       log(user.userSub);
-      props.navigation.navigate('confirmsignup', {phone: phone});
+      props.navigation.navigate('confirmsignup', {phone: '+60' + phone});
       return user.userSub;
     } catch (error) {
       if (error.message == 'Invalid phone number format.') {

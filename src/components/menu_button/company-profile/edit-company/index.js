@@ -106,7 +106,7 @@ export const EditCompany = props => {
         setSuccessfulModal(true);
       } catch (e) {
         log(e);
-        log(props.user.supplierCompanyID);
+        setUnsuccessfulModal(true);
       }
     } else if (props.user.supplierCompanyID == null) {
       try {
@@ -127,8 +127,11 @@ export const EditCompany = props => {
             input: {
               id: props.user.retailerCompanyID,
               logo: imageSource == null ? null : photo.fileName,
-              contactDetails: {email: email, phone: number},
-              bankAccount: {bankName: bankName, accountNumber: bankDetails},
+              contactDetails: {email: email, phone: '+60' + number},
+              bankAccount: {
+                bankName: bankName,
+                accountNumber: bankDetails,
+              },
             },
           },
         });
@@ -136,7 +139,7 @@ export const EditCompany = props => {
         setSuccessfulModal(true);
       } catch (e) {
         log(e);
-        log(props.user.retailerCompanyID);
+        setSuccessfulModal(true);
       }
     }
   };
