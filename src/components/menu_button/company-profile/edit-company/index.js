@@ -126,7 +126,7 @@ export const EditCompany = props => {
       var photo;
       try {
         if (imageSource) {
-          let photo = imageSource;
+          photo = imageSource;
           log(photo);
           const response = await fetch(photo.uri);
           const blob = await response.blob();

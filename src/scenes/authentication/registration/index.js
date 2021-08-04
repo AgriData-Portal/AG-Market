@@ -50,6 +50,7 @@ export const Registration = props => {
     {label: Strings.supermarket, value: 'supermarket'},
     // {label: Strings.farm, value: 'farm'},
   ]);
+  //TRANSLATION
   const [createAccountButton, setCreateAccountButton] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
