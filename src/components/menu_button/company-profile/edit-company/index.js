@@ -73,7 +73,19 @@ export const EditCompany = props => {
   }
 
   const saveChanges = async () => {
-    if (props.user.retailerCompanyID == null) {
+    console.log(
+      email,
+      '  ',
+      number,
+      '  ',
+      bankName,
+      '  ',
+      bankDetails,
+      '  ',
+      imageSource,
+    );
+    if (props.user.supplierCompanyID != null) {
+      console.log('Supplier');
       var photo;
       try {
         if (imageSource) {
@@ -88,6 +100,7 @@ export const EditCompany = props => {
             contentType: 'image/jpeg',
           });
         }
+
         var companyProfile = await API.graphql({
           query: updateSupplierCompany,
           variables: {
@@ -108,7 +121,9 @@ export const EditCompany = props => {
         log(e);
         setUnsuccessfulModal(true);
       }
-    } else if (props.user.supplierCompanyID == null) {
+    } else if (props.user.retailerCompanyID != null) {
+      console.log('Retailer');
+      var photo;
       try {
         if (imageSource) {
           let photo = imageSource;
@@ -135,6 +150,7 @@ export const EditCompany = props => {
             },
           },
         });
+        console.log(companyProfile.data);
 
         setSuccessfulModal(true);
       } catch (e) {

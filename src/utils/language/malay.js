@@ -30,7 +30,7 @@ export default {
   inspect: 'Memeriksa',
   purchaseOrderFrom: 'Pembelian untuk',
   orderQuotation: 'Harga Pesanan',
-  orderQuotationFrom: 'Sebut Harga Pesana Daripada',
+  orderQuotationFrom: 'Sebut Harga Pesanan Daripada',
   totalCost: 'Jumlah Kos',
   deliveryMethod: 'Kaedah Penghantaran',
   paymentMethod: 'Kaedah Pembayaran',
