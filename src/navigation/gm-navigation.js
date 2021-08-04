@@ -48,6 +48,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
+import linking from '../linking';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -318,6 +319,7 @@ const GMNavigation = props => {
 const TabbedNavigator = props => {
   return (
     <TabStack.Navigator
+      linking={linking}
       tabBarOptions={{
         keyboardHidesTabBar: true,
         style: {

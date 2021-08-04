@@ -27,6 +27,7 @@ import {
   AuthenticationNavigator,
   FarmerNavigation,
 } from './navigation';
+import linking from './linking';
 
 Amplify.configure(config);
 
@@ -357,7 +358,7 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <StatusBar barStyle="dark-content" />
       {isUserLoggedIn === 'initializing' && <Initializing />}
       {isUserLoggedIn === 'loggedIn' && (
