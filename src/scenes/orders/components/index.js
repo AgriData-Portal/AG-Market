@@ -183,22 +183,23 @@ const Order = props => {
         </View>
         <Text
           style={[
-            Typography.normal,
+            Typography.small,
             {
               color: Colors.LIME_GREEN,
               top: hp('2%'),
               left: wp('25%'),
               position: 'absolute',
+              fontWeight: 'bold',
             },
           ]}>
           {props.company.name}
         </Text>
         <Text
           style={[
-            Typography.normal,
+            Typography.small,
             {
-              color: 'black',
-              top: hp('5%'),
+              color: 'grey',
+              top: hp('4.5%'),
               left: wp('25%'),
               position: 'absolute',
             },
@@ -208,12 +209,13 @@ const Order = props => {
         {props.paid ? (
           <Text
             style={[
-              Typography.normal,
+              Typography.small,
               {
                 color: Colors.LIME_GREEN,
-                top: hp('0%'),
-                right: wp('2%'),
+                top: hp('2%'),
+                right: wp('5%'),
                 position: 'absolute',
+                fontStyle: 'italic',
               },
             ]}>
             {Strings.paid}
@@ -221,42 +223,41 @@ const Order = props => {
         ) : (
           <Text
             style={[
-              Typography.normal,
+              Typography.small,
               {
                 color: 'red',
-                top: hp('0%'),
+                top: hp('2%'),
                 right: wp('2%'),
                 position: 'absolute',
+                fontStyle: 'italic',
               },
             ]}>
             {Strings.notPaid}
           </Text>
         )}
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('7.3%'),
-              right: hp('2%'),
-              position: 'absolute',
-            },
-          ]}>
-          {Strings.invoiceDate}:
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('9%'),
-              right: hp('2%'),
-              position: 'absolute',
-              fontStyle: 'italic',
-            },
-          ]}>
-          {dayjs(props.createdAt).format('DD MMM YYYY')}
-        </Text>
+        <View style={{flexDirection: 'row', top: hp('8%'), left: wp('-1%')}}>
+          <Text
+            style={[
+              Typography.placeholderSmall,
+              {
+                color: 'grey',
+                fontStyle: 'italic',
+              },
+            ]}>
+            {Strings.invoiceDate}:
+          </Text>
+          <Text
+            style={[
+              Typography.placeholderSmall,
+              {
+                color: 'grey',
+                fontStyle: 'italic',
+                marginHorizontal: wp('1%'),
+              },
+            ]}>
+            {dayjs(props.createdAt).format('DD MMM YYYY')}
+          </Text>
+        </View>
       </View>
       <Modal isVisible={invoiceModal}>
         <InvoiceModal
