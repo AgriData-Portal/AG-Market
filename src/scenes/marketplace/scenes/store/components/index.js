@@ -61,20 +61,20 @@ const ProductCard = props => {
       onPress={() => setProductModal(true)}
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
-        width: wp('36%'),
-        height: hp('30%'),
-        margin: wp('5%'),
+        width: wp('43%'),
+        margin: wp('2%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
+        paddingHorizontal: wp('2%'),
+        paddingVertical: hp('2%'),
       }}>
       <Image
         source={imageSource}
         style={{
-          height: Mixins.scaleHeight(70),
-          width: Mixins.scaleHeight(70),
+          height: hp('10%'),
+          width: hp('10%'),
           borderRadius: 100,
-          top: Mixins.scaleHeight(10),
         }}></Image>
       <Text style={[Typography.normal, {top: hp('2%')}]}>
         {props.productName}
@@ -82,7 +82,11 @@ const ProductCard = props => {
       <Text
         style={[
           Typography.small,
-          {top: hp('2%'), width: wp('33%'), alignSelf: 'center'},
+          {
+            marginTop: hp('2%'),
+            width: wp('39%'),
+            alignSelf: 'center',
+          },
         ]}>
         {Strings.price}: {props.lowPrice} - {props.highPrice} /{props.siUnit}
         {'\n'}MOQ: {props.minimumQuantity} {props.siUnit}
