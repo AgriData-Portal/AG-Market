@@ -285,7 +285,7 @@ const ProductPopUp = props => {
     >
       <View
         style={{
-          height: hp('90%'),
+          height: hp('80%'),
           width: wp('90%'),
           backgroundColor: 'white',
           borderRadius: 20,
@@ -310,14 +310,14 @@ const ProductPopUp = props => {
           <Text style={[Typography.header, {left: wp('5%')}]}>
             {props.productName}
           </Text>
-          <View style={{position: 'absolute', right: wp('2%')}}>
-            <TouchableOpacity
-              onPress={() => [sendProductInquiry()]}
-              onPressIn={() => setProductInquire(true)}
-              disabled={productInquire}>
-              <Icon name="chatbox-outline" size={wp('8%')}></Icon>
-            </TouchableOpacity>
-          </View>
+
+          <TouchableOpacity
+            onPress={() => [sendProductInquiry()]}
+            onPressIn={() => setProductInquire(true)}
+            disabled={productInquire}
+            style={{marginLeft: wp('7%')}}>
+            <Icon name="chatbox-outline" size={wp('8%')}></Icon>
+          </TouchableOpacity>
         </View>
 
         <Image
@@ -329,24 +329,17 @@ const ProductPopUp = props => {
           }}
           source={props.productPicture}></Image>
         <View
-          onPress={() => log('navigate')}
           style={{
-            width: wp('35%'),
             flexDirection: 'row',
             height: hp('13%'),
             top: hp('11%'),
             alignSelf: 'center',
-            right: wp('15%'),
           }}>
-          <Rating
+          {/* <Rating
             imageSize={wp('6%')}
             readonly={true}
-            startingValue={3.5}></Rating>
-          <Text
-            style={[
-              Typography.large,
-              {color: Colors.PALE_BLUE, left: wp('6%')},
-            ]}>
+            startingValue={3.5}></Rating> */}
+          <Text style={[Typography.large, {color: Colors.PALE_BLUE}]}>
             RM {props.lowPrice}-{props.highPrice}/{props.siUnit}
           </Text>
         </View>

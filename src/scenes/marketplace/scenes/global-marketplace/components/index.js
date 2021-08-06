@@ -497,12 +497,12 @@ const StoreCard = props => {
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('40%'),
-        height: hp('18%'),
-        margin: wp('3%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
         top: hp('3%'),
+        marginHorizontal: wp('4%'),
+        marginVertical: hp('1%'),
       }}>
       <View
         style={{
@@ -510,7 +510,6 @@ const StoreCard = props => {
           height: hp('12%'),
           top: hp('1%'),
           right: wp('0%'),
-
           alignItems: 'center',
         }}>
         {image == null ? (
@@ -533,9 +532,11 @@ const StoreCard = props => {
           />
         )}
       </View>
-      <Text style={[Typography.normal, {top: hp('1%')}]}>
-        {props.storeName}
-      </Text>
+      <View style={{paddingBottom: hp('3%')}}>
+        <Text style={[Typography.normal, {top: hp('1%')}]}>
+          {props.storeName}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
