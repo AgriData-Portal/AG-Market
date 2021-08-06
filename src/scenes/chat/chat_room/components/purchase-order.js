@@ -277,7 +277,10 @@ export const PurchaseOrder = props => {
             top: hp('5%'),
             borderRadius: 10,
           }}>
-          <PurchaseOrderList chatGroupID={props.chatGroupID} />
+          <PurchaseOrderList
+            content={props.content}
+            chatGroupID={props.chatGroupID}
+          />
         </View>
         <View
           style={{
@@ -368,10 +371,7 @@ const NewOrderQuotation = props => {
     if (valid == true) {
       var tempList = quotationItems;
       tempList.forEach((item, index, array) => {
-        delete item.createdAt;
-        delete item.id;
         delete item.index;
-        delete item.purchaseOrderID, delete item.updatedAt;
         array[index] = item;
       });
       log('removing key and value pairs like index for order quotation');
@@ -627,14 +627,21 @@ const NewOrderQuotation = props => {
 
 const PurchaseOrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
-  const fetchPO = async () => {
-    const prodList = await API.graphql({
-      query: purchaseOrderItems,
-      variables: {purchaseOrderID: props.chatGroupID},
+  const fetchPO = () => {
+    var poArray = props.content.split('/');
+    poArray.forEach((item, index, arr) => {
+      var temp = item.split('+');
+      var itemObject = {};
+      itemObject['id'] = temp[0];
+      itemObject['name'] = temp[1];
+      itemObject['quantity'] = temp[2];
+      itemObject['siUnit'] = temp[3];
+      itemObject['variety'] = temp[4];
+      itemObject['grade'] = temp[5];
+      itemObject['index'] = index;
+      arr[index] = itemObject;
     });
-
-    log('successful fetch for PO items');
-    setQuotationItems(prodList.data.purchaseOrderItems.items);
+    setQuotationItems(poArray);
   };
   useEffect(() => {
     fetchPO();

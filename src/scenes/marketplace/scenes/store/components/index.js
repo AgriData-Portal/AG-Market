@@ -507,6 +507,8 @@ export const PurchaseOrderButton = props => {
 const PurchaseOrder = props => {
   const [poSuccessfulModal, setpoSuccessfulModal] = useState(false);
   const [sendPOButton, setSendPOButton] = useState(false);
+  log('PO \n \n \n');
+  console.log(props.POList);
   const sendPO = async () => {
     try {
       const updateChat = await API.graphql({
@@ -544,11 +546,23 @@ const PurchaseOrder = props => {
         log(e.errors[0].errorType);
       }
     }
-
+    var message = '';
+    const arrLength = props.POList.length;
+    props.POList.forEach((item, index, arr) => {
+      message = message + (item.id + '+');
+      message = message + (item.name + '+');
+      message = message + (item.quantity + '+');
+      message = message + (item.siUnit + '+');
+      message = message + (item.variety + '+');
+      message = message + item.grade;
+      if (index < arrLength - 1) {
+        message = message + '/';
+      }
+    });
     const inquiry = {
       chatGroupID: props.purchaseOrder,
       type: 'purchaseorder',
-      content: props.purchaseOrder,
+      content: message,
       sender: props.user.name,
       senderID: props.user.id,
     };

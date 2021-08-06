@@ -261,6 +261,7 @@ const ChatBubble = props => {
         </View>
         <Modal isVisible={purchaseOrderModal}>
           <PurchaseOrder
+            content={props.content}
             chatName={props.chatName}
             type={props.type}
             setPurchaseOrderModal={setPurchaseOrderModal}
