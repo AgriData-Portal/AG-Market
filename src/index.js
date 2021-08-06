@@ -96,6 +96,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       } else if (company.role == 'Accounts') {
@@ -105,6 +106,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       } else if (company.role == 'Owner') {
@@ -114,6 +116,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       } else if (company.role == 'Receiver') {
@@ -123,6 +126,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       } else if (company.role == 'General Manager') {
@@ -132,6 +136,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       }
@@ -143,6 +148,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       } else if (company.role == 'Sales Manager') {
@@ -152,6 +158,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       } else if (company.role == 'Delivery Man') {
@@ -161,6 +168,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       } else if (company.role == 'Accounts') {
@@ -170,6 +178,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       }
@@ -180,6 +189,7 @@ const AppNavigator = props => {
           user={props.user}
           updateAuthState={props.updateAuthState}
           setUserDetails={props.setUserDetails}
+          company={company}
         />
       );
     }

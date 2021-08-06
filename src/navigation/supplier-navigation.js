@@ -69,14 +69,14 @@ var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
 const AppStack = createStackNavigator();
 
-function getHeaderTitle(route) {
+function getHeaderTitle(route, sellerState) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
 
   switch (routeName) {
     case 'inbox':
       return Strings.inbox;
     case 'marketplace':
-      return Strings.myStore;
+      return sellerState ? Strings.marketplace : Strings.myStore;
     case 'orders':
       return Strings.orders;
     case 'tasks':
@@ -86,9 +86,9 @@ function getHeaderTitle(route) {
   }
 }
 
-function getIcon(route, user, navigation) {
+function getIcon(route, user, navigation, sellerState) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
-  if (routeName == 'marketplace') {
+  if (routeName == 'marketplace' && !sellerState) {
     log('test');
     return (
       <RetailerModalButton
@@ -104,6 +104,7 @@ export {SupplierNavigation};
 
 const SupplierNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
+  const [sellerState, setSellerState] = useState(false);
   return (
     <AppStack.Navigator
       screenOptions={{
@@ -116,7 +117,7 @@ const SupplierNavigation = props => {
       <AppStack.Screen
         name={Strings.inbox}
         options={({route, navigation}) => ({
-          headerTitle: getHeaderTitle(route),
+          headerTitle: getHeaderTitle(route, sellerState),
           headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
@@ -124,6 +125,9 @@ const SupplierNavigation = props => {
               navigation={navigation}
               updateAuthState={props.updateAuthState}
               userType={props.user.role}
+              company={props.company}
+              on={sellerState}
+              off={setSellerState}
             />
           ),
           headerRight: () =>
@@ -131,6 +135,7 @@ const SupplierNavigation = props => {
               (route = route),
               (user = props.user),
               (navigation = navigation),
+              sellerState,
             ),
         })}>
         {screenProps => (
@@ -138,10 +143,44 @@ const SupplierNavigation = props => {
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            sellerState={sellerState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
-
+      <AppStack.Screen
+        name="store"
+        options={({route, navigation}) => ({
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <HeaderBackButton onPress={() => navigation.goBack()} />
+          ),
+          headerTitle: () => (
+            <View>
+              <TouchableOpacity onPress={() => setDetailsModal(true)}>
+                <Text style={[Typography.large]}>{route.params.storeName}</Text>
+              </TouchableOpacity>
+              <Modal
+                isVisible={detailsModal}
+                onBackdropPress={() => setDetailsModal(false)}>
+                <DetailsModal
+                  companyType={'retailer'}
+                  name={route.params.storeName}
+                  id={route.params.itemId}
+                  setDetailsModal={setDetailsModal}></DetailsModal>
+              </Modal>
+            </View>
+          ),
+        })}>
+        {screenProps => (
+          <Store
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+            company={props.company}
+          />
+        )}
+      </AppStack.Screen>
       <AppStack.Screen
         name="chatroom"
         options={({route, navigation}) => ({
@@ -454,13 +493,22 @@ const TabbedNavigator = props => {
             return null;
           },
         }}>
-        {screenProps => (
-          <SupplierStore
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            user={props.user}
-          />
-        )}
+        {screenProps =>
+          props.sellerState ? (
+            <Marketplace
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              company={props.company}
+            />
+          ) : (
+            <SupplierStore
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+            />
+          )
+        }
       </TabStack.Screen>
       <TabStack.Screen
         name="tasks"

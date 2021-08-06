@@ -211,40 +211,6 @@ const GMNavigation = props => {
               </Modal>
             </View>
           ),
-          // headerRight: () => (
-          //   <View>
-          //     {checkIsFavourite(
-          //       (userDetails = props.user),
-          //       (itemId = route.params.itemId),
-          //     ) || isFavourite ? (
-          //       <View
-          //         style={{
-          //           position: 'absolute',
-          //           right: wp('5%'),
-          //           top: hp('4%'),
-          //         }}>
-          //         <Icon color="gold" name="star-outline" size={wp('7%')} />
-          //       </View>
-          //     ) : (
-          //       <TouchableOpacity
-          //         onPress={() =>
-          //           updateFavourites(
-          //             (userDetails = props.user),
-          //             (itemId = route.params.itemId),
-          //             (storeName = route.params.storeName),
-          //             (setIsFavourite = setIsFavourite()),
-          //           )
-          //         }
-          //         style={{
-          //           position: 'absolute',
-          //           right: wp('5%'),
-          //           top: hp('4%'),
-          //         }}>
-          //         <Icon name="star-outline" size={wp('7%')} />
-          //       </TouchableOpacity>
-          //     )}
-          //   </View>
-          // ),
         })}>
         {screenProps => (
           <Store
