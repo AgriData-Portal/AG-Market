@@ -322,10 +322,10 @@ const ProductPopUp = props => {
 
         <Image
           style={{
-            top: hp('5%'),
-            height: hp('30%'),
-            width: hp('30%'),
-            borderRadius: 100,
+            top: hp('8%'),
+            height: hp('20%'),
+            width: hp('20%'),
+            borderRadius: 10,
           }}
           source={props.productPicture}></Image>
         <View
@@ -334,7 +334,7 @@ const ProductPopUp = props => {
             width: wp('35%'),
             flexDirection: 'row',
             height: hp('13%'),
-            top: hp('6%'),
+            top: hp('11%'),
             alignSelf: 'center',
             right: wp('15%'),
           }}>
@@ -357,6 +357,7 @@ const ProductPopUp = props => {
             backgroundColor: Colors.GRAY_LIGHT,
             borderRadius: 20,
             alignItems: 'center',
+            top: hp('3%'),
           }}>
           <Text
             style={[

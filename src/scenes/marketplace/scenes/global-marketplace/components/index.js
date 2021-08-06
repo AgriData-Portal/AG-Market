@@ -305,7 +305,7 @@ export const ProductPopUp = props => {
             top: hp('8%'),
             height: hp('18%'),
             width: wp('38%'),
-            borderRadius: 100,
+            borderRadius: 10,
           }}
           source={props.productPicture}></Image>
         <View

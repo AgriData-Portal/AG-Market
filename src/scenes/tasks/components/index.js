@@ -23,7 +23,7 @@ import Strings from '_utils';
 import {DismissKeyboard} from '_components';
 
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 
