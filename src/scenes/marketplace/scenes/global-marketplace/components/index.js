@@ -93,7 +93,8 @@ export const ProductCard = props => {
           siUnit={props.siUnit}
           chatGroups={props.chatGroups}
           supplier={props.supplier}
-          user={props.user}></ProductPopUp>
+          user={props.user}
+          company={props.company}></ProductPopUp>
       </Modal>
     </TouchableOpacity>
   );
@@ -180,9 +181,14 @@ export const MarketplaceList = props => {
             lowPrice={item.lowPrice}
             highPrice={item.highPrice}
             minimumQuantity={item.minimumQuantity}
-            supplierID={item.supplierID}
-            supplier={item.supplier}
+            supplierID={
+              props.company.type == 'retailer' ? item.supplierID : item.farmerID
+            }
+            supplier={
+              props.company.type == 'retailer' ? item.supplier : item.farmer
+            }
             user={props.user}
+            company={props.company}
           />
         );
       }}
