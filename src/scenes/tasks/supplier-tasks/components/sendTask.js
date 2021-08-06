@@ -812,7 +812,7 @@ const InvoiceItem = props => {
           Typography.small,
           {position: 'absolute', left: wp('45%'), bottom: hp('4.5%')},
         ]}>
-        kg
+        {props.siUnit}
       </Text>
       <Text
         style={[

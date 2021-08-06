@@ -369,45 +369,66 @@ const NewOrderQuotation = props => {
 
     log(valid);
     if (valid == true) {
+      var message = '';
       var tempList = quotationItems;
       tempList.forEach((item, index, array) => {
-        delete item.index;
-        array[index] = item;
-      });
-      log('removing key and value pairs like index for order quotation');
-      try {
-        const updatedValue = await API.graphql({
-          query: updateOrderQuotation,
-          variables: {
-            input: {
-              id: props.chatGroupID,
-              items: tempList,
-              sum: sum,
-              logisticsProvided: deliveryValue,
-              paymentTerms: paymentValue,
-            },
-          },
-        });
-      } catch (e) {
-        log(e);
-        if (
-          e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException'
-        ) {
-          log('order quotation has not been created, creating now');
-          const createdValue = await API.graphql({
-            query: createOrderQuotation,
-            variables: {
-              input: {
-                id: props.chatGroupID,
-                items: tempList,
-                sum: sum,
-                logisticsProvided: deliveryValue,
-                paymentTerms: paymentValue,
-              },
-            },
-          });
+        message = message + (item.id + '+');
+        message = message + (item.name + '+');
+        message = message + (item.quantity + '+');
+        message = message + (item.siUnit + '+');
+        message = message + (item.variety + '+');
+        message = message + (item.grade + '+');
+        message = message + (item.price + '+');
+        if (index < tempList.length - 1) {
+          message = message + '/';
         }
-      }
+      });
+      message =
+        message +
+        ':' +
+        sum.toString() +
+        ':' +
+        ':' +
+        deliveryValue +
+        ':' +
+        paymentValue;
+      log('removing key and value pairs like index for order quotation');
+      log(message);
+      // try {
+
+      //   };
+      //   const updatedValue = await API.graphql({
+      //     query: updateOrderQuotation,
+      //     variables: {
+      //       input: {
+      //         id: props.chatGroupID,
+      //         items: tempList,
+      //         sum: sum,
+      //         logisticsProvided: deliveryValue,
+      //         paymentTerms: paymentValue,
+      //       },
+      //     },
+      //   });
+      // } catch (e) {
+      //   log(e);
+      //   if (
+      //     e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException'
+      //   ) {
+      //     log('order quotation has not been created, creating now');
+      //     const createdValue = await API.graphql({
+      //       query: createOrderQuotation,
+      //       variables: {
+      //         input: {
+      //           id: props.chatGroupID,
+      //           items: tempList,
+      //           sum: sum,
+      //           logisticsProvided: deliveryValue,
+      //           paymentTerms: paymentValue,
+      //         },
+      //       },
+      //     });
+      //   }
+      // }
       try {
         log('sending order quotation');
         const createdMessage = await API.graphql({
@@ -416,7 +437,7 @@ const NewOrderQuotation = props => {
             input: {
               chatGroupID: props.chatGroupID,
               type: 'quotation',
-              content: props.chatGroupID,
+              content: message,
               sender: props.userName,
               senderID: props.userID,
             },

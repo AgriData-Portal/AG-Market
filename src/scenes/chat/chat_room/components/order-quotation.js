@@ -42,17 +42,42 @@ export const OrderQuotationModal = props => {
   const [declineButton, setDeclineButton] = useState(false);
 
   log('quotation' + props.chatGroupID);
-  const fetchQuotation = async () => {
+  const fetchQuotation = () => {
+    log(props.content);
     try {
-      const quotation = await API.graphql({
-        query: getOrderQuotation,
-        variables: {id: props.chatGroupID},
+      var quotation = props.content.split(':');
+      var items = quotation[0].split('/');
+      items.forEach((item, index, arr) => {
+        var temp = item.split('+');
+        var itemObject = {};
+        itemObject['id'] = temp[0];
+        itemObject['name'] = temp[1];
+        itemObject['quantity'] = temp[2];
+        itemObject['siUnit'] = temp[3];
+        itemObject['variety'] = temp[4];
+        itemObject['grade'] = temp[5];
+        itemObject['price'] = temp[6];
+        arr[index] = itemObject;
       });
-      log(quotation.data.getOrderQuotation);
-      setOrderDetails(quotation.data.getOrderQuotation);
+      tempObject = {};
+      tempObject['items'] = items;
+      tempObject['sum'] = quotation[1];
+      tempObject['logisticsProvided'] = quotation[2];
+      tempObject['paymentTerms'] = quotation[3];
+      setOrderDetails(tempObject);
     } catch (e) {
-      log(e);
+      console.warn(e);
     }
+    // try {
+    //   const quotation = await API.graphql({
+    //     query: getOrderQuotation,
+    //     variables: {id: props.chatGroupID},
+    //   });
+    //   log(quotation.data.getOrderQuotation);
+    //   setOrderDetails(quotation.data.getOrderQuotation);
+    // } catch (e) {
+    //   log(e);
+    // }
   };
   const reject = async () => {
     try {

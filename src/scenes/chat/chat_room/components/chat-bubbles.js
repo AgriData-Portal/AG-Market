@@ -325,6 +325,7 @@ const ChatBubble = props => {
           onBackdropPress={() => setOrderQuotationModal(false)}>
           <OrderQuotationModal
             chatName={props.chatName}
+            content={props.content}
             type={props.type}
             userID={props.userID}
             userName={props.userName}
