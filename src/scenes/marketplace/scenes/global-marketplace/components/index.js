@@ -50,13 +50,13 @@ export const ProductCard = props => {
       onPress={() => setProductModal(true)}
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
-        width: wp('36%'),
-        height: hp('25%'),
-        margin: wp('5%'),
-        marginTop: hp('1%'),
+        width: wp('43%'),
+        margin: wp('2%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
+        paddingHorizontal: wp('2%'),
+        paddingVertical: hp('2%'),
       }}>
       <Image
         source={imageSource}
@@ -64,12 +64,15 @@ export const ProductCard = props => {
           height: hp('8%'),
           width: hp('8%'),
           borderRadius: 100,
-          top: hp('2%'),
         }}></Image>
-      <Text style={[Typography.normal, {top: hp('2.5%')}]}>
+      <Text style={[Typography.normal, {top: hp('2%')}]}>
         {props.productName}
       </Text>
-      <Text style={[Typography.small, {top: hp('3%'), width: wp('25%')}]}>
+      <Text
+        style={[
+          Typography.small,
+          {marginTop: hp('2%'), width: wp('39%'), alignSelf: 'center'},
+        ]}>
         {Strings.variety}: {props.variety}
         {'\n'}
         {Strings.price}: {props.lowPrice} - {props.highPrice}

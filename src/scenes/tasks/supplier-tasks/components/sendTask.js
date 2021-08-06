@@ -35,7 +35,7 @@ import {log} from '_utils';
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 
@@ -215,7 +215,7 @@ const SendTask = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={sendTaskModal}>
@@ -346,7 +346,7 @@ const SendTaskModal = props => {
               left: wp('8%'),
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MMMM, YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
         <View
           style={{
@@ -421,7 +421,7 @@ const SendTaskModal = props => {
                 left: wp('80%'),
                 elevation: 5,
               }}
-              onPress={() => setDate(dayjs().format('DD-MM-YYYY'))}>
+              onPress={() => setDate(dayjs().format('DD MMM YYYY'))}>
               <Icon name="add-circle-outline" size={wp('5%')} />
             </TouchableOpacity>
           </View>
@@ -658,7 +658,7 @@ const InvoiceModal = props => {
             top: hp('6%'),
           },
         ]}>
-        {dayjs().format('DD-MMM-YYYY')}
+        {dayjs().format('DD MMM YYYY')}
       </Text>
       <Text
         style={
