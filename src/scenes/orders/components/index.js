@@ -514,83 +514,35 @@ export const SortModal = props => {
     <View
       style={{
         position: 'absolute',
-        right: wp('8%'),
-        top: hp('18%'),
+        right: wp('6%'),
+        top: hp('9%'),
         backgroundColor: Colors.GRAY_MEDIUM,
         borderRadius: 5,
-        width: wp('53%'),
-        height: hp('17%'),
-        alignItems: 'center',
-        justifyContent: 'center',
       }}>
+      <Text
+        style={[
+          Typography.normalBold,
+          {left: wp('5%'), marginBottom: hp('2%'), top: hp('1%')},
+        ]}>
+        Sort By
+      </Text>
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
+          width: wp('45%'),
+          height: hp('4%'),
         }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="time-outline" size={wp('6%')} />
-          <Icon name="arrow-up-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.oldest}
+        <Text style={[Typography.normal, {left: wp('5%')}]}>
+          Newest to Oldest
         </Text>
+        {/*TRANSLATION*/}
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
+          width: wp('45%'),
+          height: hp('4%'),
         }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="time-outline" size={wp('6%')} />
-          <Icon name="arrow-down-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.latest}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
-        }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="pricetags-outline" size={wp('6%')} />
-          <Icon name="arrow-up-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.leastExpensive}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
-        }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="pricetags-outline" size={wp('6%')} />
-          <Icon name="arrow-down-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.mostExpensive}
+        <Text style={[Typography.normal, {left: wp('5%')}]}>
+          Oldest to Newest
         </Text>
       </TouchableOpacity>
     </View>
