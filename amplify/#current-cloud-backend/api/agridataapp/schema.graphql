@@ -64,6 +64,7 @@ type SupplierCompany @model {
   address: String
   rating: Rating
   bankAccount: BankDetails
+  mostRecentPurchaseOrderNumber:String
   mostRecentInvoiceNumber:String
   mostRecentQuotationNumber: String
   favouriteStores: [Favourites]
@@ -98,6 +99,7 @@ type FarmerCompany @model {
   bankAccount: BankDetails
   rating: Rating
   registrationNumber: String
+  mostRecentPurchaseOrderNumber:String
   mostRecentInvoiceNumber:String "YYYY-MM-XXXX"
   mostRecentQuotationNumber: String
   listings: [FarmerListing]
