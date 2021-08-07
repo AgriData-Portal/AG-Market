@@ -32,21 +32,6 @@ const ChatBubble = props => {
   const [purchaseOrderModal, setPurchaseOrderModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
   const [nameColour, setNameColour] = useState('black');
-  const getInitials = name => {
-    if (name) {
-      let initials = name.split(' ');
-
-      if (initials.length > 1) {
-        initials = initials.shift().charAt(0) + initials.pop().charAt(0);
-      } else {
-        initials = name.substring(0, 2);
-      }
-
-      return initials.toUpperCase();
-    } else {
-      return null;
-    }
-  };
 
   const mapColour = () => {
     var colourObject = props.colourID;

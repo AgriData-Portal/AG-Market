@@ -83,6 +83,7 @@ export const createUser = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -138,6 +139,7 @@ export const createUser = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -249,6 +251,7 @@ export const updateUser = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -304,6 +307,7 @@ export const updateUser = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -415,6 +419,7 @@ export const deleteUser = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -470,6 +475,7 @@ export const deleteUser = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -541,6 +547,8 @@ export const createRetailerCompany = /* GraphQL */ `
           id
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -642,6 +650,8 @@ export const updateRetailerCompany = /* GraphQL */ `
           id
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -743,6 +753,8 @@ export const deleteRetailerCompany = /* GraphQL */ `
           id
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -835,6 +847,7 @@ export const createSupplierCompany = /* GraphQL */ `
         accountNumber
       }
       mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       favouriteStores {
         id
         name
@@ -863,6 +876,8 @@ export const createSupplierCompany = /* GraphQL */ `
           id
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -875,6 +890,8 @@ export const createSupplierCompany = /* GraphQL */ `
           id
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -994,6 +1011,7 @@ export const updateSupplierCompany = /* GraphQL */ `
         accountNumber
       }
       mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       favouriteStores {
         id
         name
@@ -1022,6 +1040,8 @@ export const updateSupplierCompany = /* GraphQL */ `
           id
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -1034,6 +1054,8 @@ export const updateSupplierCompany = /* GraphQL */ `
           id
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -1153,6 +1175,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
         accountNumber
       }
       mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       favouriteStores {
         id
         name
@@ -1181,6 +1204,8 @@ export const deleteSupplierCompany = /* GraphQL */ `
           id
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -1193,6 +1218,8 @@ export const deleteSupplierCompany = /* GraphQL */ `
           id
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -1313,6 +1340,7 @@ export const createFarmerCompany = /* GraphQL */ `
       }
       registrationNumber
       mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       listings {
         items {
           id
@@ -1336,6 +1364,8 @@ export const createFarmerCompany = /* GraphQL */ `
           id
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -1429,6 +1459,7 @@ export const updateFarmerCompany = /* GraphQL */ `
       }
       registrationNumber
       mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       listings {
         items {
           id
@@ -1452,6 +1483,8 @@ export const updateFarmerCompany = /* GraphQL */ `
           id
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -1545,6 +1578,7 @@ export const deleteFarmerCompany = /* GraphQL */ `
       }
       registrationNumber
       mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       listings {
         items {
           id
@@ -1568,6 +1602,8 @@ export const deleteFarmerCompany = /* GraphQL */ `
           id
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -1694,6 +1730,7 @@ export const createChatGroup = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -1750,6 +1787,7 @@ export const createChatGroup = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -1872,6 +1910,7 @@ export const updateChatGroup = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -1928,6 +1967,7 @@ export const updateChatGroup = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -2050,6 +2090,7 @@ export const deleteChatGroup = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -2106,6 +2147,7 @@ export const deleteChatGroup = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -2242,6 +2284,7 @@ export const createChatGroupUsers = /* GraphQL */ `
           name
           address
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2255,6 +2298,7 @@ export const createChatGroupUsers = /* GraphQL */ `
           address
           registrationNumber
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2298,6 +2342,7 @@ export const createChatGroupUsers = /* GraphQL */ `
           name
           address
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2310,6 +2355,7 @@ export const createChatGroupUsers = /* GraphQL */ `
           address
           registrationNumber
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2353,6 +2399,7 @@ export const updateChatGroupUsers = /* GraphQL */ `
           name
           address
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2366,6 +2413,7 @@ export const updateChatGroupUsers = /* GraphQL */ `
           address
           registrationNumber
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2409,6 +2457,7 @@ export const updateChatGroupUsers = /* GraphQL */ `
           name
           address
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2421,6 +2470,7 @@ export const updateChatGroupUsers = /* GraphQL */ `
           address
           registrationNumber
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2464,6 +2514,7 @@ export const deleteChatGroupUsers = /* GraphQL */ `
           name
           address
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2477,6 +2528,7 @@ export const deleteChatGroupUsers = /* GraphQL */ `
           address
           registrationNumber
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2520,6 +2572,7 @@ export const deleteChatGroupUsers = /* GraphQL */ `
           name
           address
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2532,6 +2585,7 @@ export const deleteChatGroupUsers = /* GraphQL */ `
           address
           registrationNumber
           mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2568,6 +2622,7 @@ export const createSupplierListing = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -2644,6 +2699,7 @@ export const updateSupplierListing = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -2720,6 +2776,7 @@ export const deleteSupplierListing = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -2797,6 +2854,7 @@ export const createFarmerListing = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -2860,6 +2918,7 @@ export const updateFarmerListing = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -2923,6 +2982,7 @@ export const deleteFarmerListing = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -3153,6 +3213,7 @@ export const createGoodsTaskBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -3201,6 +3262,8 @@ export const createGoodsTaskBetweenRandS = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -3273,6 +3336,7 @@ export const updateGoodsTaskBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -3321,6 +3385,8 @@ export const updateGoodsTaskBetweenRandS = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -3393,6 +3459,7 @@ export const deleteGoodsTaskBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -3441,6 +3508,8 @@ export const deleteGoodsTaskBetweenRandS = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -3472,6 +3541,7 @@ export const createGoodsTaskBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -3513,6 +3583,7 @@ export const createGoodsTaskBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -3561,6 +3632,8 @@ export const createGoodsTaskBetweenSandF = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -3592,6 +3665,7 @@ export const updateGoodsTaskBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -3633,6 +3707,7 @@ export const updateGoodsTaskBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -3681,6 +3756,8 @@ export const updateGoodsTaskBetweenSandF = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -3712,6 +3789,7 @@ export const deleteGoodsTaskBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -3753,6 +3831,7 @@ export const deleteGoodsTaskBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -3801,6 +3880,8 @@ export const deleteGoodsTaskBetweenSandF = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -3873,6 +3954,7 @@ export const createPaymentTaskBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -3986,6 +4068,7 @@ export const updatePaymentTaskBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4099,6 +4182,7 @@ export const deletePaymentTaskBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4171,6 +4255,7 @@ export const createPaymentTaskBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -4212,6 +4297,7 @@ export const createPaymentTaskBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4284,6 +4370,7 @@ export const updatePaymentTaskBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -4325,6 +4412,7 @@ export const updatePaymentTaskBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4397,6 +4485,7 @@ export const deletePaymentTaskBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -4438,6 +4527,7 @@ export const deletePaymentTaskBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4551,6 +4641,7 @@ export const createInvoiceBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4672,6 +4763,7 @@ export const updateInvoiceBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4793,6 +4885,7 @@ export const deleteInvoiceBetweenRandS = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4873,6 +4966,7 @@ export const createInvoiceBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -4914,6 +5008,7 @@ export const createInvoiceBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -4994,6 +5089,7 @@ export const updateInvoiceBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -5035,6 +5131,7 @@ export const updateInvoiceBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -5115,6 +5212,7 @@ export const deleteInvoiceBetweenSandF = /* GraphQL */ `
         }
         registrationNumber
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -5156,6 +5254,7 @@ export const deleteInvoiceBetweenSandF = /* GraphQL */ `
           accountNumber
         }
         mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
