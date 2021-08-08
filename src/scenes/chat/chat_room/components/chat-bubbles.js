@@ -246,6 +246,7 @@ const ChatBubble = props => {
         </View>
         <Modal isVisible={purchaseOrderModal}>
           <PurchaseOrder
+            id={props.id}
             content={props.content}
             chatName={props.chatName}
             type={props.type}
@@ -518,16 +519,17 @@ export const ChatBubbleList = props => {
           log('endReached');
         }}
         onEndReachedThreshold={0.6}
-        renderItem={item => {
+        renderItem={({item}) => {
           return (
             <ChatBubble
-              sender={item.item.sender}
-              content={item.item.content}
-              senderID={item.item.senderID}
-              createdAt={item.item.createdAt}
+              id={item.id}
+              sender={item.sender}
+              content={item.content}
+              senderID={item.senderID}
+              createdAt={item.createdAt}
               userID={props.userID}
-              contentType={item.item.type}
-              contentID={item.item.uniqueContentID}
+              contentType={item.type}
+              contentID={item.uniqueContentID}
               chatName={props.chatName}
               chatGroupID={props.chatGroupID}
               type={props.type}

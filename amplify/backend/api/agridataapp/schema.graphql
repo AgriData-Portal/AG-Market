@@ -99,7 +99,7 @@ type FarmerCompany @model {
   bankAccount: BankDetails
   rating: Rating
   registrationNumber: String
-  mostRecentPurchaseOrderNumber:String "PO-YYYY-MM-XXXX"
+  mostRecentPurchaseOrderNumber:String "P.O-YYYY-MM-XXXX"
   mostRecentInvoiceNumber:String "INV-YYYY-MM-XXXX"
   mostRecentQuotationNumber: String "QUO-YYYY-MM-XXXX"
   listings: [FarmerListing]

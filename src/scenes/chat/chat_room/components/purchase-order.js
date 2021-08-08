@@ -270,6 +270,15 @@ export const PurchaseOrder = props => {
             ]}>
             {props.chatName}
           </Text>
+          <Text
+            style={[
+              Typography.normal,
+              {
+                top: hp('3%'),
+              },
+            ]}>
+            {props.id}
+          </Text>
         </View>
         <View
           style={{
@@ -394,41 +403,7 @@ const NewOrderQuotation = props => {
         paymentValue;
       log('removing key and value pairs like index for order quotation');
       log(message);
-      // try {
 
-      //   };
-      //   const updatedValue = await API.graphql({
-      //     query: updateOrderQuotation,
-      //     variables: {
-      //       input: {
-      //         id: props.chatGroupID,
-      //         items: tempList,
-      //         sum: sum,
-      //         logisticsProvided: deliveryValue,
-      //         paymentTerms: paymentValue,
-      //       },
-      //     },
-      //   });
-      // } catch (e) {
-      //   log(e);
-      //   if (
-      //     e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException'
-      //   ) {
-      //     log('order quotation has not been created, creating now');
-      //     const createdValue = await API.graphql({
-      //       query: createOrderQuotation,
-      //       variables: {
-      //         input: {
-      //           id: props.chatGroupID,
-      //           items: tempList,
-      //           sum: sum,
-      //           logisticsProvided: deliveryValue,
-      //           paymentTerms: paymentValue,
-      //         },
-      //       },
-      //     });
-      //   }
-      // }
       try {
         log('sending order quotation');
         const createdMessage = await API.graphql({

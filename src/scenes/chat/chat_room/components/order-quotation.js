@@ -20,7 +20,7 @@ import {
   updateChatGroup,
   createGoodsTaskBetweenRandS,
 } from '../../../../graphql/mutations';
-import {listUsersInChat, getOrderQuotation} from '../../../../graphql/queries';
+import {getSupplierCompany} from '../../../../graphql/queries';
 
 import {
   widthPercentageToDP as wp,
@@ -31,17 +31,35 @@ import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 
+import dayjs from 'dayjs';
+
+const getInitials = name => {
+  if (name) {
+    let initials = name.split(' ');
+
+    if (initials.length > 1) {
+      initials = initials.shift().charAt(0) + initials.pop().charAt(0);
+    } else {
+      initials = name.substring(0, 2);
+    }
+
+    return initials.toUpperCase();
+  } else {
+    return null;
+  }
+};
+
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
-  useEffect(() => {
-    fetchQuotation();
-  }, []);
+
   const [succesfulModal, setSuccesfulModal] = useState(false);
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
   const [acceptButton, setAcceptButton] = useState(false);
   const [declineButton, setDeclineButton] = useState(false);
 
-  log('quotation' + props.chatGroupID);
+  useEffect(() => {
+    fetchQuotation();
+  }, []);
   const fetchQuotation = () => {
     log(props.content);
     try {
@@ -62,22 +80,12 @@ export const OrderQuotationModal = props => {
       tempObject = {};
       tempObject['items'] = items;
       tempObject['sum'] = quotation[1];
-      tempObject['logisticsProvided'] = quotation[2];
+      tempObject['logisticsProvided'] = quotation[2] == 'true' ? true : false;
       tempObject['paymentTerms'] = quotation[3];
       setOrderDetails(tempObject);
     } catch (e) {
       console.warn(e);
     }
-    // try {
-    //   const quotation = await API.graphql({
-    //     query: getOrderQuotation,
-    //     variables: {id: props.chatGroupID},
-    //   });
-    //   log(quotation.data.getOrderQuotation);
-    //   setOrderDetails(quotation.data.getOrderQuotation);
-    // } catch (e) {
-    //   log(e);
-    // }
   };
   const reject = async () => {
     try {
@@ -151,12 +159,39 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       log(e);
     }
+    var mostRecentInvoiceNum = null;
+    try {
+      const response = await API.graphql({
+        query: getSupplierCompany,
+        variables: {id: props.chatGroupID.slice(36, 72)},
+      });
+      mostRecentInvoiceNum =
+        response.data.getSupplierCompany.mostRecentInvoiceNumber;
+      log('newnum: ' + mostRecentInvoiceNum);
+      if (mostRecentInvoiceNum) {
+        if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(0, 7)) {
+          var number = parseInt(mostRecentInvoiceNum.slice(8, 12));
+          var numberString = (number + 1).toString().padStart(4, '0');
+          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + numberString;
+        } else {
+          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '0001';
+        }
+      } else {
+        mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '0001';
+      }
+      log('updatednum: ' + mostRecentInvoiceNum);
+    } catch (e) {
+      log(e);
+    }
     try {
       const goodsTask = await API.graphql({
         query: createGoodsTaskBetweenRandS,
         variables: {
           input: {
+            id: getInitials(props.chatName) + '-' + mostRecentInvoiceNum,
             items: orderDetails.items,
+            logisticsProvided: orderDetails.logisticsProvided,
+            paymentTerms: orderDetails.paymentTerms,
             retailerID: props.chatGroupID.slice(0, 36),
             supplierID: props.chatGroupID.slice(36, 72),
           },
@@ -167,6 +202,7 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       log(e);
     }
+
     setAcceptButton(false);
   };
   return (

@@ -9,11 +9,18 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {CloseButton, SuccessNavigateChatModal, BlueButton} from '_components';
+import {
+  CloseButton,
+  SuccessNavigateChatModal,
+  BlueButton,
+  UnsuccessfulModal,
+  SuccessfulModal,
+} from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
 import {Rating} from 'react-native-ratings';
 
+import dayjs from 'dayjs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {API, Storage} from 'aws-amplify';
 
@@ -24,13 +31,14 @@ import {
   createMessage,
   createChatGroup,
   updateChatGroup,
+  updateSupplierCompany,
 } from '../../../../../graphql/mutations';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
+
 import {
   getSupplierCompany,
   getRetailerCompany,
@@ -506,47 +514,13 @@ export const PurchaseOrderButton = props => {
 
 const PurchaseOrder = props => {
   const [poSuccessfulModal, setpoSuccessfulModal] = useState(false);
+  const [poUnsuccessfulModal, setpoUnsuccessfulModal] = useState(false);
   const [sendPOButton, setSendPOButton] = useState(false);
   log('PO \n \n \n');
   console.log(props.POList);
   const sendPO = async () => {
-    try {
-      const updateChat = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.purchaseOrder,
-            mostRecentMessage: 'Purchase Order',
-            mostRecentMessageSender: props.user.name,
-          },
-        },
-      });
-      log('chat group already exist');
-    } catch (e) {
-      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        try {
-          const chatGroup = {
-            id: props.purchaseOrder,
-            name: props.user.retailerCompany.name + '+' + props.storeName,
-            retailerID: props.user.retailerCompany.id,
-            supplierID: props.purchaseOrder.slice(36, 72),
-            mostRecentMessage: 'Purchase Order',
-            mostRecentMessageSender: props.user.name,
-          };
-          log(chatGroup);
-          const createdChatGroup = await API.graphql({
-            query: createChatGroup,
-            variables: {input: chatGroup},
-          });
-          log(createdChatGroup);
-        } catch (e) {
-          log(e.errors[0].errorType);
-        }
-      } else {
-        log(e.errors[0].errorType);
-      }
-    }
     var message = '';
+    var positiveQuantity = true;
     const arrLength = props.POList.length;
     props.POList.forEach((item, index, arr) => {
       message = message + (item.id + '+');
@@ -555,30 +529,118 @@ const PurchaseOrder = props => {
       message = message + (item.siUnit + '+');
       message = message + (item.variety + '+');
       message = message + item.grade;
+      if (item.quantity <= 0 || isNaN(item.quantity)) {
+        positiveQuantity = false;
+      }
       if (index < arrLength - 1) {
         message = message + '/';
       }
     });
-    const inquiry = {
-      chatGroupID: props.purchaseOrder,
-      type: 'purchaseorder',
-      content: message,
-      sender: props.user.name,
-      senderID: props.user.id,
-    };
+    if (positiveQuantity) {
+      try {
+        const updateChat = await API.graphql({
+          query: updateChatGroup,
+          variables: {
+            input: {
+              id: props.purchaseOrder,
+              mostRecentMessage: 'Purchase Order',
+              mostRecentMessageSender: props.user.name,
+            },
+          },
+        });
+        log('chat group already exist');
+      } catch (e) {
+        if (
+          e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException'
+        ) {
+          try {
+            const chatGroup = {
+              id: props.purchaseOrder,
+              name: props.user.retailerCompany.name + '+' + props.storeName,
+              retailerID: props.user.retailerCompany.id,
+              supplierID: props.purchaseOrder.slice(36, 72),
+              mostRecentMessage: 'Purchase Order',
+              mostRecentMessageSender: props.user.name,
+            };
+            log(chatGroup);
+            const createdChatGroup = await API.graphql({
+              query: createChatGroup,
+              variables: {input: chatGroup},
+            });
+            log(createdChatGroup);
+          } catch (e) {
+            log(e.errors[0].errorType);
+          }
+        } else {
+          log(e.errors[0].errorType);
+        }
+      }
 
-    log('creating purchase order');
-    try {
-      const message = await API.graphql({
-        query: createMessage,
-        variables: {input: inquiry},
-      });
-      log(message.data.createMessage);
+      var mostRecentPurchaseOrderNumber;
+      try {
+        const response = await API.graphql({
+          query: getSupplierCompany,
+          variables: {id: props.purchaseOrder.slice(36, 72)},
+        });
+        mostRecentPurchaseOrderNumber =
+          response.data.getSupplierCompany.mostRecentPurchaseOrderNumber;
+        log('newnum: ' + mostRecentPurchaseOrderNumber);
+        if (mostRecentPurchaseOrderNumber) {
+          if (
+            dayjs().format('YYYY-MM') ==
+            mostRecentPurchaseOrderNumber.slice(4, 11)
+          ) {
+            var number = parseInt(mostRecentPurchaseOrderNumber.slice(12, 16));
+            var numberString = (number + 1).toString().padStart(4, '0');
+            mostRecentPurchaseOrderNumber =
+              'P.O-' + dayjs().format('YYYY-MM-') + numberString;
+          } else {
+            mostRecentPurchaseOrderNumber =
+              'P.O-' + dayjs().format('YYYY-MM-') + '0001';
+          }
+        } else {
+          mostRecentPurchaseOrderNumber =
+            'P.O-' + dayjs().format('YYYY-MM-') + '0001';
+        }
+        log('updatednum: ' + mostRecentPurchaseOrderNumber);
 
-      setpoSuccessfulModal(true);
-    } catch {
-      e => log(e);
+        log('creating purchase order');
+        const supplierCompanyUpdate = await API.graphql({
+          query: updateSupplierCompany,
+          variables: {
+            input: {
+              id: props.purchaseOrder.slice(36, 72),
+              mostRecentPurchaseOrderNumber: mostRecentPurchaseOrderNumber,
+            },
+          },
+        });
+      } catch (e) {
+        console.warn(e);
+      }
+      try {
+        const inquiry = {
+          id: mostRecentPurchaseOrderNumber,
+          chatGroupID: props.purchaseOrder,
+          type: 'purchaseorder',
+          content: message,
+          sender: props.user.name,
+          senderID: props.user.id,
+        };
+        const messageSent = await API.graphql({
+          query: createMessage,
+          variables: {input: inquiry},
+        });
+        log(messageSent.data.createMessage);
+
+        setpoSuccessfulModal(true);
+      } catch (e) {
+        log(e);
+      }
+    } else {
+      setpoUnsuccessfulModal(true);
+      //TODO add inappropriate addition modal
     }
+
     setSendPOButton(false);
   };
   return (
@@ -664,6 +726,13 @@ const PurchaseOrder = props => {
           ]}
           text="You have successfully sent your purchase order, wait for the supplier to get back"
         />
+        {/*TRANSLATION successful */}
+      </Modal>
+      <Modal
+        isVisible={setpoUnsuccessfulModal}
+        onBackdropPress={() => setpoUnsuccessfulModal(false)}>
+        <UnsuccessfulModal text="One or more of your orders does not have a valid input. Please check and try again" />
+        {/*TRANSLATION unsunccessful */}
       </Modal>
     </View>
   );
