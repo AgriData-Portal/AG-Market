@@ -517,7 +517,7 @@ const PurchaseOrder = props => {
   const [poUnsuccessfulModal, setpoUnsuccessfulModal] = useState(false);
   const [sendPOButton, setSendPOButton] = useState(false);
   log('PO \n \n \n');
-  console.log(props.POList);
+  log(props.POList);
   const sendPO = async () => {
     var message = '';
     var positiveQuantity = true;
@@ -615,7 +615,7 @@ const PurchaseOrder = props => {
           },
         });
       } catch (e) {
-        console.warn(e);
+        log(e);
       }
       try {
         const inquiry = {

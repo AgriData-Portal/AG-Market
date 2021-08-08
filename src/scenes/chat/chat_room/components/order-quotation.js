@@ -31,8 +31,6 @@ import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 
-import dayjs from 'dayjs';
-
 const getInitials = name => {
   if (name) {
     let initials = name.split(' ');
@@ -83,7 +81,7 @@ export const OrderQuotationModal = props => {
       tempObject['paymentTerms'] = quotation[3];
       setOrderDetails(tempObject);
     } catch (e) {
-      console.warn(e);
+      log(e);
     }
   };
   const reject = async () => {
@@ -158,36 +156,13 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       log(e);
     }
-    var mostRecentInvoiceNum = null;
-    try {
-      const response = await API.graphql({
-        query: getSupplierCompany,
-        variables: {id: props.chatGroupID.slice(36, 72)},
-      });
-      mostRecentInvoiceNum =
-        response.data.getSupplierCompany.mostRecentInvoiceNumber;
-      log('newnum: ' + mostRecentInvoiceNum);
-      if (mostRecentInvoiceNum) {
-        if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(0, 7)) {
-          var number = parseInt(mostRecentInvoiceNum.slice(8, 12));
-          var numberString = (number + 1).toString().padStart(4, '0');
-          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + numberString;
-        } else {
-          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '0001';
-        }
-      } else {
-        mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '0001';
-      }
-      log('updatednum: ' + mostRecentInvoiceNum);
-    } catch (e) {
-      log(e);
-    }
+
     try {
       const goodsTask = await API.graphql({
         query: createGoodsTaskBetweenRandS,
         variables: {
           input: {
-            id: getInitials(props.chatName) + '-' + mostRecentInvoiceNum,
+            id: props.id,
             items: orderDetails.items,
             logisticsProvided: orderDetails.logisticsProvided,
             paymentTerms: orderDetails.paymentTerms,

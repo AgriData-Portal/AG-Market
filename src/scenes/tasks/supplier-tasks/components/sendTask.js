@@ -39,6 +39,8 @@ const now = () => {
   return now;
 };
 
+//TODO while waiting for retailer to receive, supplier can amend the goods task since it is an update :)
+
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
   log('send task list render');
@@ -173,12 +175,19 @@ const SendTask = props => {
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
-              top: hp('3%'),
+              top: hp('1.5%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
           {props.retailer.name}
+        </Text>
+        <Text
+          style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('4%'), position: 'absolute'},
+          ]}>
+          {props.taskID}
         </Text>
         <Text
           style={[
@@ -323,20 +332,19 @@ const SendTaskModal = props => {
               left: wp('8%'),
             },
           ]}>
-          {Strings.orderCreated}
+          {Strings.order}
+
+          <Text
+            style={[
+              Typography.placeholder,
+              {
+                fontStyle: 'italic',
+              },
+            ]}>
+            {'  '}#{props.taskID}
+          </Text>
         </Text>
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              right: wp('7%'),
-              top: hp('7%'),
-              fontStyle: 'italic',
-            },
-          ]}>
-          {Strings.order} #{props.taskID.slice(0, 6)}
-        </Text>
+
         <Text
           style={[
             Typography.header,

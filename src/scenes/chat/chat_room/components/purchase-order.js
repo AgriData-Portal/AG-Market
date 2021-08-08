@@ -406,7 +406,7 @@ const NewOrderQuotation = props => {
           },
         });
       } catch (e) {
-        console.warn(e);
+        log(e);
       }
 
       var message = '';
