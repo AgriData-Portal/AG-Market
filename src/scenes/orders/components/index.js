@@ -186,12 +186,19 @@ const Order = props => {
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
-              top: hp('2%'),
+              top: hp('1%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
           {props.company.name}
+        </Text>
+        <Text
+          style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
+          ]}>
+          {props.id}
         </Text>
         <Text
           style={[
