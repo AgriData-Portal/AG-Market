@@ -225,6 +225,7 @@ const ChatBubble = props => {
             marginVertical: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.purchaseOrder}</Text>
+          <Text style={Typography.normal}>{props.id}</Text>
           <BlueButton
             onPress={() => setPurchaseOrderModal(true)}
             text={Strings.inspect}
@@ -287,6 +288,8 @@ const ChatBubble = props => {
             marginVertical: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
+          {/* DESIGN decide how to display the PO and Quotation chat bubble*/}
+          <Text style={Typography.normal}>{props.id}</Text>
           <BlueButton
             onPress={() => setOrderQuotationModal(true)}
             text={Strings.inspect}
@@ -294,7 +297,6 @@ const ChatBubble = props => {
             minWidth={wp('33%')}
             borderRadius={10}
           />
-
           <Text
             style={[
               Typography.small,
@@ -310,6 +312,7 @@ const ChatBubble = props => {
           isVisible={orderQuotationModal}
           onBackdropPress={() => setOrderQuotationModal(false)}>
           <OrderQuotationModal
+            id={props.id}
             chatName={props.chatName}
             content={props.content}
             type={props.type}
@@ -320,7 +323,8 @@ const ChatBubble = props => {
         </Modal>
       </View>
     );
-  } else if (contentType == 'image') {
+  } //BUG image not appearing properly on click
+  else if (contentType == 'image') {
     const [imageSource, setImageSource] = useState('');
     const getImage = async () => {
       try {

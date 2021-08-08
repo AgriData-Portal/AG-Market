@@ -1,27 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  RefreshControl,
-  FlatList,
-  Text,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import {View, TextInput, FlatList, Text, Platform} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import dayjs from 'dayjs';
+
 import Modal from 'react-native-modal';
 import {CloseButton, SuccessfulModal} from '_components';
 import {API} from 'aws-amplify';
 import {
   createMessage,
   updateChatGroup,
-  updateOrderQuotation,
-  createOrderQuotation,
+  updateSupplierCompany,
 } from '../../../../graphql/mutations';
-import {purchaseOrderItems} from '../../../../graphql/queries';
+import {getSupplierCompany} from '../../../../graphql/queries';
 import {
   QuotationItemsContext,
   QuotationItemsProvider,
@@ -378,6 +368,47 @@ const NewOrderQuotation = props => {
 
     log(valid);
     if (valid == true) {
+      var mostRecentQuotationNumber;
+      try {
+        const response = await API.graphql({
+          query: getSupplierCompany,
+          variables: {id: props.chatGroupID.slice(36, 72)},
+        });
+        mostRecentQuotationNumber =
+          response.data.getSupplierCompany.mostRecentQuotationNumber;
+        log('newnum: ' + mostRecentQuotationNumber);
+        if (mostRecentQuotationNumber) {
+          if (
+            dayjs().format('YYYY-MM') == mostRecentQuotationNumber.slice(4, 11)
+          ) {
+            var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
+            var numberString = (number + 1).toString().padStart(4, '0');
+            mostRecentQuotationNumber =
+              'QUO-' + dayjs().format('YYYY-MM-') + numberString;
+          } else {
+            mostRecentQuotationNumber =
+              'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+          }
+        } else {
+          mostRecentQuotationNumber =
+            'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+        }
+        log('updatednum: ' + mostRecentQuotationNumber);
+
+        log('creating purchase order');
+        const supplierCompanyUpdate = await API.graphql({
+          query: updateSupplierCompany,
+          variables: {
+            input: {
+              id: props.chatGroupID.slice(36, 72),
+              mostRecentQuotationNumber: mostRecentQuotationNumber,
+            },
+          },
+        });
+      } catch (e) {
+        console.warn(e);
+      }
+
       var message = '';
       var tempList = quotationItems;
       tempList.forEach((item, index, array) => {
@@ -410,6 +441,7 @@ const NewOrderQuotation = props => {
           query: createMessage,
           variables: {
             input: {
+              id: mostRecentQuotationNumber,
               chatGroupID: props.chatGroupID,
               type: 'quotation',
               content: message,

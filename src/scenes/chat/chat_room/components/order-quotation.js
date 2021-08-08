@@ -51,7 +51,6 @@ const getInitials = name => {
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
-
   const [succesfulModal, setSuccesfulModal] = useState(false);
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
   const [acceptButton, setAcceptButton] = useState(false);
@@ -227,9 +226,10 @@ export const OrderQuotationModal = props => {
             <Text style={[Typography.large, {}]}>
               {Strings.orderQuotationFrom}
             </Text>
-            <Text style={[Typography.header]}>
-              <Text style={{color: '#8EAB3D'}}>{props.chatName}</Text>
+            <Text style={[Typography.header, {color: Colors.LIME_GREEN}]}>
+              {props.chatName}
             </Text>
+            <Text style={[Typography.normal]}>{props.id}</Text>
           </View>
           <View
             style={{
