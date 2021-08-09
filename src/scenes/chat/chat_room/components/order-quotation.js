@@ -19,8 +19,8 @@ import {
   createMessage,
   updateChatGroup,
   createGoodsTaskBetweenRandS,
+  updateMessage,
 } from '../../../../graphql/mutations';
-import {getSupplierCompany} from '../../../../graphql/queries';
 
 import {
   widthPercentageToDP as wp,
@@ -30,22 +30,6 @@ import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-
-const getInitials = name => {
-  if (name) {
-    let initials = name.split(' ');
-
-    if (initials.length > 1) {
-      initials = initials.shift().charAt(0) + initials.pop().charAt(0);
-    } else {
-      initials = name.substring(0, 2);
-    }
-
-    return initials.toUpperCase();
-  } else {
-    return null;
-  }
-};
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -79,6 +63,11 @@ export const OrderQuotationModal = props => {
       tempObject['sum'] = quotation[1];
       tempObject['logisticsProvided'] = quotation[2] == 'true' ? true : false;
       tempObject['paymentTerms'] = quotation[3];
+      {
+        quotation.length == 5
+          ? (tempObject['status'] = quotation[4])
+          : (tempObject['status'] = 'New');
+      }
       setOrderDetails(tempObject);
     } catch (e) {
       log(e);
@@ -95,6 +84,15 @@ export const OrderQuotationModal = props => {
             content: 'The quotation has been rejected. Please re-negotiate',
             senderID: props.userID,
             sender: props.userName,
+          },
+        },
+      });
+      const updatedMessage = await API.graphql({
+        query: updateMessage,
+        variables: {
+          input: {
+            id: props.id,
+            content: props.content + ':Declined',
           },
         },
       });
@@ -118,6 +116,23 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       log(e);
     }
+    var messages = props.messages;
+    log(messages);
+    messages.forEach((item, index, array) => {
+      if (item.id == props.id) {
+        log('found');
+        array[index] = {
+          id: props.id,
+          chatGroupID: props.chatGroupID,
+          type: props.contentType,
+          content: props.content + ':Declined',
+          sender: props.sender,
+          senderID: props.senderID,
+          createdAt: props.createdAt,
+        };
+      }
+    });
+    props.setMessages(messages);
     setDeclineButton(false);
   };
 
@@ -133,6 +148,15 @@ export const OrderQuotationModal = props => {
               'The quotation has been accepted. Task has been added to to-do',
             senderID: props.userID,
             sender: props.userName,
+          },
+        },
+      });
+      const updatedMessage = await API.graphql({
+        query: updateMessage,
+        variables: {
+          input: {
+            id: props.id,
+            content: props.content + ':Accepted',
           },
         },
       });
@@ -172,6 +196,23 @@ export const OrderQuotationModal = props => {
         },
       });
       log('goods task created');
+      var messages = props.messages;
+      log(messages);
+      messages.forEach((item, index, array) => {
+        if (item.id == props.id) {
+          log('found');
+          array[index] = {
+            id: props.id,
+            chatGroupID: props.chatGroupID,
+            type: props.contentType,
+            content: props.content + ':Accepted',
+            sender: props.sender,
+            senderID: props.senderID,
+            createdAt: props.createdAt,
+          };
+        }
+      });
+      props.setMessages(messages);
       setSuccesfulModal(true);
     } catch (e) {
       log(e);
@@ -204,7 +245,9 @@ export const OrderQuotationModal = props => {
             <Text style={[Typography.header, {color: Colors.LIME_GREEN}]}>
               {props.chatName}
             </Text>
-            <Text style={[Typography.normal]}>{props.id}</Text>
+            <Text style={[Typography.normal]}>
+              {props.id} #{orderDetails.status}
+            </Text>
           </View>
           <View
             style={{
@@ -261,7 +304,7 @@ export const OrderQuotationModal = props => {
             </View>
           </View>
 
-          {props.type != 'supplier' ? (
+          {props.type == 'retailer' && orderDetails.status == 'New' ? (
             <View
               style={{
                 flexDirection: 'row',

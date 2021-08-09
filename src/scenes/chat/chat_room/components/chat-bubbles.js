@@ -3,14 +3,12 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  RefreshControl,
   FlatList,
   Text,
   Image,
-  ScrollView,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import Modal from 'react-native-modal';
 
 import {API, Storage} from 'aws-amplify';
@@ -41,17 +39,15 @@ const ChatBubble = props => {
     //check whether user id is a value in the JSON
     //if yes, get the key of that value
     //if no
-    log(colourObject);
+
     if (props.senderID != props.userID)
       try {
         for (let i = 0; i < colourObject.length; i++) {
           counter = counter + 1;
           if (colourObject[i].id == props.senderID) {
-            log('same ' + counter);
             setNameColour(colourObject[i].colour);
             return false;
           } else if (colourObject[i].id == '') {
-            log('empty ' + counter);
             setNameColour(colourObject[i].colour);
             colourObject[i].id = props.senderID;
             props.setColourID(colourObject);
@@ -261,6 +257,7 @@ const ChatBubble = props => {
       </View>
     );
   } else if (contentType == 'quotation') {
+    //DESIGN the colour and position
     return (
       <View>
         {!isMyMessage() && (
@@ -279,7 +276,7 @@ const ChatBubble = props => {
           style={{
             justifyContent: 'space-evenly',
             alignItems: 'center',
-            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
+            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_DARK,
             left: isMyMessage() ? wp('-4%') : wp('4%'),
             borderRadius: 10,
             paddingHorizontal: wp('4%'),
@@ -287,7 +284,24 @@ const ChatBubble = props => {
             alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
             marginVertical: hp('1%'),
           }}>
-          <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
+          <View
+            style={{
+              position: 'absolute',
+              right: 0,
+              height: hp('2%'),
+              width: hp('2%'),
+              borderRadius: 100,
+              backgroundColor: props.content.includes('Accepted')
+                ? Colors.LIME_GREEN
+                : props.content.includes('Declined')
+                ? Colors.FAIL
+                : Colors.GRAY_LIGHT,
+            }}
+          />
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
+          </View>
+
           {/* DESIGN decide how to display the PO and Quotation chat bubble*/}
           <Text style={Typography.normal}>{props.id}</Text>
           <BlueButton
@@ -316,7 +330,14 @@ const ChatBubble = props => {
             chatName={props.chatName}
             content={props.content}
             type={props.type}
+            sender={props.sender}
+            content={props.content}
+            senderID={props.senderID}
+            contentType={props.contentType}
+            createdAt={props.createdAt}
             userID={props.userID}
+            messages={props.messages}
+            setMessages={props.setMessages}
             userName={props.userName}
             setOrderQuotationModal={setOrderQuotationModal}
             chatGroupID={props.chatGroupID}></OrderQuotationModal>
@@ -412,7 +433,7 @@ const ChatBubble = props => {
     );
   } else if (contentType == 'store') {
     const storeDetails = props.content.split('+');
-    log(storeDetails);
+
     return (
       <View>
         {!isMyMessage() && (
@@ -501,6 +522,8 @@ const ChatBubble = props => {
 };
 
 export const ChatBubbleList = props => {
+  //TODO build a store for containing all the messages
+  const [trigger, setTrigger] = useState(false);
   const [colourID, setColourID] = useState([
     {colour: '#D25BD2', id: ''},
     {colour: '#D25B7B', id: ''},
@@ -517,6 +540,7 @@ export const ChatBubbleList = props => {
         inverted={true}
         keyExtractor={item => item.id}
         data={props.data}
+        initialNumToRender={10}
         numColumns={1}
         onEndReached={() => {
           props.setRefresh(state => state + 1);
@@ -533,7 +557,6 @@ export const ChatBubbleList = props => {
               createdAt={item.createdAt}
               userID={props.userID}
               contentType={item.type}
-              contentID={item.uniqueContentID}
               chatName={props.chatName}
               chatGroupID={props.chatGroupID}
               type={props.type}

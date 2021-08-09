@@ -428,7 +428,6 @@ const NewOrderQuotation = props => {
         ':' +
         sum.toString() +
         ':' +
-        ':' +
         deliveryValue +
         ':' +
         paymentValue;

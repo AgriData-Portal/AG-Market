@@ -258,7 +258,7 @@ const ProductPopUp = props => {
         query: createProductsInPurchaseOrder,
         variables: {
           input: {
-            id: props.id + '//' + props.purchaseOrder,
+            id: props.id + '@' + props.purchaseOrder,
             purchaseOrderID: props.purchaseOrder,
             name: props.productName,
             quantity: parseInt(desiredQuantity),
@@ -282,7 +282,7 @@ const ProductPopUp = props => {
             query: updateProductsInPurchaseOrder,
             variables: {
               input: {
-                id: props.id + '//' + props.purchaseOrder,
+                id: props.id + '@' + props.purchaseOrder,
                 quantity: parseInt(desiredQuantity),
               },
             },
@@ -291,7 +291,7 @@ const ProductPopUp = props => {
           var poList = props.POList;
 
           poList.forEach((item, index, arr) => {
-            if (item.id == props.id + '//' + props.purchaseOrder) {
+            if (item.id == props.id + '@' + props.purchaseOrder) {
               log('found');
               arr[index] = updated.data.updateProductsInPurchaseOrder;
             }
