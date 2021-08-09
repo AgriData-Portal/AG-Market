@@ -464,17 +464,29 @@ const InvoiceModal = props => {
         offsetCenter={wp('2%')}
         top={hp('70%')}
         left={wp('61%')}
-        onPress={() =>
-          createPDF(
-            (id = props.id),
-            (retailer = props.retailer),
-            (supplier = props.supplier),
-            (createdAt = props.createdAt),
-            (items = props.goods),
-            (amount = props.amount),
-            (receivedBy = props.receivedBy),
-          )
-        }
+        onPress={() => {
+          if (props.sellerState == false) {
+            createPDF(
+              (id = props.id),
+              (buyer = props.retailer),
+              (seller = props.supplier),
+              (createdAt = props.createdAt),
+              (items = props.goods),
+              (amount = props.amount),
+              (receivedBy = props.receivedBy),
+            );
+          } else {
+            createPDF(
+              (id = props.id),
+              (buyer = props.supplier),
+              (seller = props.farmer),
+              (createdAt = props.createdAt),
+              (items = props.goods),
+              (amount = props.amount),
+              (receivedBy = props.receivedBy),
+            );
+          }
+        }}
       />
       <BlueButton
         position={'absolute'}
