@@ -411,6 +411,7 @@ const TabbedNavigator = props => {
             updateAuthState={props.updateAuthState}
             user={props.user}
             sellerState={props.sellerState}
+            company={props.company}
           />
         )}
       </TabStack.Screen>

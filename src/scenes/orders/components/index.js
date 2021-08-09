@@ -151,6 +151,7 @@ export const OrderList = props => {
               createdAt={item.createdAt}
               user={props.user}
               sellerState={props.sellerState}
+              companyType={props.company}
             />
           );
         }}
@@ -295,6 +296,7 @@ const Order = props => {
           receivedBy={props.receivedBy}
           createdAt={props.createdAt}
           sellerState={props.sellerState}
+          companyType={props.companyType}
         />
       </Modal>
     </TouchableOpacity>
@@ -465,21 +467,34 @@ const InvoiceModal = props => {
         top={hp('70%')}
         left={wp('61%')}
         onPress={() => {
-          if (props.sellerState == false) {
+          if (props.companyType.type == 'supplier') {
+            log('supplier');
+            if (props.sellerState == false) {
+              createPDF(
+                (id = props.id),
+                (buyer = props.retailer),
+                (seller = props.supplier),
+                (createdAt = props.createdAt),
+                (items = props.goods),
+                (amount = props.amount),
+                (receivedBy = props.receivedBy),
+              );
+            } else {
+              createPDF(
+                (id = props.id),
+                (buyer = props.supplier),
+                (seller = props.farmer),
+                (createdAt = props.createdAt),
+                (items = props.goods),
+                (amount = props.amount),
+                (receivedBy = props.receivedBy),
+              );
+            }
+          } else if (props.companyType.type == 'retailer') {
             createPDF(
               (id = props.id),
               (buyer = props.retailer),
               (seller = props.supplier),
-              (createdAt = props.createdAt),
-              (items = props.goods),
-              (amount = props.amount),
-              (receivedBy = props.receivedBy),
-            );
-          } else {
-            createPDF(
-              (id = props.id),
-              (buyer = props.supplier),
-              (seller = props.farmer),
               (createdAt = props.createdAt),
               (items = props.goods),
               (amount = props.amount),

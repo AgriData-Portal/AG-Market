@@ -235,6 +235,7 @@ export const Orders = props => {
           setTrigger={setTrigger}
           setRefresh={setRefresh}
           sellerState={props.sellerState}
+          company={props.company}
         />
       </View>
 
