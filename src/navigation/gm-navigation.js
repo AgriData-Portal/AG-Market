@@ -218,6 +218,7 @@ const GMNavigation = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -495,6 +496,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -562,6 +564,7 @@ const TabbedNavigator = props => {
             updateAuthState={props.updateAuthState}
             user={props.user}
             userType={props.user.role}
+            company={props.company}
           />
         )}
       </TabStack.Screen>

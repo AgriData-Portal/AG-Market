@@ -116,7 +116,7 @@ const UploadReceiptModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.sendBefore}: {''}
+        {Strings.sendBefore}:{''}
         {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
       </Text>
       <View
@@ -241,7 +241,7 @@ const UploadReceiptModal = props => {
         ]}>
         {Strings.bankDetails}:
       </Text>
-      //TRANSLATION
+      {/* TRANSLATION */}
       {props.supplier.bankAccount == null ? (
         <Text
           style={[

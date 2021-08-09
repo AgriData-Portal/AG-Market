@@ -103,6 +103,7 @@ const FarmerNavigation = props => {
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -157,6 +158,7 @@ const FarmerNavigation = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -370,6 +372,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -442,6 +445,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -508,6 +512,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
