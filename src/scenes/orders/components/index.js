@@ -16,6 +16,7 @@ import {
   invoiceForRetailerByDate,
   invoiceRetailerForSupplierByDate,
   invoiceForFarmerByDate,
+  invoiceFarmerForSupplierByDate,
 } from '../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
@@ -35,6 +36,7 @@ export const OrderList = props => {
       <FlatList
         keyExtractor={item => item.id}
         data={props.invoiceList}
+        extraData={props.sellerState}
         numColumns={1}
         onEndReached={() => {
           props.setRefresh(state => state + 1);
@@ -48,19 +50,35 @@ export const OrderList = props => {
               setRefreshing(true);
               if (props.user.supplierCompanyID != null) {
                 try {
-                  const invoice = await API.graphql({
-                    query: invoiceRetailerForSupplierByDate,
-                    variables: {
-                      supplierID: props.user.supplierCompanyID,
-                      sortDirection: 'DESC',
-                    },
-                  });
-                  log(invoice.data.invoiceRetailerForSupplierByDate.items);
-                  props.setInvoiceList(
-                    invoice.data.invoiceRetailerForSupplierByDate.items,
-                  );
-                  props.setLoading(false);
-                  log('supplierCompanyInvoices');
+                  if (props.sellerState == false) {
+                    const invoice = await API.graphql({
+                      query: invoiceRetailerForSupplierByDate,
+                      variables: {
+                        supplierID: props.user.supplierCompanyID,
+                        sortDirection: 'DESC',
+                      },
+                    });
+                    log(invoice.data.invoiceRetailerForSupplierByDate.items);
+                    props.setInvoiceList(
+                      invoice.data.invoiceRetailerForSupplierByDate.items,
+                    );
+                    props.setLoading(false);
+                    log('supplierCompanyWithRetailerInvoices');
+                  } else {
+                    const invoice = await API.graphql({
+                      query: invoiceFarmerForSupplierByDate,
+                      variables: {
+                        supplierID: props.user.supplierCompanyID,
+                        sortDirection: 'DESC',
+                      },
+                    });
+                    log(invoice.data.invoiceFarmerForSupplierByDate.items);
+                    props.setInvoiceList(
+                      invoice.data.invoiceFarmerForSupplierByDate.items,
+                    );
+                    props.setLoading(false);
+                    log('supplierCompanyWithFarmerInvoices');
+                  }
                 } catch (e) {
                   log(e);
                 }
@@ -111,10 +129,12 @@ export const OrderList = props => {
           />
         }
         renderItem={({item}) => {
-          if (props.user.retailerCompanyID == null) {
+          if (props.user.retailerCompanyID != null) {
             var company = item.retailer;
-          } else {
+          } else if (props.user.supplierCompanyID != null) {
             var company = item.supplier;
+          } else {
+            var company = item.farmer;
           }
           return (
             <Order
@@ -123,12 +143,14 @@ export const OrderList = props => {
               company={company}
               supplier={item.supplier}
               retailer={item.retailer}
+              farmer={item.farmer}
               goods={item.items}
               paid={item.paid}
               amount={item.amount}
               receivedBy={item.receivedBy}
               createdAt={item.createdAt}
               user={props.user}
+              sellerState={props.sellerState}
             />
           );
         }}
@@ -266,11 +288,13 @@ const Order = props => {
           company={props.company}
           supplier={props.supplier}
           retailer={props.retailer}
+          farmer={props.farmer}
           goods={props.goods}
           paid={props.paid}
           amount={props.amount}
           receivedBy={props.receivedBy}
           createdAt={props.createdAt}
+          sellerState={props.sellerState}
         />
       </Modal>
     </TouchableOpacity>

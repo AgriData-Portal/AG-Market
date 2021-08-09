@@ -37,6 +37,7 @@ import {
 } from '../../../../../graphql/queries';
 
 import {log} from '_utils';
+import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -498,7 +499,8 @@ export const PurchaseOrderButton = props => {
           user={props.user}
           purchaseOrder={props.purchaseOrder}
           navigation={props.navigation}
-          storeName={props.storeName}></PurchaseOrder>
+          storeName={props.storeName}
+          company={props.company}></PurchaseOrder>
       </Modal>
     </View>
   );
@@ -523,14 +525,25 @@ const PurchaseOrder = props => {
     } catch (e) {
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
-          const chatGroup = {
-            id: props.purchaseOrder,
-            name: props.user.retailerCompany.name + '+' + props.storeName,
-            retailerID: props.user.retailerCompany.id,
-            supplierID: props.purchaseOrder.slice(36, 72),
-            mostRecentMessage: 'Purchase Order',
-            mostRecentMessageSender: props.user.name,
-          };
+          if (props.company.type == 'retailer') {
+            const chatGroup = {
+              id: props.purchaseOrder,
+              name: props.user.retailerCompany.name + '+' + props.storeName,
+              retailerID: props.user.retailerCompany.id,
+              supplierID: props.purchaseOrder.slice(36, 72),
+              mostRecentMessage: 'Purchase Order',
+              mostRecentMessageSender: props.user.name,
+            };
+          } else {
+            const chatGroup = {
+              id: props.purchaseOrder,
+              name: props.user.supplierCompany.name + '+' + props.storeName,
+              supplierID: props.user.supplierCompany.id,
+              farmerID: props.purchaseOrder.slice(36, 72),
+              mostRecentMessage: 'Purchase Order',
+              mostRecentMessageSender: props.user.name,
+            };
+          }
           log(chatGroup);
           const createdChatGroup = await API.graphql({
             query: createChatGroup,

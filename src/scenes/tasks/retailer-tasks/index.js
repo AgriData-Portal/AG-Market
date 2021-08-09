@@ -16,6 +16,8 @@ import {API} from 'aws-amplify';
 import {
   goodsTaskForRetailerByDate,
   paymentsTaskForRetailerByDate,
+  goodsTaskFarmerForSupplierByDate,
+  paymentsTaskFarmerForSupplierByDate,
 } from '../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
@@ -40,17 +42,30 @@ export const RetailerTasks = props => {
       getReceiveTask();
     }
   }, [task]);
+
   const getReceiveTask = async () => {
     try {
-      const task = await API.graphql({
-        query: goodsTaskForRetailerByDate,
-        variables: {
-          retailerID: props.user.retailerCompanyID,
-          sortDirection: 'ASC',
-        },
-      });
-      log(task.data.goodsTaskForRetailerByDate.items);
-      setReceiveTask(task.data.goodsTaskForRetailerByDate.items);
+      if (props.company.type == 'retailer') {
+        const task = await API.graphql({
+          query: goodsTaskForRetailerByDate,
+          variables: {
+            retailerID: props.user.retailerCompanyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.goodsTaskForRetailerByDate.items);
+        setReceiveTask(task.data.goodsTaskForRetailerByDate.items);
+      } else {
+        const task = await API.graphql({
+          query: goodsTaskFarmerForSupplierByDate,
+          variables: {
+            supplierID: props.user.supplierCompanyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.goodsTaskFarmerForSupplierByDate.items);
+        setReceiveTask(task.data.goodsTaskFarmerForSupplierByDate.items);
+      }
       log('goods task');
     } catch (e) {
       log(e);
@@ -59,15 +74,27 @@ export const RetailerTasks = props => {
 
   const getPayTask = async () => {
     try {
-      const task = await API.graphql({
-        query: paymentsTaskForRetailerByDate,
-        variables: {
-          retailerID: props.user.retailerCompanyID,
-          sortDirection: 'ASC',
-        },
-      });
-      log(task.data.paymentsTaskForRetailerByDate.items);
-      setPayTask(task.data.paymentsTaskForRetailerByDate.items);
+      if (props.company.type == 'retailer') {
+        const task = await API.graphql({
+          query: paymentsTaskForRetailerByDate,
+          variables: {
+            retailerID: props.user.retailerCompanyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.paymentsTaskForRetailerByDate.items);
+        setPayTask(task.data.paymentsTaskForRetailerByDate.items);
+      } else {
+        const task = await API.graphql({
+          query: paymentsTaskFarmerForSupplierByDate,
+          variables: {
+            supplierID: props.user.supplierCompanyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.paymentsTaskFarmerForSupplierByDate.items);
+        setPayTask(task.data.paymentsTaskFarmerForSupplierByDate.items);
+      }
       log('payment task');
     } catch (e) {
       log(e);
@@ -200,6 +227,7 @@ export const RetailerTasks = props => {
             setPayTask={setPayTask}
             getPayTask={getPayTask}
             user={props.user}
+            company={props.company}
           />
         ) : (
           <ReceiveList
@@ -209,6 +237,7 @@ export const RetailerTasks = props => {
             receiveTask={receiveTask}
             setReceiveTask={setReceiveTask}
             getReceiveTask={getReceiveTask}
+            company={props.company}
           />
         )}
       </View>

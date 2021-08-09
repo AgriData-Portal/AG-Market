@@ -277,6 +277,7 @@ export const Store = props => {
           POList={POList}
           setPOList={setPOList}
           user={props.user}
+          company={props.company}
         />
       </View>
       {/* <View style={{position: 'absolute', top: hp('80%')}}>

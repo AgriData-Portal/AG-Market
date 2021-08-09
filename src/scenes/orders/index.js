@@ -20,6 +20,7 @@ import {
   invoiceForRetailerByDate,
   invoiceRetailerForSupplierByDate,
   invoiceForFarmerByDate,
+  invoiceFarmerForSupplierByDate,
 } from '../../graphql/queries';
 import Strings from '_utils';
 import {log} from '_utils';
@@ -34,7 +35,7 @@ export const Orders = props => {
 
   useEffect(() => {
     getInvoice();
-  }, []);
+  }, [props.sellerState]);
 
   useEffect(() => {
     if (nextToken != null) {
@@ -45,19 +46,34 @@ export const Orders = props => {
   const getInvoice = async () => {
     if (props.user.supplierCompanyID != null) {
       try {
-        const invoice = await API.graphql({
-          query: invoiceRetailerForSupplierByDate,
-          variables: {
-            supplierID: props.user.supplierCompanyID,
-            sortDirection: 'DESC',
-            limit: 20,
-          },
-        });
-        log(invoice.data.invoiceRetailerForSupplierByDate.items);
-        setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
-        setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
+        if (props.sellerState == false) {
+          const invoice = await API.graphql({
+            query: invoiceRetailerForSupplierByDate,
+            variables: {
+              supplierID: props.user.supplierCompanyID,
+              sortDirection: 'DESC',
+              limit: 20,
+            },
+          });
+          log(invoice.data.invoiceRetailerForSupplierByDate.items);
+          setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
+          setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
+          log('supplierCompanyWithRetailerInvoices');
+        } else {
+          const invoice = await API.graphql({
+            query: invoiceFarmerForSupplierByDate,
+            variables: {
+              supplierID: props.user.supplierCompanyID,
+              sortDirection: 'DESC',
+              limit: 20,
+            },
+          });
+          log(invoice.data.invoiceFarmerForSupplierByDate.items);
+          setNextToken(invoice.data.invoiceFarmerForSupplierByDate.nextToken);
+          setInvoiceList(invoice.data.invoiceFarmerForSupplierByDate.items);
+          log('supplierCompanyWithFarmerInvoices');
+        }
         setLoading(false);
-        log('supplierCompanyInvoices');
       } catch (e) {
         log(e);
       }
@@ -104,20 +120,37 @@ export const Orders = props => {
   const getMoreInvoice = async () => {
     if (props.user.supplierCompanyID != null) {
       try {
-        const invoice = await API.graphql({
-          query: invoiceRetailerForSupplierByDate,
-          variables: {
-            supplierID: props.user.supplierCompanyID,
-            sortDirection: 'DESC',
-            limit: 20,
-            nextToken: nextToken,
-          },
-        });
-        log(invoice.data.invoiceRetailerForSupplierByDate.items);
-        setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
-        setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
-        setLoading(false);
-        log('supplierCompanyInvoices');
+        if (props.sellerState == false) {
+          const invoice = await API.graphql({
+            query: invoiceRetailerForSupplierByDate,
+            variables: {
+              supplierID: props.user.supplierCompanyID,
+              sortDirection: 'DESC',
+              limit: 20,
+              nextToken: nextToken,
+            },
+          });
+          log(invoice.data.invoiceRetailerForSupplierByDate.items);
+          setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
+          setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
+          setLoading(false);
+          log('supplierCompanyWithRetailerInvoices');
+        } else {
+          const invoice = await API.graphql({
+            query: invoiceRetailerForSupplierByDate,
+            variables: {
+              supplierID: props.user.supplierCompanyID,
+              sortDirection: 'DESC',
+              limit: 20,
+              nextToken: nextToken,
+            },
+          });
+          log(invoice.data.invoiceRetailerForSupplierByDate.items);
+          setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
+          setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
+          setLoading(false);
+          log('supplierCompanyWithFarmerInvoices');
+        }
       } catch (e) {
         log(e);
       }
@@ -201,6 +234,7 @@ export const Orders = props => {
           trigger={trigger}
           setTrigger={setTrigger}
           setRefresh={setRefresh}
+          sellerState={props.sellerState}
         />
       </View>
 

@@ -3,32 +3,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
-  AccountsDashboard, //done
-  RetailManagerDashboard, // done
-  GeneralManagerDashboard, //done
   Marketplace, //done
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  EmployeeDashboard, //done
-  OwnerDashboard, //done
   Orders, //Done
   SupplierStore, // done most
   SupplierTasks, //done
   RetailerTasks, //done
-  //CompanyProfile, //done
-  //EditCompany, //done
-  //HumanResource, //done
-  //PersonalProfile, //done.
-  //EditPersonal, //done.
-  //DataAnalytics,
-  Registration, //done
-  SupplierDashboard, //done
-  Login, //done
-  CreateCompany, //done
-  Landing, //done
-  Verification, //done
-  ConfirmSignUp, //done
   RetailerModalButton,
 } from '_scenes';
 import 'react-native-gesture-handler';
@@ -77,8 +59,10 @@ function getHeaderTitle(route, sellerState) {
       return Strings.inbox;
     case 'marketplace':
       return sellerState ? Strings.marketplace : Strings.myStore;
-    case 'orders':
-      return Strings.orders;
+    case 'orders': //TRANSLATION
+      return sellerState
+        ? Strings.orders + ' (Buying)'
+        : Strings.orders + ' (Selling)';
     case 'tasks':
       return Strings.tasks;
     case 'dataanalytics':
@@ -426,6 +410,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            sellerState={props.sellerState}
           />
         )}
       </TabStack.Screen>
@@ -568,13 +553,22 @@ const TabbedNavigator = props => {
             return null;
           },
         }}>
-        {screenProps => (
-          <SupplierTasks
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            user={props.user}
-          />
-        )}
+        {screenProps =>
+          props.sellerState ? (
+            <RetailerTasks
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              company={props.company}
+            />
+          ) : (
+            <SupplierTasks
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+            />
+          )
+        }
       </TabStack.Screen>
       <TabStack.Screen
         name="dataanalytics"

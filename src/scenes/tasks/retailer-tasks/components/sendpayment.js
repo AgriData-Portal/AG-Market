@@ -21,33 +21,55 @@ import {
 } from 'react-native-responsive-screen';
 import {DismissKeyboard} from '_components';
 import {API} from 'aws-amplify';
-import {updatePaymentTaskBetweenRandS} from '../../../../graphql/mutations';
+import {
+  updatePaymentTaskBetweenRandS,
+  updatePaymentTaskBetweenSandF,
+} from '../../../../graphql/mutations';
 import Strings from '_utils';
 const now = () => {
   const now = dayjs().format('DD-MM-YYYY');
   return now;
 };
-import {paymentsTaskForRetailerByDate} from '../../../../graphql/queries';
+import {
+  paymentsTaskForRetailerByDate,
+  paymentsTaskFarmerForSupplierByDate,
+} from '../../../../graphql/queries';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 //Retailer upload receipt
 const UploadReceiptModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const sendReceipt = async () => {
     try {
-      const updated = await API.graphql({
-        query: updatePaymentTaskBetweenRandS,
-        variables: {input: {id: props.id, receipt: 'some receipt'}},
-      });
-      log(updated);
-      setSuccessfulModal(true);
-      var tempList = props.payTask;
-      tempList.forEach((item, index, arr) => {
-        if (item.id == props.id) {
-          arr[index] = updated.data.updatePaymentTaskBetweenRandS;
-        }
-      });
+      if (props.company.type == 'retailer') {
+        const updated = await API.graphql({
+          query: updatePaymentTaskBetweenRandS,
+          variables: {input: {id: props.id, receipt: 'some receipt'}},
+        });
+        log(updated);
+        setSuccessfulModal(true);
+        var tempList = props.payTask;
+        tempList.forEach((item, index, arr) => {
+          if (item.id == props.id) {
+            arr[index] = updated.data.updatePaymentTaskBetweenRandS;
+          }
+        });
+      } else {
+        const updated = await API.graphql({
+          query: updatePaymentTaskBetweenSandF,
+          variables: {input: {id: props.id, receipt: 'some receipt'}},
+        });
+        log(updated);
+        setSuccessfulModal(true);
+        var tempList = props.payTask;
+        tempList.forEach((item, index, arr) => {
+          if (item.id == props.id) {
+            arr[index] = updated.data.updatePaymentTaskBetweenSandF;
+          }
+        });
+      }
       if (props.trigger) {
         props.setTrigger(false);
       } else {
@@ -73,7 +95,6 @@ const UploadReceiptModal = props => {
         }}>
         <CloseButton setModal={props.setUploadReceiptModal} />
       </View>
-
       <Text
         style={[
           Typography.header,
@@ -220,6 +241,7 @@ const UploadReceiptModal = props => {
         ]}>
         {Strings.bankDetails}:
       </Text>
+      //TRANSLATION
       {props.supplier.bankAccount == null ? (
         <Text
           style={[
@@ -276,7 +298,6 @@ const UploadReceiptModal = props => {
         offsetCenter={wp('5%')}
         top={hp('65%')}
       />
-
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [
@@ -400,7 +421,8 @@ const UploadReceipt = props => {
           trigger={props.trigger}
           setTrigger={props.setTrigger}
           payTask={props.payTask}
-          setPayTask={props.setPayTask}></UploadReceiptModal>
+          setPayTask={props.setPayTask}
+          company={props.company}></UploadReceiptModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -420,15 +442,31 @@ export const UploadReceiptList = props => {
             onRefresh={async () => {
               setRefreshing(true);
               try {
-                const task = await API.graphql({
-                  query: paymentsTaskForRetailerByDate,
-                  variables: {
-                    retailerID: props.user.retailerCompanyID,
-                    sortDirection: 'ASC',
-                  },
-                });
-                log(task.data.paymentsTaskForRetailerByDate.items);
-                props.setPayTask(task.data.paymentsTaskForRetailerByDate.items);
+                if (props.retailerCompanyID.type == 'retailer') {
+                  const task = await API.graphql({
+                    query: paymentsTaskForRetailerByDate,
+                    variables: {
+                      retailerID: props.user.retailerCompanyID,
+                      sortDirection: 'ASC',
+                    },
+                  });
+                  log(task.data.paymentsTaskForRetailerByDate.items);
+                  props.setPayTask(
+                    task.data.paymentsTaskForRetailerByDate.items,
+                  );
+                } else {
+                  const task = await API.graphql({
+                    query: paymentsTaskFarmerForSupplierByDate,
+                    variables: {
+                      supplierID: props.user.supplierCompanyID,
+                      sortDirection: 'ASC',
+                    },
+                  });
+                  log(task.data.paymentsTaskFarmerForSupplierByDate.items);
+                  props.setPayTask(
+                    task.data.paymentsTaskFarmerForSupplierByDate.items,
+                  );
+                }
                 log('payment task');
               } catch (e) {
                 log(e);
@@ -457,6 +495,7 @@ export const UploadReceiptList = props => {
               setTrigger={props.setTrigger}
               payTask={props.payTask}
               setPayTask={props.setPayTask}
+              company={props.company}
             />
           );
         }}
