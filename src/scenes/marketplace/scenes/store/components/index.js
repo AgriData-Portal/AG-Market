@@ -55,14 +55,12 @@ const ProductCard = props => {
       setImageSource({
         uri: imageURL,
       });
-      log(imageSource);
     } catch (e) {
       log(e);
     }
   };
   useEffect(() => {
     getImage();
-    log('Image...');
   }, []);
   return (
     <TouchableOpacity
@@ -120,6 +118,8 @@ const ProductCard = props => {
           storeName={props.storeName}
           setPOList={props.setPOList}
           id={props.id}
+          setTrigger={props.setTrigger}
+          trigger={props.trigger}
           user={props.user}></ProductPopUp>
       </Modal>
     </TouchableOpacity>
@@ -167,6 +167,8 @@ export const MarketplaceList = props => {
             storeName={props.storeName}
             setPOList={props.setPOList}
             user={props.user}
+            trigger={props.trigger}
+            setTrigger={props.setTrigger}
           />
         );
       }}
@@ -206,12 +208,11 @@ const ProductPopUp = props => {
             mostRecentMessage: 'Product Inquiry',
             mostRecentMessageSender: props.user.name,
           };
-          log(chatGroup);
+
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
             variables: {input: chatGroup},
           });
-          log(createdChatGroup);
         } catch (e) {
           log(e.errors[0].errorType);
         }
@@ -221,9 +222,7 @@ const ProductPopUp = props => {
     }
 
     log('creating product inquiry');
-    log(props.user);
-    log(props.id);
-    log(props.purchaseOrder);
+
     const inquiry = {
       chatGroupID: props.purchaseOrder,
       type: 'inquiry',
@@ -245,7 +244,7 @@ const ProductPopUp = props => {
         query: createMessage,
         variables: {input: inquiry},
       });
-      log(message.data.createMessage);
+
       setInquirySuccessfulModal(true);
     } catch {
       e => log(e);
@@ -259,6 +258,7 @@ const ProductPopUp = props => {
         query: createProductsInPurchaseOrder,
         variables: {
           input: {
+            id: props.id + '//' + props.purchaseOrder,
             purchaseOrderID: props.purchaseOrder,
             name: props.productName,
             quantity: parseInt(desiredQuantity),
@@ -268,15 +268,50 @@ const ProductPopUp = props => {
           },
         },
       });
-      log(added.data.createProductsInPurchaseOrder);
+
       var poList = props.POList;
-      log(poList);
+
       poList.push(added.data.createProductsInPurchaseOrder);
-      log(poList);
+
       props.setPOList(poList);
       setSuccessfulModal(true);
-    } catch {
-      e => log(e);
+    } catch (e) {
+      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+        try {
+          const updated = await API.graphql({
+            query: updateProductsInPurchaseOrder,
+            variables: {
+              input: {
+                id: props.id + '//' + props.purchaseOrder,
+                quantity: parseInt(desiredQuantity),
+              },
+            },
+          });
+
+          var poList = props.POList;
+
+          poList.forEach((item, index, arr) => {
+            if (item.id == props.id + '//' + props.purchaseOrder) {
+              log('found');
+              arr[index] = updated.data.updateProductsInPurchaseOrder;
+            }
+          });
+          log('\n hey \n');
+          log(poList);
+
+          if (props.trigger) {
+            props.setTrigger(false);
+          } else {
+            props.setTrigger(true);
+          }
+          props.setPOList(poList);
+
+          setSuccessfulModal(true);
+        } catch (e) {
+          log(e);
+        }
+      }
+      log(e);
     }
     setAddPO(false);
   };
@@ -333,7 +368,6 @@ const ProductPopUp = props => {
           }}
           source={props.productPicture}></Image>
         <View
-          onPress={() => log('navigate')}
           style={{
             width: wp('35%'),
             flexDirection: 'row',
@@ -506,6 +540,7 @@ export const PurchaseOrderButton = props => {
           user={props.user}
           purchaseOrder={props.purchaseOrder}
           navigation={props.navigation}
+          trigger={props.trigger}
           storeName={props.storeName}></PurchaseOrder>
       </Modal>
     </View>
@@ -562,12 +597,11 @@ const PurchaseOrder = props => {
               mostRecentMessage: 'Purchase Order',
               mostRecentMessageSender: props.user.name,
             };
-            log(chatGroup);
+
             const createdChatGroup = await API.graphql({
               query: createChatGroup,
               variables: {input: chatGroup},
             });
-            log(createdChatGroup);
           } catch (e) {
             log(e.errors[0].errorType);
           }
@@ -584,7 +618,7 @@ const PurchaseOrder = props => {
         });
         mostRecentPurchaseOrderNumber =
           response.data.getSupplierCompany.mostRecentPurchaseOrderNumber;
-        log('newnum: ' + mostRecentPurchaseOrderNumber);
+
         if (mostRecentPurchaseOrderNumber) {
           if (
             dayjs().format('YYYY-MM') ==
@@ -602,7 +636,6 @@ const PurchaseOrder = props => {
           mostRecentPurchaseOrderNumber =
             'P.O-' + dayjs().format('YYYY-MM-') + '0001';
         }
-        log('updatednum: ' + mostRecentPurchaseOrderNumber);
 
         log('creating purchase order');
         const supplierCompanyUpdate = await API.graphql({
@@ -630,7 +663,6 @@ const PurchaseOrder = props => {
           query: createMessage,
           variables: {input: inquiry},
         });
-        log(messageSent.data.createMessage);
 
         setpoSuccessfulModal(true);
       } catch (e) {
@@ -685,6 +717,7 @@ const PurchaseOrder = props => {
         }}>
         <PurchaseOrderList
           POList={props.POList}
+          trigger={props.trigger}
           setPOList={props.setPOList}></PurchaseOrderList>
       </View>
       <BlueButton
@@ -729,7 +762,7 @@ const PurchaseOrder = props => {
         {/*TRANSLATION successful */}
       </Modal>
       <Modal
-        isVisible={setpoUnsuccessfulModal}
+        isVisible={poUnsuccessfulModal}
         onBackdropPress={() => setpoUnsuccessfulModal(false)}>
         <UnsuccessfulModal text="One or more of your orders does not have a valid input. Please check and try again" />
         {/*TRANSLATION unsunccessful */}
@@ -754,6 +787,7 @@ const PurchaseOrderList = props => {
     <FlatList
       keyExtractor={item => item.id}
       data={props.POList}
+      extraData={props.trigger}
       numColumns={1}
       ItemSeparatorComponent={Seperator}
       ListEmptyComponent={
@@ -797,9 +831,8 @@ const PurchaseOrderComponent = props => {
       });
       var poList = props.POList;
       const tempList = poList.filter(item => item.id !== props.id);
-      log(tempList);
+
       props.setPOList(tempList);
-      log(deleted.data.deleteProductsInPurchaseOrder);
     } catch {
       e => log(e);
     }
@@ -817,7 +850,6 @@ const PurchaseOrderComponent = props => {
         }
       });
       props.setPOList(tempList);
-      log(updated.data.updateProductsInPurchaseOrder);
     } catch (e) {
       log(e);
     }

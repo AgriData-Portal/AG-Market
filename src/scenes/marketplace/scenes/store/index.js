@@ -28,6 +28,7 @@ export const Store = props => {
   const [products, setProducts] = useState([]);
   const [POList, setPOList] = useState([]);
   const [storeName, setStoreName] = useState('');
+  const [trigger, setTrigger] = useState(false);
   const retailerID = props.user.retailerCompanyID;
   log('retailer id:' + retailerID);
   const purchaseOrder = retailerID + itemId;
@@ -150,15 +151,6 @@ export const Store = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      {/* <View
-        style={{
-          position: 'absolute',
-          left: wp('5%'),
-          top: hp('4%'),
-        }}>
-        <BackButton navigation={props.navigation} />
-      </View>
-      <Text style={[Typography.header, {top: hp('4%')}]}>{storeName}</Text> */}
       <View
         style={{
           width: wp('93%'),
@@ -172,6 +164,8 @@ export const Store = props => {
           storeName={storeName}
           purchaseOrder={purchaseOrder}
           user={props.user}
+          setTrigger={setTrigger}
+          trigger={trigger}
         />
       </View>
       {isFavourite ? (
@@ -213,11 +207,9 @@ export const Store = props => {
           POList={POList}
           setPOList={setPOList}
           user={props.user}
+          trigger={trigger}
         />
       </View>
-      {/* <View style={{position: 'absolute', top: hp('80%')}}>
-        <NavBar navigation={props.navigation} />
-      </View> */}
     </SafeAreaView>
   );
 };
