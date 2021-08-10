@@ -1,27 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  RefreshControl,
-  FlatList,
-  Text,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import {View, TextInput, FlatList, Text, Platform} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import dayjs from 'dayjs';
+
 import Modal from 'react-native-modal';
 import {CloseButton, SuccessfulModal} from '_components';
 import {API} from 'aws-amplify';
 import {
   createMessage,
   updateChatGroup,
-  updateOrderQuotation,
-  createOrderQuotation,
+  updateSupplierCompany,
 } from '../../../../graphql/mutations';
-import {purchaseOrderItems} from '../../../../graphql/queries';
+import {getSupplierCompany} from '../../../../graphql/queries';
 import {
   QuotationItemsContext,
   QuotationItemsProvider,
@@ -270,6 +260,15 @@ export const PurchaseOrder = props => {
             ]}>
             {props.chatName}
           </Text>
+          <Text
+            style={[
+              Typography.normal,
+              {
+                top: hp('3%'),
+              },
+            ]}>
+            {props.id}
+          </Text>
         </View>
         <View
           style={{
@@ -277,7 +276,10 @@ export const PurchaseOrder = props => {
             top: hp('5%'),
             borderRadius: 10,
           }}>
-          <PurchaseOrderList chatGroupID={props.chatGroupID} />
+          <PurchaseOrderList
+            content={props.content}
+            chatGroupID={props.chatGroupID}
+          />
         </View>
         <View
           style={{
@@ -366,57 +368,82 @@ const NewOrderQuotation = props => {
 
     log(valid);
     if (valid == true) {
-      var tempList = quotationItems;
-      tempList.forEach((item, index, array) => {
-        delete item.createdAt;
-        delete item.id;
-        delete item.index;
-        delete item.purchaseOrderID, delete item.updatedAt;
-        array[index] = item;
-      });
-      log('removing key and value pairs like index for order quotation');
+      var mostRecentQuotationNumber;
       try {
-        const updatedValue = await API.graphql({
-          query: updateOrderQuotation,
+        const response = await API.graphql({
+          query: getSupplierCompany,
+          variables: {id: props.chatGroupID.slice(36, 72)},
+        });
+        mostRecentQuotationNumber =
+          response.data.getSupplierCompany.mostRecentQuotationNumber;
+        log('newnum: ' + mostRecentQuotationNumber);
+        if (mostRecentQuotationNumber) {
+          if (
+            dayjs().format('YYYY-MM') == mostRecentQuotationNumber.slice(4, 11)
+          ) {
+            var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
+            var numberString = (number + 1).toString().padStart(4, '0');
+            mostRecentQuotationNumber =
+              'QUO-' + dayjs().format('YYYY-MM-') + numberString;
+          } else {
+            mostRecentQuotationNumber =
+              'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+          }
+        } else {
+          mostRecentQuotationNumber =
+            'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+        }
+        log('updatednum: ' + mostRecentQuotationNumber);
+
+        log('creating purchase order');
+        const supplierCompanyUpdate = await API.graphql({
+          query: updateSupplierCompany,
           variables: {
             input: {
-              id: props.chatGroupID,
-              items: tempList,
-              sum: sum,
-              logisticsProvided: deliveryValue,
-              paymentTerms: paymentValue,
+              id: props.chatGroupID.slice(36, 72),
+              mostRecentQuotationNumber: mostRecentQuotationNumber,
             },
           },
         });
       } catch (e) {
         log(e);
-        if (
-          e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException'
-        ) {
-          log('order quotation has not been created, creating now');
-          const createdValue = await API.graphql({
-            query: createOrderQuotation,
-            variables: {
-              input: {
-                id: props.chatGroupID,
-                items: tempList,
-                sum: sum,
-                logisticsProvided: deliveryValue,
-                paymentTerms: paymentValue,
-              },
-            },
-          });
-        }
       }
+
+      var message = '';
+      var tempList = quotationItems;
+      tempList.forEach((item, index, array) => {
+        message = message + (item.id + '+');
+        message = message + (item.name + '+');
+        message = message + (item.quantity + '+');
+        message = message + (item.siUnit + '+');
+        message = message + (item.variety + '+');
+        message = message + (item.grade + '+');
+        message = message + (item.price + '+');
+        if (index < tempList.length - 1) {
+          message = message + '/';
+        }
+      });
+      message =
+        message +
+        ':' +
+        sum.toString() +
+        ':' +
+        deliveryValue +
+        ':' +
+        paymentValue;
+      log('removing key and value pairs like index for order quotation');
+      log(message);
+
       try {
         log('sending order quotation');
         const createdMessage = await API.graphql({
           query: createMessage,
           variables: {
             input: {
+              id: mostRecentQuotationNumber,
               chatGroupID: props.chatGroupID,
               type: 'quotation',
-              content: props.chatGroupID,
+              content: message,
               sender: props.userName,
               senderID: props.userID,
             },
@@ -627,14 +654,21 @@ const NewOrderQuotation = props => {
 
 const PurchaseOrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
-  const fetchPO = async () => {
-    const prodList = await API.graphql({
-      query: purchaseOrderItems,
-      variables: {purchaseOrderID: props.chatGroupID},
+  const fetchPO = () => {
+    var poArray = props.content.split('/');
+    poArray.forEach((item, index, arr) => {
+      var temp = item.split('+');
+      var itemObject = {};
+      itemObject['id'] = temp[0];
+      itemObject['name'] = temp[1];
+      itemObject['quantity'] = temp[2];
+      itemObject['siUnit'] = temp[3];
+      itemObject['variety'] = temp[4];
+      itemObject['grade'] = temp[5];
+      itemObject['index'] = index;
+      arr[index] = itemObject;
     });
-
-    log('successful fetch for PO items');
-    setQuotationItems(prodList.data.purchaseOrderItems.items);
+    setQuotationItems(poArray);
   };
   useEffect(() => {
     fetchPO();

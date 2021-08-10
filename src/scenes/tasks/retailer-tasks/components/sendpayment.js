@@ -124,7 +124,7 @@ const UploadReceiptModal = props => {
           {
             position: 'absolute',
             top: hp('23%'),
-            left: wp('43%'),
+            left: wp('40%'),
           },
         ]}>
         {props.supplier.name}
@@ -146,10 +146,10 @@ const UploadReceiptModal = props => {
           {
             position: 'absolute',
             top: hp('28%'),
-            left: wp('43%'),
+            left: wp('40%'),
           },
         ]}>
-        #{props.id.slice(0, 6)}
+        #{props.id}
       </Text>
       <Text
         style={[
@@ -168,7 +168,7 @@ const UploadReceiptModal = props => {
           {
             position: 'absolute',
             top: hp('33%'),
-            left: wp('43%'),
+            left: wp('40%'),
           },
         ]}>
         {dayjs(props.createdAt).format('DD MMM YYYY')}
@@ -191,7 +191,7 @@ const UploadReceiptModal = props => {
             {
               position: 'absolute',
               top: hp('38%'),
-              left: wp('43%'),
+              left: wp('40%'),
             },
           ]}>
           Not Added Yet
@@ -203,7 +203,7 @@ const UploadReceiptModal = props => {
             {
               position: 'absolute',
               top: hp('38%'),
-              left: wp('43%'),
+              left: wp('40%'),
             },
           ]}>
           {props.supplier.bankAccount.bankName}
@@ -227,7 +227,7 @@ const UploadReceiptModal = props => {
             {
               position: 'absolute',
               top: hp('43%'),
-              left: wp('43%'),
+              left: wp('40%'),
             },
           ]}>
           Not Added Yet
@@ -239,13 +239,13 @@ const UploadReceiptModal = props => {
             {
               position: 'absolute',
               top: hp('43%'),
-              left: wp('43%'),
+              left: wp('40%'),
             },
           ]}>
           {props.supplier.bankAccount.accountNumber}
         </Text>
       )}
-      <Text
+      {/* <Text
         style={[
           Typography.placeholder,
           {
@@ -262,11 +262,11 @@ const UploadReceiptModal = props => {
           {
             position: 'absolute',
             top: hp('48%'),
-            left: wp('43%'),
+            left: wp('40%'),
           },
         ]}>
         9065 7756 8989
-      </Text>
+      </Text> */}
       <BlueButton
         onPress={() => sendReceipt()}
         text={Strings.paid}
@@ -341,12 +341,19 @@ const UploadReceipt = props => {
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
-              top: hp('3%'),
+              top: hp('1%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
           {props.supplier.name}
+        </Text>
+        <Text
+          style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
+          ]}>
+          {props.id}
         </Text>
         <Text
           style={[
