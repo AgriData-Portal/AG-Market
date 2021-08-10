@@ -30,6 +30,7 @@ import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -37,7 +38,9 @@ export const OrderQuotationModal = props => {
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
   const [acceptButton, setAcceptButton] = useState(false);
   const [declineButton, setDeclineButton] = useState(false);
-
+  const companyType = userStore(state => state.companyType);
+  const userID = userStore(state => state.userID);
+  const userName = userStore(state => state.userName);
   useEffect(() => {
     fetchQuotation();
   }, []);
@@ -82,8 +85,8 @@ export const OrderQuotationModal = props => {
             chatGroupID: props.chatGroupID,
             type: 'text',
             content: 'The quotation has been rejected. Please re-negotiate',
-            senderID: props.userID,
-            sender: props.userName,
+            senderID: userID,
+            sender: userName,
           },
         },
       });
@@ -108,7 +111,7 @@ export const OrderQuotationModal = props => {
             id: props.chatGroupID,
             mostRecentMessage:
               'The quotation has been rejected. Please re-negotiate',
-            mostRecentMessageSender: props.userName,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -146,8 +149,8 @@ export const OrderQuotationModal = props => {
             type: 'text',
             content:
               'The quotation has been accepted. Task has been added to to-do',
-            senderID: props.userID,
-            sender: props.userName,
+            senderID: userID,
+            sender: userName,
           },
         },
       });
@@ -172,7 +175,7 @@ export const OrderQuotationModal = props => {
             id: props.chatGroupID,
             mostRecentMessage:
               'The quotation has been accepted. Task has been added to to-do',
-            mostRecentMessageSender: props.userName,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -304,7 +307,7 @@ export const OrderQuotationModal = props => {
             </View>
           </View>
 
-          {props.type == 'retailer' && orderDetails.status == 'New' ? (
+          {companyType == 'retailer' && orderDetails.status == 'New' ? (
             <View
               style={{
                 flexDirection: 'row',

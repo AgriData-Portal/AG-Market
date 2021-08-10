@@ -18,14 +18,16 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {OrderQuotationModal} from './order-quotation';
-import {PurchaseOrder} from './purchase-order';
+import {OrderQuotationModal} from '../order-quotation/order-quotation';
+import {PurchaseOrder} from '../purchase-order/purchase-order';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 
 const ChatBubble = props => {
+  const userID = userStore(state => state.userID);
   const [orderQuotationModal, setOrderQuotationModal] = useState(false);
   const [purchaseOrderModal, setPurchaseOrderModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
@@ -40,7 +42,7 @@ const ChatBubble = props => {
     //if yes, get the key of that value
     //if no
 
-    if (props.senderID != props.userID)
+    if (props.senderID != userID)
       try {
         for (let i = 0; i < colourObject.length; i++) {
           counter = counter + 1;
@@ -61,7 +63,7 @@ const ChatBubble = props => {
   useEffect(() => mapColour(), []);
   const createdAt = dayjs(props.createdAt).format('HH:mm D/M');
   const isMyMessage = () => {
-    if (props.senderID == props.userID) return true;
+    if (props.senderID == userID) return true;
     else return false;
   };
   const contentType = props.contentType;
@@ -246,13 +248,10 @@ const ChatBubble = props => {
             id={props.id}
             content={props.content}
             chatName={props.chatName}
-            type={props.type}
             setPurchaseOrderModal={setPurchaseOrderModal}
             chatGroupID={props.chatGroupID}
-            userID={props.userID}
             setMessages={props.setMessages}
-            messages={props.messages}
-            userName={props.userName}></PurchaseOrder>
+            messages={props.messages}></PurchaseOrder>
         </Modal>
       </View>
     );
@@ -329,16 +328,13 @@ const ChatBubble = props => {
             id={props.id}
             chatName={props.chatName}
             content={props.content}
-            type={props.type}
             sender={props.sender}
             content={props.content}
             senderID={props.senderID}
             contentType={props.contentType}
             createdAt={props.createdAt}
-            userID={props.userID}
             messages={props.messages}
             setMessages={props.setMessages}
-            userName={props.userName}
             setOrderQuotationModal={setOrderQuotationModal}
             chatGroupID={props.chatGroupID}></OrderQuotationModal>
         </Modal>
@@ -521,7 +517,7 @@ const ChatBubble = props => {
   }
 };
 
-export const ChatBubbleList = props => {
+const ChatBubbleList = props => {
   //TODO build a store for containing all the messages
   const [trigger, setTrigger] = useState(false);
   const [colourID, setColourID] = useState([
@@ -555,12 +551,9 @@ export const ChatBubbleList = props => {
               content={item.content}
               senderID={item.senderID}
               createdAt={item.createdAt}
-              userID={props.userID}
               contentType={item.type}
               chatName={props.chatName}
               chatGroupID={props.chatGroupID}
-              type={props.type}
-              userName={props.userName}
               setMessages={props.setMessages}
               messages={props.messages}
               navigation={props.navigation}
@@ -574,3 +567,5 @@ export const ChatBubbleList = props => {
     </View>
   );
 };
+
+export default ChatBubbleList;

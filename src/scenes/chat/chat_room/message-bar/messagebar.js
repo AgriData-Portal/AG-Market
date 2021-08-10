@@ -42,17 +42,14 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {ChatBubbleList} from './chat-bubbles';
-import {ChatInfo} from './chat-info';
+
 import {launchImageLibrary} from 'react-native-image-picker';
 import {DismissKeyboardView} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export {ChatBubbleList, ChatInfo};
-
 // const audioRecorderPlayer = new AudioRecorderPlayer();
 
-export const MessageInput = props => {
+const MessageInput = props => {
   const [message, setMessage] = useState('');
   const [imageSource, setImageSource] = useState(null);
   const [imageModal, setImageModal] = useState(false);
@@ -227,129 +224,129 @@ export const MessageInput = props => {
           }}
         />
         {/* <TouchableOpacity
-            onPressIn={() => [onStartRecord(), setMicPressed(true)]}
-            onPressOut={() => [onStopRecord(), setAudio(true)]}
-            style={{
-              height: hp('9%'),
-              width: hp('9%'),
-
-              left: wp('5%'),
-              top: hp('2%'),
-
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}>
-            <Icon name="mic-outline" size={wp('7%')} />
-          </TouchableOpacity>
-          {whenMicPressed ? (
-            <Text
+              onPressIn={() => [onStartRecord(), setMicPressed(true)]}
+              onPressOut={() => [onStopRecord(), setAudio(true)]}
               style={{
-                position: 'absolute',
-                left: wp('40%'),
-                top: hp('2.5%'),
-                width: wp('17%'),
+                height: hp('9%'),
+                width: hp('9%'),
+  
+                left: wp('5%'),
+                top: hp('2%'),
+  
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
               }}>
-              {recording.recordTime}
-            </Text> 
-          ) : (
-            <View></View>
-          )}
-          <Modal isVisible={audio}>
-            <View
-              style={{
-                backgroundColor: Colors.GRAY_LIGHT,
-                top: hp('45%'),
-                height: hp('13%'),
-                width: wp('100%'),
-                right: wp('5%'),
-                justifyContent: 'center',
-                flexDirection: 'row',
-              }}>
-              <TouchableOpacity
-                onPress={() => [setMicPressed(false), setAudio(false)]}
-                style={{
-                  alignSelf: 'center',
-                  bottom: hp('1%'),
-                  backgroundColor: Colors.PALE_BLUE,
-                  height: hp('5.5%'),
-                  width: hp('5.5%'),
-                  borderRadius: 100,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  right: wp('10%'),
-                }}>
-                <Icon name="trash-outline" size={wp('8%')} color="white"></Icon>
-              </TouchableOpacity>
+              <Icon name="mic-outline" size={wp('7%')} />
+            </TouchableOpacity>
+            {whenMicPressed ? (
               <Text
                 style={{
-                  right: wp('5%'),
-                  top: hp('4%'),
+                  position: 'absolute',
+                  left: wp('40%'),
+                  top: hp('2.5%'),
                   width: wp('17%'),
                 }}>
-                {recording.playTime}
-              </Text>
-              <TouchableOpacity
-                onPress={() => onStartPlay()}
+                {recording.recordTime}
+              </Text> 
+            ) : (
+              <View></View>
+            )}
+            <Modal isVisible={audio}>
+              <View
                 style={{
-                  alignSelf: 'center',
-                  bottom: hp('1%'),
-                  backgroundColor: Colors.PALE_BLUE,
-                  height: hp('5.5%'),
-                  width: hp('5.5%'),
-                  borderRadius: 100,
+                  backgroundColor: Colors.GRAY_LIGHT,
+                  top: hp('45%'),
+                  height: hp('13%'),
+                  width: wp('100%'),
+                  right: wp('5%'),
                   justifyContent: 'center',
-                  alignItems: 'center',
-                  marginRight: wp('5%'),
+                  flexDirection: 'row',
                 }}>
-                <Icon name="play" size={wp('8%')} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => onStopPlay()}
-                style={{
-                  alignSelf: 'center',
-                  bottom: hp('1%'),
-                  backgroundColor: Colors.PALE_BLUE,
-                  height: hp('5.5%'),
-                  width: hp('5.5%'),
-                  borderRadius: 100,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Icon name="stop" size={wp('8%')} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  height: hp('5.5%'),
-                  width: hp('5.5%'),
-                  borderRadius: 100,
-                  top: hp('2.8%'),
-                  left: wp('10%'),
-                  backgroundColor: Colors.PALE_BLUE,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
-                }}>
-                <Icon
-                  name="paper-plane-outline"
-                  size={wp('6%')}
-                  color={Colors.LIGHT_BLUE}
-                />
-              </TouchableOpacity>
-            </View>
-          </Modal>*/}
+                <TouchableOpacity
+                  onPress={() => [setMicPressed(false), setAudio(false)]}
+                  style={{
+                    alignSelf: 'center',
+                    bottom: hp('1%'),
+                    backgroundColor: Colors.PALE_BLUE,
+                    height: hp('5.5%'),
+                    width: hp('5.5%'),
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    right: wp('10%'),
+                  }}>
+                  <Icon name="trash-outline" size={wp('8%')} color="white"></Icon>
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    right: wp('5%'),
+                    top: hp('4%'),
+                    width: wp('17%'),
+                  }}>
+                  {recording.playTime}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => onStartPlay()}
+                  style={{
+                    alignSelf: 'center',
+                    bottom: hp('1%'),
+                    backgroundColor: Colors.PALE_BLUE,
+                    height: hp('5.5%'),
+                    width: hp('5.5%'),
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginRight: wp('5%'),
+                  }}>
+                  <Icon name="play" size={wp('8%')} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => onStopPlay()}
+                  style={{
+                    alignSelf: 'center',
+                    bottom: hp('1%'),
+                    backgroundColor: Colors.PALE_BLUE,
+                    height: hp('5.5%'),
+                    width: hp('5.5%'),
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="stop" size={wp('8%')} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    height: hp('5.5%'),
+                    width: hp('5.5%'),
+                    borderRadius: 100,
+                    top: hp('2.8%'),
+                    left: wp('10%'),
+                    backgroundColor: Colors.PALE_BLUE,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                  }}>
+                  <Icon
+                    name="paper-plane-outline"
+                    size={wp('6%')}
+                    color={Colors.LIGHT_BLUE}
+                  />
+                </TouchableOpacity>
+              </View>
+            </Modal>*/}
         <TouchableOpacity
           onPress={() => {
             selectImage();
@@ -697,3 +694,5 @@ const PreviewImageModal = props => {
 //   audioRecorderPlayer.stopPlayer();
 //   audioRecorderPlayer.removePlayBackListener();
 // };
+
+export default MessageInput;
