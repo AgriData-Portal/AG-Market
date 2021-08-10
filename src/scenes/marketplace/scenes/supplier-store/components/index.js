@@ -45,6 +45,7 @@ import {listSupplierCompanys} from '../../../../../graphql/queries';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import Share from 'react-native-share';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -1183,6 +1184,18 @@ export const RetailerModalButton = props => {
 const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
 
+  const shareStore = async () => {
+    const shareOptions = {
+      message: 'Message test\n',
+      url: 'https://agridataportal.com/app.html?store=Hinsou@Farm&storeID=aeeaf305-6f51-4fb6-bd81-5c5c88d7461d',
+    };
+    try {
+      const shareResponse = await Share.open(shareOptions);
+    } catch (e) {
+      log(e);
+    }
+  };
+
   const getAllSupermarkets = async () => {
     try {
       const listRetailer = await API.graphql({
@@ -1209,7 +1222,7 @@ const RetailerModal = props => {
       }}>
       <View
         style={{alignItems: 'center', justifyContent: 'center', top: hp('2%')}}>
-        <Text style={[Typography.large]}>Supermarkets</Text>
+        <Text style={[Typography.large]}>Supermarkets {/* TRANSLATION */}</Text>
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
         <RetailerList
@@ -1219,6 +1232,11 @@ const RetailerModal = props => {
           setRetailerModal={props.setRetailerModal}
         />
       </View>
+      <TouchableOpacity
+        onPress={() => shareStore()}
+        style={{backgroundColor: Colors.LIGHT_BLUE, alignSelf: 'center'}}>
+        <Text>Share</Text>
+      </TouchableOpacity>
     </View>
   );
 };

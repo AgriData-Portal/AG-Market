@@ -4,7 +4,7 @@ const config = {
       path: 'store/:itemId/:storeName',
       parse: {
         itemId: id => id,
-        storeName: name => name.replace(/[+]/g, ' '),
+        storeName: name => name.replace(/[@]/g, ' '),
       },
     },
   },
