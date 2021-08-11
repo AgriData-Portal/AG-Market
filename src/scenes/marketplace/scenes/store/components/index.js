@@ -47,7 +47,7 @@ import {
 } from '../../../../../graphql/queries';
 
 import {log} from '_utils';
-import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import {userStore} from '_store';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -67,7 +67,7 @@ const ProductCard = props => {
   }, []);
   return (
     <TouchableOpacity
-      onPress={() => setProductModal(true)}
+      onPress={() => [setProductModal(true), log(props.purchaseOrder)]}
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('36%'),
@@ -122,8 +122,7 @@ const ProductCard = props => {
           setPOList={props.setPOList}
           id={props.id}
           setTrigger={props.setTrigger}
-          trigger={props.trigger}
-          user={props.user}></ProductPopUp>
+          trigger={props.trigger}></ProductPopUp>
       </Modal>
     </TouchableOpacity>
   );
@@ -169,7 +168,6 @@ export const MarketplaceList = props => {
             POList={props.POList}
             storeName={props.storeName}
             setPOList={props.setPOList}
-            user={props.user}
             trigger={props.trigger}
             setTrigger={props.setTrigger}
           />
@@ -187,6 +185,11 @@ const ProductPopUp = props => {
   const [addPO, setAddPO] = useState(false);
   const [productInquire, setProductInquire] = useState(false);
 
+  const companyName = userStore(state => state.companyName);
+  const companyID = userStore(state => state.companyID);
+  const userName = userStore(state => state.userName);
+  const userID = userStore(state => state.userID);
+
   const sendProductInquiry = async () => {
     try {
       const updateChat = await API.graphql({
@@ -195,7 +198,7 @@ const ProductPopUp = props => {
           input: {
             id: props.purchaseOrder,
             mostRecentMessage: 'Product Inquiry',
-            mostRecentMessageSender: props.user.name,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -205,11 +208,11 @@ const ProductPopUp = props => {
         try {
           const chatGroup = {
             id: props.purchaseOrder,
-            name: props.user.retailerCompany.name + '+' + props.storeName,
-            retailerID: props.user.retailerCompany.id,
+            name: companyName + '+' + props.storeName,
+            retailerID: companyID,
             supplierID: props.purchaseOrder.slice(36, 72),
             mostRecentMessage: 'Product Inquiry',
-            mostRecentMessageSender: props.user.name,
+            mostRecentMessageSender: userName,
           };
 
           const createdChatGroup = await API.graphql({
@@ -239,8 +242,8 @@ const ProductPopUp = props => {
         props.variety +
         '+' +
         props.grade,
-      sender: props.user.name,
-      senderID: props.user.id,
+      sender: userName,
+      senderID: userID,
     };
     try {
       const message = await API.graphql({
@@ -540,10 +543,8 @@ export const PurchaseOrderButton = props => {
           setPurchaseOrderModal={setPurchaseOrderModal}
           POList={props.POList}
           setPOList={props.setPOList}
-          user={props.user}
           purchaseOrder={props.purchaseOrder}
           navigation={props.navigation}
-          company={props.company}
           trigger={props.trigger}
           storeName={props.storeName}></PurchaseOrder>
       </Modal>
@@ -555,8 +556,15 @@ const PurchaseOrder = props => {
   const [poSuccessfulModal, setpoSuccessfulModal] = useState(false);
   const [poUnsuccessfulModal, setpoUnsuccessfulModal] = useState(false);
   const [sendPOButton, setSendPOButton] = useState(false);
+  const userName = userStore(state => state.userName);
+  const companyType = userStore(state => state.companyType);
+  const companyName = userStore(state => state.companyName);
+  const companyID = userStore(state => state.companyID);
+  const userID = userStore(state => state.userID);
+
   log('PO \n \n \n');
   log(props.POList);
+
   const sendPO = async () => {
     var message = '';
     var positiveQuantity = true;
@@ -583,7 +591,7 @@ const PurchaseOrder = props => {
             input: {
               id: props.purchaseOrder,
               mostRecentMessage: 'Purchase Order',
-              mostRecentMessageSender: props.user.name,
+              mostRecentMessageSender: userName,
             },
           },
         });
@@ -594,28 +602,29 @@ const PurchaseOrder = props => {
         ) {
           try {
             var chatGroup;
-            if (props.company.type == 'retailer') {
+            if (companyType == 'retailer') {
               log('retailer here!');
               chatGroup = {
                 id: props.purchaseOrder,
-                name: props.user.retailerCompany.name + '+' + props.storeName,
-                retailerID: props.user.retailerCompany.id,
+                name: companyName + '+' + props.storeName,
+                retailerID: userID,
                 supplierID: props.purchaseOrder.slice(36, 72),
                 mostRecentMessage: 'Purchase Order',
-                mostRecentMessageSender: props.user.name,
+                mostRecentMessageSender: userName,
               };
             } else {
               log('supplier here!');
               chatGroup = {
                 id: props.purchaseOrder,
-                name: props.storeName + '+' + props.user.supplierCompany.name,
-                supplierID: props.user.supplierCompany.id,
-                farmerID: props.purchaseOrder.slice(0, 36),
+                name: props.storeName + '+' + companyName,
+                supplierID: companyID,
+                farmerID: props.purchaseOrder.slice(36, 72),
                 mostRecentMessage: 'Purchase Order',
-                mostRecentMessageSender: props.user.name,
+                mostRecentMessageSender: userName,
               };
             }
             log(chatGroup);
+            log('created');
             const createdChatGroup = await API.graphql({
               query: createChatGroup,
               variables: {input: chatGroup},
@@ -628,7 +637,7 @@ const PurchaseOrder = props => {
       }
       var mostRecentPurchaseOrderNumber;
       try {
-        if (props.company.type == 'retailer') {
+        if (companyType == 'retailer') {
           const response = await API.graphql({
             query: getSupplierCompany,
             variables: {id: props.purchaseOrder.slice(36, 72)},
@@ -669,7 +678,7 @@ const PurchaseOrder = props => {
         } else {
           const response = await API.graphql({
             query: getFarmerCompany,
-            variables: {id: props.purchaseOrder.slice(0, 36)},
+            variables: {id: props.purchaseOrder.slice(36, 72)},
           });
           mostRecentPurchaseOrderNumber =
             response.data.getFarmerCompany.mostRecentPurchaseOrderNumber;
@@ -699,7 +708,7 @@ const PurchaseOrder = props => {
             query: updateFarmerCompany,
             variables: {
               input: {
-                id: props.purchaseOrder.slice(0, 36),
+                id: props.purchaseOrder.slice(36, 72),
                 mostRecentPurchaseOrderNumber: mostRecentPurchaseOrderNumber,
               },
             },
@@ -708,14 +717,15 @@ const PurchaseOrder = props => {
       } catch (e) {
         log(e);
       }
+
       try {
         const inquiry = {
           id: mostRecentPurchaseOrderNumber,
           chatGroupID: props.purchaseOrder,
           type: 'purchaseorder',
           content: message,
-          sender: props.user.name,
-          senderID: props.user.id,
+          sender: userName,
+          senderID: userID,
         };
         const messageSent = await API.graphql({
           query: createMessage,
@@ -725,6 +735,7 @@ const PurchaseOrder = props => {
         setpoSuccessfulModal(true);
       } catch (e) {
         log(e);
+        log('fail');
       }
     } else {
       setpoUnsuccessfulModal(true);
@@ -1042,9 +1053,10 @@ const PurchaseOrderComponent = props => {
 export const DetailsModal = props => {
   const [companyDetails, setCompanyDetails] = useState([]);
   const [imageSource, setImageSource] = useState(null);
+  const companyType = userStore(state => state.companyType);
 
   const getStoreDetails = async () => {
-    if (props.companyType == 'retailer') {
+    if (companyType == 'retailer') {
       try {
         var storeDetails = await API.graphql({
           query: getSupplierCompany,
@@ -1055,7 +1067,7 @@ export const DetailsModal = props => {
       } catch (e) {
         log(e);
       }
-    } else if (props.companyType == 'supplier') {
+    } else if (companyType == 'supplier') {
       try {
         var storeDetails = await API.graphql({
           query: getRetailerCompany,

@@ -60,7 +60,10 @@ const ChatBubble = props => {
         log(e);
       }
   };
-  useEffect(() => mapColour(), []);
+
+  useEffect(() => {
+    mapColour();
+  }, []);
   const createdAt = dayjs(props.createdAt).format('HH:mm D/M');
   const isMyMessage = () => {
     if (props.senderID == userID) return true;
@@ -563,7 +566,6 @@ const ChatBubbleList = props => {
           );
         }}
       />
-      {/* </ScrollView> */}
     </View>
   );
 };

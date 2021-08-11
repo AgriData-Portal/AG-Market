@@ -34,6 +34,7 @@ import {
   purchaseOrderItems,
 } from '../../../../graphql/queries';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 
@@ -67,6 +68,8 @@ const MessageInput = props => {
   const [whenMicPressed, setMicPressed] = useState(false);
   const [focused, setFocused] = useState(false);
   const [inputHeight, setInputHeight] = useState(hp('6%'));
+  const userID = userStore(state => state.userID);
+  const userName = userStore(state => state.userName);
 
   // audioRecorderPlayer.setSubscriptionDuration(0.09);
 
@@ -158,9 +161,9 @@ const MessageInput = props => {
         query: createMessage,
         variables: {
           input: {
-            senderID: props.userID,
+            senderID: userID,
             chatGroupID: props.chatGroupID,
-            sender: props.userName,
+            sender: userName,
             type: 'text',
             content: message,
           },
@@ -172,7 +175,7 @@ const MessageInput = props => {
           input: {
             id: props.chatGroupID,
             mostRecentMessage: message,
-            mostRecentMessageSender: props.userName,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -410,15 +413,15 @@ const MessageInput = props => {
         setImageModal={setImageModal}
         imageSource={imageSource}
         selectImage={selectImage}
-        userID={props.userID}
         chatGroupID={props.chatGroupID}
-        userName={props.userName}
       />
     </View>
   );
 };
 
 const PreviewImageModal = props => {
+  const userName = userStore(state => state.userName);
+  const userID = userStore(state => state.userID);
   const uploadImage = async () => {
     try {
       let photo = props.imageSource;
@@ -430,14 +433,14 @@ const PreviewImageModal = props => {
       await Storage.put(fileName, blob, {
         contentType: 'image/jpeg',
       });
-      log(props.userID, props.chatGroupID, props.userName, fileName);
+      log(userID, props.chatGroupID, userName, fileName);
       const newMessage = await API.graphql({
         query: createMessage,
         variables: {
           input: {
-            senderID: props.userID,
+            senderID: userID,
             chatGroupID: props.chatGroupID,
-            sender: props.userName,
+            sender: userName,
             type: 'image',
             content: fileName,
           },
@@ -449,7 +452,7 @@ const PreviewImageModal = props => {
           input: {
             id: props.chatGroupID,
             mostRecentMessage: 'Image',
-            mostRecentMessageSender: props.userName,
+            mostRecentMessageSender: userName,
           },
         },
       });

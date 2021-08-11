@@ -26,16 +26,27 @@ import {
 } from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const Store = props => {
+  const changePurchaseOrderNumber = userStore(
+    state => state.changePurchaseOrderNumber,
+  );
   const {itemId} = props.route.params; //supplierid
   const [products, setProducts] = useState([]);
   const [POList, setPOList] = useState([]);
   const [storeName, setStoreName] = useState('');
   const [trigger, setTrigger] = useState(false);
-  const retailerID = props.user.retailerCompanyID;
-  log('retailer id:' + retailerID);
-  const purchaseOrder = retailerID + itemId;
+
+  const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
+  const companyFavouriteStores = userStore(
+    state => state.companyFavouriteStores,
+  );
+
+  const purchaseOrder = companyID + itemId;
+  log('retailer id:' + companyID);
+
   log('purchase Order:' + purchaseOrder);
   const [isFavourite, setIsFavourite] = useState(false);
   useEffect(() => {
@@ -43,6 +54,7 @@ export const Store = props => {
     fetchProducts();
     log('Fetching PO from ' + purchaseOrder);
     getPOList();
+    changePurchaseOrderNumber(purchaseOrder);
   }, []);
 
   const getPOList = async () => {
@@ -61,7 +73,7 @@ export const Store = props => {
 
   const fetchProducts = async () => {
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const supplier = await API.graphql({
           query: getSupplierCompany,
           variables: {id: itemId},
@@ -85,18 +97,15 @@ export const Store = props => {
 
   const updateFavourites = async () => {
     try {
-      var currentFavList =
-        props.company.type == 'retailer'
-          ? props.user.retailerCompany.favouriteStores
-          : props.user.supplierCompany.favouriteStores;
+      var currentFavList = companyFavouriteStores;
       if (currentFavList != null) {
         currentFavList.push({id: itemId, name: storeName});
-        if (props.company.type == 'retailer') {
+        if (companyType == 'retailer') {
           var updated = await API.graphql({
             query: updateRetailerCompany,
             variables: {
               input: {
-                id: props.user.retailerCompanyID,
+                id: companyID,
                 favouriteStores: currentFavList,
               },
             },
@@ -106,7 +115,7 @@ export const Store = props => {
             query: updateSupplierCompany,
             variables: {
               input: {
-                id: props.user.supplierCompanyID,
+                id: companyID,
                 favouriteStores: currentFavList,
               },
             },
@@ -115,12 +124,12 @@ export const Store = props => {
         setIsFavourite(true);
         log('success');
       } else {
-        if (props.company.type == 'retailer') {
+        if (companyType == 'retailer') {
           var updated = await API.graphql({
             query: updateRetailerCompany,
             variables: {
               input: {
-                id: props.user.retailerCompanyID,
+                id: companyID,
                 favouriteStores: [{id: itemId, name: storeName}],
               },
             },
@@ -130,7 +139,7 @@ export const Store = props => {
             query: updateSupplierCompany,
             variables: {
               input: {
-                id: props.user.supplierCompanyID,
+                id: companyID,
                 favouriteStores: [{id: itemId, name: storeName}],
               },
             },
@@ -147,10 +156,7 @@ export const Store = props => {
 
   const unfavourite = async () => {
     try {
-      var currentFavList =
-        props.company.type == 'retailer'
-          ? props.user.retailerCompany.favouriteStores
-          : props.user.supplierCompany.favouriteStores;
+      var currentFavList = companyFavouriteStores;
       log(currentFavList.length);
       currentFavList.forEach((item, index, arr) => {
         if (item.id == itemId) {
@@ -158,7 +164,7 @@ export const Store = props => {
         }
       });
       log(currentFavList.length);
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         var updated = await API.graphql({
           query: updateRetailerCompany,
           variables: {
@@ -173,7 +179,7 @@ export const Store = props => {
           query: updateSupplierCompany,
           variables: {
             input: {
-              id: props.user.supplierCompanyID,
+              id: companyID,
               favouriteStores: currentFavList,
             },
           },
@@ -187,10 +193,7 @@ export const Store = props => {
   };
 
   const checkIsFavourite = () => {
-    var tempList =
-      props.company.type == 'retailer'
-        ? props.user.retailerCompany.favouriteStores
-        : props.user.supplierCompany.favouriteStores;
+    var tempList = companyFavouriteStores;
     if (tempList != null) {
       tempList = tempList.filter(item => {
         return item.id == itemId;

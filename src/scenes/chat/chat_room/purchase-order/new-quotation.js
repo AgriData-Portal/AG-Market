@@ -47,6 +47,7 @@ const NewOrderQuotation = props => {
     {label: 'Credit Term', value: 'creditTerm'},
   ]);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+
   var productsWIndex = quotationItems;
   productsWIndex.forEach((item, index, arr) => {
     log('adding index to check back later');

@@ -22,6 +22,8 @@ import {userStore} from '_store';
 export const PurchaseOrder = props => {
   const [orderQuotation, setOrderQuotation] = useState(false);
   const companyType = userStore(state => state.companyType);
+  const purchaseOrderNumber = userStore(state => state.purchaseOrderNumber);
+  const userID = userStore(state => state.userID);
   return (
     <QuotationItemsProvider>
       <View
@@ -83,7 +85,8 @@ export const PurchaseOrder = props => {
           }}>
           <CloseButton setModal={props.setPurchaseOrderModal} />
         </View>
-        {companyType == 'supplier' ? (
+        {companyType == 'supplier' &&
+        purchaseOrderNumber.slice(0, 36) == userID ? (
           <BlueButton
             onPress={() => [setOrderQuotation(true)]}
             text={'Create Order Quotation'}

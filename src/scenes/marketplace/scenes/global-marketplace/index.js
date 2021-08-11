@@ -20,6 +20,7 @@ import Modal from 'react-native-modal';
 
 import {log} from '_utils';
 import {CompanyProfile} from '_components';
+import {userStore} from '_store';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -29,13 +30,17 @@ export const Marketplace = props => {
   const [searchPressed, setSearchPressed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchable, setSearchable] = useState([]);
+  const companyType = userStore(state => state.companyType);
+  const companyFavouriteStores = userStore(
+    state => state.companyFavouriteStores,
+  );
 
   log('marketplace render');
   const fetchProducts = async () => {
     setLoading(true);
 
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const products = await API.graphql({
           query: supplierListingByNameStartingWithLowestPrice,
           variables: {
@@ -51,7 +56,7 @@ export const Marketplace = props => {
             products.data.supplierListingByNameStartingWithLowestPrice.items,
           );
         }
-      } else if (props.company.type == 'supplier') {
+      } else if (companyType == 'supplier') {
         const products = await API.graphql({
           query: farmerListingByNameStartingWithLowestPrice,
           variables: {
@@ -91,7 +96,7 @@ export const Marketplace = props => {
   const getAllListings = async () => {
     //EDIT NODEMODULES FOR SEARCHABLE DROPDOWN AND DELETE ALL NAME IN ITEM.NAME
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const listings = await API.graphql({
           query: listSupplierListings,
         });
@@ -105,7 +110,7 @@ export const Marketplace = props => {
         var array = Array.from(new Set(responseList));
         array.sort();
         setSearchable(array);
-      } else if (props.company.type) {
+      } else if (companyType) {
         const listings = await API.graphql({
           query: listFarmerListings,
         });
@@ -127,7 +132,7 @@ export const Marketplace = props => {
 
   const getFirstTenListings = async () => {
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const listings = await API.graphql({
           query: listSupplierListings,
           variables: {
@@ -137,7 +142,7 @@ export const Marketplace = props => {
         log(listings.data.listSupplierListings.items);
         var responseList = listings.data.listSupplierListings.items;
         setProducts(listings.data.listSupplierListings.items);
-      } else if (props.company.type == 'supplier') {
+      } else if (companyType == 'supplier') {
         const listings = await API.graphql({
           query: listFarmerListings,
           variables: {
@@ -279,11 +284,7 @@ export const Marketplace = props => {
             zIndex: 1,
           }}>
           <FavouritesList
-            data={
-              props.company.type == 'retailer'
-                ? props.user.retailerCompany.favouriteStores
-                : props.user.supplierCompany.favouriteStores
-            }
+            data={companyFavouriteStores}
             navigation={props.navigation}
           />
         </View>
@@ -297,16 +298,11 @@ export const Marketplace = props => {
             zIndex: 1,
           }}>
           <MarketplaceList
-            chatGroups={
-              props.company.type == 'retailer'
-                ? props.user.retailerCompany.chatGroups.items
-                : props.user.supplierCompany.chatGroups.items
-            }
             productList={productsList}
             navigation={props.navigation}
-            user={props.user}
             searchValue={searchValue}
-            company={props.company}
+            //user={props.user}
+            // company={props.company}
           />
         </View>
       )}
