@@ -36,7 +36,7 @@ import {log} from '_utils';
 import {BlueButton} from '_components';
 
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 
@@ -82,7 +82,7 @@ const ReceiveModal = props => {
       supplierID: props.supplierID,
       paid: false,
       amount: sum,
-      payBefore: dayjs().add(30, 'day').format('DD-MM-YYYY'),
+      payBefore: dayjs().add(30, 'day').format('DD MMM YYYY'),
       receipt: null,
     };
     try {
@@ -193,7 +193,7 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM, YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -473,7 +473,7 @@ const Receive = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveModal}>

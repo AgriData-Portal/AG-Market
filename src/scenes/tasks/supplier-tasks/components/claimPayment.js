@@ -218,7 +218,7 @@ const ReceivePaymentTask = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+          {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveTaskModal}>
@@ -313,7 +313,7 @@ const ReceivePaymentModal = props => {
           },
         ]}>
         {Strings.recieveBefore}:{' '}
-        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+        {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -388,7 +388,7 @@ const ReceivePaymentModal = props => {
             left: wp('40%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <Text
         style={[

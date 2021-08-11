@@ -105,6 +105,12 @@ export const large = {
   color: '#444443',
 };
 
+export const normalBold = {
+  fontSize: byWidth(12), //RFPercentage(divide(15)),
+  fontFamily: 'Poppins-Bold',
+  color: '#444443',
+};
+
 export const medium = {
   fontSize: byWidth(12), //RFPercentage(divide(12)),
   fontFamily: 'Poppins-Regular',
