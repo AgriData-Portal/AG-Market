@@ -67,20 +67,20 @@ const ProductCard = props => {
       onPress={() => setProductModal(true)}
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
-        width: wp('36%'),
-        height: hp('30%'),
-        margin: wp('5%'),
+        width: wp('43%'),
+        margin: wp('2%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
+        paddingHorizontal: wp('2%'),
+        paddingVertical: hp('2%'),
       }}>
       <Image
         source={imageSource}
         style={{
-          height: Mixins.scaleHeight(70),
-          width: Mixins.scaleHeight(70),
+          height: hp('10%'),
+          width: hp('10%'),
           borderRadius: 100,
-          top: Mixins.scaleHeight(10),
         }}></Image>
       <Text style={[Typography.normal, {top: hp('2%')}]}>
         {props.productName}
@@ -88,7 +88,11 @@ const ProductCard = props => {
       <Text
         style={[
           Typography.small,
-          {top: hp('2%'), width: wp('33%'), alignSelf: 'center'},
+          {
+            marginTop: hp('2%'),
+            width: wp('39%'),
+            alignSelf: 'center',
+          },
         ]}>
         {Strings.price}: {props.lowPrice} - {props.highPrice} /{props.siUnit}
         {'\n'}MOQ: {props.minimumQuantity} {props.siUnit}
@@ -324,7 +328,7 @@ const ProductPopUp = props => {
     >
       <View
         style={{
-          height: hp('90%'),
+          height: hp('80%'),
           width: wp('90%'),
           backgroundColor: 'white',
           borderRadius: 20,
@@ -349,42 +353,36 @@ const ProductPopUp = props => {
           <Text style={[Typography.header, {left: wp('5%')}]}>
             {props.productName}
           </Text>
-          <View style={{position: 'absolute', right: wp('2%')}}>
-            <TouchableOpacity
-              onPress={() => [sendProductInquiry()]}
-              onPressIn={() => setProductInquire(true)}
-              disabled={productInquire}>
-              <Icon name="chatbox-outline" size={wp('8%')}></Icon>
-            </TouchableOpacity>
-          </View>
+
+          <TouchableOpacity
+            onPress={() => [sendProductInquiry()]}
+            onPressIn={() => setProductInquire(true)}
+            disabled={productInquire}
+            style={{marginLeft: wp('7%')}}>
+            <Icon name="chatbox-outline" size={wp('8%')}></Icon>
+          </TouchableOpacity>
         </View>
 
         <Image
           style={{
-            top: hp('5%'),
-            height: hp('30%'),
-            width: hp('30%'),
-            borderRadius: 100,
+            top: hp('8%'),
+            height: hp('20%'),
+            width: hp('20%'),
+            borderRadius: 10,
           }}
           source={props.productPicture}></Image>
         <View
           style={{
-            width: wp('35%'),
             flexDirection: 'row',
             height: hp('13%'),
-            top: hp('6%'),
+            top: hp('11%'),
             alignSelf: 'center',
-            right: wp('15%'),
           }}>
-          <Rating
+          {/* <Rating
             imageSize={wp('6%')}
             readonly={true}
-            startingValue={3.5}></Rating>
-          <Text
-            style={[
-              Typography.large,
-              {color: Colors.PALE_BLUE, left: wp('6%')},
-            ]}>
+            startingValue={3.5}></Rating> */}
+          <Text style={[Typography.large, {color: Colors.PALE_BLUE}]}>
             RM {props.lowPrice}-{props.highPrice}/{props.siUnit}
           </Text>
         </View>
@@ -395,6 +393,7 @@ const ProductPopUp = props => {
             backgroundColor: Colors.GRAY_LIGHT,
             borderRadius: 20,
             alignItems: 'center',
+            top: hp('3%'),
           }}>
           <Text
             style={[
@@ -652,9 +651,8 @@ const PurchaseOrder = props => {
       }
       try {
         const inquiry = {
-          id: mostRecentPurchaseOrderNumber,
           chatGroupID: props.purchaseOrder,
-          type: 'purchaseorder',
+          type: mostRecentPurchaseOrderNumber,
           content: message,
           sender: props.user.name,
           senderID: props.user.id,

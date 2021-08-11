@@ -35,11 +35,6 @@ import {Rating} from 'react-native-ratings';
 import {log} from '_utils';
 import {BlueButton} from '_components';
 
-const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
-  return now;
-};
-
 //Retailer receive
 const ReceiveModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
@@ -77,12 +72,13 @@ const ReceiveModal = props => {
       log(e);
     }
     var input = {
-      id: mostRecentInvoiceNum,
+      id: props.id,
+      trackingNum: mostRecentInvoiceNum,
       retailerID: props.retailerID,
       supplierID: props.supplierID,
       paid: false,
       amount: sum,
-      payBefore: dayjs().add(30, 'day').format('DD-MM-YYYY'),
+      payBefore: dayjs().add(30, 'day').format('DD MMM YYYY'),
       receipt: null,
     };
     try {
@@ -95,7 +91,8 @@ const ReceiveModal = props => {
       log(e);
     }
     var input = {
-      id: mostRecentInvoiceNum,
+      id: props.id,
+      trackingNum: mostRecentInvoiceNum,
       retailerID: props.retailerID,
       supplierID: props.supplierID,
       items: props.goods,
@@ -180,7 +177,7 @@ const ReceiveModal = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {'  '}#{props.taskID}
+          {'  '}#{props.trackingNum}
         </Text>
       </Text>
 
@@ -193,7 +190,7 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM, YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -436,7 +433,7 @@ const Receive = props => {
             Typography.small,
             {left: wp('25%'), top: hp('4%'), position: 'absolute'},
           ]}>
-          {props.taskID}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -473,7 +470,7 @@ const Receive = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveModal}>
@@ -486,6 +483,7 @@ const Receive = props => {
           retailerID={props.retailerID}
           supplierID={props.supplierID}
           status={props.status}
+          trackingNum={props.trackingNum}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
           user={props.user}
@@ -522,7 +520,7 @@ export const ReceiveList = props => {
                     sortDirection: 'ASC',
                   },
                 });
-                log(task.data.goodsTaskForRetailerByDate.items);
+
                 props.setReceiveTask(
                   task.data.goodsTaskForRetailerByDate.items,
                 );
@@ -540,7 +538,7 @@ export const ReceiveList = props => {
           />
         }
         renderItem={({item}) => {
-          log(item.supplier);
+          log(item);
           if (item.status == 'received') {
             return <View />;
           } else {
@@ -556,6 +554,7 @@ export const ReceiveList = props => {
                 taskID={item.id}
                 status={item.status}
                 user={props.user}
+                trackingNum={item.trackingNum}
                 trigger={props.trigger}
                 setTrigger={props.setTrigger}
                 receiveTask={props.receiveTask}

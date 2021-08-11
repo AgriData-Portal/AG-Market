@@ -190,8 +190,9 @@ export const MessageInput = props => {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'center',
+        paddingHorizontal: wp('3%'),
         alignItems: 'center',
+        justifyContent: 'space-between',
         bottom:
           Platform.OS == 'ios' && focused
             ? hp('35')
@@ -220,10 +221,10 @@ export const MessageInput = props => {
           style={{
             width: wp('60%'),
             height: hp('6%'),
-
             borderBottomColor: 'transparent',
             left: wp('2%'),
             color: 'black',
+            top: Platform.OS == 'ios' ? hp('1%') : 0,
           }}
         />
         {/* <TouchableOpacity
@@ -358,7 +359,7 @@ export const MessageInput = props => {
             height: hp('8%'),
             width: hp('8%'),
             right: wp('0%'),
-            top: hp('0.5%'),
+            top: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
             shadowColor: '#000',
             shadowOffset: {
               width: 0,
@@ -386,10 +387,10 @@ export const MessageInput = props => {
         }}
         disabled={sendButtonDisabled}
         style={{
-          height: hp('5.5%'),
-          width: hp('5.5%'),
+          height: hp('6%'),
+          width: hp('6%'),
           borderRadius: 100,
-          left: wp('3%'),
+          left: wp('0%'),
           backgroundColor: Colors.PALE_BLUE,
           justifyContent: 'center',
           alignItems: 'center',
@@ -404,7 +405,7 @@ export const MessageInput = props => {
         }}>
         <Icon
           name="paper-plane-outline"
-          size={wp('6%')}
+          size={hp('3%')}
           color={Colors.LIGHT_BLUE}
         />
       </TouchableOpacity>

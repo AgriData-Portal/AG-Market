@@ -24,7 +24,7 @@ import {API} from 'aws-amplify';
 import {updatePaymentTaskBetweenRandS} from '../../../../graphql/mutations';
 import Strings from '_utils';
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 import {paymentsTaskForRetailerByDate} from '../../../../graphql/queries';
@@ -34,6 +34,7 @@ import {log} from '_utils';
 //Retailer upload receipt
 const UploadReceiptModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
+  log(props.supplier);
   const sendReceipt = async () => {
     try {
       const updated = await API.graphql({
@@ -96,7 +97,7 @@ const UploadReceiptModal = props => {
           },
         ]}>
         {Strings.sendBefore}: {''}
-        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+        {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -149,7 +150,7 @@ const UploadReceiptModal = props => {
             left: wp('40%'),
           },
         ]}>
-        #{props.id}
+        #{props.trackingNum}
       </Text>
       <Text
         style={[
@@ -171,7 +172,7 @@ const UploadReceiptModal = props => {
             left: wp('40%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <Text
         style={[
@@ -353,7 +354,7 @@ const UploadReceipt = props => {
             Typography.small,
             {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
           ]}>
-          {props.id}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -390,7 +391,7 @@ const UploadReceipt = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+          {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={uploadReceiptModal}>
@@ -403,6 +404,7 @@ const UploadReceipt = props => {
           payBefore={props.payBefore}
           receipt={props.receipt}
           id={props.id}
+          trackingNum={props.trackingNum}
           createdAt={props.createdAt}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
@@ -434,7 +436,7 @@ export const UploadReceiptList = props => {
                     sortDirection: 'ASC',
                   },
                 });
-                log(task.data.paymentsTaskForRetailerByDate.items);
+
                 props.setPayTask(task.data.paymentsTaskForRetailerByDate.items);
                 log('payment task');
               } catch (e) {
@@ -455,6 +457,7 @@ export const UploadReceiptList = props => {
               retailer={item.retailer}
               supplier={item.supplier}
               paid={item.paid}
+              trackingNum={item.trackingNum}
               amount={item.amount}
               payBefore={item.payBefore}
               receipt={item.receipt}
