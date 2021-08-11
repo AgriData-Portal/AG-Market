@@ -1,6 +1,57 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createGlobalSettings = /* GraphQL */ `
+  mutation CreateGlobalSettings(
+    $input: CreateGlobalSettingsInput!
+    $condition: ModelGlobalSettingsConditionInput
+  ) {
+    createGlobalSettings(input: $input, condition: $condition) {
+      id
+      latestVersionNumber
+      emergencyProblem
+      forceUpdate
+      backendFix
+      backendFixWhen
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateGlobalSettings = /* GraphQL */ `
+  mutation UpdateGlobalSettings(
+    $input: UpdateGlobalSettingsInput!
+    $condition: ModelGlobalSettingsConditionInput
+  ) {
+    updateGlobalSettings(input: $input, condition: $condition) {
+      id
+      latestVersionNumber
+      emergencyProblem
+      forceUpdate
+      backendFix
+      backendFixWhen
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteGlobalSettings = /* GraphQL */ `
+  mutation DeleteGlobalSettings(
+    $input: DeleteGlobalSettingsInput!
+    $condition: ModelGlobalSettingsConditionInput
+  ) {
+    deleteGlobalSettings(input: $input, condition: $condition) {
+      id
+      latestVersionNumber
+      emergencyProblem
+      forceUpdate
+      backendFix
+      backendFixWhen
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -11,6 +62,10 @@ export const createUser = /* GraphQL */ `
       name
       role
       email
+      pushNotificationTokens {
+        service
+        deviceTokens
+      }
       retailerCompanyID
       supplierCompanyID
       farmerCompanyID
@@ -181,6 +236,10 @@ export const updateUser = /* GraphQL */ `
       name
       role
       email
+      pushNotificationTokens {
+        service
+        deviceTokens
+      }
       retailerCompanyID
       supplierCompanyID
       farmerCompanyID
@@ -351,6 +410,10 @@ export const deleteUser = /* GraphQL */ `
       name
       role
       email
+      pushNotificationTokens {
+        service
+        deviceTokens
+      }
       retailerCompanyID
       supplierCompanyID
       farmerCompanyID
@@ -551,6 +614,7 @@ export const createRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -565,6 +629,7 @@ export const createRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -579,6 +644,7 @@ export const createRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -654,6 +720,7 @@ export const updateRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -668,6 +735,7 @@ export const updateRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -682,6 +750,7 @@ export const updateRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -757,6 +826,7 @@ export const deleteRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -771,6 +841,7 @@ export const deleteRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -785,6 +856,7 @@ export const deleteRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -881,6 +953,7 @@ export const createSupplierCompany = /* GraphQL */ `
       goodsTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -895,6 +968,7 @@ export const createSupplierCompany = /* GraphQL */ `
       goodsTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -909,6 +983,7 @@ export const createSupplierCompany = /* GraphQL */ `
       paymentTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -923,6 +998,7 @@ export const createSupplierCompany = /* GraphQL */ `
       paymentTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -937,6 +1013,7 @@ export const createSupplierCompany = /* GraphQL */ `
       invoiceRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -950,6 +1027,7 @@ export const createSupplierCompany = /* GraphQL */ `
       invoiceFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1046,6 +1124,7 @@ export const updateSupplierCompany = /* GraphQL */ `
       goodsTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -1060,6 +1139,7 @@ export const updateSupplierCompany = /* GraphQL */ `
       goodsTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1074,6 +1154,7 @@ export const updateSupplierCompany = /* GraphQL */ `
       paymentTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -1088,6 +1169,7 @@ export const updateSupplierCompany = /* GraphQL */ `
       paymentTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1102,6 +1184,7 @@ export const updateSupplierCompany = /* GraphQL */ `
       invoiceRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -1115,6 +1198,7 @@ export const updateSupplierCompany = /* GraphQL */ `
       invoiceFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1211,6 +1295,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
       goodsTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -1225,6 +1310,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
       goodsTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1239,6 +1325,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
       paymentTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -1253,6 +1340,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
       paymentTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1267,6 +1355,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
       invoiceRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -1280,6 +1369,7 @@ export const deleteSupplierCompany = /* GraphQL */ `
       invoiceFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1372,6 +1462,7 @@ export const createFarmerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1386,6 +1477,7 @@ export const createFarmerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1400,6 +1492,7 @@ export const createFarmerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1492,6 +1585,7 @@ export const updateFarmerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1506,6 +1600,7 @@ export const updateFarmerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1520,6 +1615,7 @@ export const updateFarmerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1612,6 +1708,7 @@ export const deleteFarmerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1626,6 +1723,7 @@ export const deleteFarmerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1640,6 +1738,7 @@ export const deleteFarmerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -2340,6 +2439,10 @@ export const createChatGroupUsers = /* GraphQL */ `
         name
         role
         email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -2459,6 +2562,10 @@ export const updateChatGroupUsers = /* GraphQL */ `
         name
         role
         email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -2578,6 +2685,10 @@ export const deleteChatGroupUsers = /* GraphQL */ `
         name
         role
         email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -3191,6 +3302,7 @@ export const createGoodsTaskBetweenRandS = /* GraphQL */ `
   ) {
     createGoodsTaskBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -3315,6 +3427,7 @@ export const updateGoodsTaskBetweenRandS = /* GraphQL */ `
   ) {
     updateGoodsTaskBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -3439,6 +3552,7 @@ export const deleteGoodsTaskBetweenRandS = /* GraphQL */ `
   ) {
     deleteGoodsTaskBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -3563,6 +3677,7 @@ export const createGoodsTaskBetweenSandF = /* GraphQL */ `
   ) {
     createGoodsTaskBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -3689,6 +3804,7 @@ export const updateGoodsTaskBetweenSandF = /* GraphQL */ `
   ) {
     updateGoodsTaskBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -3815,6 +3931,7 @@ export const deleteGoodsTaskBetweenSandF = /* GraphQL */ `
   ) {
     deleteGoodsTaskBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -3941,6 +4058,7 @@ export const createPaymentTaskBetweenRandS = /* GraphQL */ `
   ) {
     createPaymentTaskBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4056,6 +4174,7 @@ export const updatePaymentTaskBetweenRandS = /* GraphQL */ `
   ) {
     updatePaymentTaskBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4171,6 +4290,7 @@ export const deletePaymentTaskBetweenRandS = /* GraphQL */ `
   ) {
     deletePaymentTaskBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4286,6 +4406,7 @@ export const createPaymentTaskBetweenSandF = /* GraphQL */ `
   ) {
     createPaymentTaskBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -4403,6 +4524,7 @@ export const updatePaymentTaskBetweenSandF = /* GraphQL */ `
   ) {
     updatePaymentTaskBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -4520,6 +4642,7 @@ export const deletePaymentTaskBetweenSandF = /* GraphQL */ `
   ) {
     deletePaymentTaskBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -4637,6 +4760,7 @@ export const createInvoiceBetweenRandS = /* GraphQL */ `
   ) {
     createInvoiceBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4760,6 +4884,7 @@ export const updateInvoiceBetweenRandS = /* GraphQL */ `
   ) {
     updateInvoiceBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4883,6 +5008,7 @@ export const deleteInvoiceBetweenRandS = /* GraphQL */ `
   ) {
     deleteInvoiceBetweenRandS(input: $input, condition: $condition) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -5006,6 +5132,7 @@ export const createInvoiceBetweenSandF = /* GraphQL */ `
   ) {
     createInvoiceBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -5131,6 +5258,7 @@ export const updateInvoiceBetweenSandF = /* GraphQL */ `
   ) {
     updateInvoiceBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -5256,6 +5384,7 @@ export const deleteInvoiceBetweenSandF = /* GraphQL */ `
   ) {
     deleteInvoiceBetweenSandF(input: $input, condition: $condition) {
       id
+      trackingNum
       farmer {
         id
         name

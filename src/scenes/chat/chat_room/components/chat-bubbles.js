@@ -257,7 +257,7 @@ const ChatBubble = props => {
       </View>
     );
   } else if (contentType == 'quotation') {
-    //DESIGN the colour and position
+    //DESIGN the colour and position of indicator for whether the quotation has been accepted, is new or rejected
     return (
       <View>
         {!isMyMessage() && (
@@ -302,7 +302,7 @@ const ChatBubble = props => {
             <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
           </View>
 
-          {/* DESIGN decide how to display the PO and Quotation chat bubble*/}
+          {/* DESIGN decide how to display the PO and Quotation chat bubble with the newly introduced id*/}
           <Text style={Typography.normal}>{props.id}</Text>
           <BlueButton
             onPress={() => setOrderQuotationModal(true)}

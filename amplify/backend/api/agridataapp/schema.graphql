@@ -1,3 +1,13 @@
+type GlobalSettings @model{
+  id: ID,
+  latestVersionNumber: String
+  emergencyProblem: Boolean
+  forceUpdate: Boolean
+  backendFix: Boolean
+  backendFixWhen: String
+}
+
+
 type User
   @model
   @key(
@@ -19,6 +29,7 @@ type User
   name: String
   role: String
   email: String
+  pushNotificationTokens: [PushNotificationDeviceToken]
   retailerCompanyID: ID
   supplierCompanyID: ID
   farmerCompanyID: ID
@@ -30,6 +41,18 @@ type User
   farmerCompany: FarmerCompany @connection(fields: ["farmerCompanyID"])
   updatedAt: String
   createdAt: String
+}
+
+type PushNotificationDeviceToken {
+  service: PushNotificationService
+  deviceTokens: [String]
+}
+
+enum PushNotificationService {
+  APNS,
+  GCM,
+  BAIDU,
+  ADM
 }
 
 type RetailerCompany @model {
@@ -328,6 +351,7 @@ type GoodsTaskBetweenRandS
     queryField: "goodsTaskRetailerForSupplierByDate"
   ) {
   id: ID
+  trackingNum: String
   "sameID as payment task and invoice"
   retailer: RetailerCompany @connection(fields: ["retailerID"])
   retailerID: ID
@@ -356,6 +380,7 @@ type GoodsTaskBetweenSandF
   ) {
   id: ID
   "sameID as payment task and invoice"
+  trackingNum: String
   farmer: FarmerCompany @connection(fields: ["farmerID"])
   farmerID: ID
   supplier: SupplierCompany @connection(fields: ["supplierID"])
@@ -382,6 +407,7 @@ type PaymentTaskBetweenRandS
     queryField: "paymentsTaskRetailerForSupplierByDate"
   ) {
   id: ID
+  trackingNum: String
   retailer: RetailerCompany @connection(fields: ["retailerID"])
   retailerID: ID
   supplier: SupplierCompany @connection(fields: ["supplierID"])
@@ -407,6 +433,7 @@ type PaymentTaskBetweenSandF
     queryField: "paymentsTaskFarmerForSupplierByDate"
   ) {
   id: ID
+  trackingNum: String
   farmer: FarmerCompany @connection(fields: ["farmerID"])
   farmerID: ID
   supplier: SupplierCompany @connection(fields: ["supplierID"])
@@ -433,6 +460,7 @@ type InvoiceBetweenRandS
   ) {
   id: ID
   "PaymentTask + Invoice"
+  trackingNum: String
   retailer: RetailerCompany @connection(fields: ["retailerID"])
   retailerID: ID
   supplier: SupplierCompany @connection(fields: ["supplierID"])
@@ -459,6 +487,7 @@ type InvoiceBetweenSandF
   ) {
   id: ID
   "PaymentTask + Invoice"
+  trackingNum: String
   farmer: FarmerCompany @connection(fields: ["farmerID"])
   farmerID: ID
   supplier: SupplierCompany @connection(fields: ["supplierID"])
@@ -480,3 +509,4 @@ type Goods {
   grade: String
   price: Float
 }
+
