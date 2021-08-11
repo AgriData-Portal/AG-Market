@@ -28,9 +28,11 @@ import Strings from '_utils';
 import {paymentsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const ReceivePaymentTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
+  const companyID = userStore(state => state.companyID);
   return (
     <View>
       <FlatList
@@ -46,14 +48,14 @@ export const ReceivePaymentTaskList = props => {
                 const task = await API.graphql({
                   query: paymentsTaskRetailerForSupplierByDate,
                   variables: {
-                    supplierID: props.user.supplierCompanyID,
+                    supplierID: companyID,
                     sortDirection: 'ASC',
                   },
                 });
                 props.setClaimTask(
                   task.data.paymentsTaskRetailerForSupplierByDate.items,
                 );
-                log(task.data.paymentsTaskRetailerForSupplierByDate.items);
+
                 log('payment task');
               } catch (e) {
                 log(e);
@@ -82,6 +84,7 @@ export const ReceivePaymentTaskList = props => {
               setTrigger={props.setTrigger}
               claimTask={props.claimTask}
               setClaimTask={props.setClaimTask}
+              trackingNum={item.trackingNum}
             />
           );
         }}
@@ -92,6 +95,7 @@ export const ReceivePaymentTaskList = props => {
 
 const ReceivePaymentTask = props => {
   const [receiveTaskModal, setReceiveTaskModal] = useState(false);
+
   return (
     <TouchableOpacity
       onPress={() => setReceiveTaskModal(true)}
@@ -154,7 +158,7 @@ const ReceivePaymentTask = props => {
             Typography.small,
             {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
           ]}>
-          {props.id}
+          {props.trackingNum}
         </Text>
         {/*} {props.paid ? (
           <Text
@@ -218,7 +222,7 @@ const ReceivePaymentTask = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+          {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveTaskModal}>
@@ -231,6 +235,7 @@ const ReceivePaymentTask = props => {
           payBefore={props.payBefore}
           receipt={props.receipt}
           id={props.id}
+          trackingNum={props.trackingNum}
           createdAt={props.createdAt}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
@@ -244,7 +249,6 @@ const ReceivePaymentTask = props => {
 const ReceivePaymentModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const receivedPayment = async () => {
-    log(props.id);
     try {
       const removed = await API.graphql({
         query: deletePaymentTaskBetweenRandS,
@@ -258,7 +262,6 @@ const ReceivePaymentModal = props => {
         }
       }
       props.setClaimTask(tempList);
-      setSuccessfulModal(true);
     } catch (e) {
       log(e);
     }
@@ -313,7 +316,7 @@ const ReceivePaymentModal = props => {
           },
         ]}>
         {Strings.recieveBefore}:{' '}
-        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+        {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -366,7 +369,7 @@ const ReceivePaymentModal = props => {
             left: wp('40%'),
           },
         ]}>
-        #{props.id}
+        #{props.trackingNum}
       </Text>
       <Text
         style={[
@@ -388,7 +391,7 @@ const ReceivePaymentModal = props => {
             left: wp('40%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <Text
         style={[
@@ -456,7 +459,7 @@ const ReceivePaymentModal = props => {
             {
               position: 'absolute',
               top: hp('43%'),
-              left: wp('45%'),
+              left: wp('40%'),
             },
           ]}>
           {props.supplier.bankAccount.accountNumber}

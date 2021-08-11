@@ -28,9 +28,12 @@ import dayjs from 'dayjs';
 import {createPDF, createCSV} from './file-creation';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const OrderList = props => {
   const [refreshing, setRefreshing] = useState(false);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
   return (
     <View>
       <FlatList
@@ -48,13 +51,13 @@ export const OrderList = props => {
             refreshing={refreshing}
             onRefresh={async () => {
               setRefreshing(true);
-              if (props.user.supplierCompanyID != null) {
+              if (companyType == 'supplier') {
                 try {
                   if (props.sellerState == false) {
                     const invoice = await API.graphql({
                       query: invoiceRetailerForSupplierByDate,
                       variables: {
-                        supplierID: props.user.supplierCompanyID,
+                        supplierID: companyID,
                         sortDirection: 'DESC',
                       },
                     });
@@ -68,7 +71,7 @@ export const OrderList = props => {
                     const invoice = await API.graphql({
                       query: invoiceFarmerForSupplierByDate,
                       variables: {
-                        supplierID: props.user.supplierCompanyID,
+                        supplierID: companyID,
                         sortDirection: 'DESC',
                       },
                     });
@@ -82,12 +85,12 @@ export const OrderList = props => {
                 } catch (e) {
                   log(e);
                 }
-              } else if (props.user.retailerCompanyID != null) {
+              } else if (companyType == 'retailer') {
                 try {
                   const invoice = await API.graphql({
                     query: invoiceForRetailerByDate,
                     variables: {
-                      retailerID: props.user.retailerCompanyID,
+                      retailerID: companyID,
                       sortDirection: 'DESC',
                     },
                   });
@@ -105,7 +108,7 @@ export const OrderList = props => {
                   const invoice = await API.graphql({
                     query: invoiceForFarmerByDate,
                     variables: {
-                      farmerID: props.user.farmerCompanyID,
+                      farmerID: companyID,
                       sortDirection: 'DESC',
                     },
                   });
@@ -129,18 +132,11 @@ export const OrderList = props => {
           />
         }
         renderItem={({item}) => {
-          if (props.user.retailerCompanyID != null) {
-            var company = item.retailer;
-          } else if (props.user.supplierCompanyID != null) {
-            var company = item.supplier;
-          } else {
-            var company = item.farmer;
-          }
           return (
             <Order
               id={item.id}
+              trackingNum={item.trackingNum}
               amount={item.amount}
-              company={company}
               supplier={item.supplier}
               retailer={item.retailer}
               farmer={item.farmer}
@@ -149,9 +145,7 @@ export const OrderList = props => {
               amount={item.amount}
               receivedBy={item.receivedBy}
               createdAt={item.createdAt}
-              user={props.user}
               sellerState={props.sellerState}
-              companyType={props.company}
             />
           );
         }}
@@ -162,6 +156,7 @@ export const OrderList = props => {
 
 const Order = props => {
   const [invoiceModal, setInvoiceModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setInvoiceModal(true)}
@@ -206,29 +201,36 @@ const Order = props => {
         </View>
         <Text
           style={[
-            Typography.normal,
+            Typography.small,
             {
               color: Colors.LIME_GREEN,
               top: hp('1%'),
               left: wp('25%'),
               position: 'absolute',
+              fontWeight: 'bold',
             },
           ]}>
-          {props.company.name}
+          {companyType == 'retailer'
+            ? props.supplier.name
+            : companyType == 'supplier' && props.sellerState
+            ? props.farmer.name
+            : companyType == 'supplier' && !props.sellerState
+            ? props.retailer.name
+            : props.supplier.name}
         </Text>
         <Text
           style={[
             Typography.small,
-            {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
+            {left: wp('25%'), top: hp('3%'), position: 'absolute'},
           ]}>
-          {props.id}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
             Typography.normal,
             {
-              color: 'black',
-              top: hp('5%'),
+              color: 'grey',
+              top: hp('4.5%'),
               left: wp('25%'),
               position: 'absolute',
             },
@@ -238,12 +240,13 @@ const Order = props => {
         {props.paid ? (
           <Text
             style={[
-              Typography.normal,
+              Typography.small,
               {
                 color: Colors.LIME_GREEN,
-                top: hp('0%'),
-                right: wp('2%'),
+                top: hp('2%'),
+                right: wp('5%'),
                 position: 'absolute',
+                fontStyle: 'italic',
               },
             ]}>
             {Strings.paid}
@@ -251,49 +254,48 @@ const Order = props => {
         ) : (
           <Text
             style={[
-              Typography.normal,
+              Typography.small,
               {
                 color: 'red',
-                top: hp('0%'),
+                top: hp('2%'),
                 right: wp('2%'),
                 position: 'absolute',
+                fontStyle: 'italic',
               },
             ]}>
             {Strings.notPaid}
           </Text>
         )}
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('7.3%'),
-              right: hp('2%'),
-              position: 'absolute',
-            },
-          ]}>
-          {Strings.invoiceDate}:
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('9%'),
-              right: hp('2%'),
-              position: 'absolute',
-              fontStyle: 'italic',
-            },
-          ]}>
-          {dayjs(props.createdAt).format('DD MMM YYYY')}
-        </Text>
+        <View style={{flexDirection: 'row', top: hp('8%'), left: wp('-1%')}}>
+          <Text
+            style={[
+              Typography.placeholderSmall,
+              {
+                color: 'grey',
+                fontStyle: 'italic',
+              },
+            ]}>
+            {Strings.invoiceDate}:
+          </Text>
+          <Text
+            style={[
+              Typography.placeholderSmall,
+              {
+                color: 'grey',
+                fontStyle: 'italic',
+                marginHorizontal: wp('1%'),
+              },
+            ]}>
+            {dayjs(props.createdAt).format('DD MMM YYYY')}
+          </Text>
+        </View>
       </View>
       <Modal isVisible={invoiceModal}>
         <InvoiceModal
           setInvoiceModal={setInvoiceModal}
           id={props.id}
+          trackingNum={props.trackingNum}
           amount={props.amount}
-          company={props.company}
           supplier={props.supplier}
           retailer={props.retailer}
           farmer={props.farmer}
@@ -303,7 +305,6 @@ const Order = props => {
           receivedBy={props.receivedBy}
           createdAt={props.createdAt}
           sellerState={props.sellerState}
-          companyType={props.companyType}
         />
       </Modal>
     </TouchableOpacity>
@@ -311,6 +312,8 @@ const Order = props => {
 };
 
 const InvoiceModal = props => {
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
   const Seperator = () => {
     return (
       <View
@@ -347,7 +350,8 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.invoice} <Text style={Typography.normal}>#{props.id}</Text>
+        {Strings.invoice}{' '}
+        <Text style={Typography.normal}>#{props.trackingNum}</Text>
       </Text>
       <Text
         style={[
@@ -368,7 +372,13 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {props.company.name}
+        {companyType == 'retailer'
+          ? props.supplier.name
+          : companyType == 'supplier' && props.sellerState
+          ? props.farmer.name
+          : companyType == 'supplier' && !props.sellerState
+          ? props.retailer.name
+          : props.supplier.name}
       </Text>
       {props.paid ? (
         <Text
@@ -474,11 +484,11 @@ const InvoiceModal = props => {
         top={hp('70%')}
         left={wp('61%')}
         onPress={() => {
-          if (props.companyType.type == 'supplier') {
+          if (companyType == 'supplier') {
             log('supplier');
             if (props.sellerState == false) {
               createPDF(
-                (id = props.id),
+                (id = props.trackingNum),
                 (buyer = props.retailer),
                 (seller = props.supplier),
                 (createdAt = props.createdAt),
@@ -488,7 +498,7 @@ const InvoiceModal = props => {
               );
             } else {
               createPDF(
-                (id = props.id),
+                (id = props.trackingNum),
                 (buyer = props.supplier),
                 (seller = props.farmer),
                 (createdAt = props.createdAt),
@@ -497,9 +507,9 @@ const InvoiceModal = props => {
                 (receivedBy = props.receivedBy),
               );
             }
-          } else if (props.companyType.type == 'retailer') {
+          } else if (companyType == 'retailer') {
             createPDF(
-              (id = props.id),
+              (id = props.trackingNum),
               (buyer = props.retailer),
               (seller = props.supplier),
               (createdAt = props.createdAt),
@@ -521,7 +531,7 @@ const InvoiceModal = props => {
         top={hp('70%')}
         onPress={() =>
           createCSV(
-            (id = props.id),
+            (id = props.trackingNum),
             (company = props.company),
             (createdAt = props.createdAt),
             (items = props.goods),
@@ -571,83 +581,35 @@ export const SortModal = props => {
     <View
       style={{
         position: 'absolute',
-        right: wp('8%'),
-        top: hp('18%'),
+        right: wp('6%'),
+        top: hp('9%'),
         backgroundColor: Colors.GRAY_MEDIUM,
         borderRadius: 5,
-        width: wp('53%'),
-        height: hp('17%'),
-        alignItems: 'center',
-        justifyContent: 'center',
       }}>
+      <Text
+        style={[
+          Typography.normalBold,
+          {left: wp('5%'), marginBottom: hp('2%'), top: hp('1%')},
+        ]}>
+        Sort By
+      </Text>
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
+          width: wp('45%'),
+          height: hp('4%'),
         }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="time-outline" size={wp('6%')} />
-          <Icon name="arrow-up-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.oldest}
+        <Text style={[Typography.normal, {left: wp('5%')}]}>
+          Newest to Oldest
         </Text>
+        {/*TRANSLATION*/}
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
+          width: wp('45%'),
+          height: hp('4%'),
         }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="time-outline" size={wp('6%')} />
-          <Icon name="arrow-down-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.latest}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
-        }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="pricetags-outline" size={wp('6%')} />
-          <Icon name="arrow-up-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.leastExpensive}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
-        }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="pricetags-outline" size={wp('6%')} />
-          <Icon name="arrow-down-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.mostExpensive}
+        <Text style={[Typography.normal, {left: wp('5%')}]}>
+          Oldest to Newest
         </Text>
       </TouchableOpacity>
     </View>

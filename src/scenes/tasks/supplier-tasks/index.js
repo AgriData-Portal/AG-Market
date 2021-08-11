@@ -23,6 +23,7 @@ import {
 } from '../../../graphql/queries';
 import Strings from '_utils';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const SupplierTasks = props => {
   const [sendTask, setSendTask] = useState([]);
@@ -31,6 +32,7 @@ export const SupplierTasks = props => {
   const [task, setTask] = useState('send');
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
+  const companyID = userStore(state => state.companyID);
 
   useEffect(() => {
     if (task == 'send' && sendTask.length == 0) {
@@ -45,7 +47,7 @@ export const SupplierTasks = props => {
       const task = await API.graphql({
         query: goodsTaskRetailerForSupplierByDate,
         variables: {
-          supplierID: props.user.supplierCompanyID,
+          supplierID: companyID,
           sortDirection: 'ASC',
         },
       });
@@ -64,7 +66,7 @@ export const SupplierTasks = props => {
       const task = await API.graphql({
         query: paymentsTaskRetailerForSupplierByDate,
         variables: {
-          supplierID: props.user.supplierCompanyID,
+          supplierID: companyID,
           sortDirection: 'ASC',
         },
       });
@@ -190,7 +192,6 @@ export const SupplierTasks = props => {
         }}>
         {task == 'claim' ? (
           <ReceivePaymentTaskList
-            user={props.user}
             data={claimTask}
             trigger={trigger}
             setTrigger={setTrigger}
@@ -205,7 +206,6 @@ export const SupplierTasks = props => {
             setTrigger={setTrigger}
             sendTask={sendTask}
             setSendTask={setSendTask}
-            user={props.user}
             getSendTask={getSendTask}
           />
         )}

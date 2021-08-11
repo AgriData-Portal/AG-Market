@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BackButton} from '_components/buttons';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -127,107 +135,123 @@ export const CompanyProfile = props => {
           height: hp('43%'),
           borderRadius: 10,
         }}>
-        <View
-          style={{
-            top: hp('1%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.companyRegistrationNum}
-          </Text>
-          <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}>
-              {company.registrationNumber}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('3%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.companyAddress}
-          </Text>
-          <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}>{company.address}</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('5%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.contactNumber}
-          </Text>
-          <View style={{top: hp('0.5%')}}>
-            {company.contactDetails != null ? (
-              <Text style={[Typography.normal]}>
-                {company.contactDetails.phone}
+        <View style={{flex: 1}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={true}
+            contentContainerStyle={{flexGrow: 1}}
+            nestedScrollEnabled={true}
+            scrollToOverflowEnabled={true}
+            contentContainerStyle={
+              Platform.OS == 'ios '
+                ? {paddingBottom: 0}
+                : {paddingBottom: hp('5%')}
+            }>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.companyRegistrationNum}
               </Text>
-            ) : (
-              <Text style={[Typography.normal]}>Not Added Yet</Text>
-            )}
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('7%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
-          <View style={{top: hp('0.5%')}}>
-            {company.contactDetails != null ? (
-              <Text style={[Typography.normal]}>
-                {company.contactDetails.email}
+              <View>
+                <Text style={[Typography.normal]}>
+                  {company.registrationNumber}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.companyAddress}
               </Text>
-            ) : (
-              <Text style={[Typography.normal]}>Not Added Yet</Text>
-            )}
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('9%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.bankDetails}
-          </Text>
-          {company.bankAccount != null ? (
-            <Text style={[Typography.normal]}>
-              {company.bankAccount.accountNumber}
-            </Text>
-          ) : (
-            <Text style={[Typography.normal]}>Not Added Yet</Text>
-          )}
-        </View>
-        <View
-          style={{
-            top: hp('11%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>{Strings.bankName}</Text>
-          {company.bankAccount != null ? (
-            <Text style={[Typography.normal]}>
-              {company.bankAccount.bankName}
-            </Text>
-          ) : (
-            <Text style={[Typography.normal]}>Not Added Yet</Text>
-          )}
+              <View>
+                <Text style={[Typography.normal]}>{company.address}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.contactNumber}
+              </Text>
+              <View>
+                {company.contactDetails != null ? (
+                  <Text style={[Typography.normal]}>
+                    {company.contactDetails.phone}
+                  </Text>
+                ) : (
+                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                )}
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
+              <View>
+                {company.contactDetails != null ? (
+                  <Text style={[Typography.normal]}>
+                    {company.contactDetails.email}
+                  </Text>
+                ) : (
+                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                )}
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.bankDetails}
+              </Text>
+              {company.bankAccount != null ? (
+                <Text style={[Typography.normal]}>
+                  {company.bankAccount.accountNumber}
+                </Text>
+              ) : (
+                <Text style={[Typography.normal]}>Not Added Yet</Text>
+              )}
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.bankName}
+              </Text>
+              {company.bankAccount != null ? (
+                <Text style={[Typography.normal]}>
+                  {company.bankAccount.bankName}
+                </Text>
+              ) : (
+                <Text style={[Typography.normal]}>Not Added Yet</Text>
+              )}
+            </View>
+          </ScrollView>
         </View>
       </View>
       <BlueButton

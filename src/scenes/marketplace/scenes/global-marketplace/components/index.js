@@ -13,7 +13,6 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Rating} from 'react-native-ratings';
-
 import {API, Storage} from 'aws-amplify';
 import {
   createMessage,
@@ -51,13 +50,13 @@ export const ProductCard = props => {
       onPress={() => setProductModal(true)}
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
-        width: wp('36%'),
-        height: hp('25%'),
-        margin: wp('5%'),
-        marginTop: hp('1%'),
+        width: wp('43%'),
+        margin: wp('2%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
+        paddingHorizontal: wp('2%'),
+        paddingVertical: hp('2%'),
       }}>
       <Image
         source={imageSource}
@@ -65,12 +64,15 @@ export const ProductCard = props => {
           height: hp('8%'),
           width: hp('8%'),
           borderRadius: 100,
-          top: hp('2%'),
         }}></Image>
-      <Text style={[Typography.normal, {top: hp('2.5%')}]}>
+      <Text style={[Typography.normal, {top: hp('2%')}]}>
         {props.productName}
       </Text>
-      <Text style={[Typography.small, {top: hp('3%'), width: wp('25%')}]}>
+      <Text
+        style={[
+          Typography.small,
+          {marginTop: hp('2%'), width: wp('39%'), alignSelf: 'center'},
+        ]}>
         {Strings.variety}: {props.variety}
         {'\n'}
         {Strings.price}: {props.lowPrice} - {props.highPrice}
@@ -329,14 +331,20 @@ export const ProductPopUp = props => {
             zIndex: 2,
           }}>
           <Text style={[Typography.header]}>{props.productName}</Text>
-        </View>
 
+          <TouchableOpacity>
+            <Icon
+              name="chatbox-outline"
+              size={wp('8%')}
+              onPress={() => sendProductInquiry()}></Icon>
+          </TouchableOpacity>
+        </View>
         <Image
           style={{
-            top: hp('8%'),
+            top: hp('10%'),
             height: hp('18%'),
             width: wp('38%'),
-            borderRadius: 100,
+            borderRadius: 10,
           }}
           source={props.productPicture}></Image>
         <View
@@ -348,10 +356,10 @@ export const ProductPopUp = props => {
             flexDirection: 'row',
           }}>
           <View>
-            <Rating
+            {/* <Rating
               imageSize={wp('6%')}
               readonly={true}
-              startingValue={3.5}></Rating>
+              startingValue={3.5}></Rating> */}
             <TouchableOpacity
               onPress={() => [
                 props.navigation.navigate('store', {
@@ -363,18 +371,25 @@ export const ProductPopUp = props => {
               style={{
                 width: wp('40%'),
                 flexDirection: 'row',
-                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'center',
                 height: hp('3%'),
                 left: wp('4%'),
-                marginTop: hp('0.5%'),
+                top: hp('3%'),
               }}>
-              <Icon name="rocket-outline" size={wp('5%')}></Icon>
+              <Image
+                style={{
+                  resizeMode: 'contain',
+                  height: hp('3%'),
+                  width: wp('5%'),
+                }}
+                source={require('_assets/images/online-store.png')}
+              />
               <Text
                 style={[
                   Typography.normal,
                   {
                     fontFamily: 'Poppins-SemiBold',
-                    left: wp('3%'),
                     width: wp('30%'),
                   },
                 ]}>
@@ -390,7 +405,7 @@ export const ProductPopUp = props => {
             <Text
               style={[
                 Typography.normal,
-                {top: wp('6%'), color: Colors.PALE_BLUE},
+                {top: hp('3%'), color: Colors.PALE_BLUE},
               ]}>
               RM {props.lowPrice}-{props.highPrice}/{props.siUnit}
             </Text>
@@ -400,42 +415,51 @@ export const ProductPopUp = props => {
           style={{
             top: hp('18%'),
             width: wp('70%'),
-            height: hp('22%'),
             backgroundColor: Colors.GRAY_LIGHT,
             borderRadius: 20,
             alignItems: 'center',
+            paddingVertical: hp('2%'),
           }}>
           <View
             style={{
-              left: wp('25%'),
-              top: hp('2%'),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: wp('60%'),
             }}>
-            <TouchableOpacity>
-              <Icon
-                name="chatbox-outline"
-                size={wp('8%')}
-                onPress={() => sendProductInquiry()}></Icon>
-            </TouchableOpacity>
+            <Text style={[Typography.normalBold]}>{Strings.variety}:</Text>
+            <Text style={[Typography.normal]}>{props.variety}</Text>
           </View>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                lineHeight: hp('3%'),
-                top: hp('2%'),
-                left: wp('5%'),
-                position: 'absolute',
-              },
-            ]}>
-            {Strings.variety}:{props.variety}
-            {'\n'}
-            {Strings.grade}: {props.grade}
-            {'\n'}
-            {Strings.available}: {props.quantityAvailable}
-            {'\n'}MOQ: {props.minimumQuantity}
-            {'\n'}
-            {Strings.otherDetails}:
-          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: wp('60%'),
+            }}>
+            <Text style={[Typography.normalBold]}>{Strings.grade}:</Text>
+            <Text style={[Typography.normal]}>{props.grade}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: wp('60%'),
+            }}>
+            <Text style={[Typography.normalBold]}>{Strings.available}:</Text>
+            <Text style={[Typography.normal]}>{props.quantityAvailable}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: wp('60%'),
+            }}>
+            <Text style={[Typography.normalBold]}>MOQ:</Text>
+            <Text style={[Typography.normal]}>{props.minimumQuantity}</Text>
+          </View>
         </View>
       </View>
       <Modal
@@ -507,12 +531,12 @@ const StoreCard = props => {
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('40%'),
-        height: hp('18%'),
-        margin: wp('3%'),
         borderRadius: 20,
         elevation: 3,
         alignItems: 'center',
         top: hp('3%'),
+        marginHorizontal: wp('4%'),
+        marginVertical: hp('1%'),
       }}>
       <View
         style={{
@@ -520,7 +544,6 @@ const StoreCard = props => {
           height: hp('12%'),
           top: hp('1%'),
           right: wp('0%'),
-
           alignItems: 'center',
         }}>
         {image == null ? (
@@ -543,9 +566,11 @@ const StoreCard = props => {
           />
         )}
       </View>
-      <Text style={[Typography.normal, {top: hp('1%')}]}>
-        {props.storeName}
-      </Text>
+      <View style={{paddingBottom: hp('3%')}}>
+        <Text style={[Typography.normal, {top: hp('1%')}]}>
+          {props.storeName}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };

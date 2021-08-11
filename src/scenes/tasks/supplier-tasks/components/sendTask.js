@@ -31,11 +31,12 @@ import {goodsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 
@@ -43,6 +44,7 @@ const now = () => {
 
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
+  const companyID = userStore(state => state.companyID);
   log('send task list render');
   return (
     <View>
@@ -60,7 +62,7 @@ export const SendTaskList = props => {
                 const task = await API.graphql({
                   query: goodsTaskRetailerForSupplierByDate,
                   variables: {
-                    supplierID: props.user.supplierCompanyID,
+                    supplierID: companyID,
                     sortDirection: 'ASC',
                   },
                 });
@@ -90,6 +92,7 @@ export const SendTaskList = props => {
               createdAt={item.createdAt}
               deliverydate={item.deliveryDate}
               taskID={item.id}
+              trackingNum={item.trackingNum}
               trigger={props.trigger}
               setTrigger={props.setTrigger}
               sendTask={props.sendTask}
@@ -187,7 +190,7 @@ const SendTask = props => {
             Typography.small,
             {left: wp('25%'), top: hp('4%'), position: 'absolute'},
           ]}>
-          {props.taskID}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -224,13 +227,14 @@ const SendTask = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={sendTaskModal}>
         <SendTaskModal
           taskID={props.taskID}
           goods={props.goods}
+          trackingNum={props.trackingNum}
           retailer={props.retailer}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
@@ -341,7 +345,7 @@ const SendTaskModal = props => {
                 fontStyle: 'italic',
               },
             ]}>
-            {'  '}#{props.taskID}
+            {'  '}#{props.trackingNum}
           </Text>
         </Text>
 
@@ -354,7 +358,7 @@ const SendTaskModal = props => {
               left: wp('8%'),
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MMMM, YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
         <View
           style={{
@@ -429,7 +433,7 @@ const SendTaskModal = props => {
                 left: wp('80%'),
                 elevation: 5,
               }}
-              onPress={() => setDate(dayjs().format('DD-MM-YYYY'))}>
+              onPress={() => setDate(dayjs().format('DD MMM YYYY'))}>
               <Icon name="add-circle-outline" size={wp('5%')} />
             </TouchableOpacity>
           </View>
@@ -562,6 +566,7 @@ const SendTaskModal = props => {
           retailer={props.retailer}
           deliverydate={props.deliverydate}
           taskID={props.taskID}
+          trackingNum={props.trackingNum}
           invoiceList={props}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
@@ -655,7 +660,11 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Invoice {props.taskID.slice(0, 6)}
+        Invoice
+        <Text style={[Typography.placeholder, {fontStyle: 'italic'}]}>
+          {' '}
+          for {props.trackingNum} {/*TRANSLATION */}
+        </Text>
       </Text>
       <Text
         style={[
@@ -663,10 +672,10 @@ const InvoiceModal = props => {
           {
             position: 'absolute',
             right: wp('5%'),
-            top: hp('6%'),
+            top: hp('8.5%'),
           },
         ]}>
-        {dayjs().format('DD-MMM-YYYY')}
+        {dayjs().format('DD MMM YYYY')}
       </Text>
       <Text
         style={

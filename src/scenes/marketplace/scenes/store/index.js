@@ -29,9 +29,6 @@ import {log} from '_utils';
 import {userStore} from '_store';
 
 export const Store = props => {
-  const changePurchaseOrderNumber = userStore(
-    state => state.changePurchaseOrderNumber,
-  );
   const {itemId} = props.route.params; //supplierid
   const [products, setProducts] = useState([]);
   const [POList, setPOList] = useState([]);
@@ -54,7 +51,6 @@ export const Store = props => {
     fetchProducts();
     log('Fetching PO from ' + purchaseOrder);
     getPOList();
-    changePurchaseOrderNumber(purchaseOrder);
   }, []);
 
   const getPOList = async () => {

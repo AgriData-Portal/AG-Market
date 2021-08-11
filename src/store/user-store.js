@@ -9,7 +9,6 @@ export const userStore = create(set => ({
   roleInCompany: '',
   verified: false,
   companyFavouriteStores: [],
-  purchaseOrderNumber: '',
 
   changeUserName: name => set({userName: name}),
   changeUserID: id => set({userID: id}),
@@ -19,5 +18,4 @@ export const userStore = create(set => ({
   changeRoleInCompany: role => set({roleInCompany: role}),
   changeVerified: verify => set({verified: verify}),
   changeCompanyFavouriteStores: store => set({companyFavouriteStores: store}),
-  changePurchaseOrderNumber: num => set({purchaseOrderNumber: num}),
 }));

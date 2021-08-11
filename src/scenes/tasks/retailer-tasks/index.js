@@ -27,6 +27,7 @@ import Strings from '_utils';
 import {MenuButton} from '_components';
 import {log} from '_utils';
 import {RatingModal} from './components/receive-goods';
+import {userStore} from '_store';
 
 export const RetailerTasks = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -34,6 +35,9 @@ export const RetailerTasks = props => {
   const [receiveTask, setReceiveTask] = useState([]);
   const [payTask, setPayTask] = useState([]);
   const [trigger, setTrigger] = useState(false);
+  const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
+  const roleInCompany = userStore(state => state.roleInCompany);
 
   useEffect(() => {
     if (task == 'pay') {
@@ -45,11 +49,11 @@ export const RetailerTasks = props => {
 
   const getReceiveTask = async () => {
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const task = await API.graphql({
           query: goodsTaskForRetailerByDate,
           variables: {
-            retailerID: props.user.retailerCompanyID,
+            retailerID: companyID,
             sortDirection: 'ASC',
           },
         });
@@ -59,7 +63,7 @@ export const RetailerTasks = props => {
         const task = await API.graphql({
           query: goodsTaskFarmerForSupplierByDate,
           variables: {
-            supplierID: props.user.supplierCompanyID,
+            supplierID: companyID,
             sortDirection: 'ASC',
           },
         });
@@ -74,11 +78,11 @@ export const RetailerTasks = props => {
 
   const getPayTask = async () => {
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const task = await API.graphql({
           query: paymentsTaskForRetailerByDate,
           variables: {
-            retailerID: props.user.retailerCompanyID,
+            retailerID: companyID,
             sortDirection: 'ASC',
           },
         });
@@ -88,7 +92,7 @@ export const RetailerTasks = props => {
         const task = await API.graphql({
           query: paymentsTaskFarmerForSupplierByDate,
           variables: {
-            supplierID: props.user.supplierCompanyID,
+            supplierID: companyID,
             sortDirection: 'ASC',
           },
         });
@@ -110,7 +114,7 @@ export const RetailerTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      {props.user.role == 'receiver' ? (
+      {roleInCompany == 'receiver' ? (
         <View
           style={{
             top: hp('0%'),
@@ -226,18 +230,14 @@ export const RetailerTasks = props => {
             payTask={payTask}
             setPayTask={setPayTask}
             getPayTask={getPayTask}
-            user={props.user}
-            company={props.company}
           />
         ) : (
           <ReceiveList
-            user={props.user}
             trigger={trigger}
             setTrigger={setTrigger}
             receiveTask={receiveTask}
             setReceiveTask={setReceiveTask}
             getReceiveTask={getReceiveTask}
-            company={props.company}
           />
         )}
       </View>

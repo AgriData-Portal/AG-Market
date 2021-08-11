@@ -41,16 +41,14 @@ import {
 import {Rating} from 'react-native-ratings';
 import {log} from '_utils';
 import {BlueButton} from '_components';
-
-const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
-  return now;
-};
+import {userStore} from '_store';
 
 //Retailer receive
 const ReceiveModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [ratingModal, setRatingModal] = useState(false);
+  const userName = userStore(state => state.userName);
+  const companyType = userStore(state => state.companyType);
 
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
@@ -60,7 +58,7 @@ const ReceiveModal = props => {
   const received = async () => {
     var mostRecentInvoiceNum = null;
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const response = await API.graphql({
           query: getSupplierCompany,
           variables: {id: props.supplierID},
@@ -92,9 +90,10 @@ const ReceiveModal = props => {
     } catch (e) {
       log(e);
     }
-    if (props.company.type == 'retailer') {
+    if (companyType == 'retailer') {
       var input = {
-        id: mostRecentInvoiceNum,
+        id: props.taskID,
+        trackingNum: mostRecentInvoiceNum,
         retailerID: props.retailerID,
         supplierID: props.supplierID,
         paid: false,
@@ -104,7 +103,8 @@ const ReceiveModal = props => {
       };
     } else {
       var input = {
-        id: mostRecentInvoiceNum,
+        id: props.taskID,
+        trackingNum: mostRecentInvoiceNum,
         supplierID: props.supplierID,
         farmerID: props.farmerID,
         paid: false,
@@ -115,7 +115,7 @@ const ReceiveModal = props => {
     }
 
     try {
-      if ((props.company.type = 'retailer')) {
+      if (companyType == 'retailer') {
         const paymentTaskResponse = API.graphql({
           query: createPaymentTaskBetweenRandS,
           variables: {input: input},
@@ -131,30 +131,32 @@ const ReceiveModal = props => {
       log(e);
     }
 
-    if (props.company.type == 'retailer') {
+    if (companyType == 'retailer') {
       var input = {
-        id: mostRecentInvoiceNum,
+        id: props.taskID,
+        trackingNum: mostRecentInvoiceNum,
         retailerID: props.retailerID,
         supplierID: props.supplierID,
         items: props.goods,
         paid: false,
         amount: sum,
-        receivedBy: props.user.name,
+        receivedBy: userName,
       };
     } else {
       var input = {
-        id: mostRecentInvoiceNum,
+        id: props.taskID,
+        trackingNum: mostRecentInvoiceNum,
         farmerID: props.farmerID,
         supplierID: props.supplierID,
         items: props.goods,
         paid: false,
         amount: sum,
-        receivedBy: props.user.name,
+        receivedBy: userName,
       };
     }
 
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const invoiceResponse = API.graphql({
           query: createInvoiceBetweenRandS,
           variables: {input: input},
@@ -171,7 +173,7 @@ const ReceiveModal = props => {
     }
 
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const supplierCompanyUpdate = await API.graphql({
           query: updateSupplierCompany,
           variables: {
@@ -198,7 +200,7 @@ const ReceiveModal = props => {
     }
 
     try {
-      if (props.company.type == 'retailer') {
+      if (companyType == 'retailer') {
         const invoiceResponse = await API.graphql({
           query: updateGoodsTaskBetweenRandS,
           variables: {input: {id: props.taskID, status: 'received'}},
@@ -263,7 +265,7 @@ const ReceiveModal = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {'  '}#{props.taskID}
+          {'  '}#{props.trackingNum}
         </Text>
       </Text>
 
@@ -276,7 +278,7 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM, YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -519,7 +521,7 @@ const Receive = props => {
             Typography.small,
             {left: wp('25%'), top: hp('4%'), position: 'absolute'},
           ]}>
-          {props.taskID}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -556,7 +558,7 @@ const Receive = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveModal}>
@@ -571,15 +573,14 @@ const Receive = props => {
           supplierID={props.supplierID}
           farmerID={props.farmerID}
           status={props.status}
+          trackingNum={props.trackingNum}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
-          user={props.user}
           receiveList={props}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
           receiveTask={props.receiveTask}
-          setReceiveTask={props.setReceiveTask}
-          company={props.company}></ReceiveModal>
+          setReceiveTask={props.setReceiveTask}></ReceiveModal>
       </Modal>
     </TouchableOpacity>
   );
@@ -588,6 +589,8 @@ const Receive = props => {
 export const ReceiveList = props => {
   const [refreshing, setRefreshing] = useState(false);
   log('render flatlist');
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
   return (
     <View>
       <FlatList
@@ -602,11 +605,11 @@ export const ReceiveList = props => {
               setRefreshing(true);
 
               try {
-                if (props.company.type == 'retailer') {
+                if (companyType == 'retailer') {
                   const task = await API.graphql({
                     query: goodsTaskForRetailerByDate,
                     variables: {
-                      retailerID: props.user.retailerCompanyID,
+                      retailerID: companyID,
                       sortDirection: 'ASC',
                     },
                   });
@@ -618,7 +621,7 @@ export const ReceiveList = props => {
                   const task = await API.graphql({
                     query: goodsTaskFarmerForSupplierByDate,
                     variables: {
-                      supplierID: props.user.supplierCompanyID,
+                      supplierID: companyID,
                       sortDirection: 'ASC',
                     },
                   });
@@ -641,7 +644,7 @@ export const ReceiveList = props => {
           />
         }
         renderItem={({item}) => {
-          log(item.supplier);
+          log(item);
           if (item.status == 'received') {
             return <View />;
           } else {
@@ -658,12 +661,11 @@ export const ReceiveList = props => {
                 deliverydate={item.deliveryDate}
                 taskID={item.id}
                 status={item.status}
-                user={props.user}
+                trackingNum={item.trackingNum}
                 trigger={props.trigger}
                 setTrigger={props.setTrigger}
                 receiveTask={props.receiveTask}
                 setReceiveTask={props.setReceiveTask}
-                company={props.company}
               />
             );
           }

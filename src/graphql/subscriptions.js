@@ -1,6 +1,48 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateGlobalSettings = /* GraphQL */ `
+  subscription OnCreateGlobalSettings {
+    onCreateGlobalSettings {
+      id
+      latestVersionNumber
+      emergencyProblem
+      forceUpdate
+      backendFix
+      backendFixWhen
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateGlobalSettings = /* GraphQL */ `
+  subscription OnUpdateGlobalSettings {
+    onUpdateGlobalSettings {
+      id
+      latestVersionNumber
+      emergencyProblem
+      forceUpdate
+      backendFix
+      backendFixWhen
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteGlobalSettings = /* GraphQL */ `
+  subscription OnDeleteGlobalSettings {
+    onDeleteGlobalSettings {
+      id
+      latestVersionNumber
+      emergencyProblem
+      forceUpdate
+      backendFix
+      backendFixWhen
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
@@ -8,6 +50,10 @@ export const onCreateUser = /* GraphQL */ `
       name
       role
       email
+      pushNotificationTokens {
+        service
+        deviceTokens
+      }
       retailerCompanyID
       supplierCompanyID
       farmerCompanyID
@@ -175,6 +221,10 @@ export const onUpdateUser = /* GraphQL */ `
       name
       role
       email
+      pushNotificationTokens {
+        service
+        deviceTokens
+      }
       retailerCompanyID
       supplierCompanyID
       farmerCompanyID
@@ -342,6 +392,10 @@ export const onDeleteUser = /* GraphQL */ `
       name
       role
       email
+      pushNotificationTokens {
+        service
+        deviceTokens
+      }
       retailerCompanyID
       supplierCompanyID
       farmerCompanyID
@@ -539,6 +593,7 @@ export const onCreateRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -553,6 +608,7 @@ export const onCreateRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -567,6 +623,7 @@ export const onCreateRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -639,6 +696,7 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -653,6 +711,7 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -667,6 +726,7 @@ export const onUpdateRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -739,6 +799,7 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -753,6 +814,7 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -767,6 +829,7 @@ export const onDeleteRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -860,6 +923,7 @@ export const onCreateSupplierCompany = /* GraphQL */ `
       goodsTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -874,6 +938,7 @@ export const onCreateSupplierCompany = /* GraphQL */ `
       goodsTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -888,6 +953,7 @@ export const onCreateSupplierCompany = /* GraphQL */ `
       paymentTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -902,6 +968,7 @@ export const onCreateSupplierCompany = /* GraphQL */ `
       paymentTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -916,6 +983,7 @@ export const onCreateSupplierCompany = /* GraphQL */ `
       invoiceRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -929,6 +997,7 @@ export const onCreateSupplierCompany = /* GraphQL */ `
       invoiceFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1022,6 +1091,7 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
       goodsTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -1036,6 +1106,7 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
       goodsTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1050,6 +1121,7 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
       paymentTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -1064,6 +1136,7 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
       paymentTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1078,6 +1151,7 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
       invoiceRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -1091,6 +1165,7 @@ export const onUpdateSupplierCompany = /* GraphQL */ `
       invoiceFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1184,6 +1259,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       goodsTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           logisticsProvided
@@ -1198,6 +1274,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       goodsTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1212,6 +1289,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       paymentTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -1226,6 +1304,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       paymentTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1240,6 +1319,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       invoiceRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -1253,6 +1333,7 @@ export const onDeleteSupplierCompany = /* GraphQL */ `
       invoiceFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1342,6 +1423,7 @@ export const onCreateFarmerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1356,6 +1438,7 @@ export const onCreateFarmerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1370,6 +1453,7 @@ export const onCreateFarmerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1459,6 +1543,7 @@ export const onUpdateFarmerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1473,6 +1558,7 @@ export const onUpdateFarmerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1487,6 +1573,7 @@ export const onUpdateFarmerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -1576,6 +1663,7 @@ export const onDeleteFarmerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           logisticsProvided
@@ -1590,6 +1678,7 @@ export const onDeleteFarmerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -1604,6 +1693,7 @@ export const onDeleteFarmerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -2283,6 +2373,10 @@ export const onCreateChatGroupUsers = /* GraphQL */ `
         name
         role
         email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -2399,6 +2493,10 @@ export const onUpdateChatGroupUsers = /* GraphQL */ `
         name
         role
         email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -2515,6 +2613,10 @@ export const onDeleteChatGroupUsers = /* GraphQL */ `
         name
         role
         email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -3089,6 +3191,7 @@ export const onCreateGoodsTaskBetweenRandS = /* GraphQL */ `
   subscription OnCreateGoodsTaskBetweenRandS {
     onCreateGoodsTaskBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -3210,6 +3313,7 @@ export const onUpdateGoodsTaskBetweenRandS = /* GraphQL */ `
   subscription OnUpdateGoodsTaskBetweenRandS {
     onUpdateGoodsTaskBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -3331,6 +3435,7 @@ export const onDeleteGoodsTaskBetweenRandS = /* GraphQL */ `
   subscription OnDeleteGoodsTaskBetweenRandS {
     onDeleteGoodsTaskBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -3452,6 +3557,7 @@ export const onCreateGoodsTaskBetweenSandF = /* GraphQL */ `
   subscription OnCreateGoodsTaskBetweenSandF {
     onCreateGoodsTaskBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -3575,6 +3681,7 @@ export const onUpdateGoodsTaskBetweenSandF = /* GraphQL */ `
   subscription OnUpdateGoodsTaskBetweenSandF {
     onUpdateGoodsTaskBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -3698,6 +3805,7 @@ export const onDeleteGoodsTaskBetweenSandF = /* GraphQL */ `
   subscription OnDeleteGoodsTaskBetweenSandF {
     onDeleteGoodsTaskBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -3821,6 +3929,7 @@ export const onCreatePaymentTaskBetweenRandS = /* GraphQL */ `
   subscription OnCreatePaymentTaskBetweenRandS {
     onCreatePaymentTaskBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -3933,6 +4042,7 @@ export const onUpdatePaymentTaskBetweenRandS = /* GraphQL */ `
   subscription OnUpdatePaymentTaskBetweenRandS {
     onUpdatePaymentTaskBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4045,6 +4155,7 @@ export const onDeletePaymentTaskBetweenRandS = /* GraphQL */ `
   subscription OnDeletePaymentTaskBetweenRandS {
     onDeletePaymentTaskBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4157,6 +4268,7 @@ export const onCreatePaymentTaskBetweenSandF = /* GraphQL */ `
   subscription OnCreatePaymentTaskBetweenSandF {
     onCreatePaymentTaskBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -4271,6 +4383,7 @@ export const onUpdatePaymentTaskBetweenSandF = /* GraphQL */ `
   subscription OnUpdatePaymentTaskBetweenSandF {
     onUpdatePaymentTaskBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -4385,6 +4498,7 @@ export const onDeletePaymentTaskBetweenSandF = /* GraphQL */ `
   subscription OnDeletePaymentTaskBetweenSandF {
     onDeletePaymentTaskBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -4499,6 +4613,7 @@ export const onCreateInvoiceBetweenRandS = /* GraphQL */ `
   subscription OnCreateInvoiceBetweenRandS {
     onCreateInvoiceBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4619,6 +4734,7 @@ export const onUpdateInvoiceBetweenRandS = /* GraphQL */ `
   subscription OnUpdateInvoiceBetweenRandS {
     onUpdateInvoiceBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4739,6 +4855,7 @@ export const onDeleteInvoiceBetweenRandS = /* GraphQL */ `
   subscription OnDeleteInvoiceBetweenRandS {
     onDeleteInvoiceBetweenRandS {
       id
+      trackingNum
       retailer {
         id
         name
@@ -4859,6 +4976,7 @@ export const onCreateInvoiceBetweenSandF = /* GraphQL */ `
   subscription OnCreateInvoiceBetweenSandF {
     onCreateInvoiceBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -4981,6 +5099,7 @@ export const onUpdateInvoiceBetweenSandF = /* GraphQL */ `
   subscription OnUpdateInvoiceBetweenSandF {
     onUpdateInvoiceBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name
@@ -5103,6 +5222,7 @@ export const onDeleteInvoiceBetweenSandF = /* GraphQL */ `
   subscription OnDeleteInvoiceBetweenSandF {
     onDeleteInvoiceBetweenSandF {
       id
+      trackingNum
       farmer {
         id
         name

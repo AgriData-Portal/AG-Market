@@ -61,7 +61,7 @@ export const OrderQuotationModal = props => {
         itemObject['price'] = temp[6];
         arr[index] = itemObject;
       });
-      tempObject = {};
+      var tempObject = {};
       tempObject['items'] = items;
       tempObject['sum'] = quotation[1];
       tempObject['logisticsProvided'] = quotation[2] == 'true' ? true : false;
@@ -190,6 +190,7 @@ export const OrderQuotationModal = props => {
         variables: {
           input: {
             id: props.id,
+            trackingNum: props.contentType,
             items: orderDetails.items,
             logisticsProvided: orderDetails.logisticsProvided,
             paymentTerms: orderDetails.paymentTerms,
@@ -249,7 +250,7 @@ export const OrderQuotationModal = props => {
               {props.chatName}
             </Text>
             <Text style={[Typography.normal]}>
-              {props.id} #{orderDetails.status}
+              {props.contentType} #{orderDetails.status}
             </Text>
           </View>
           <View

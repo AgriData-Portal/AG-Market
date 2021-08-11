@@ -69,8 +69,8 @@ const ChatBubble = props => {
     if (props.senderID == userID) return true;
     else return false;
   };
-  const contentType = props.contentType;
-  if (contentType == 'text') {
+
+  if (props.contentType == 'text') {
     return (
       <View style={{width: wp('100%')}}>
         {!isMyMessage() && (
@@ -120,7 +120,7 @@ const ChatBubble = props => {
         </View>
       </View>
     );
-  } else if (contentType == 'inquiry') {
+  } else if (props.contentType == 'inquiry') {
     var content = props.content.split('+');
     return (
       <View>
@@ -198,7 +198,7 @@ const ChatBubble = props => {
         </View>
       </View>
     );
-  } else if (contentType == 'purchaseorder') {
+  } else if (props.contentType.slice(0, 3) == 'P.O') {
     return (
       <View>
         {!isMyMessage() && (
@@ -226,7 +226,7 @@ const ChatBubble = props => {
             marginVertical: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.purchaseOrder}</Text>
-          <Text style={Typography.normal}>{props.id}</Text>
+          <Text style={Typography.normal}>{props.contentType}</Text>
           <BlueButton
             onPress={() => setPurchaseOrderModal(true)}
             text={Strings.inspect}
@@ -250,6 +250,7 @@ const ChatBubble = props => {
           <PurchaseOrder
             id={props.id}
             content={props.content}
+            contentType={props.contentType}
             chatName={props.chatName}
             setPurchaseOrderModal={setPurchaseOrderModal}
             chatGroupID={props.chatGroupID}
@@ -258,8 +259,8 @@ const ChatBubble = props => {
         </Modal>
       </View>
     );
-  } else if (contentType == 'quotation') {
-    //DESIGN the colour and position
+  } else if (props.contentType.slice(0, 3) == 'QUO') {
+    //DESIGN the colour and position of indicator for whether the quotation has been accepted, is new or rejected
     return (
       <View>
         {!isMyMessage() && (
@@ -304,8 +305,8 @@ const ChatBubble = props => {
             <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
           </View>
 
-          {/* DESIGN decide how to display the PO and Quotation chat bubble*/}
-          <Text style={Typography.normal}>{props.id}</Text>
+          {/* DESIGN decide how to display the PO and Quotation chat bubble with the newly introduced id*/}
+          <Text style={Typography.normal}>{props.contentType}</Text>
           <BlueButton
             onPress={() => setOrderQuotationModal(true)}
             text={Strings.inspect}
@@ -332,7 +333,6 @@ const ChatBubble = props => {
             chatName={props.chatName}
             content={props.content}
             sender={props.sender}
-            content={props.content}
             senderID={props.senderID}
             contentType={props.contentType}
             createdAt={props.createdAt}
@@ -344,7 +344,7 @@ const ChatBubble = props => {
       </View>
     );
   } //BUG image not appearing properly on click
-  else if (contentType == 'image') {
+  else if (props.contentType == 'image') {
     const [imageSource, setImageSource] = useState('');
     const getImage = async () => {
       try {
@@ -430,7 +430,7 @@ const ChatBubble = props => {
         </Modal>
       </View>
     );
-  } else if (contentType == 'store') {
+  } else if (props.contentType == 'store') {
     const storeDetails = props.content.split('+');
 
     return (
@@ -534,7 +534,7 @@ const ChatBubbleList = props => {
     {colour: '#5BB9D2', id: ''},
   ]);
   return (
-    <View>
+    <View style={{height: hp('80%')}}>
       <FlatList
         inverted={true}
         keyExtractor={item => item.id}

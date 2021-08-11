@@ -24,6 +24,7 @@ import {
 } from '../../graphql/queries';
 import Strings from '_utils';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const Orders = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -32,6 +33,8 @@ export const Orders = props => {
   const [trigger, setTrigger] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [nextToken, setNextToken] = useState(null);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
 
   useEffect(() => {
     getInvoice();
@@ -44,13 +47,13 @@ export const Orders = props => {
   }, [refresh]);
 
   const getInvoice = async () => {
-    if (props.user.supplierCompanyID != null) {
+    if (companyType == 'supplier') {
       try {
         if (props.sellerState == false) {
           const invoice = await API.graphql({
             query: invoiceRetailerForSupplierByDate,
             variables: {
-              supplierID: props.user.supplierCompanyID,
+              supplierID: companyID,
               sortDirection: 'DESC',
               limit: 20,
             },
@@ -63,7 +66,7 @@ export const Orders = props => {
           const invoice = await API.graphql({
             query: invoiceFarmerForSupplierByDate,
             variables: {
-              supplierID: props.user.supplierCompanyID,
+              supplierID: companyID,
               sortDirection: 'DESC',
               limit: 20,
             },
@@ -77,12 +80,12 @@ export const Orders = props => {
       } catch (e) {
         log(e);
       }
-    } else if (props.user.retailerCompanyID != null) {
+    } else if (companyType == 'retailer') {
       try {
         const invoice = await API.graphql({
           query: invoiceForRetailerByDate,
           variables: {
-            retailerID: props.user.retailerCompanyID,
+            retailerID: companyID,
             sortDirection: 'DESC',
             limit: 20,
           },
@@ -100,7 +103,7 @@ export const Orders = props => {
         const invoice = await API.graphql({
           query: invoiceForFarmerByDate,
           variables: {
-            farmerID: props.user.farmerCompanyID,
+            farmerID: companyID,
             sortDirection: 'DESC',
             limit: 20,
           },
@@ -118,13 +121,13 @@ export const Orders = props => {
   };
 
   const getMoreInvoice = async () => {
-    if (props.user.supplierCompanyID != null) {
+    if (companyType == 'supplier') {
       try {
         if (props.sellerState == false) {
           const invoice = await API.graphql({
             query: invoiceRetailerForSupplierByDate,
             variables: {
-              supplierID: props.user.supplierCompanyID,
+              supplierID: companyID,
               sortDirection: 'DESC',
               limit: 20,
               nextToken: nextToken,
@@ -139,7 +142,7 @@ export const Orders = props => {
           const invoice = await API.graphql({
             query: invoiceRetailerForSupplierByDate,
             variables: {
-              supplierID: props.user.supplierCompanyID,
+              supplierID: companyID,
               sortDirection: 'DESC',
               limit: 20,
               nextToken: nextToken,
@@ -154,12 +157,12 @@ export const Orders = props => {
       } catch (e) {
         log(e);
       }
-    } else if (props.user.retailerCompanyID != null) {
+    } else if (companyType == 'retailer') {
       try {
         const invoice = await API.graphql({
           query: invoiceForRetailerByDate,
           variables: {
-            retailerID: props.user.retailerCompanyID,
+            retailerID: companyID,
             sortDirection: 'DESC',
             limit: 20,
             nextToken: nextToken,
@@ -180,7 +183,7 @@ export const Orders = props => {
         const invoice = await API.graphql({
           query: invoiceForFarmerByDate,
           variables: {
-            farmerID: props.user.farmerCompanyID,
+            farmerID: companyID,
             sortDirection: 'DESC',
             limit: 20,
             nextToken: nextToken,

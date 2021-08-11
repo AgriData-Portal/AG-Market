@@ -151,9 +151,8 @@ const NewOrderQuotation = props => {
           query: createMessage,
           variables: {
             input: {
-              id: mostRecentQuotationNumber,
               chatGroupID: props.chatGroupID,
-              type: 'quotation',
+              type: mostRecentQuotationNumber,
               content: message,
               sender: userName,
               senderID: userID,
