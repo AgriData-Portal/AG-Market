@@ -2108,6 +2108,7 @@ export const listPaymentTaskBetweenRandSs = /* GraphQL */ `
           mostRecentQuotationNumber
           registrationNumber
           verified
+
           logo
           updatedAt
           createdAt
@@ -3675,6 +3676,10 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          bankAccount {
+            accountNumber
+            bankName
+          }
           updatedAt
           createdAt
         }
@@ -3731,6 +3736,10 @@ export const paymentsTaskRetailerForSupplierByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          bankAccount {
+            accountNumber
+            bankName
+          }
           updatedAt
           createdAt
         }
@@ -3775,6 +3784,10 @@ export const paymentsTaskForFarmerByDate = /* GraphQL */ `
           mostRecentInvoiceNumber
           mostRecentQuotationNumber
           verified
+          bankAccount {
+            accountNumber
+            bankName
+          }
           logo
           updatedAt
           createdAt
@@ -3835,6 +3848,10 @@ export const paymentsTaskFarmerForSupplierByDate = /* GraphQL */ `
           mostRecentQuotationNumber
           verified
           logo
+          bankAccount {
+            accountNumber
+            bankName
+          }
           updatedAt
           createdAt
         }

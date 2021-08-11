@@ -6,8 +6,6 @@ type GlobalSettings @model{
   backendFix: Boolean
   backendFixWhen: String
 }
-
-
 type User
   @model
   @key(
@@ -217,7 +215,7 @@ type Message
   chatGroupID: ID
   "retailerID+supplierID or farmerID+supplierID"
   type: String
-  "Text, Product Inquiry, PO, Quotation, Image"
+  "Text, Product Inquiry, PO (P.O), Quotation (QUO), Image"
   content: String
   senderID: ID
   sender: String

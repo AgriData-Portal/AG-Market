@@ -651,9 +651,8 @@ const PurchaseOrder = props => {
       }
       try {
         const inquiry = {
-          id: mostRecentPurchaseOrderNumber,
           chatGroupID: props.purchaseOrder,
-          type: 'purchaseorder',
+          type: mostRecentPurchaseOrderNumber,
           content: message,
           sender: props.user.name,
           senderID: props.user.id,

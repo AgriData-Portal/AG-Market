@@ -119,6 +119,7 @@ export const OrderList = props => {
           return (
             <Order
               id={item.id}
+              trackingNum={item.trackingNum}
               amount={item.amount}
               company={company}
               supplier={item.supplier}
@@ -197,9 +198,9 @@ const Order = props => {
         <Text
           style={[
             Typography.small,
-            {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
+            {left: wp('25%'), top: hp('3%'), position: 'absolute'},
           ]}>
-          {props.id}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -270,6 +271,7 @@ const Order = props => {
         <InvoiceModal
           setInvoiceModal={setInvoiceModal}
           id={props.id}
+          trackingNum={props.trackingNum}
           amount={props.amount}
           company={props.company}
           supplier={props.supplier}
@@ -322,7 +324,8 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.invoice} <Text style={Typography.normal}>#{props.id}</Text>
+        {Strings.invoice}{' '}
+        <Text style={Typography.normal}>#{props.trackingNum}</Text>
       </Text>
       <Text
         style={[
@@ -450,7 +453,7 @@ const InvoiceModal = props => {
         left={wp('61%')}
         onPress={() =>
           createPDF(
-            (id = props.id),
+            (id = props.trackingNum),
             (retailer = props.retailer),
             (supplier = props.supplier),
             (createdAt = props.createdAt),
@@ -471,7 +474,7 @@ const InvoiceModal = props => {
         top={hp('70%')}
         onPress={() =>
           createCSV(
-            (id = props.id),
+            (id = props.trackingNum),
             (company = props.company),
             (createdAt = props.createdAt),
             (items = props.goods),
