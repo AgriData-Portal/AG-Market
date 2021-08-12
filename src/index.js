@@ -14,6 +14,14 @@ import {
 } from './graphql/mutations';
 import {StatusBar} from 'react-native';
 import {log} from '_utils';
+import DeviceInfo from 'react-native-device-info';
+import {
+  getApiLevel,
+  getBuildId,
+  getFontScale,
+  getModel,
+  getVersion,
+} from 'react-native-device-info';
 
 import {
   GMNavigation,
@@ -53,6 +61,11 @@ Amplify.configure(config);
 // });
 
 const AppNavigator = props => {
+  log('DeviceInfo: ');
+  log('API LEVEL: ' + DeviceInfo.getApiLevelSync());
+  log('FONTSCALE: ' + DeviceInfo.getFontScaleSync());
+  log('MODEL: ' + DeviceInfo.getModel());
+  log('Version: ' + DeviceInfo.getVersion());
   log('user:' + props.user);
   const type = props.user.role;
   const retailer = props.user.retailerCompany;
