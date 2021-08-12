@@ -12,6 +12,7 @@ module.exports = {
           _scenes: './src/scenes',
           _styles: './src/styles',
           _utils: './src/utils',
+          _store: './src/store',
         },
       },
     },

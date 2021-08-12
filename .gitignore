@@ -36,6 +36,7 @@ local.properties
 
 # node.js
 #
+package-lock.json
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -62,6 +63,7 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+/ios/Podfile.lock
 
 # amplify
 # amplify/\#current-cloud-backend
