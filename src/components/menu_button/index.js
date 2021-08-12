@@ -23,6 +23,7 @@ import Strings from '_utils';
 import {CompanyProfile, EditCompany} from './company-profile';
 import {PersonalProfile, EditPersonal} from './personal-profile';
 import {HumanResource} from './human-resource';
+import {log} from '_utils';
 
 export {
   CompanyProfile,
@@ -37,7 +38,7 @@ export const MenuButton = props => {
 
   return (
     <TouchableOpacity
-      onPress={() => [setMenuButtonModal(true), console.log(props.userType)]}
+      onPress={() => [setMenuButtonModal(true), log(props.userType)]}
       style={{left: wp('5%')}}>
       <Icon
         color={Colors.GRAY_DARK}
@@ -65,9 +66,9 @@ export const MenuButtonModal = props => {
     try {
       await Auth.signOut();
       props.updateAuthState('loggedOut');
-      console.log('Logged Out');
+      log('Logged Out');
     } catch (error) {
-      console.log('Error signing out: ', error);
+      log('Error signing out: ', error);
     }
   };
   return (
@@ -92,11 +93,11 @@ export const MenuButtonModal = props => {
       <View>
         <Image
           style={{
-            left: wp('43%'),
-            top: hp('11%'),
+            left: wp('40%'),
+            top: hp('4%'),
             resizeMode: 'contain',
-            width: wp('30%'),
-            height: hp('13%'),
+            width: wp('40%'),
+            height: hp('20%'),
           }}
           source={require('_assets/images/agridata.png')}
         />
@@ -105,13 +106,11 @@ export const MenuButtonModal = props => {
         style={{
           borderBottomColor: Colors.GRAY_MEDIUM,
           borderBottomWidth: wp('0.5%'),
-          top: hp('10%'),
+          top: hp('2%'),
         }}
       />
 
-      {props.userType == 'supplier' ||
-      props.userType == 'generalmanager' ||
-      props.userType == 'owner' ? (
+      {props.userType == 'General Manager' || props.userType == 'Owner' ? (
         <View>
           <TouchableOpacity
             onPress={() => [
@@ -119,7 +118,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('companyprofile'),
             ]}
             style={{
-              top: hp('16%'),
+              top: hp('5%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -145,7 +144,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('personalprofile'),
             ]}
             style={{
-              top: hp('19%'),
+              top: hp('8%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -170,7 +169,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('humanresource'),
             ]}
             style={{
-              top: hp('22%'),
+              top: hp('11%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -193,7 +192,7 @@ export const MenuButtonModal = props => {
           <TouchableOpacity
             onPress={() => signOut()}
             style={{
-              top: hp('25%'),
+              top: hp('14%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -219,7 +218,7 @@ export const MenuButtonModal = props => {
               props.navigation.navigate('personalprofile'),
             ]}
             style={{
-              top: hp('16%'),
+              top: hp('4%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),
@@ -240,7 +239,7 @@ export const MenuButtonModal = props => {
           <TouchableOpacity
             onPress={() => signOut()}
             style={{
-              top: hp('19%'),
+              top: hp('6%'),
               left: wp('42%'),
               zIndex: 3,
               width: wp('50%'),

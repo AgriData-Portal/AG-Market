@@ -27,6 +27,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Auth} from 'aws-amplify';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const ForgetPassword = props => {
   const [changePassword, setChangePassword] = useState(false);
@@ -36,20 +37,20 @@ export const ForgetPassword = props => {
   const sendConfirmation = async props => {
     await Auth.forgotPassword(phone)
       .then(data => {
-        console.log(data);
-        console.log(phone);
+        log(data);
+        log(phone);
       })
       .catch(err => {
-        console.log(err);
-        console.log(phone);
+        log(err);
+        log(phone);
       });
     setChangePassword(true);
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : -180}>
+      behavior={Platform.OS === 'ios' ? 'position' : null}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : null}>
       <SafeAreaView>
         <DismissKeyboardView>
           <View
@@ -110,7 +111,11 @@ export const ForgetPassword = props => {
                   placeholderTextColor={Colors.GRAY_DARK}
                   value={phone}
                   placeholder={Strings.phoneNumber}
-                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
+                  style={{
+                    height: hp('6%'),
+                    borderBottomWidth: 0,
+                    color: 'black',
+                  }}></TextInput>
               </View>
             </View>
             <TouchableOpacity
@@ -172,27 +177,27 @@ export const ChangePassword = props => {
     } catch (e) {
       if (e.code == 'CodeMismatchException') {
         setWrongAuthCode(true);
-        console.log('code error');
+        log('code error');
       } else if (e.code == 'InvalidPasswordException') {
         setPasswordFormat(true);
-        console.log('code error');
+        log('code error');
       } else if (e.code == 'LimitExceededException') {
         setLimitExceeded(true);
-        console.log('code error');
+        log('code error');
       }
-      console.log(e);
+      log(e);
     }
   };
 
   const sendConfirmation = async => {
     // await Auth.forgotPassword(props.phone)
     //   .then(data => {
-    //     console.log(data);
-    //     console.log(phone);
+    //     log(data);
+    //     log(phone);
     //   })
     //   .catch(err => {
-    //     console.log(err);
-    //     console.log(phone);
+    //     log(err);
+    //     log(phone);
     //   });
     setResendCodeModal(true);
   };
@@ -260,7 +265,11 @@ export const ChangePassword = props => {
                   keyboardType="numeric"
                   underlineColorAndroid="transparent"
                   placeholder={Strings.authenticationCode}
-                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
+                  style={{
+                    height: hp('6%'),
+                    borderBottomWidth: 0,
+                    color: 'black',
+                  }}></TextInput>
               </View>
               <View
                 style={{
@@ -279,7 +288,11 @@ export const ChangePassword = props => {
                   placeholderTextColor={Colors.GRAY_DARK}
                   placeholder={Strings.newPassword}
                   underlineColorAndroid="transparent"
-                  style={{height: hp('6%'), borderBottomWidth: 0}}></TextInput>
+                  style={{
+                    height: hp('6%'),
+                    borderBottomWidth: 0,
+                    color: 'black',
+                  }}></TextInput>
               </View>
             </View>
             <TouchableOpacity
@@ -290,11 +303,13 @@ export const ChangePassword = props => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => [
-                code == '' || password == ''
-                  ? setPasswordCodeModal(true)
-                  : changePassword(),
-              ]}
+              onPress={() => {
+                if (code == '' || password == '') {
+                  setPasswordCodeModal(true);
+                } else {
+                  changePassword();
+                }
+              }}
               style={{top: hp('10%')}}>
               <Text
                 style={[Typography.small, {textDecorationLine: 'underline'}]}>

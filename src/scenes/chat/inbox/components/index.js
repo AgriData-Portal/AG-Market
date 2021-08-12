@@ -15,22 +15,17 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Strings from '_utils';
+import Strings, {log} from '_utils';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone'); // dependent on utc plugin
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('Asia/Singapore');
-
-const now = () => {
-  const now = dayjs().format('YYYY-MM-DD');
-  return now;
-};
+// var utc = require('dayjs/plugin/utc');
+// var timezone = require('dayjs/plugin/timezone'); // dependent on utc plugin
+// dayjs.extend(utc);
+// dayjs.extend(timezone);
+// dayjs.tz.setDefault('Asia/Singapore');
 
 export const Searchbar = props => {
   return (
@@ -73,9 +68,15 @@ export const ChatList = props => {
   };
   const Footer = () => {
     return (
-      <View style={{width: wp('100%'), alignItems: 'center'}}>
-        <Image source={require('_assets/images/agridata.png')}></Image>
-      </View>
+      <Image
+        style={{
+          width: wp('50%'),
+          height: hp('20%'),
+          resizeMode: 'contain',
+          alignSelf: 'center',
+          marginTop: hp('2%'),
+        }}
+        source={require('_assets/images/agridata.png')}></Image>
     );
   };
   return (
@@ -138,6 +139,23 @@ export const ChatList = props => {
 const ChatRoom = props => {
   const lastUpdated = dayjs(props.updatedAt).add(8, 'hour');
   var listOfParticipants = props.chatParticipants;
+
+  const getInitials = name => {
+    if (name) {
+      let initials = name.split(' ');
+
+      if (initials.length > 1) {
+        initials = initials.shift().charAt(0) + initials.pop().charAt(0);
+      } else {
+        initials = name.substring(0, 2);
+      }
+
+      return initials.toUpperCase();
+    } else {
+      return null;
+    }
+  };
+
   if (listOfParticipants != undefined || listOfParticipants != null) {
     var tempList = listOfParticipants.filter(item => {
       return item.userID == props.userID;
@@ -166,8 +184,8 @@ const ChatRoom = props => {
       }}>
       <View
         style={{
-          width: wp('15%'),
-          height: wp('15%'),
+          width: hp('7%'),
+          height: hp('7%'),
           top: hp('1.5%'),
           left: wp('2%'),
           backgroundColor: Colors.LIGHT_BLUE,
@@ -175,15 +193,30 @@ const ChatRoom = props => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Image
+        <Text>{getInitials(props.chatName)}</Text>
+        {/* <Image
           style={{
             resizeMode: 'center',
             width: wp('15%'),
             height: wp('15%'),
           }}
           source={require('_assets/images/agridata.png')}
-        />
+        /> */}
       </View>
+      {!lastUpdated.from(lastSeen).includes('ago') ? (
+        <View
+          style={{
+            position: 'absolute',
+            width: hp('2%'),
+            height: hp('2%'),
+            backgroundColor: '#8EAB3D',
+            borderRadius: 100,
+            left: hp('6%'),
+            top: hp('2%'),
+          }}></View>
+      ) : (
+        <View></View>
+      )}
       <View style={{left: wp('7%'), top: hp('1.5%'), width: wp('60%')}}>
         <Text style={Typography.normal}>{props.chatName}</Text>
         {props.mostRecentMessage.length > 48 ? (
@@ -203,12 +236,12 @@ const ChatRoom = props => {
           top: hp('1.5%'),
           right: wp('5%'),
         }}>
-        {lastUpdated.fromNow().includes('day') ||
-        lastUpdated.fromNow().includes('days') ||
-        lastUpdated.fromNow().includes('month') ||
-        lastUpdated.fromNow().includes('months') ||
-        lastUpdated.fromNow().includes('year') ||
-        lastUpdated.fromNow().includes('years') ? (
+        {lastUpdated.subtract(8, 'hour').fromNow().includes('day') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('days') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('month') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('months') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('year') ||
+        lastUpdated.subtract(8, 'hour').fromNow().includes('years') ? (
           <Text style={[Typography.small, {color: Colors.GRAY_DARK}]}>
             {lastUpdated.format('DD-MM-YYYY')}
           </Text>
@@ -218,20 +251,6 @@ const ChatRoom = props => {
           </Text>
         )}
       </View>
-      {!lastUpdated.from(lastSeen).includes('ago') ? (
-        <View
-          style={{
-            position: 'absolute',
-            width: wp('5%'),
-            height: wp('5%'),
-            backgroundColor: Colors.PALE_GREEN,
-            borderRadius: 100,
-            right: wp('7%'),
-            top: hp('5%'),
-          }}></View>
-      ) : (
-        <View></View>
-      )}
     </TouchableOpacity>
   );
 };

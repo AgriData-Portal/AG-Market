@@ -1,25 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  RefreshControl,
-  FlatList,
-  Text,
-  Image,
-} from 'react-native';
+import {View, TextInput, FlatList, Text, Platform} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import dayjs from 'dayjs';
+
 import Modal from 'react-native-modal';
 import {CloseButton, SuccessfulModal} from '_components';
 import {API} from 'aws-amplify';
 import {
   createMessage,
   updateChatGroup,
-  updateOrderQuotation,
-  createOrderQuotation,
+  updateSupplierCompany,
 } from '../../../../graphql/mutations';
-import {purchaseOrderItems} from '../../../../graphql/queries';
+import {getSupplierCompany} from '../../../../graphql/queries';
 import {
   QuotationItemsContext,
   QuotationItemsProvider,
@@ -30,6 +22,9 @@ import {
 } from 'react-native-responsive-screen';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Strings from '_utils';
+import {BlueButton} from '_components';
+import {log} from '_utils';
+import {UnsuccessfulModal} from '_components';
 
 const OrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
@@ -83,9 +78,9 @@ const OrderCard = props => {
         }
       });
     } catch (e) {
-      console.log(e);
+      log(e);
     }
-    console.log('updating Price to the list');
+    log('updating Price to the list');
     setQuotationItems(tempList);
     setPrice(item2);
     if (props.trigger) {
@@ -102,7 +97,7 @@ const OrderCard = props => {
         array[index] = item;
       }
     });
-    console.log('updating quantity to the list');
+    log('updating quantity to the list');
     setQuotationItems(tempList);
     setQuantity(item2);
     if (props.trigger) {
@@ -123,22 +118,27 @@ const OrderCard = props => {
         flexDirection: 'row',
       }}>
       <View style={{left: wp('1%'), width: wp('22%')}}>
-        <Text style={[Typography.normal, {}]}>{props.name} </Text>
+        <Text style={[Typography.normal, {width: wp(200)}]}>{props.name} </Text>
         <Text style={[Typography.small]}>
           {Strings.grade}: {props.grade}
         </Text>
 
         <Text style={[Typography.small]}>{props.variety}</Text>
       </View>
-      <View style={{flexDirection: 'row', left: wp('3%')}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          left: wp('3%'),
+        }}>
         <TextInput
           value={quantity}
           underlineColorAndroid="transparent"
           onChangeText={item => updateQuantity(item)}
           keyboardType="numeric"
           style={{
+            top: Platform.OS == 'ios' ? hp('1%') : hp('0%'),
+            padding: 0,
             width: wp('10%'),
-
             borderBottomColor: 'transparent',
             color: 'black',
             alignSelf: 'center',
@@ -180,6 +180,8 @@ const OrderCard = props => {
           onChangeText={item => updatePrice(item)}
           keyboardType="numeric"
           style={{
+            top: Platform.OS == 'ios' ? hp('1%') : hp('0%'),
+            padding: 0,
             left: wp('1%'),
             width: wp('9%'),
             borderBottomColor: 'transparent',
@@ -258,6 +260,15 @@ export const PurchaseOrder = props => {
             ]}>
             {props.chatName}
           </Text>
+          <Text
+            style={[
+              Typography.normal,
+              {
+                top: hp('3%'),
+              },
+            ]}>
+            {props.contentType}
+          </Text>
         </View>
         <View
           style={{
@@ -265,7 +276,10 @@ export const PurchaseOrder = props => {
             top: hp('5%'),
             borderRadius: 10,
           }}>
-          <PurchaseOrderList chatGroupID={props.chatGroupID} />
+          <PurchaseOrderList
+            content={props.content}
+            chatGroupID={props.chatGroupID}
+          />
         </View>
         <View
           style={{
@@ -276,20 +290,14 @@ export const PurchaseOrder = props => {
           <CloseButton setModal={props.setPurchaseOrderModal} />
         </View>
         {props.type == 'supplier' ? (
-          <TouchableOpacity
+          <BlueButton
             onPress={() => [setOrderQuotation(true)]}
-            style={{
-              position: 'absolute',
-              borderRadius: 15,
-              bottom: hp('7%'),
-              height: hp('5%'),
-              width: wp('50%'),
-              backgroundColor: Colors.LIGHT_BLUE,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={Typography.normal}>Create Order Quotation</Text>
-          </TouchableOpacity>
+            text={'Create Order Quotation'}
+            font={Typography.normal}
+            borderRadius={10}
+            position={'absolute'}
+            top={hp('70%')}
+          />
         ) : (
           <View></View>
         )}
@@ -328,18 +336,18 @@ const NewOrderQuotation = props => {
     {label: 'Cash', value: 'cashOnDelivery'},
     {label: 'Credit Term', value: 'creditTerm'},
   ]);
-
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   var productsWIndex = quotationItems;
   productsWIndex.forEach((item, index, arr) => {
-    console.log('adding index to check back later');
+    log('adding index to check back later');
     item['index'] = index;
     arr[index] = item;
   });
   setQuotationItems(productsWIndex);
-  console.log('printing productsWIndex');
+  log('printing productsWIndex');
   var tempSum = 0;
   useEffect(() => {
-    console.log('useEffect to calculate sum Triggered');
+    log('useEffect to calculate sum Triggered');
     quotationItems.forEach((item, index, arr) => {
       var product = parseFloat(
         (parseFloat(item.price) * parseFloat(item.quantity)).toFixed(2),
@@ -347,80 +355,116 @@ const NewOrderQuotation = props => {
       tempSum = tempSum + product;
     });
     setSum(tempSum);
-    console.log(tempSum);
+    log(tempSum);
   }, [trigger, quotationItems]);
 
   const sendQuotation = async () => {
-    var tempList = quotationItems;
-    tempList.forEach((item, index, array) => {
-      delete item.createdAt;
-      delete item.id;
-      delete item.index;
-      delete item.purchaseOrderID, delete item.updatedAt;
-      array[index] = item;
-    });
-    console.log('removing key and value pairs like index for order quotation');
-    try {
-      const updatedValue = await API.graphql({
-        query: updateOrderQuotation,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            items: tempList,
-            sum: sum,
-            logisticsProvided: deliveryValue,
-            paymentTerms: paymentValue,
-          },
-        },
-      });
-    } catch (e) {
-      console.log(e);
-      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        console.log('order quotation has not been created, creating now');
-        const createdValue = await API.graphql({
-          query: createOrderQuotation,
+    if (isNaN(sum)) {
+      setUnsuccessfulModal(true);
+      var valid = false;
+    } else {
+      var valid = true;
+    }
+
+    log(valid);
+    if (valid == true) {
+      var mostRecentQuotationNumber;
+      try {
+        const response = await API.graphql({
+          query: getSupplierCompany,
+          variables: {id: props.chatGroupID.slice(36, 72)},
+        });
+        mostRecentQuotationNumber =
+          response.data.getSupplierCompany.mostRecentQuotationNumber;
+        log('newnum: ' + mostRecentQuotationNumber);
+        if (mostRecentQuotationNumber) {
+          if (
+            dayjs().format('YYYY-MM') == mostRecentQuotationNumber.slice(4, 11)
+          ) {
+            var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
+            var numberString = (number + 1).toString().padStart(4, '0');
+            mostRecentQuotationNumber =
+              'QUO-' + dayjs().format('YYYY-MM-') + numberString;
+          } else {
+            mostRecentQuotationNumber =
+              'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+          }
+        } else {
+          mostRecentQuotationNumber =
+            'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+        }
+        log('updatednum: ' + mostRecentQuotationNumber);
+
+        log('creating purchase order');
+        const supplierCompanyUpdate = await API.graphql({
+          query: updateSupplierCompany,
           variables: {
             input: {
-              id: props.chatGroupID,
-              items: tempList,
-              sum: sum,
-              logisticsProvided: deliveryValue,
-              paymentTerms: paymentValue,
+              id: props.chatGroupID.slice(36, 72),
+              mostRecentQuotationNumber: mostRecentQuotationNumber,
             },
           },
         });
+      } catch (e) {
+        log(e);
       }
-    }
-    try {
-      console.log('sending order quotation');
-      const createdMessage = await API.graphql({
-        query: createMessage,
-        variables: {
-          input: {
-            chatGroupID: props.chatGroupID,
-            type: 'quotation',
-            content: props.chatGroupID,
-            sender: props.userName,
-            senderID: props.userID,
-          },
-        },
-      });
-      console.log('message created');
-      const updatedChat = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            mostRecentMessage: 'Quotation',
-            mostRecentMessageSender: props.userName,
-          },
-        },
-      });
-      console.log('Updated chat');
 
-      setSuccessfulModal(true);
-    } catch (e) {
-      console.log(e);
+      var message = '';
+      var tempList = quotationItems;
+      tempList.forEach((item, index, array) => {
+        message = message + (item.id + '+');
+        message = message + (item.name + '+');
+        message = message + (item.quantity + '+');
+        message = message + (item.siUnit + '+');
+        message = message + (item.variety + '+');
+        message = message + (item.grade + '+');
+        message = message + (item.price + '+');
+        if (index < tempList.length - 1) {
+          message = message + '/';
+        }
+      });
+      message =
+        message +
+        ':' +
+        sum.toString() +
+        ':' +
+        deliveryValue +
+        ':' +
+        paymentValue;
+      log('removing key and value pairs like index for order quotation');
+      log(message);
+
+      try {
+        log('sending order quotation');
+        const createdMessage = await API.graphql({
+          query: createMessage,
+          variables: {
+            input: {
+              chatGroupID: props.chatGroupID,
+              type: mostRecentQuotationNumber,
+              content: message,
+              sender: props.userName,
+              senderID: props.userID,
+            },
+          },
+        });
+        log('message created');
+        const updatedChat = await API.graphql({
+          query: updateChatGroup,
+          variables: {
+            input: {
+              id: props.chatGroupID,
+              mostRecentMessage: 'Quotation',
+              mostRecentMessageSender: props.userName,
+            },
+          },
+        });
+        log('Updated chat');
+
+        setSuccessfulModal(true);
+      } catch (e) {
+        log(e);
+      }
     }
   };
   return (
@@ -429,7 +473,7 @@ const NewOrderQuotation = props => {
         flexDirection: 'column',
         width: wp('95%'),
         right: wp('2%'),
-        height: hp('95%'),
+        height: hp('90%'),
         backgroundColor: Colors.GRAY_LIGHT,
         borderRadius: 15,
         alignItems: 'center',
@@ -463,14 +507,14 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          height: hp('40%'),
+          height: hp('35%'),
           top: hp('14%'),
           alignItems: 'center',
           position: 'absolute',
         }}>
         <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
-      <View style={{position: 'absolute', left: wp('50%'), top: hp('55%')}}>
+      <View style={{position: 'absolute', left: wp('50%'), top: hp('50%')}}>
         <Text
           style={[
             Typography.normal,
@@ -483,7 +527,7 @@ const NewOrderQuotation = props => {
       </View>
       <View
         style={{
-          top: hp('60%'),
+          top: hp('55%'),
           alignItems: 'center',
           height: hp('24%'),
           width: wp('85%'),
@@ -574,29 +618,14 @@ const NewOrderQuotation = props => {
       <View
         style={{
           position: 'absolute',
-          top: hp('86%'),
+          top: hp('81%'),
         }}>
-        <TouchableOpacity
+        <BlueButton
           onPress={() => [sendQuotation()]}
-          style={{
-            backgroundColor: Colors.LIGHT_BLUE,
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-            width: wp('40%'),
-            height: hp('5%'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-          }}>
-          {/* //translation */}
-          <Text style={[Typography.normal]}>Send Quotation</Text>
-        </TouchableOpacity>
+          text={Strings.sendQuotation}
+          borderRadius={10}
+          font={Typography.normal}
+        />
         <Modal
           isVisible={successfulModal}
           onBackdropPress={() => [
@@ -611,6 +640,12 @@ const NewOrderQuotation = props => {
             }
           />
         </Modal>
+        {/*TRANSLATION */}
+        <Modal
+          isVisible={unsuccessfulModal}
+          onBackdropPress={() => setUnsuccessfulModal(false)}>
+          <UnsuccessfulModal text={'Please input the price for your items'} />
+        </Modal>
       </View>
     </View>
   );
@@ -618,14 +653,21 @@ const NewOrderQuotation = props => {
 
 const PurchaseOrderList = props => {
   const [quotationItems, setQuotationItems] = useContext(QuotationItemsContext);
-  const fetchPO = async () => {
-    const prodList = await API.graphql({
-      query: purchaseOrderItems,
-      variables: {purchaseOrderID: props.chatGroupID},
+  const fetchPO = () => {
+    var poArray = props.content.split('/');
+    poArray.forEach((item, index, arr) => {
+      var temp = item.split('+');
+      var itemObject = {};
+      itemObject['id'] = temp[0];
+      itemObject['name'] = temp[1];
+      itemObject['quantity'] = temp[2];
+      itemObject['siUnit'] = temp[3];
+      itemObject['variety'] = temp[4];
+      itemObject['grade'] = temp[5];
+      itemObject['index'] = index;
+      arr[index] = itemObject;
     });
-
-    console.log('successful fetch for PO items');
-    setQuotationItems(prodList.data.purchaseOrderItems.items);
+    setQuotationItems(poArray);
   };
   useEffect(() => {
     fetchPO();

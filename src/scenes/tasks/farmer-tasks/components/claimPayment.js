@@ -27,9 +27,10 @@ import {
 } from '../../../../graphql/mutations';
 import Strings from '_utils';
 import {paymentsTaskForFarmerByDate} from '../../../../graphql/queries';
+import {log} from '_utils';
 
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 
@@ -55,10 +56,10 @@ export const ReceivePaymentTaskList = props => {
                   },
                 });
                 props.setClaimTask(task.data.paymentsTaskForFarmerByDate.items);
-                console.log(task.data.paymentsTaskForFarmerByDate.items);
-                console.log('payment task');
+                log(task.data.paymentsTaskForFarmerByDate.items);
+                log('payment task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -221,7 +222,7 @@ const ReceivePaymentTask = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+          {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveTaskModal}>
@@ -252,7 +253,7 @@ const ReceivePaymentModal = props => {
         query: deletePaymentTaskBetweenSandF,
         variables: {input: {id: props.id}},
       });
-      console.log(removed);
+      log(removed);
       var tempList = props.claimTask;
       for (let [i, temp] of tempList.entries()) {
         if (temp.id == props.id) {
@@ -261,17 +262,17 @@ const ReceivePaymentModal = props => {
       }
       props.setClaimTask(tempList);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updated = await API.graphql({
         query: updateInvoiceBetweenSandF,
         variables: {input: {id: props.id, paid: true}},
       });
-      console.log(updated);
+      log(updated);
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -313,7 +314,7 @@ const ReceivePaymentModal = props => {
           },
         ]}>
         {Strings.recieveBefore}:{' '}
-        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+        {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -388,7 +389,7 @@ const ReceivePaymentModal = props => {
             left: wp('45%'),
           },
         ]}>
-        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <Text
         style={[
@@ -434,41 +435,16 @@ const ReceivePaymentModal = props => {
         ]}>
         9065 7756 8989
       </Text>
-      <TouchableOpacity
+      <BlueButton
         onPress={() => [receivedPayment()]}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('30%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          justifyContent: 'center',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('10%'),
-          borderRadius: 10,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.recieved}
-          </Text>
-          <Icon
-            name="checkmark-circle-outline"
-            size={wp('5%')}
-            style={{left: wp('2%')}}></Icon>
-        </View>
-      </TouchableOpacity>
+        text={Strings.recieved}
+        font={Typography.normal}
+        borderRadius={10}
+        icon="checkmark-circle-outline"
+        position={'absolute'}
+        offsetCenter={wp('5%')}
+        top={hp('65%')}
+      />
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => {

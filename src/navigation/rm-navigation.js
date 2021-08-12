@@ -43,6 +43,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 import Modal from 'react-native-modal';
+import {log} from '_utils';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -70,7 +71,14 @@ export {RMNavigation};
 const RMNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   return (
-    <AppStack.Navigator>
+    <AppStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          height: Platform.OS === 'ios' ? hp('9.5%') : hp('8%'),
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+      }}>
       <AppStack.Screen
         name={Strings.inbox}
         options={({route, navigation}) => ({
@@ -187,6 +195,7 @@ const TabbedNavigator = props => {
   return (
     <TabStack.Navigator
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
@@ -477,12 +486,12 @@ const updateLastSeen = async (userID, chatGroupID, navigation) => {
       query: updateChatGroupUsers,
       variables: {input: {id: uniqueID, lastOnline: dayjs()}},
     });
-    console.log('updated last seen');
+    log('updated last seen');
     navigation.navigate('inbox');
   } catch (e) {
-    console.log(e);
+    log(e);
     if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-      console.log('no special connection created, creating one now');
+      log('no special connection created, creating one now');
       const createLastSeen = await API.graphql({
         query: createChatGroupUsers,
         variables: {

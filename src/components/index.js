@@ -1,6 +1,17 @@
-import {CloseButton, AddButton, BackButton} from './buttons';
+import {
+  CloseButton,
+  AddButton,
+  BackButton,
+  BlueButton,
+  ProductSearchBar,
+} from './buttons';
 import {NavBar} from './navigation_panel';
-import {SuccessfulModal, UnsuccessfulModal, LoadingModal} from './modals';
+import {
+  SuccessfulModal,
+  UnsuccessfulModal,
+  LoadingModal,
+  SuccessNavigateChatModal,
+} from './modals';
 import {DismissKeyboardView} from './dismiss-keyboard';
 import {
   MenuButton,
@@ -26,4 +37,6 @@ export {
   HumanResource,
   PersonalProfile,
   EditPersonal,
+  BlueButton,
+  SuccessNavigateChatModal,
 };

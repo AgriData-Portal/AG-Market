@@ -11,7 +11,10 @@
     "multiple-ios-mac-mini": "react-native run-ios --udid 0119210E-C743-4540-AFE1-B0F3C349DB02 && react-native run-ios --udid 28A7105B-2DD8-421C-AFA2-C2364596DA5D && react-native run-ios --udid 7EF25731-2B5E-4A1C-90FB-AB6E12A207C8 && react-native run-ios --udid 1138AB12-C0E6-4C96-8877-B97D3E54E803",
     "multiple-ios-mac-air": "react-native run-ios --udid 0799EE41-6591-490A-92F1-C4F9B1C03231 && react-native run-ios --udid EA9DA371-C2DE-40AF-8EAA-434803B38D22 555D0B25-348E-4AEE-960B-FED53232418A",
     "chrisiphone-ios": "react-native run-ios --udid 00008030-00016D4E0E82802E && react-native run-ios --udid 291ECD41-D4F5-4D9F-A058-9E14AEA6CCD0",
-    "sexy-tits-ios": "react-native run-ios --udid 00008020-000C346E3CF1002E && react-native run-ios --udid D181104A-C6AF-4732-A0C0-9402933AFC50"
+    "sexy-tits-ios": "react-native run-ios --udid 00008020-000C346E3CF1002E && react-native run-ios --udid D181104A-C6AF-4732-A0C0-9402933AFC50",
+    "postinstall": "jetify",
+    "jetify": "npx jetify",
+    "ios-android": "react-native run-android && react-native run-ios"
   },
   "dependencies": {
     "@aws-amplify/pushnotification": "^4.1.2",
@@ -37,9 +40,10 @@
     "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "^4.0.4",
+    "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-localization": "^2.1.7",
     "react-native-modal": "^11.10.0",
-    "react-native-pdf-lib": "^1.0.0",
+    "react-native-pdf-lib": "github:zilicon/react-native-pdf-lib#fix-fonts",
     "react-native-permissions": "^3.0.4",
     "react-native-push-notification": "^7.4.0",
     "react-native-qrcode-scanner": "^1.5.4",
@@ -49,7 +53,6 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.4.0",
-    "react-native-searchable-dropdown": "^1.1.3",
     "react-native-share": "^6.2.1",
     "react-native-svg": "^7.2.1",
     "react-native-svg-charts": "^5.4.0",
@@ -65,6 +68,7 @@
     "eslint": "7.14.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "jest": "^26.6.3",
+    "jetifier": "^1.6.8",
     "metro-react-native-babel-preset": "^0.64.0",
     "react-test-renderer": "17.0.1"
   },

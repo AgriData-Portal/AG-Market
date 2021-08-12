@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BackButton} from '_components/buttons';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,6 +23,8 @@ import {
   getRetailerCompany,
   getFarmerCompany,
 } from '../../../graphql/queries';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export {EditCompany};
 
@@ -32,7 +42,7 @@ export const CompanyProfile = props => {
           uri: imageURL,
         });
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
   }, [company]);
@@ -46,11 +56,11 @@ export const CompanyProfile = props => {
           },
         });
         setCompany(companyProfile.data.getSupplierCompany);
-        console.log('Get suppplier company profile');
+        log('Get suppplier company profile');
       } catch (e) {
-        console.log('fail');
-        console.log(props.user.supplierCompanyID);
-        console.log(e);
+        log('fail');
+        log(props.user.supplierCompanyID);
+        log(e);
       }
     } else if (props.user.retailerCompanyID != null) {
       try {
@@ -61,9 +71,9 @@ export const CompanyProfile = props => {
           },
         });
         setCompany(companyProfile.data.getRetailerCompany);
-        console.log('Get retailer company profile');
+        log('Get retailer company profile');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else {
       try {
@@ -74,15 +84,20 @@ export const CompanyProfile = props => {
           },
         });
         setCompany(companyProfile.data.getFarmerCompany);
-        console.log('Get retailer company profile');
+        log('Get retailer company profile');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
-    console.log(companyProfile.data);
+    log(companyProfile.data);
   };
   return (
-    <SafeAreaView style={{alignItems: 'center', justifyContent: 'center'}}>
+    <SafeAreaView
+      style={{
+        alignItems: 'center',
+        height: hp('100%'),
+        backgroundColor: 'white',
+      }}>
       <View
         style={{
           top: hp('4%'),
@@ -120,117 +135,161 @@ export const CompanyProfile = props => {
           height: hp('43%'),
           borderRadius: 10,
         }}>
-        <View
-          style={{
-            top: hp('1%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.companyRegistrationNum}
-          </Text>
-          <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}>
-              {company.registrationNumber}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('3%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.companyAddress}
-          </Text>
-          <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}>{company.address}</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('5%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.contactNumber}
-          </Text>
-          <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}> {props.user.contactNumber}</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('7%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
-          <View style={{top: hp('0.5%')}}>
-            <Text style={[Typography.normal]}>citygrocerkk@gmail.com</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            top: hp('9%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>
-            {Strings.bankDetails}
-          </Text>
-          <Text style={[Typography.normal, {top: hp('0.5%')}]}>
-            13812641234146194672136417
-          </Text>
-        </View>
-        <View
-          style={{
-            top: hp('11%'),
-            left: wp('6%'),
-            width: wp('73%'),
-            height: hp('5%'),
-          }}>
-          <Text style={[Typography.placeholderSmall]}>{Strings.bankName}</Text>
-          <Text style={[Typography.normal, {top: '0.5%'}]}>Maybank</Text>
+        <View style={{flex: 1}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={true}
+            contentContainerStyle={{flexGrow: 1}}
+            nestedScrollEnabled={true}
+            scrollToOverflowEnabled={true}
+            contentContainerStyle={
+              Platform.OS == 'ios '
+                ? {paddingBottom: 0}
+                : {paddingBottom: hp('5%')}
+            }>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.companyRegistrationNum}
+              </Text>
+              <View>
+                <Text style={[Typography.normal]}>
+                  {company.registrationNumber}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.companyAddress}
+              </Text>
+              <View>
+                <Text style={[Typography.normal]}>{company.address}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.contactNumber}
+              </Text>
+              <View>
+                {company.contactDetails != null ? (
+                  <Text style={[Typography.normal]}>
+                    {company.contactDetails.phone}
+                  </Text>
+                ) : (
+                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                )}
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
+              <View>
+                {company.contactDetails != null ? (
+                  <Text style={[Typography.normal]}>
+                    {company.contactDetails.email}
+                  </Text>
+                ) : (
+                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                )}
+              </View>
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.bankDetails}
+              </Text>
+              {company.bankAccount != null ? (
+                <Text style={[Typography.normal]}>
+                  {company.bankAccount.accountNumber}
+                </Text>
+              ) : (
+                <Text style={[Typography.normal]}>Not Added Yet</Text>
+              )}
+            </View>
+            <View
+              style={{
+                top: hp('2%'),
+                left: wp('6%'),
+                width: wp('73%'),
+                marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
+              }}>
+              <Text style={[Typography.placeholderSmall]}>
+                {Strings.bankName}
+              </Text>
+              {company.bankAccount != null ? (
+                <Text style={[Typography.normal]}>
+                  {company.bankAccount.bankName}
+                </Text>
+              ) : (
+                <Text style={[Typography.normal]}>Not Added Yet</Text>
+              )}
+            </View>
+          </ScrollView>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() =>
-          props.navigation.navigate('editcompany', {
-            contactNumber: props.user.contactNumber,
-            email: 'email@test.com',
-            bankNumber: '123521',
-            bankName: 'maybank',
-          })
-        }
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('45%'),
-          height: hp('5%'),
-          alignItems: 'center',
-          justifyContent: 'center',
-          top: hp('10%'),
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-        }}>
-        <Text style={[Typography.normal]}>
-          {Strings.edit} {Strings.companyProfile}
-        </Text>
-      </TouchableOpacity>
+      <BlueButton
+        onPress={() => {
+          if (company.contactDetails && company.bankAccount) {
+            if (imageSource) {
+              props.navigation.navigate('editcompany', {
+                contactNumber: company.contactDetails.phone,
+                email: company.contactDetails.email,
+                bankNumber: company.bankAccount.accountNumber,
+                bankName: company.bankAccount.bankName,
+                logo: imageSource,
+              });
+            } else {
+              props.navigation.navigate('editcompany', {
+                contactNumber: company.contactDetails.phone,
+                email: company.contactDetails.email,
+                bankNumber: company.bankAccount.accountNumber,
+                bankName: company.bankAccount.bankName,
+                logo: null,
+              });
+            }
+          } else {
+            props.navigation.navigate('editcompany', {
+              contactNumber: '',
+              email: '',
+              bankNumber: '',
+              bankName: '',
+              logo: null,
+            });
+          }
+        }}
+        font={Typography.small}
+        text={Strings.editCompanyProfile}
+        maxWidth={wp('80%')}
+        borderRadius={10}
+        top={hp('11%')}
+      />
     </SafeAreaView>
   );
 };

@@ -16,18 +16,18 @@ import {
   SuccessfulModal,
   UnsuccessfulModal,
   LoadingModal,
+  SuccessNavigateChatModal,
 } from '_components';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Modal from 'react-native-modal';
-import {Rating} from 'react-native-ratings';
-import {ChatButton} from '../../../components';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {
-  deleteFarmerListing,
-  updateFarmerListing,
-  createFarmerListing,
+  deleteSupplierListing,
+  updateSupplierListing,
+  createSupplierListing,
   updateChatGroup,
   createChatGroup,
   createMessage,
@@ -39,7 +39,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {listRetailerCompanys} from '../../../../../graphql/queries';
+import {BlueButton} from '_components';
 import {listSupplierCompanys} from '../../../../../graphql/queries';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {log} from '_utils';
+import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -59,13 +64,15 @@ const AddItemModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [focus, setFocus] = useState('');
+  const [addProductButton, setAddProductButton] = useState(false);
+  const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
 
   async function addListing() {
     try {
       let photo = imageSource;
       const response = await fetch(photo.uri);
       const blob = await response.blob();
-      console.log('FileName: \n');
+      log('FileName: \n');
       photo.fileName =
         productName + '_' + variety + '_' + props.user.supplierCompany.name;
       await Storage.put(photo.fileName, blob, {
@@ -85,21 +92,22 @@ const AddItemModal = props => {
         siUnit: value2,
       };
       const productListing = await API.graphql({
-        query: createFarmerListing,
+        query: createSupplierListing,
         variables: {input: listing},
       });
 
       listing.productPicture = {uri: photo.uri};
 
       props.setProducts(products => [
-        productListing.data.createFarmerListing,
+        productListing.data.createSupplierListing,
         ...products,
       ]);
-      console.log('Added product');
+      log('Added product');
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
+    setAddProductButton(false);
   }
 
   function selectImage() {
@@ -111,11 +119,11 @@ const AddItemModal = props => {
 
     launchImageLibrary(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         let photo = {uri: response.uri};
         setImageSource(response.assets[0]);
@@ -123,12 +131,11 @@ const AddItemModal = props => {
     });
   }
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('0%') : -180
-      } /* Keyboard Offset needs to be tested against multiple phones */
-    >
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      resetScrollToCoords={{x: 0, y: 0}}
+      scrollEnabled={false}
+      extraHeight={hp('20%')}>
       <View
         style={{
           height: hp('90%'),
@@ -250,432 +257,130 @@ const AddItemModal = props => {
               {
                 left: wp('6%'),
                 top: hp('1.5%'),
-                width: wp('50%'),
+                width: wp('70%'),
               },
             ]}>
             {Strings.enterProductDetails}
           </Text>
-          <DismissKeyboardView>
+          <View
+            style={{
+              left: wp('5%'),
+              top: hp('2%'),
+            }}>
+            <View style={{bottom: hp('3%')}}>
+              <Input
+                keyboardType="default"
+                placeholder={Strings.productName}
+                state={productName}
+                setState={setProductName}
+                width={wp('69%')}
+                height={hp('7%')}
+                boxWidth={wp('69%')}
+                boxHeight={hp('6%')}></Input>
+            </View>
             <View
               style={{
-                left: wp('5%'),
-                top: hp('2%'),
+                flexDirection: 'row',
+                alignItems: 'center',
+                bottom: hp('2%'),
               }}>
-              <View
-                style={
-                  focus == '1'
-                    ? {
-                        backgroundColor: 'white',
-                        width: wp('69%'),
-                        borderColor: Colors.GRAY_DARK,
-                        borderWidth: wp('0.2%'),
-                        height: hp('6%'),
-                        justifyContent: 'center',
-                        borderRadius: 3,
-                        shadowColor: '#000',
-                        shadowOffset: {
-                          width: 0,
-                          height: 3,
-                        },
-                        shadowOpacity: 0.29,
-                        shadowRadius: 4.65,
-
-                        elevation: 7,
-                      }
-                    : {
-                        backgroundColor: 'white',
-                        width: wp('69%'),
-                        borderColor: Colors.GRAY_DARK,
-                        borderWidth: wp('0.2%'),
-                        height: hp('6%'),
-                        justifyContent: 'center',
-                        borderRadius: 3,
-                      }
-                }>
-                <TextInput
-                  onFocus={() => setFocus('1')}
-                  onBlur={() => setFocus('')}
-                  keyboardType="default"
-                  placeholderTextColor={Colors.GRAY_DARK}
-                  placeholder={Strings.productName}
-                  value={productName}
-                  onChangeText={item => setProductName(item)}
-                  underlineColorAndroid="transparent"
-                  style={{
-                    left: wp('1%'),
-                    width: wp('60%'),
-                    height: hp('7%'),
-
-                    justifyContent: 'center',
-                    borderBottomColor: 'transparent',
-                    color: 'black',
-                  }}></TextInput>
+              <Text style={[Typography.large, {top: hp('3%')}]}>RM</Text>
+              <View style={{left: wp('3%')}}>
+                <Input
+                  keyboardType="numeric"
+                  placeholder={Strings.minPrice}
+                  state={minPrice}
+                  setState={setMinPrice}
+                  width={wp('25%')}
+                  height={hp('7%')}
+                  boxWidth={wp('26%')}
+                  boxHeight={hp('6%')}></Input>
               </View>
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  top: hp('1%'),
-                }}>
-                <Text
-                  style={[
-                    Typography.large,
-                    {marginRight: wp('1%'), left: wp('1%')},
-                  ]}>
-                  RM
-                </Text>
-                <View
-                  style={
-                    focus == '2'
-                      ? {
-                          backgroundColor: 'white',
-                          width: wp('23%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          borderRadius: 3,
-                          left: wp('2%'),
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 0.29,
-                          shadowRadius: 4.65,
-
-                          elevation: 7,
-                        }
-                      : {
-                          backgroundColor: 'white',
-                          width: wp('23%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          borderRadius: 3,
-                          left: wp('2%'),
-                        }
-                  }>
-                  <TextInput
-                    onFocus={() => setFocus('2')}
-                    onBlur={() => setFocus('')}
-                    keyboardType="numeric"
-                    placeholderTextColor={Colors.GRAY_DARK}
-                    placeholder={Strings.minPrice}
-                    underlineColorAndroid="transparent"
-                    value={minPrice}
-                    onChangeText={item => setMinPrice(item)}
-                    style={{
-                      left: wp('3%'),
-                      width: wp('22%'),
-                      height: hp('7%'),
-                      borderRadius: 3,
-                      justifyContent: 'center',
-
-                      borderBottomColor: 'transparent',
-                      color: 'black',
-                    }}></TextInput>
-                </View>
-                <View
-                  style={{
-                    width: wp('3%'),
-                    borderWidth: wp('0.2%'),
-                    borderColor: Colors.GRAY_DARK,
-                    left: wp('6%'),
-                    zIndex: 10,
-                  }}></View>
-                <View
-                  style={
-                    focus == '3'
-                      ? {
-                          backgroundColor: 'white',
-                          width: wp('23%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          left: wp('9%'),
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 0.29,
-                          shadowRadius: 4.65,
-
-                          elevation: 7,
-                        }
-                      : {
-                          backgroundColor: 'white',
-                          width: wp('23%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          left: wp('9%'),
-                        }
-                  }>
-                  <TextInput
-                    onFocus={() => setFocus('3')}
-                    onBlur={() => setFocus('')}
-                    keyboardType="numeric"
-                    placeholderTextColor={Colors.GRAY_DARK}
-                    placeholder={Strings.maxPrice}
-                    underlineColorAndroid="transparent"
-                    value={maxPrice}
-                    onChangeText={item => setMaxPrice(item)}
-                    style={{
-                      width: wp('22%'),
-                      height: hp('7%'),
-                      left: wp('3%'),
-                      justifyContent: 'center',
-
-                      borderBottomColor: 'transparent',
-                      color: 'black',
-                    }}></TextInput>
-                </View>
-              </View>
-              <View style={{flexDirection: 'row', top: hp('1%')}}>
-                <View
-                  style={
-                    focus == '4'
-                      ? {
-                          backgroundColor: 'white',
-                          width: wp('21%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          top: hp('1%'),
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 0.29,
-                          shadowRadius: 4.65,
-
-                          elevation: 7,
-                        }
-                      : {
-                          backgroundColor: 'white',
-                          width: wp('21%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          top: hp('1%'),
-                        }
-                  }>
-                  <TextInput
-                    onFocus={() => setFocus('4')}
-                    onBlur={() => setFocus('')}
-                    keyboardType="default"
-                    placeholderTextColor={Colors.GRAY_DARK}
-                    placeholder="Grade"
-                    underlineColorAndroid="transparent"
-                    value={grade}
-                    onChangeText={item => setGrade(item)}
-                    style={{
-                      width: wp('20%'),
-                      height: hp('7%'),
-                      borderRadius: 3,
-                      justifyContent: 'center',
-
-                      left: wp('1%'),
-                      borderBottomColor: 'transparent',
-                      color: 'black',
-                    }}></TextInput>
-                </View>
-                <View
-                  style={
-                    focus == '5'
-                      ? {
-                          backgroundColor: 'white',
-                          width: wp('41%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          left: wp('7%'),
-                          top: hp('1%'),
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 0.29,
-                          shadowRadius: 4.65,
-
-                          elevation: 7,
-                        }
-                      : {
-                          backgroundColor: 'white',
-                          width: wp('41%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          left: wp('7%'),
-                          top: hp('1%'),
-                        }
-                  }>
-                  <TextInput
-                    onFocus={() => setFocus('5')}
-                    onBlur={() => setFocus('')}
-                    keyboardType="default"
-                    placeholderTextColor={Colors.GRAY_DARK}
-                    placeholder={Strings.variety}
-                    underlineColorAndroid="transparent"
-                    value={variety}
-                    onChangeText={item => setVariety(item)}
-                    style={{
-                      left: wp('1%'),
-                      width: wp('40%'),
-                      height: hp('7%'),
-                      borderRadius: 3,
-                      justifyContent: 'center',
-                      borderBottomColor: 'transparent',
-                      color: 'black',
-                    }}></TextInput>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  top: hp('1%'),
-                }}>
-                <View
-                  style={
-                    focus == '6'
-                      ? {
-                          backgroundColor: 'white',
-                          width: wp('36%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          top: hp('2%'),
-                          borderRadius: 3,
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 0.29,
-                          shadowRadius: 4.65,
-
-                          elevation: 7,
-                        }
-                      : {
-                          backgroundColor: 'white',
-                          width: wp('36%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          top: hp('2%'),
-                          borderRadius: 3,
-                        }
-                  }>
-                  <TextInput
-                    onFocus={() => setFocus('6')}
-                    onBlur={() => setFocus('')}
-                    keyboardType="numeric"
-                    placeholderTextColor={Colors.GRAY_DARK}
-                    placeholder={Strings.quantityAvailable}
-                    underlineColorAndroid="transparent"
-                    value={quantityAvailable}
-                    onChangeText={item => setQuantityAvailable(item)}
-                    style={{
-                      left: wp('1%'),
-                      width: wp('35%'),
-                      height: hp('7%'),
-
-                      justifyContent: 'center',
-                      borderBottomColor: 'transparent',
-                      color: 'black',
-                    }}></TextInput>
-                </View>
-              </View>
-              <View style={{flexDirection: 'row', top: hp('1%')}}>
-                <View
-                  style={
-                    focus == '7'
-                      ? {
-                          backgroundColor: 'white',
-                          width: wp('36%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          top: hp('3%'),
-                          borderRadius: 3,
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 0.29,
-                          shadowRadius: 4.65,
-
-                          elevation: 7,
-                        }
-                      : {
-                          backgroundColor: 'white',
-                          width: wp('36%'),
-                          borderColor: Colors.GRAY_DARK,
-                          borderWidth: wp('0.2%'),
-                          height: hp('6%'),
-                          justifyContent: 'center',
-                          top: hp('3%'),
-                          borderRadius: 3,
-                        }
-                  }>
-                  <TextInput
-                    onFocus={() => setFocus('7')}
-                    onBlur={() => setFocus('')}
-                    keyboardType="numeric"
-                    placeholderTextColor={Colors.GRAY_DARK}
-                    placeholder={Strings.minimumOrder}
-                    underlineColorAndroid="transparent"
-                    value={moq}
-                    onChangeText={item => setMOQ(item)}
-                    style={{
-                      left: wp('1%'),
-                      width: wp('35%'),
-                      height: hp('7%'),
-                      justifyContent: 'center',
-                      borderBottomColor: 'transparent',
-                      color: 'black',
-                    }}></TextInput>
-                </View>
-                <View style={{marginLeft: wp('3%'), top: hp('0.5%')}}>
-                  <DropDownPicker
-                    open={open2}
-                    value={value2}
-                    items={items2}
-                    setOpen={setOpen2}
-                    setValue={setValue2}
-                    setItems={setItems2}
-                    defaultValue="kg"
-                    style={{
-                      width: wp('26%'),
-                      height: hp('5%'),
-                      borderRadius: 3,
-                      borderColor: 'white',
-                    }}
-                    dropDownContainerStyle={{borderWidth: 0}}
-                    placeholderTextColor={Colors.GRAY_DARK}
-                    placeholder="kg"
-                  />
-                </View>
+                  width: wp('3%'),
+                  borderWidth: wp('0.5%'),
+                  borderColor: Colors.GRAY_DARK,
+                  top: hp('3%'),
+                  left: wp('5%'),
+                }}></View>
+              <View style={{left: wp('7%')}}>
+                <Input
+                  keyboardType="numeric"
+                  placeholder={Strings.maxPrice}
+                  state={maxPrice}
+                  setState={setMaxPrice}
+                  width={wp('25%')}
+                  height={hp('7%')}
+                  boxWidth={wp('26%')}
+                  boxHeight={hp('6%')}></Input>
               </View>
             </View>
-          </DismissKeyboardView>
+            <View style={{flexDirection: 'row', bottom: hp('1%')}}>
+              <Input
+                keyboardType="default"
+                placeholder={Strings.grade}
+                state={grade}
+                setState={setGrade}
+                width={wp('22%')}
+                height={hp('6%')}
+                boxWidth={wp('23%')}
+                boxHeight={hp('6%')}></Input>
+              <View style={{left: wp('5%')}}>
+                <Input
+                  keyboardType="default"
+                  placeholder={Strings.variety}
+                  state={variety}
+                  setState={setVariety}
+                  width={wp('40%')}
+                  height={hp('7%')}
+                  boxWidth={wp('41%')}
+                  boxHeight={hp('6%')}></Input>
+              </View>
+            </View>
+            <Input
+              keyboardType="numeric"
+              placeholder={Strings.quantityAvailable}
+              state={quantityAvailable}
+              setState={setQuantityAvailable}
+              width={wp('35%')}
+              height={hp('7%')}
+              boxWidth={wp('36%')}
+              boxHeight={hp('6%')}></Input>
+            <View style={{flexDirection: 'row', top: hp('1%')}}>
+              <Input
+                keyboardType="numeric"
+                placeholder={Strings.minimumOrder}
+                state={moq}
+                setState={setMOQ}
+                width={wp('35%')}
+                height={hp('7%')}
+                boxWidth={wp('36%')}
+                boxHeight={hp('6%')}></Input>
+              <View style={{marginLeft: wp('3%'), top: hp('0.5%')}}>
+                <DropDownPicker
+                  open={open2}
+                  value={value2}
+                  items={items2}
+                  setOpen={setOpen2}
+                  setValue={setValue2}
+                  setItems={setItems2}
+                  defaultValue="kg"
+                  style={{
+                    width: wp('26%'),
+                    height: hp('5%'),
+                    borderRadius: 3,
+                    borderColor: 'white',
+                  }}
+                  dropDownContainerStyle={{borderWidth: 0}}
+                  placeholderTextColor={Colors.GRAY_DARK}
+                  placeholder="kg"
+                />
+              </View>
+            </View>
+          </View>
         </View>
-        <TouchableOpacity
+        <BlueButton
           onPress={() => {
             if (
               imageSource == null ||
@@ -687,41 +392,33 @@ const AddItemModal = props => {
               quantityAvailable == '' ||
               moq == ''
             ) {
-              console.log('empty field');
+              log('empty field');
               setUnsuccessfulModal(true);
+            } else if (
+              minPrice <= 0 ||
+              maxPrice <= 0 ||
+              quantityAvailable <= 0 ||
+              moq <= 0
+            ) {
+              setUnsuccessfulModal2(true);
             } else {
               try {
                 addListing();
               } catch {
-                e => console.log('error ' + e);
+                e => log('error ' + e);
               }
             }
           }}
-          style={{
-            height: hp('5%'),
-            height: hp('7%'),
-            width: wp('40%'),
-            backgroundColor: Colors.LIGHT_BLUE,
-            borderRadius: 10,
-            shadowOffset: {
-              width: 0,
-              height: 5,
-            },
-            shadowOpacity: 5,
-            shadowRadius: 3,
-            shadowColor: 'grey',
-            justifyContent: 'center',
-            alignItems: 'center',
-            top: hp('15%'),
-            flexDirection: 'row',
-          }}>
-          <Text style={[Typography.normal]}>{Strings.addProduct}</Text>
-          <Icon
-            name="add-circle-outline"
-            size={wp('5%')}
-            style={{left: hp('1%')}}
-          />
-        </TouchableOpacity>
+          onPressIn={() => setAddProductButton(true)}
+          disabled={addProductButton}
+          text={Strings.addProduct}
+          icon={'add-circle-outline'}
+          offsetCenter={wp('5%')}
+          font={Typography.normal}
+          borderRadius={10}
+          paddingVertical={hp('1.5%')}
+          top={hp('17%')}
+        />
       </View>
       <Modal
         isVisible={successfulModal}
@@ -736,26 +433,28 @@ const AddItemModal = props => {
         onBackdropPress={() => setUnsuccessfulModal(false)}>
         <UnsuccessfulModal text={Strings.pleaseFillIn} />
       </Modal>
-    </KeyboardAvoidingView>
+      <Modal
+        isVisible={unsuccessfulModal2}
+        onBackdropPress={() => setUnsuccessfulModal2(false)}>
+        <UnsuccessfulModal text={'Only positive numbers are allowed'} />
+      </Modal>
+    </KeyboardAwareScrollView>
   );
 };
 
 export const AddItemsButton = props => {
   const [addItemsButton, setAddItemsButton] = useState(false);
   return (
-    <TouchableOpacity
-      style={{
-        height: hp('8%'),
-        width: wp('30%'),
-        backgroundColor: 'grey',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-      }}
-      onPress={() => setAddItemsButton(true)}>
-      <Text style={[Typography.large, {textAlign: 'center'}]}>
-        {Strings.addItems}
-      </Text>
+    <View>
+      <BlueButton
+        onPress={() => setAddItemsButton(true)}
+        text={Strings.addItems}
+        backgroundColor="grey"
+        font={Typography.normal}
+        borderRadius={10}
+        paddingVertical={hp('1.5%')}
+      />
+
       <Modal isVisible={addItemsButton}>
         <AddItemModal
           setAddItemsButton={setAddItemsButton}
@@ -763,7 +462,7 @@ export const AddItemsButton = props => {
           productList={props.productList}
           setProducts={props.setProducts}></AddItemModal>
       </Modal>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -779,40 +478,40 @@ const ProductModal = props => {
   const [editMode, setEditMode] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
 
   const deleteListing = async () => {
     try {
       setLoading(true);
       const deletedListing = await API.graphql({
-        query: deleteFarmerListing,
+        query: deleteSupplierListing,
         variables: {input: {id: props.id}},
       });
       var products = props.productList;
-      console.log(products.length);
+      log(products.length);
       for (let [i, product] of products.entries()) {
         if (product.id == props.id) {
           products.splice(i, 1);
         }
       }
-      console.log(products.length);
-      console.log(deletedListing);
+      log(products.length);
+      log(deletedListing);
       props.setProducts(products);
+      log('test');
+      setSuccessfulModal2(true);
       if (props.trigger) {
         props.setTrigger(false);
       } else {
         props.setTrigger(true);
       }
-      console.log('test');
-      setSuccessfulModal2(true);
-      setLoading(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   const updateListing = async () => {
     try {
       const updatedListing = await API.graphql({
-        query: updateFarmerListing,
+        query: updateSupplierListing,
         variables: {
           input: {
             id: props.id,
@@ -824,7 +523,7 @@ const ProductModal = props => {
         },
       });
       var products = props.productList;
-      console.log(products);
+      log(products);
       for (let [i, product] of products.entries()) {
         if (product.id == props.id) {
           products.splice(i, 1);
@@ -844,26 +543,26 @@ const ProductModal = props => {
         siUnit: props.siUnit,
       };
       products.push(item);
-      console.log(products);
+      log(products);
       props.setProducts(products);
-      if (props.trigger) {
-        props.setTrigger(false);
-      } else {
-        props.setTrigger(true);
-      }
       setSuccessfulModal(true);
+      setEditMode(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
   return (
     <View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-        keyboardVerticalOffset={
-          Platform.OS === 'ios' ? hp('-8%') : hp('-8%')
-        } /* Keyboard Offset needs to be tested against multiple phones */
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        resetScrollToCoords={{x: 0, y: 0}}
+        scrollEnabled={false}
+        extraHeight={hp('20%')}
+        // behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+        // keyboardVerticalOffset={
+        //   Platform.OS === 'ios' ? hp('-8%') : hp('-8%')
+        // } /* Keyboard Offset needs to be tested against multiple phones */
       >
         <View
           style={{
@@ -902,7 +601,6 @@ const ProductModal = props => {
               backgroundColor: Colors.GRAY_LIGHT,
               borderRadius: 15,
               width: wp('80%'),
-              height: hp('33%'),
               alignItems: 'center',
               zIndex: 10,
               shadowColor: '#000',
@@ -913,6 +611,7 @@ const ProductModal = props => {
               shadowOpacity: 0.23,
               shadowRadius: 2.62,
               elevation: 3,
+              paddingBottom: hp('2%'),
             }}>
             {editMode ? (
               <View
@@ -1066,34 +765,91 @@ const ProductModal = props => {
             ) : (
               <View
                 style={{
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  margin: wp('1%'),
+                  marginHorizontal: wp('1%'),
                   top: hp('1%'),
+                  marginVertical: hp('1%'),
                 }}>
-                <Text style={[Typography.large, {margin: wp('0.5%')}]}>
+                <Text style={[Typography.large, {margin: wp('1%')}]}>
                   {Strings.productDetails}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.grade}: {props.grade}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.variety}: {props.variety}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.priceRange}: RM {lowPrice} - {highPrice}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.available}: {available} {props.siUnit}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  MOQ: {moq} {props.siUnit}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.grade}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {props.grade}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.variety}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {props.variety}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.priceRange}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    RM {lowPrice} - {highPrice}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.available}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {available} {props.siUnit}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    MOQ:
+                  </Text>
+
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {moq} {props.siUnit}
+                  </Text>
+                </View>
               </View>
             )}
           </View>
           {editMode ? (
-            <TouchableOpacity
+            <BlueButton
               onPress={() => {
                 if (
                   lowPrice == '' ||
@@ -1101,97 +857,52 @@ const ProductModal = props => {
                   available == '' ||
                   moq == ''
                 ) {
-                  console.log('empty field');
+                  log('empty field');
                   setUnsuccessfulModal(true);
+                } else if (
+                  lowPrice <= 0 ||
+                  highPrice <= 0 ||
+                  available <= 0 ||
+                  moq <= 0
+                ) {
+                  setUnsuccessfulModal2(true);
                 } else {
-                  try {
-                    updateListing();
-                  } catch {
-                    e => console.log('error ' + e);
-                  }
+                  updateListing();
                 }
               }}
-              style={{
-                backgroundColor: Colors.LIGHT_BLUE,
-                width: wp('50%'),
-                height: hp('5%'),
-                borderRadius: 10,
-                top: hp('12%'),
-                zIndex: 0,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
-                elevation: 4,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={[Typography.normal]}>{Strings.saveChanges}</Text>
-            </TouchableOpacity>
+              text={Strings.saveChanges}
+              top={hp('10%')}
+              borderRadius={10}
+              font={Typography.normal}
+            />
           ) : (
             <View style={{alignItems: 'center'}}>
-              <TouchableOpacity
+              <BlueButton
                 onPress={() => setEditMode(true)}
-                style={{
-                  backgroundColor: Colors.LIGHT_BLUE,
-                  width: wp('50%'),
-                  height: hp('5%'),
-                  borderRadius: 10,
-                  top: hp('9%'),
-                  zIndex: 0,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-                  elevation: 4,
-
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={[Typography.normal]}>{Strings.editListing}</Text>
-                <Icon
-                  name="create-outline"
-                  size={wp('5%')}
-                  style={{left: wp('3%')}}></Icon>
-              </TouchableOpacity>
-
-              <TouchableOpacity
+                text={Strings.editListing}
+                icon="create-outline"
+                top={hp('10%')}
+                borderRadius={10}
+                offsetCenter={wp('5%')}
+                font={Typography.normal}
+              />
+              <BlueButton
                 onPress={() => deleteListing()}
-                style={{
-                  backgroundColor: Colors.LIGHT_RED,
-                  width: wp('60%'),
-                  height: hp('5%'),
-                  borderRadius: 10,
-                  top: hp('10%'),
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.23,
-                  shadowRadius: 2.62,
-                  elevation: 4,
-
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={[Typography.normal]}>{Strings.removeListing}</Text>
-                <Icon
-                  name="remove-circle-outline"
-                  size={wp('5%')}
-                  style={{left: wp('3%')}}></Icon>
-              </TouchableOpacity>
+                text={Strings.removeListing}
+                backgroundColor={Colors.LIGHT_RED}
+                icon="remove-circle-outline"
+                borderRadius={10}
+                offsetCenter={wp('5%')}
+                font={Typography.normal}
+                top={hp('12%')}
+              />
             </View>
           )}
+          <Modal
+            isVisible={unsuccessfulModal2}
+            onBackdropPress={() => setUnsuccessfulModal2(false)}>
+            <UnsuccessfulModal text={'Only positive number'} />
+          </Modal>
           <Modal
             isVisible={unsuccessfulModal}
             onBackdropPress={() => setUnsuccessfulModal(false)}>
@@ -1199,24 +910,16 @@ const ProductModal = props => {
           </Modal>
           <Modal
             isVisible={successfulModal}
-            onBackdropPress={() => [
-              setSuccessfulModal(false),
-              setEditMode(false),
-              props.setProductModal(false),
-            ]}>
+            onBackdropPress={() => [setSuccessfulModal(false)]}>
             <SuccessfulModal text={Strings.successfullyUpdated} />
           </Modal>
           <Modal
             isVisible={successfulModal2}
-            onBackdropPress={() => [
-              setSuccessfulModal2(false),
-              setEditMode(false),
-              props.setProductModal(false),
-            ]}>
+            onBackdropPress={() => [setSuccessfulModal2(false)]}>
             <SuccessfulModal text={Strings.successfullyDeleted} />
           </Modal>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
       <LoadingModal isVisible={loading} />
     </View>
   );
@@ -1228,22 +931,22 @@ const ProductCard = props => {
   const getImage = async () => {
     try {
       if (typeof props.productPicture == 'string') {
-        console.log(props.productPicture);
+        log(props.productPicture);
         const imageURL = await Storage.get(props.productPicture);
         setImageSource({
           uri: imageURL,
         });
       } else {
-        console.log('found a bogey');
+        log('found a bogey');
         setImageSource(props.productPicture);
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   useEffect(() => {
     getImage();
-    console.log('Image...');
+    log('Image...');
   }, []);
   return (
     <TouchableOpacity
@@ -1352,17 +1055,20 @@ export const SupplierplaceList = props => {
   );
 };
 
-export const RetailerList = props => {
+const RetailerList = props => {
   return (
     <FlatList
       data={props.supermarkets}
       renderItem={({item}) => {
-        console.log(item);
+        log(item);
 
         return (
           <RetailerCard
+            user={props.user}
             name={item.name}
             id={item.id}
+            navigation={props.navigation}
+            setRetailerModal={props.setRetailerModal}
             user={user}></RetailerCard>
         );
       }}
@@ -1371,9 +1077,12 @@ export const RetailerList = props => {
 };
 
 const RetailerCard = props => {
+  const [supermarketButton, setSupermarketButton] = useState(false);
+  const [detailsModal, setDetailsModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
   const sendStoreDetails = async () => {
     try {
-      console.log(props.id + props.user.supplierCompanyID);
+      log(props.id + props.user.supplierCompanyID);
       const updateChat = await API.graphql({
         query: updateChatGroup,
         variables: {
@@ -1384,9 +1093,10 @@ const RetailerCard = props => {
           },
         },
       });
-      console.log('chat group already exist');
+      log('chat group already exist');
+      setDetailsModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
           const chatGroup = {
@@ -1397,21 +1107,22 @@ const RetailerCard = props => {
             mostRecentMessage: 'Store Catalog',
             mostRecentMessageSender: props.user.name,
           };
-          console.log(chatGroup);
+          log(chatGroup);
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
             variables: {input: chatGroup},
           });
-          console.log(createdChatGroup);
+          log(createdChatGroup);
+          setDetailsModal(true);
         } catch (e) {
-          console.log(e.errors[0].errorType);
+          log(e.errors[0].errorType);
         }
       } else {
-        console.log(e.errors[0].errorType);
+        log(e.errors[0].errorType);
       }
     }
 
-    console.log('creating store ' + props.user.supplierCompany.name);
+    log('creating store ' + props.user.supplierCompany.name);
 
     const store = {
       chatGroupID: props.id + props.user.supplierCompanyID,
@@ -1426,16 +1137,18 @@ const RetailerCard = props => {
         query: createMessage,
         variables: {input: store},
       });
-      console.log(message.data.createMessage);
+      log(message.data.createMessage);
       //setSuccessfulModal(true);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
+    setSupermarketButton(false);
+    setSuccessModal(true);
   };
   return (
     <TouchableOpacity
       onPress={() => {
-        sendStoreDetails();
+        setDetailsModal(true);
       }}
       style={{
         marginBottom: hp('2%'),
@@ -1465,11 +1178,44 @@ const RetailerCard = props => {
           <Text style={[Typography.normal]}>{props.name}</Text>
         </View>
       </View>
+      <Modal
+        isVisible={detailsModal}
+        onBackdropPress={() => setDetailsModal(false)}>
+        <DetailsModal
+          setDetailsModal={setDetailsModal}
+          navigation={props.navigation}
+          user={props.user}
+          companyType="supplier"
+          id={props.id}
+          name={props.name}
+          button="true"
+          onSend={() => sendStoreDetails()}
+          onOut={() => setSupermarketButton(true)}
+          disabled={supermarketButton}
+        />
+      </Modal>
+      <Modal
+        isVisible={successModal}
+        onBackdropPress={() => setSuccessModal(false)}>
+        <SuccessNavigateChatModal
+          onPress={() => [
+            props.navigation.navigate('chatroom', {
+              itemID: props.id + props.user.supplierCompanyID,
+              chatName: props.name,
+            }),
+            props.setRetailerModal(false),
+          ]}
+          navigation={props.navigation}
+          text="Catalog sent!"
+          chatGroupID={props.id + props.user.supplierCompanyID}
+          chatName={props.name}
+        />
+      </Modal>
     </TouchableOpacity>
   );
 };
 
-export const SupplierModalButton = props => {
+export const RetailerModalButton = props => {
   const [retailerModal, setRetailerModal] = useState(false);
   return (
     <View>
@@ -1481,7 +1227,11 @@ export const SupplierModalButton = props => {
       <Modal
         isVisible={retailerModal}
         onBackdropPress={() => setRetailerModal(false)}>
-        <RetailerModal setRetailerModal={setRetailerModal} />
+        <RetailerModal
+          setRetailerModal={setRetailerModal}
+          navigation={props.navigation}
+          user={props.user}
+        />
       </Modal>
     </View>
   );
@@ -1489,15 +1239,16 @@ export const SupplierModalButton = props => {
 
 const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
+
   const getAllSupermarkets = async () => {
     try {
-      const listSupplier = await API.graphql({
-        query: listSupplierCompanys,
+      const listRetailer = await API.graphql({
+        query: listRetailerCompanys,
       });
 
-      setSupermarkets(listSupplier.data.listSupplierCompanys.items);
+      setSupermarkets(listRetailer.data.listRetailerCompanys.items);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -1515,11 +1266,72 @@ const RetailerModal = props => {
       }}>
       <View
         style={{alignItems: 'center', justifyContent: 'center', top: hp('2%')}}>
-        <Text style={[Typography.large]}>Suppliers</Text>
+        <Text style={[Typography.large]}>Supermarkets</Text>
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
-        <RetailerList supermarkets={supermarkets} />
+        <RetailerList
+          user={props.user}
+          supermarkets={supermarkets}
+          navigation={props.navigation}
+          setRetailerModal={props.setRetailerModal}
+        />
       </View>
+    </View>
+  );
+};
+
+const Input = props => {
+  const [focus, setFocus] = useState(false);
+  return (
+    <View
+      style={
+        focus == true
+          ? {
+              backgroundColor: 'white',
+              width: props.boxWidth,
+              borderColor: Colors.GRAY_DARK,
+              borderWidth: wp('0.2%'),
+              height: props.boxHeight,
+              justifyContent: 'center',
+              top: hp('3%'),
+              borderRadius: 3,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 0.29,
+              shadowRadius: 4.65,
+              elevation: 7,
+            }
+          : {
+              backgroundColor: 'white',
+              width: props.boxWidth,
+              borderColor: Colors.GRAY_DARK,
+              borderWidth: wp('0.2%'),
+              height: props.boxHeight,
+              justifyContent: 'center',
+              top: hp('3%'),
+              borderRadius: 3,
+            }
+      }>
+      <TextInput
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        keyboardType={props.keyboardType}
+        placeholderTextColor={Colors.GRAY_DARK}
+        placeholder={props.placeholder}
+        underlineColorAndroid="transparent"
+        value={props.state}
+        onChangeText={item => props.setState(item)}
+        style={{
+          left: wp('1%'),
+          width: props.width,
+          height: hp('7%'),
+          justifyContent: 'center',
+          borderBottomColor: 'transparent',
+          color: 'black',
+        }}></TextInput>
     </View>
   );
 };

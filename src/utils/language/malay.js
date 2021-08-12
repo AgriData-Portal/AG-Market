@@ -30,7 +30,7 @@ export default {
   inspect: 'Memeriksa',
   purchaseOrderFrom: 'Pembelian untuk',
   orderQuotation: 'Harga Pesanan',
-  orderQuotationFrom: 'Sebut Harga Pesana Daripada',
+  orderQuotationFrom: 'Sebut Harga Pesanan Daripada',
   totalCost: 'Jumlah Kos',
   deliveryMethod: 'Kaedah Penghantaran',
   paymentMethod: 'Kaedah Pembayaran',
@@ -214,4 +214,9 @@ export default {
   sendQuotationToRetailer: 'Hantar sebut harga kepada peruncit',
   edit: 'Edit',
   bankName: 'Nama Bank',
+  editCompanyProfile: 'Edit Profil Syarikat',
+  editPersonalProfile: 'Edit Profil Peribadi',
+  sendQuotation: 'Hantar Sebut Harga',
+  sendToVerify: 'Hantar Untuk Disahkan',
+  thisFeature: 'Fungsi ini akan datang! Sila bersabar.',
 };

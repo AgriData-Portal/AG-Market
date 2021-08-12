@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 
 import {MarketplaceList, PurchaseOrderButton} from './components';
@@ -14,35 +20,38 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {updateRetailerCompany} from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid
   const [products, setProducts] = useState([]);
   const [POList, setPOList] = useState([]);
   const [storeName, setStoreName] = useState('');
+  const [trigger, setTrigger] = useState(false);
   const retailerID = props.user.retailerCompanyID;
-  console.log('retailer id:' + retailerID);
+  log('retailer id:' + retailerID);
   const purchaseOrder = retailerID + itemId;
-  console.log('purchase Order:' + purchaseOrder);
+  log('purchase Order:' + purchaseOrder);
   const [isFavourite, setIsFavourite] = useState(false);
   useEffect(() => {
-    console.log('Fetching Products from ' + itemId);
+    log('Fetching Products from ' + itemId);
     fetchProducts();
-    console.log('Fetching PO from ' + purchaseOrder);
+    log('Fetching PO from ' + purchaseOrder);
     getPOList();
   }, []);
 
   const getPOList = async () => {
-    console.log('gettingPO');
+    log('gettingPO');
     try {
       const list = await API.graphql({
         query: purchaseOrderItems,
         variables: {purchaseOrderID: purchaseOrder},
       });
-      console.log(list.data.purchaseOrderItems.items);
+      log(list.data.purchaseOrderItems.items);
       setPOList(list.data.purchaseOrderItems.items);
     } catch {
-      e => console.log(e);
+      e => log(e);
     }
   };
 
@@ -51,7 +60,7 @@ export const Store = props => {
       query: getSupplierCompany,
       variables: {id: itemId},
     });
-    console.log(supplier.data.getSupplierCompany.listings.items);
+    log(supplier.data.getSupplierCompany.listings.items);
     setProducts(supplier.data.getSupplierCompany.listings.items);
     setStoreName(supplier.data.getSupplierCompany.name);
   };
@@ -71,7 +80,7 @@ export const Store = props => {
           },
         });
         setIsFavourite(true);
-        console.log('success');
+        log('success');
       } else {
         var updated = await API.graphql({
           query: updateRetailerCompany,
@@ -83,23 +92,23 @@ export const Store = props => {
           },
         });
         setIsFavourite(true);
-        console.log('success');
+        log('success');
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
   const unfavourite = async () => {
     try {
       var currentFavList = props.user.retailerCompany.favouriteStores;
-      console.log(currentFavList.length);
+      log(currentFavList.length);
       currentFavList.forEach((item, index, arr) => {
         if (item.id == itemId) {
           arr.splice(index, 1);
         }
       });
-      console.log(currentFavList.length);
+      log(currentFavList.length);
       var updated = await API.graphql({
         query: updateRetailerCompany,
         variables: {
@@ -110,9 +119,9 @@ export const Store = props => {
         },
       });
       setIsFavourite(false);
-      console.log('success');
+      log('success');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -142,83 +151,65 @@ export const Store = props => {
         width: wp('100%'),
         alignItems: 'center',
       }}>
-      {/* <View
-        style={{
-          position: 'absolute',
-          left: wp('5%'),
-          top: hp('4%'),
-        }}>
-        <BackButton navigation={props.navigation} />
-      </View>
-      <Text style={[Typography.header, {top: hp('4%')}]}>{storeName}</Text> */}
-
-      {isFavourite ? (
-        <TouchableOpacity
-          onPress={() => unfavourite()}
-          style={{
-            position: 'absolute',
-            right: wp('5%'),
-            bottom: hp('20%'),
-            backgroundColor: 'gold',
-            width: wp('38%'),
-            height: hp('6%'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-          }}>
-          <Text style={[Typography.normal, {}]}>Favourited</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={() => updateFavourites()}
-          style={{
-            position: 'absolute',
-            right: wp('5%'),
-            bottom: hp('20%'),
-            backgroundColor: Colors.GRAY_MEDIUM,
-            width: wp('38%'),
-            height: hp('6%'),
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-          }}>
-          <Text style={[Typography.normal, {}]}>Add to Favourites</Text>
-        </TouchableOpacity>
-      )}
-
       <View
         style={{
           width: wp('93%'),
           height: hp('70%'),
         }}>
         <MarketplaceList
+          navigation={props.navigation}
           productList={products}
           POList={POList}
           setPOList={setPOList}
           storeName={storeName}
           purchaseOrder={purchaseOrder}
           user={props.user}
+          setTrigger={setTrigger}
+          trigger={trigger}
         />
       </View>
+      {isFavourite ? (
+        <BlueButton
+          onPress={() => unfavourite()}
+          text={'Favourited'}
+          font={Typography.normal}
+          backgroundColor={'gold'}
+          borderRadius={10}
+          paddingVertical={hp('1.5%')}
+          top={Platform.OS === 'ios' ? hp('3%') : hp('1%')}
+          left={wp('25%')}
+          minWidth={wp('44%')}
+        />
+      ) : (
+        <BlueButton
+          onPress={() => updateFavourites()}
+          backgroundColor={Colors.GRAY_MEDIUM}
+          text={'Add to Favourites'}
+          top={Platform.OS === 'ios' ? hp('3%') : hp('1%')}
+          left={wp('25%')}
+          minWidth={wp('44%')}
+          font={Typography.normal}
+          paddingVertical={hp('1.5%')}
+          borderRadius={10}
+        />
+      )}
       <View
         style={{
           position: 'absolute',
-          right: wp('5%'),
-          bottom: hp('13%'),
+          right: wp('2.5%'),
+          bottom: hp('14%'),
         }}>
         <PurchaseOrderButton
+          navigation={props.navigation}
           purchaseOrder={purchaseOrder}
           storeName={storeName}
           storeID={itemId}
           POList={POList}
           setPOList={setPOList}
           user={props.user}
+          trigger={trigger}
         />
       </View>
-
-      {/* <View style={{position: 'absolute', top: hp('80%')}}>
-        <NavBar navigation={props.navigation} />
-      </View> */}
     </SafeAreaView>
   );
 };

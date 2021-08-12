@@ -25,7 +25,10 @@ import {
   getUsersByRetailerCompany,
 } from '../../../graphql/queries';
 import Modal from 'react-native-modal';
-import {DismissKeyboardView} from '_components';
+import {DismissKeyboardView, UnsuccessfulModal} from '_components';
+import {BlueButton} from '_components';
+import {log} from '_utils';
+
 export {EditPersonal};
 
 export const PersonalProfile = props => {
@@ -40,8 +43,9 @@ export const PersonalProfile = props => {
       <SafeAreaView
         style={{
           alignItems: 'center',
-          justifyContent: 'center',
+
           height: hp('100%'),
+          backgroundColor: 'white',
         }}>
         <DismissKeyboardView
           style={{
@@ -78,27 +82,27 @@ export const PersonalProfile = props => {
         </View>*/}
           <View
             style={{
-              top: hp('5%'),
               alignItems: 'center',
               justifyContent: 'center',
               width: wp('80%'),
               height: hp('25%'),
             }}>
             <Image
-              source={require('_assets/images/company-logo.png')}
+              source={require('_assets/images/agridata.png')}
               style={{
                 resizeMode: 'contain',
-                width: wp('80%'),
+                width: wp('50%'),
                 height: hp('20%'),
+                top: hp('5%'),
               }}
             />
-            <Text style={[Typography.header, {top: hp('2%')}]}>
+            <Text style={[Typography.header, {top: hp('5%'), zIndex: 10}]}>
               {props.user.name}
             </Text>
           </View>
           <View
             style={{
-              top: hp('10%'),
+              top: hp('5%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
               height: hp('35%'),
@@ -124,20 +128,7 @@ export const PersonalProfile = props => {
                 </View>
               )}
             </View>
-            {/* <View
-              style={{
-                top: hp('5%'),
-                left: wp('6%'),
-                width: wp('73%'),
-                height: hp('5%'),
-              }}>
-              <Text style={[Typography.placeholderSmall]}>
-                {Strings.address}
-              </Text>
-              <View>
-                <Text style={[Typography.normal]}>STREET, CITY, STATE</Text>
-              </View>
-            </View> */}
+
             <View
               style={{
                 top: hp('5%'),
@@ -147,7 +138,11 @@ export const PersonalProfile = props => {
               }}>
               <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
               <View>
-                <Text style={[Typography.normal]}>email@gmail.com</Text>
+                {props.user.email == null ? (
+                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                ) : (
+                  <Text style={[Typography.normal]}>{props.user.email}</Text>
+                )}
               </View>
             </View>
             <View
@@ -166,57 +161,22 @@ export const PersonalProfile = props => {
                 </Text>
               </View>
             </View>
+            <BlueButton
+              onPress={() => props.navigation.navigate('editprofile')}
+              text={Strings.editPersonalProfile}
+              font={Typography.normal}
+              borderRadius={10}
+              top={hp('10%')}
+            />
           </View>
-          <TouchableOpacity
-            onPress={() =>
-              props.navigation.navigate('editprofile', {
-                email: 'email@test.com',
-              })
-            }
-            style={{
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('45%'),
-              height: hp('5%'),
-              alignItems: 'center',
-              justifyContent: 'center',
-              top: hp('1%'),
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}>
-            <Text style={[Typography.normal]}>
-              {Strings.edit} {Strings.personalProfile}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+
+          <BlueButton
             onPress={() => setChangePassword(true)}
-            style={{
-              alignSelf: 'center',
-              top: hp('9%'),
-              width: wp('45%'),
-              height: hp('5%'),
-              backgroundColor: Colors.LIGHT_BLUE,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.23,
-              shadowRadius: 2.62,
-              elevation: 5,
-            }}>
-            <Text style={[Typography.normal]}>{Strings.changePass}</Text>
-          </TouchableOpacity>
+            text={Strings.changePass}
+            font={Typography.normal}
+            top={hp('10%')}
+            borderRadius={10}
+          />
           <Modal isVisible={changePassword}>
             <ChangePassword
               setChangePassword={setChangePassword}
@@ -232,10 +192,13 @@ export const PersonalProfile = props => {
 export const ChangePassword = props => {
   const [passwordCodeModal, setPasswordCodeModal] = useState(false);
   const [passwordDiffModal, setPasswordDiffModal] = useState(false);
+  const [backendReject, setBackendReject] = useState(false);
+  const [errorText, setErrorText] = useState('');
   const [resendCodeSuccessModal, setResendCodeSuccessModal] = useState(false);
   const [old, setOld] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
 
   const updatePassword = async () => {
     try {
@@ -243,13 +206,16 @@ export const ChangePassword = props => {
       const changePassword = await Auth.changePassword(user, old, password);
       setResendCodeSuccessModal(true);
     } catch (e) {
-      console.log(e);
+      setErrorText(e.error);
+      setBackendReject(true);
+      log(e);
     }
   };
+  var hasNumber = /\d/;
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : -180}>
+      behavior={Platform.OS === 'ios' ? 'position' : null}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('10%') : null}>
       <SafeAreaView>
         <DismissKeyboardView>
           <View
@@ -369,6 +335,16 @@ export const ChangePassword = props => {
                   setPasswordCodeModal(true);
                 } else if (password != password2) {
                   setPasswordDiffModal(true);
+                } else if (password.length < 8) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+                  );
+                } else if (!hasNumber.test(password)) {
+                  setUnsuccessfulModal(true);
+                  setErrorText(
+                    'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+                  );
                 } else {
                   updatePassword();
                 }
@@ -397,6 +373,16 @@ export const ChangePassword = props => {
               setResendCodeSuccessModal={setResendCodeSuccessModal}
               setForgetPassword={props.setForgetPassword}
             />
+          </Modal>
+          <Modal
+            isVisible={backendReject}
+            onBackdropPress={() => setBackendReject(false)}>
+            <UnsuccessfulModal text={errorText} />
+          </Modal>
+          <Modal
+            isVisible={unsuccessfulModal}
+            onBackdropPress={() => setUnsuccessfulModal(false)}>
+            <UnsuccessfulModal text={errorText} />
           </Modal>
         </DismissKeyboardView>
       </SafeAreaView>

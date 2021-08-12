@@ -12,23 +12,104 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {CloseButton} from '_components';
-
+import {
+  invoiceForRetailerByDate,
+  invoiceRetailerForSupplierByDate,
+  invoiceForFarmerByDate,
+} from '../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-
+import {API} from 'aws-amplify';
 import dayjs from 'dayjs';
 import {createPDF, createCSV} from './file-creation';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const OrderList = props => {
+  const [refreshing, setRefreshing] = useState(false);
   return (
     <View>
       <FlatList
         keyExtractor={item => item.id}
         data={props.invoiceList}
         numColumns={1}
+        onEndReached={() => {
+          props.setRefresh(state => state + 1);
+          log('endReached');
+        }}
+        onEndReachedThreshold={0.6}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={async () => {
+              setRefreshing(true);
+              if (props.user.supplierCompanyID != null) {
+                try {
+                  const invoice = await API.graphql({
+                    query: invoiceRetailerForSupplierByDate,
+                    variables: {
+                      supplierID: props.user.supplierCompanyID,
+                      sortDirection: 'DESC',
+                    },
+                  });
+                  log(invoice.data.invoiceRetailerForSupplierByDate.items);
+                  props.setInvoiceList(
+                    invoice.data.invoiceRetailerForSupplierByDate.items,
+                  );
+                  props.setLoading(false);
+                  log('supplierCompanyInvoices');
+                } catch (e) {
+                  log(e);
+                }
+              } else if (props.user.retailerCompanyID != null) {
+                try {
+                  const invoice = await API.graphql({
+                    query: invoiceForRetailerByDate,
+                    variables: {
+                      retailerID: props.user.retailerCompanyID,
+                      sortDirection: 'DESC',
+                    },
+                  });
+                  log(invoice.data.invoiceForRetailerByDate.items);
+                  props.setInvoiceList(
+                    invoice.data.invoiceForRetailerByDate.items,
+                  );
+                  props.setLoading(false);
+                  log('retailerCompanyInvoices');
+                } catch (e) {
+                  log(e);
+                }
+              } else {
+                try {
+                  const invoice = await API.graphql({
+                    query: invoiceForFarmerByDate,
+                    variables: {
+                      farmerID: props.user.farmerCompanyID,
+                      sortDirection: 'DESC',
+                    },
+                  });
+                  log(invoice.data.invoiceForFarmerByDate.items);
+                  props.setInvoiceList(
+                    invoice.data.invoiceForFarmerByDate.items,
+                  );
+                  props.setLoading(false);
+                  log('farmerCompanyInvoices');
+                } catch (e) {
+                  log(e);
+                }
+              }
+              if (props.trigger) {
+                props.setTrigger(false);
+              } else {
+                props.setTrigger(true);
+              }
+              setRefreshing(false);
+            }}
+          />
+        }
         renderItem={({item}) => {
           if (props.user.retailerCompanyID == null) {
             var company = item.retailer;
@@ -38,8 +119,11 @@ export const OrderList = props => {
           return (
             <Order
               id={item.id}
+              trackingNum={item.trackingNum}
               amount={item.amount}
               company={company}
+              supplier={item.supplier}
+              retailer={item.retailer}
               goods={item.items}
               paid={item.paid}
               amount={item.amount}
@@ -100,22 +184,30 @@ const Order = props => {
         </View>
         <Text
           style={[
-            Typography.normal,
+            Typography.small,
             {
               color: Colors.LIME_GREEN,
-              top: hp('2%'),
+              top: hp('1%'),
               left: wp('25%'),
               position: 'absolute',
+              fontWeight: 'bold',
             },
           ]}>
           {props.company.name}
         </Text>
         <Text
           style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('3%'), position: 'absolute'},
+          ]}>
+          {props.trackingNum}
+        </Text>
+        <Text
+          style={[
             Typography.normal,
             {
-              color: 'black',
-              top: hp('5%'),
+              color: 'grey',
+              top: hp('4.5%'),
               left: wp('25%'),
               position: 'absolute',
             },
@@ -125,12 +217,13 @@ const Order = props => {
         {props.paid ? (
           <Text
             style={[
-              Typography.normal,
+              Typography.small,
               {
                 color: Colors.LIME_GREEN,
-                top: hp('0%'),
-                right: wp('2%'),
+                top: hp('2%'),
+                right: wp('5%'),
                 position: 'absolute',
+                fontStyle: 'italic',
               },
             ]}>
             {Strings.paid}
@@ -138,49 +231,51 @@ const Order = props => {
         ) : (
           <Text
             style={[
-              Typography.normal,
+              Typography.small,
               {
                 color: 'red',
-                top: hp('0%'),
+                top: hp('2%'),
                 right: wp('2%'),
                 position: 'absolute',
+                fontStyle: 'italic',
               },
             ]}>
             {Strings.notPaid}
           </Text>
         )}
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('6%'),
-              right: hp('2%'),
-              position: 'absolute',
-            },
-          ]}>
-          {Strings.invoiceDate}:
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('8%'),
-              right: hp('2%'),
-              position: 'absolute',
-              fontStyle: 'italic',
-            },
-          ]}>
-          {dayjs(props.createdAt).format('DD MMM YYYY')}
-        </Text>
+        <View style={{flexDirection: 'row', top: hp('8%'), left: wp('-1%')}}>
+          <Text
+            style={[
+              Typography.placeholderSmall,
+              {
+                color: 'grey',
+                fontStyle: 'italic',
+              },
+            ]}>
+            {Strings.invoiceDate}:
+          </Text>
+          <Text
+            style={[
+              Typography.placeholderSmall,
+              {
+                color: 'grey',
+                fontStyle: 'italic',
+                marginHorizontal: wp('1%'),
+              },
+            ]}>
+            {dayjs(props.createdAt).format('DD MMM YYYY')}
+          </Text>
+        </View>
       </View>
       <Modal isVisible={invoiceModal}>
         <InvoiceModal
           setInvoiceModal={setInvoiceModal}
           id={props.id}
+          trackingNum={props.trackingNum}
           amount={props.amount}
           company={props.company}
+          supplier={props.supplier}
+          retailer={props.retailer}
           goods={props.goods}
           paid={props.paid}
           amount={props.amount}
@@ -229,7 +324,8 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.invoice} #{props.id.slice(0, 6)}
+        {Strings.invoice}{' '}
+        <Text style={Typography.normal}>#{props.trackingNum}</Text>
       </Text>
       <Text
         style={[
@@ -240,7 +336,7 @@ const InvoiceModal = props => {
             top: hp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMMM YYYY')}
       </Text>
       <Text
         style={[
@@ -306,7 +402,7 @@ const InvoiceModal = props => {
             numColumns={1}
             ItemSeparatorComponent={Seperator}
             renderItem={({item}) => {
-              console.log(item);
+              log(item);
               return (
                 <InvoiceItem
                   name={item.name}
@@ -346,77 +442,47 @@ const InvoiceModal = props => {
         ]}>
         {Strings.recievedBy}: {props.receivedBy}
       </Text>
-
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('23%'),
-          height: hp('5%'),
-          bottom: hp('5%'),
-          right: wp('7%'),
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          borderRadius: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+      <BlueButton
+        position={'absolute'}
+        borderRadius={10}
+        text={'PDF'}
+        font={Typography.normal}
+        icon="cloud-download-outline"
+        offsetCenter={wp('2%')}
+        top={hp('70%')}
+        left={wp('61%')}
         onPress={() =>
           createPDF(
-            (id = props.id),
-            (company = props.company),
+            (id = props.trackingNum),
+            (retailer = props.retailer),
+            (supplier = props.supplier),
             (createdAt = props.createdAt),
             (items = props.goods),
             (amount = props.amount),
             (receivedBy = props.receivedBy),
           )
-        }>
-        <Text style={[Typography.normal, {left: wp('3%')}]}>PDF</Text>
-        <View style={{position: 'absolute', right: wp('3%')}}>
-          <Icon name="cloud-download-outline" size={wp('5.5%')} />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          backgroundColor: Colors.PALE_GREEN,
-          width: wp('23%'),
-          height: hp('5%'),
-          bottom: hp('5%'),
-          right: wp('35%'),
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          borderRadius: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+        }
+      />
+      <BlueButton
+        position={'absolute'}
+        backgroundColor={Colors.PALE_GREEN}
+        text="CSV"
+        font={Typography.normal}
+        borderRadius={10}
+        icon="cloud-download-outline"
+        offsetCenter={wp('2%')}
+        top={hp('70%')}
         onPress={() =>
           createCSV(
-            (id = props.id),
+            (id = props.trackingNum),
             (company = props.company),
             (createdAt = props.createdAt),
             (items = props.goods),
             (amount = props.amount),
             (receivedBy = props.receivedBy),
           )
-        }>
-        <Text style={[Typography.normal, {left: wp('3%')}]}>CSV</Text>
-        <View style={{position: 'absolute', right: wp('3%')}}>
-          <Icon name="cloud-download-outline" size={wp('5.5%')} />
-        </View>
-      </TouchableOpacity>
+        }
+      />
     </View>
   );
 };
@@ -458,83 +524,35 @@ export const SortModal = props => {
     <View
       style={{
         position: 'absolute',
-        right: wp('8%'),
-        top: hp('18%'),
+        right: wp('6%'),
+        top: hp('9%'),
         backgroundColor: Colors.GRAY_MEDIUM,
         borderRadius: 5,
-        width: wp('53%'),
-        height: hp('17%'),
-        alignItems: 'center',
-        justifyContent: 'center',
       }}>
+      <Text
+        style={[
+          Typography.normalBold,
+          {left: wp('5%'), marginBottom: hp('2%'), top: hp('1%')},
+        ]}>
+        Sort By
+      </Text>
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
+          width: wp('45%'),
+          height: hp('4%'),
         }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="time-outline" size={wp('6%')} />
-          <Icon name="arrow-up-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.oldest}
+        <Text style={[Typography.normal, {left: wp('5%')}]}>
+          Newest to Oldest
         </Text>
+        {/*TRANSLATION*/}
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
+          width: wp('45%'),
+          height: hp('4%'),
         }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="time-outline" size={wp('6%')} />
-          <Icon name="arrow-down-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.latest}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
-        }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="pricetags-outline" size={wp('6%')} />
-          <Icon name="arrow-up-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.leastExpensive}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          backgroundColor: 'white',
-          width: wp('50%'),
-          height: hp('3.3%'),
-          borderRadius: 20,
-          marginHorizontal: wp('1.8%'),
-          marginTop: hp('0.5%'),
-        }}>
-        <View style={{left: wp('3.5%'), flexDirection: 'row'}}>
-          <Icon name="pricetags-outline" size={wp('6%')} />
-          <Icon name="arrow-down-outline" size={wp('4%')} />
-        </View>
-        <Text style={[Typography.normal, {left: wp('6%')}]}>
-          {Strings.mostExpensive}
+        <Text style={[Typography.normal, {left: wp('5%')}]}>
+          Oldest to Newest
         </Text>
       </TouchableOpacity>
     </View>

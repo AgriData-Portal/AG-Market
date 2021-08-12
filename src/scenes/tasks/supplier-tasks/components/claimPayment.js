@@ -26,6 +26,8 @@ import {
 } from '../../../../graphql/mutations';
 import Strings from '_utils';
 import {paymentsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const ReceivePaymentTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -51,12 +53,10 @@ export const ReceivePaymentTaskList = props => {
                 props.setClaimTask(
                   task.data.paymentsTaskRetailerForSupplierByDate.items,
                 );
-                console.log(
-                  task.data.paymentsTaskRetailerForSupplierByDate.items,
-                );
-                console.log('payment task');
+
+                log('payment task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -82,6 +82,7 @@ export const ReceivePaymentTaskList = props => {
               setTrigger={props.setTrigger}
               claimTask={props.claimTask}
               setClaimTask={props.setClaimTask}
+              trackingNum={item.trackingNum}
             />
           );
         }}
@@ -92,6 +93,7 @@ export const ReceivePaymentTaskList = props => {
 
 const ReceivePaymentTask = props => {
   const [receiveTaskModal, setReceiveTaskModal] = useState(false);
+  log(props.supplier);
   return (
     <TouchableOpacity
       onPress={() => setReceiveTaskModal(true)}
@@ -102,7 +104,8 @@ const ReceivePaymentTask = props => {
       }}>
       <View
         style={{
-          backgroundColor: Colors.GRAY_LIGHT,
+          backgroundColor:
+            props.receipt != null ? '#d4f8d4' : Colors.GRAY_LIGHT,
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
@@ -125,37 +128,35 @@ const ReceivePaymentTask = props => {
           }}></View>
         <View
           style={{
-            backgroundColor: Colors.GRAY_LIGHT,
+            backgroundColor:
+              props.receipt != null ? '#d4f8d4' : Colors.GRAY_LIGHT,
             height: hp('12.5%'),
             width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {props.receipt != null ? (
-            <View style={{bottom: hp('0.5%')}}>
-              <Icon
-                name="cash-outline"
-                size={wp('11%')}
-                color={Colors.LIME_GREEN}
-              />
-            </View>
-          ) : (
-            <View style={{bottom: hp('0.5%')}}>
-              <Icon name="cash-outline" size={wp('11%')} />
-            </View>
-          )}
+          <View style={{bottom: hp('0.5%')}}>
+            <Icon name="cash-outline" size={wp('11%')} color="black" />
+          </View>
         </View>
         <Text
           style={[
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
-              top: hp('3%'),
+              top: hp('1%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
           {props.retailer.name}
+        </Text>
+        <Text
+          style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
+          ]}>
+          {props.trackingNum}
         </Text>
         {/*} {props.paid ? (
           <Text
@@ -201,7 +202,7 @@ const ReceivePaymentTask = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('6%'),
+              top: hp('7.5%'),
               right: hp('2%'),
               position: 'absolute',
             },
@@ -213,13 +214,13 @@ const ReceivePaymentTask = props => {
             Typography.small,
             {
               color: 'grey',
-              top: hp('8%'),
+              top: hp('9%'),
               right: hp('2%'),
               position: 'absolute',
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+          {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveTaskModal}>
@@ -232,6 +233,7 @@ const ReceivePaymentTask = props => {
           payBefore={props.payBefore}
           receipt={props.receipt}
           id={props.id}
+          trackingNum={props.trackingNum}
           createdAt={props.createdAt}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
@@ -245,12 +247,13 @@ const ReceivePaymentTask = props => {
 const ReceivePaymentModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const receivedPayment = async () => {
+    log(props.id);
     try {
       const removed = await API.graphql({
         query: deletePaymentTaskBetweenRandS,
         variables: {input: {id: props.id}},
       });
-      console.log(removed);
+      log(removed);
       var tempList = props.claimTask;
       for (let [i, temp] of tempList.entries()) {
         if (temp.id == props.id) {
@@ -258,18 +261,20 @@ const ReceivePaymentModal = props => {
         }
       }
       props.setClaimTask(tempList);
+      setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updated = await API.graphql({
         query: updateInvoiceBetweenRandS,
         variables: {input: {id: props.id, paid: true}},
       });
-      console.log(updated);
+      log(updated);
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
+      log('fail to update');
     }
   };
   return (
@@ -311,7 +316,7 @@ const ReceivePaymentModal = props => {
           },
         ]}>
         {Strings.recieveBefore}:{' '}
-        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMMM YYYY')}
+        {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -339,7 +344,7 @@ const ReceivePaymentModal = props => {
           {
             position: 'absolute',
             top: hp('23%'),
-            left: wp('45%'),
+            left: wp('40%'),
           },
         ]}>
         {props.retailer.name}
@@ -361,10 +366,10 @@ const ReceivePaymentModal = props => {
           {
             position: 'absolute',
             top: hp('28%'),
-            left: wp('45%'),
+            left: wp('40%'),
           },
         ]}>
-        #{props.id.slice(0, 6)}
+        #{props.trackingNum}
       </Text>
       <Text
         style={[
@@ -383,10 +388,10 @@ const ReceivePaymentModal = props => {
           {
             position: 'absolute',
             top: hp('33%'),
-            left: wp('45%'),
+            left: wp('40%'),
           },
         ]}>
-        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <Text
         style={[
@@ -397,25 +402,76 @@ const ReceivePaymentModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.bank}:
+        {Strings.bankName}:
       </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('38%'),
-            left: wp('45%'),
-          },
-        ]}>
-        Bank
-      </Text>
+      {props.supplier.bankAccount == null ? (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('38%'),
+              left: wp('40%'),
+            },
+          ]}>
+          Not Added Yet
+        </Text>
+      ) : (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('38%'),
+              left: wp('40%'),
+            },
+          ]}>
+          {props.supplier.bankAccount.bankName}
+        </Text>
+      )}
       <Text
         style={[
           Typography.placeholder,
           {
             position: 'absolute',
             top: hp('43%'),
+            left: wp('5%'),
+          },
+        ]}>
+        {Strings.bankDetails}:
+      </Text>
+      {props.supplier.bankAccount == null ? (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('43%'),
+              left: wp('40%'),
+            },
+          ]}>
+          Not Added Yet
+        </Text>
+      ) : (
+        <Text
+          style={[
+            Typography.normal,
+            {
+              position: 'absolute',
+              top: hp('43%'),
+              left: wp('40%'),
+            },
+          ]}>
+          {props.supplier.bankAccount.accountNumber}
+        </Text>
+      )}
+
+      {/* <Text
+        style={[
+          Typography.placeholder,
+          {
+            position: 'absolute',
+            top: hp('48%'),
             left: wp('5%'),
           },
         ]}>
@@ -426,47 +482,23 @@ const ReceivePaymentModal = props => {
           Typography.normal,
           {
             position: 'absolute',
-            top: hp('43%'),
+            top: hp('48%'),
             left: wp('45%'),
           },
         ]}>
         9065 7756 8989
-      </Text>
-      <TouchableOpacity
+      </Text> */}
+      <BlueButton
         onPress={() => [receivedPayment()]}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('30%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          justifyContent: 'center',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('10%'),
-          borderRadius: 10,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.recieved}
-          </Text>
-          <Icon
-            name="checkmark-circle-outline"
-            size={wp('5%')}
-            style={{left: wp('2%')}}></Icon>
-        </View>
-      </TouchableOpacity>
+        text={Strings.recieved}
+        font={Typography.normal}
+        borderRadius={10}
+        icon="checkmark-circle-outline"
+        position={'absolute'}
+        offsetCenter={wp('5%')}
+        top={hp('65%')}
+      />
+
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => {

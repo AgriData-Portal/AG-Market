@@ -57,13 +57,13 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
-import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
 import Modal from 'react-native-modal';
-import {header} from '_styles';
+import {log} from '_utils';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -86,11 +86,15 @@ function getHeaderTitle(route) {
   }
 }
 
-function getIcon(route, user) {
+function getIcon(route, user, navigation) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
   if (routeName == 'marketplace') {
-    console.log('test');
-    return <RetailerModalButton user={user}></RetailerModalButton>;
+    log('test');
+    return (
+      <RetailerModalButton
+        user={user}
+        navigation={navigation}></RetailerModalButton>
+    );
   } else {
     return null;
   }
@@ -104,7 +108,9 @@ const SupplierNavigation = props => {
     <AppStack.Navigator
       screenOptions={{
         headerStyle: {
-          height: hp('8%'),
+          height: Platform.OS === 'ios' ? hp('9.5%') : hp('8%'),
+          elevation: 0,
+          shadowOpacity: 0,
         },
       }}>
       <AppStack.Screen
@@ -120,7 +126,12 @@ const SupplierNavigation = props => {
               userType={props.user.role}
             />
           ),
-          headerRight: () => getIcon((route = route), (user = props.user)),
+          headerRight: () =>
+            getIcon(
+              (route = route),
+              (user = props.user),
+              (navigation = navigation),
+            ),
         })}>
         {screenProps => (
           <TabbedNavigator
@@ -238,6 +249,7 @@ const TabbedNavigator = props => {
   return (
     <TabStack.Navigator
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,
@@ -593,12 +605,13 @@ const updateLastSeen = async (userID, chatGroupID, navigation) => {
       query: updateChatGroupUsers,
       variables: {input: {id: uniqueID, lastOnline: dayjs()}},
     });
-    console.log('updated last seen');
+    log('updated last seen');
+    log(updatedLastSeen);
     navigation.navigate('inbox');
   } catch (e) {
-    console.log(e);
+    log(e);
     if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-      console.log('no special connection created, creating one now');
+      log('no special connection created, creating one now');
       const createLastSeen = await API.graphql({
         query: createChatGroupUsers,
         variables: {

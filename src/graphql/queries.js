@@ -1,12 +1,52 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getGlobalSettings = /* GraphQL */ `
+  query GetGlobalSettings($id: ID!) {
+    getGlobalSettings(id: $id) {
+      id
+      latestVersionNumber
+      emergencyProblem
+      forceUpdate
+      backendFix
+      backendFixWhen
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listGlobalSettingss = /* GraphQL */ `
+  query ListGlobalSettingss(
+    $filter: ModelGlobalSettingsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGlobalSettingss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        latestVersionNumber
+        emergencyProblem
+        forceUpdate
+        backendFix
+        backendFixWhen
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
       name
       role
+      email
+      pushNotificationTokens {
+        service
+        deviceTokens
+      }
       retailerCompanyID
       supplierCompanyID
       farmerCompanyID
@@ -33,6 +73,10 @@ export const getUser = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -51,6 +95,10 @@ export const getUser = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -70,6 +118,9 @@ export const getUser = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -100,6 +151,10 @@ export const getUser = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -111,11 +166,18 @@ export const getUser = /* GraphQL */ `
           nextToken
         }
         address
+        bankAccount {
+          bankName
+          accountNumber
+        }
         rating {
           numberOfRatings
           currentRating
         }
         registrationNumber
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -132,6 +194,10 @@ export const getUser = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -156,6 +222,11 @@ export const listUsers = /* GraphQL */ `
         id
         name
         role
+        email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -177,6 +248,9 @@ export const listUsers = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -188,6 +262,9 @@ export const listUsers = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -214,6 +291,7 @@ export const getRetailerCompany = /* GraphQL */ `
           id
           name
           role
+          email
           retailerCompanyID
           supplierCompanyID
           farmerCompanyID
@@ -228,6 +306,10 @@ export const getRetailerCompany = /* GraphQL */ `
         numberOfRatings
         currentRating
       }
+      bankAccount {
+        bankName
+        accountNumber
+      }
       registrationNumber
       favouriteStores {
         id
@@ -236,8 +318,11 @@ export const getRetailerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -248,6 +333,7 @@ export const getRetailerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -262,6 +348,7 @@ export const getRetailerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -287,6 +374,10 @@ export const getRetailerCompany = /* GraphQL */ `
         nextToken
       }
       verified
+      contactDetails {
+        email
+        phone
+      }
       logo
       updatedAt
       createdAt
@@ -315,6 +406,10 @@ export const listRetailerCompanys = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -333,6 +428,10 @@ export const listRetailerCompanys = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -351,6 +450,7 @@ export const getSupplierCompany = /* GraphQL */ `
           id
           name
           role
+          email
           retailerCompanyID
           supplierCompanyID
           farmerCompanyID
@@ -369,6 +469,9 @@ export const getSupplierCompany = /* GraphQL */ `
         bankName
         accountNumber
       }
+      mostRecentPurchaseOrderNumber
+      mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       favouriteStores {
         id
         name
@@ -395,8 +498,11 @@ export const getSupplierCompany = /* GraphQL */ `
       goodsTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -407,8 +513,11 @@ export const getSupplierCompany = /* GraphQL */ `
       goodsTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -419,6 +528,7 @@ export const getSupplierCompany = /* GraphQL */ `
       paymentTaskRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           paid
@@ -433,6 +543,7 @@ export const getSupplierCompany = /* GraphQL */ `
       paymentTaskFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -447,6 +558,7 @@ export const getSupplierCompany = /* GraphQL */ `
       invoiceRetailer {
         items {
           id
+          trackingNum
           retailerID
           supplierID
           amount
@@ -460,6 +572,7 @@ export const getSupplierCompany = /* GraphQL */ `
       invoiceFarmer {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -485,6 +598,10 @@ export const getSupplierCompany = /* GraphQL */ `
         nextToken
       }
       verified
+      contactDetails {
+        email
+        phone
+      }
       logo
       updatedAt
       createdAt
@@ -517,6 +634,9 @@ export const listSupplierCompanys = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -547,6 +667,10 @@ export const listSupplierCompanys = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -565,6 +689,7 @@ export const getFarmerCompany = /* GraphQL */ `
           id
           name
           role
+          email
           retailerCompanyID
           supplierCompanyID
           farmerCompanyID
@@ -575,11 +700,18 @@ export const getFarmerCompany = /* GraphQL */ `
         nextToken
       }
       address
+      bankAccount {
+        bankName
+        accountNumber
+      }
       rating {
         numberOfRatings
         currentRating
       }
       registrationNumber
+      mostRecentPurchaseOrderNumber
+      mostRecentInvoiceNumber
+      mostRecentQuotationNumber
       listings {
         items {
           id
@@ -601,8 +733,11 @@ export const getFarmerCompany = /* GraphQL */ `
       goodsTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
+          logisticsProvided
+          paymentTerms
           updatedAt
           createdAt
           deliveryDate
@@ -613,6 +748,7 @@ export const getFarmerCompany = /* GraphQL */ `
       paymentTask {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           paid
@@ -627,6 +763,7 @@ export const getFarmerCompany = /* GraphQL */ `
       invoice {
         items {
           id
+          trackingNum
           farmerID
           supplierID
           amount
@@ -652,6 +789,10 @@ export const getFarmerCompany = /* GraphQL */ `
         nextToken
       }
       verified
+      contactDetails {
+        email
+        phone
+      }
       logo
       updatedAt
       createdAt
@@ -672,11 +813,18 @@ export const listFarmerCompanys = /* GraphQL */ `
           nextToken
         }
         address
+        bankAccount {
+          bankName
+          accountNumber
+        }
         rating {
           numberOfRatings
           currentRating
         }
         registrationNumber
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -693,6 +841,10 @@ export const listFarmerCompanys = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -718,6 +870,10 @@ export const getChatGroup = /* GraphQL */ `
           numberOfRatings
           currentRating
         }
+        bankAccount {
+          bankName
+          accountNumber
+        }
         registrationNumber
         favouriteStores {
           id
@@ -736,6 +892,10 @@ export const getChatGroup = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -756,6 +916,9 @@ export const getChatGroup = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -786,6 +949,10 @@ export const getChatGroup = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -798,11 +965,18 @@ export const getChatGroup = /* GraphQL */ `
           nextToken
         }
         address
+        bankAccount {
+          bankName
+          accountNumber
+        }
         rating {
           numberOfRatings
           currentRating
         }
         registrationNumber
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -819,6 +993,10 @@ export const getChatGroup = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -880,6 +1058,9 @@ export const listChatGroups = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -892,6 +1073,9 @@ export const listChatGroups = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -973,6 +1157,9 @@ export const getChatGroupUsers = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -985,6 +1172,9 @@ export const getChatGroupUsers = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -1005,6 +1195,11 @@ export const getChatGroupUsers = /* GraphQL */ `
         id
         name
         role
+        email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -1026,6 +1221,9 @@ export const getChatGroupUsers = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -1037,6 +1235,9 @@ export const getChatGroupUsers = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -1081,6 +1282,7 @@ export const listChatGroupUserss = /* GraphQL */ `
           id
           name
           role
+          email
           retailerCompanyID
           supplierCompanyID
           farmerCompanyID
@@ -1114,6 +1316,9 @@ export const getSupplierListing = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -1144,6 +1349,10 @@ export const getSupplierListing = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1180,6 +1389,9 @@ export const listSupplierListings = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -1214,11 +1426,18 @@ export const getFarmerListing = /* GraphQL */ `
           nextToken
         }
         address
+        bankAccount {
+          bankName
+          accountNumber
+        }
         rating {
           numberOfRatings
           currentRating
         }
         registrationNumber
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -1235,6 +1454,10 @@ export const getFarmerListing = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1268,6 +1491,9 @@ export const listFarmerListings = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -1384,6 +1610,7 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
   query GetGoodsTaskBetweenRandS($id: ID!) {
     getGoodsTaskBetweenRandS(id: $id) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -1394,6 +1621,10 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -1413,6 +1644,10 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1433,6 +1668,9 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -1463,6 +1701,10 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1477,6 +1719,8 @@ export const getGoodsTaskBetweenRandS = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -1497,6 +1741,7 @@ export const listGoodsTaskBetweenRandSs = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -1512,6 +1757,9 @@ export const listGoodsTaskBetweenRandSs = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -1528,6 +1776,8 @@ export const listGoodsTaskBetweenRandSs = /* GraphQL */ `
           grade
           price
         }
+        logisticsProvided
+        paymentTerms
         updatedAt
         createdAt
         deliveryDate
@@ -1541,6 +1791,7 @@ export const getGoodsTaskBetweenSandF = /* GraphQL */ `
   query GetGoodsTaskBetweenSandF($id: ID!) {
     getGoodsTaskBetweenSandF(id: $id) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -1548,11 +1799,18 @@ export const getGoodsTaskBetweenSandF = /* GraphQL */ `
           nextToken
         }
         address
+        bankAccount {
+          bankName
+          accountNumber
+        }
         rating {
           numberOfRatings
           currentRating
         }
         registrationNumber
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -1569,6 +1827,10 @@ export const getGoodsTaskBetweenSandF = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1589,6 +1851,9 @@ export const getGoodsTaskBetweenSandF = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -1619,6 +1884,10 @@ export const getGoodsTaskBetweenSandF = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1633,6 +1902,8 @@ export const getGoodsTaskBetweenSandF = /* GraphQL */ `
         grade
         price
       }
+      logisticsProvided
+      paymentTerms
       updatedAt
       createdAt
       deliveryDate
@@ -1653,11 +1924,15 @@ export const listGoodsTaskBetweenSandFs = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -1668,6 +1943,9 @@ export const listGoodsTaskBetweenSandFs = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -1684,6 +1962,8 @@ export const listGoodsTaskBetweenSandFs = /* GraphQL */ `
           grade
           price
         }
+        logisticsProvided
+        paymentTerms
         updatedAt
         createdAt
         deliveryDate
@@ -1697,6 +1977,7 @@ export const getPaymentTaskBetweenRandS = /* GraphQL */ `
   query GetPaymentTaskBetweenRandS($id: ID!) {
     getPaymentTaskBetweenRandS(id: $id) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -1707,6 +1988,10 @@ export const getPaymentTaskBetweenRandS = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -1726,6 +2011,10 @@ export const getPaymentTaskBetweenRandS = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1746,6 +2035,9 @@ export const getPaymentTaskBetweenRandS = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -1776,6 +2068,10 @@ export const getPaymentTaskBetweenRandS = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1803,6 +2099,7 @@ export const listPaymentTaskBetweenRandSs = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -1818,8 +2115,12 @@ export const listPaymentTaskBetweenRandSs = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
+
           logo
           updatedAt
           createdAt
@@ -1840,6 +2141,7 @@ export const getPaymentTaskBetweenSandF = /* GraphQL */ `
   query GetPaymentTaskBetweenSandF($id: ID!) {
     getPaymentTaskBetweenSandF(id: $id) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -1847,11 +2149,18 @@ export const getPaymentTaskBetweenSandF = /* GraphQL */ `
           nextToken
         }
         address
+        bankAccount {
+          bankName
+          accountNumber
+        }
         rating {
           numberOfRatings
           currentRating
         }
         registrationNumber
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -1868,6 +2177,10 @@ export const getPaymentTaskBetweenSandF = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1888,6 +2201,9 @@ export const getPaymentTaskBetweenSandF = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -1918,6 +2234,10 @@ export const getPaymentTaskBetweenSandF = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -1945,11 +2265,15 @@ export const listPaymentTaskBetweenSandFs = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -1960,6 +2284,9 @@ export const listPaymentTaskBetweenSandFs = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -1982,6 +2309,7 @@ export const getInvoiceBetweenRandS = /* GraphQL */ `
   query GetInvoiceBetweenRandS($id: ID!) {
     getInvoiceBetweenRandS(id: $id) {
       id
+      trackingNum
       retailer {
         id
         name
@@ -1992,6 +2320,10 @@ export const getInvoiceBetweenRandS = /* GraphQL */ `
         rating {
           numberOfRatings
           currentRating
+        }
+        bankAccount {
+          bankName
+          accountNumber
         }
         registrationNumber
         favouriteStores {
@@ -2011,6 +2343,10 @@ export const getInvoiceBetweenRandS = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -2031,6 +2367,9 @@ export const getInvoiceBetweenRandS = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -2061,6 +2400,10 @@ export const getInvoiceBetweenRandS = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -2096,6 +2439,7 @@ export const listInvoiceBetweenRandSs = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -2111,6 +2455,9 @@ export const listInvoiceBetweenRandSs = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2141,6 +2488,7 @@ export const getInvoiceBetweenSandF = /* GraphQL */ `
   query GetInvoiceBetweenSandF($id: ID!) {
     getInvoiceBetweenSandF(id: $id) {
       id
+      trackingNum
       farmer {
         id
         name
@@ -2148,11 +2496,18 @@ export const getInvoiceBetweenSandF = /* GraphQL */ `
           nextToken
         }
         address
+        bankAccount {
+          bankName
+          accountNumber
+        }
         rating {
           numberOfRatings
           currentRating
         }
         registrationNumber
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         listings {
           nextToken
         }
@@ -2169,6 +2524,10 @@ export const getInvoiceBetweenSandF = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -2189,6 +2548,9 @@ export const getInvoiceBetweenSandF = /* GraphQL */ `
           bankName
           accountNumber
         }
+        mostRecentPurchaseOrderNumber
+        mostRecentInvoiceNumber
+        mostRecentQuotationNumber
         favouriteStores {
           id
           name
@@ -2219,6 +2581,10 @@ export const getInvoiceBetweenSandF = /* GraphQL */ `
           nextToken
         }
         verified
+        contactDetails {
+          email
+          phone
+        }
         logo
         updatedAt
         createdAt
@@ -2254,11 +2620,15 @@ export const listInvoiceBetweenSandFs = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2269,6 +2639,9 @@ export const listInvoiceBetweenSandFs = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2314,6 +2687,11 @@ export const getUsersByRetailerCompany = /* GraphQL */ `
         id
         name
         role
+        email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -2335,6 +2713,9 @@ export const getUsersByRetailerCompany = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2346,6 +2727,9 @@ export const getUsersByRetailerCompany = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2381,6 +2765,11 @@ export const getUsersBySupplierCompany = /* GraphQL */ `
         id
         name
         role
+        email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -2402,6 +2791,9 @@ export const getUsersBySupplierCompany = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2413,6 +2805,9 @@ export const getUsersBySupplierCompany = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2448,6 +2843,11 @@ export const getUsersByFarmerCompany = /* GraphQL */ `
         id
         name
         role
+        email
+        pushNotificationTokens {
+          service
+          deviceTokens
+        }
         retailerCompanyID
         supplierCompanyID
         farmerCompanyID
@@ -2469,6 +2869,9 @@ export const getUsersByFarmerCompany = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2480,6 +2883,9 @@ export const getUsersByFarmerCompany = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2532,6 +2938,9 @@ export const getChatGroupsContainingRetailersByUpdatedAt = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2544,6 +2953,9 @@ export const getChatGroupsContainingRetailersByUpdatedAt = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2551,6 +2963,10 @@ export const getChatGroupsContainingRetailersByUpdatedAt = /* GraphQL */ `
         }
         chatParticipants {
           nextToken
+          items {
+            userID
+            lastOnline
+          }
         }
         messages {
           nextToken
@@ -2600,6 +3016,9 @@ export const getChatGroupsContainingSuppliersByUpdatedAt = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2612,6 +3031,9 @@ export const getChatGroupsContainingSuppliersByUpdatedAt = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2619,6 +3041,10 @@ export const getChatGroupsContainingSuppliersByUpdatedAt = /* GraphQL */ `
         }
         chatParticipants {
           nextToken
+          items {
+            userID
+            lastOnline
+          }
         }
         messages {
           nextToken
@@ -2668,6 +3094,9 @@ export const getChatGroupsContainingFarmersByUpdatedAt = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2680,6 +3109,9 @@ export const getChatGroupsContainingFarmersByUpdatedAt = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2687,6 +3119,10 @@ export const getChatGroupsContainingFarmersByUpdatedAt = /* GraphQL */ `
         }
         chatParticipants {
           nextToken
+          items {
+            userID
+            lastOnline
+          }
         }
         messages {
           nextToken
@@ -2754,6 +3190,9 @@ export const productListingBySupplier = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2800,6 +3239,9 @@ export const supplierListingByNameStartingWithLowestPrice = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2847,6 +3289,9 @@ export const productListingByFarmer = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2893,6 +3338,9 @@ export const farmerListingByNameStartingWithLowestPrice = /* GraphQL */ `
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -2964,6 +3412,7 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -2979,6 +3428,9 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -2995,6 +3447,8 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
           grade
           price
         }
+        logisticsProvided
+        paymentTerms
         updatedAt
         createdAt
         deliveryDate
@@ -3023,6 +3477,7 @@ export const goodsTaskRetailerForSupplierByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -3038,6 +3493,9 @@ export const goodsTaskRetailerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3054,6 +3512,8 @@ export const goodsTaskRetailerForSupplierByDate = /* GraphQL */ `
           grade
           price
         }
+        logisticsProvided
+        paymentTerms
         updatedAt
         createdAt
         deliveryDate
@@ -3082,11 +3542,15 @@ export const goodsTaskForFarmerByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -3097,6 +3561,9 @@ export const goodsTaskForFarmerByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3113,6 +3580,8 @@ export const goodsTaskForFarmerByDate = /* GraphQL */ `
           grade
           price
         }
+        logisticsProvided
+        paymentTerms
         updatedAt
         createdAt
         deliveryDate
@@ -3141,11 +3610,15 @@ export const goodsTaskFarmerForSupplierByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -3156,6 +3629,9 @@ export const goodsTaskFarmerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3172,6 +3648,8 @@ export const goodsTaskFarmerForSupplierByDate = /* GraphQL */ `
           grade
           price
         }
+        logisticsProvided
+        paymentTerms
         updatedAt
         createdAt
         deliveryDate
@@ -3200,6 +3678,7 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -3215,9 +3694,16 @@ export const paymentsTaskForRetailerByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
+          bankAccount {
+            accountNumber
+            bankName
+          }
           updatedAt
           createdAt
         }
@@ -3252,6 +3738,7 @@ export const paymentsTaskRetailerForSupplierByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -3267,9 +3754,16 @@ export const paymentsTaskRetailerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
+          bankAccount {
+            accountNumber
+            bankName
+          }
           updatedAt
           createdAt
         }
@@ -3304,12 +3798,20 @@ export const paymentsTaskForFarmerByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
+          bankAccount {
+            accountNumber
+            bankName
+          }
           logo
           updatedAt
           createdAt
@@ -3319,6 +3821,9 @@ export const paymentsTaskForFarmerByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3356,13 +3861,21 @@ export const paymentsTaskFarmerForSupplierByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
+          bankAccount {
+            accountNumber
+            bankName
+          }
           updatedAt
           createdAt
         }
@@ -3371,6 +3884,9 @@ export const paymentsTaskFarmerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3408,6 +3924,7 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -3423,6 +3940,9 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3468,6 +3988,7 @@ export const invoiceRetailerForSupplierByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         retailer {
           id
           name
@@ -3483,6 +4004,9 @@ export const invoiceRetailerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3528,11 +4052,15 @@ export const invoiceForFarmerByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -3543,6 +4071,9 @@ export const invoiceForFarmerByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo
@@ -3588,11 +4119,15 @@ export const invoiceFarmerForSupplierByDate = /* GraphQL */ `
     ) {
       items {
         id
+        trackingNum
         farmer {
           id
           name
           address
           registrationNumber
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           verified
           logo
           updatedAt
@@ -3603,6 +4138,9 @@ export const invoiceFarmerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          mostRecentPurchaseOrderNumber
+          mostRecentInvoiceNumber
+          mostRecentQuotationNumber
           registrationNumber
           verified
           logo

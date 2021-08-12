@@ -19,6 +19,7 @@ import {
   createRetailerCompany,
 } from './graphql/mutations';
 import {StatusBar} from 'react-native';
+import {log} from '_utils';
 
 import {
   GMNavigation,
@@ -62,86 +63,136 @@ PushNotification.onNotificationOpened(notification => {
 const endpointId = Analytics.getPluggable('AWSPinpoint')['_config'];
 
 const AppNavigator = props => {
-  console.log('user:' + props.user);
+  log('user:' + props.user);
   const type = props.user.role;
+  const retailer = props.user.retailerCompany;
+  const supplier = props.user.supplierCompany;
+  const farmer = props.user.farmerCompany;
+  const company = {type: '', verified: '', role: ''};
+  if (retailer != null && retailer.verified == true) {
+    log('Retailer Verified\n');
+    company.type = 'retailer';
+    company.verified = true;
+  } else if (retailer != null && retailer.verified == undefined) {
+    log('Retailer Not Verified\n');
+    company.type = 'retailer';
+    company.verified = false;
+  } else if (supplier != null && supplier.verified == true) {
+    log('Supplier Verified\n');
+    company.type = 'supplier';
+    company.verified = true;
+  } else if (supplier != null && supplier.verified == undefined) {
+    log('Supplier Not Verified\n');
+    company.type = 'supplier';
+    company.verified = false;
+  } else if (farmer != null && farmer.verified == true) {
+    log('Farmer Verified\n');
+    company.type = 'farmer';
+    company.verified = true;
+  } else if (farmer != null && farmer.verified == undefined) {
+    log('Farmer Not Verified\n');
+    company.type = 'farmer';
+    company.verified = false;
+  }
+  company.role = props.user.role;
   //to remove create comp nav thing
 
-  if (
-    props.user.retailerCompanyID != null &&
-    props.user.retailerCompany.verified != undefined
-  ) {
-    if (type == 'retailmanager') {
-      console.log('Retail Manager \n');
+  if (company.verified) {
+    if (company.type == 'retailer') {
+      if (company.role == 'Retail Manager') {
+        log('Retail Manager \n');
+        return (
+          <RMNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Accounts') {
+        log('Retail Accounts \n');
+        return (
+          <AccountsNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Owner') {
+        log('Retail Owner \n');
+        return (
+          <OwnerNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Receiver') {
+        log('Retail Receiver \n');
+        return (
+          <RetailEmployeeNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'General Manager') {
+        log('Retail General Manager \n');
+        return (
+          <GMNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      }
+    } else if (company.type == 'supplier') {
+      if (company.role == 'Owner') {
+        log('Supplier Owner \n');
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Sales Manager') {
+        log('Supplier Sales Manager\n');
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Delivery Man') {
+        log('Supplier Delivery Man\n');
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      } else if (company.role == 'Accounts') {
+        log('Supplier Accounts \n');
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+          />
+        );
+      }
+    } else if (company.type == 'farmer') {
+      log('Farmer \n');
       return (
-        <RMNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'accounts') {
-      console.log('Accounts \n');
-      return (
-        <AccountsNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'owner') {
-      console.log('Owner \n');
-      return (
-        <OwnerNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'receiver') {
-      console.log('Receiver \n');
-      return (
-        <RetailEmployeeNavigation
-          user={props.user}
-          updateAuthState={props.updateAuthState}
-          setUserDetails={props.setUserDetails}
-        />
-      );
-    } else if (type == 'generalmanager') {
-      console.log('General Manager \n');
-      return (
-        <GMNavigation
+        <FarmerNavigation
           user={props.user}
           updateAuthState={props.updateAuthState}
           setUserDetails={props.setUserDetails}
         />
       );
     }
-  } else if (
-    props.user.supplierCompanyID != null &&
-    props.user.supplierCompany.verified != undefined
-  ) {
-    console.log('Supplier \n');
-    const type = 'supplier';
-    return (
-      <SupplierNavigation
-        user={props.user}
-        updateAuthState={props.updateAuthState}
-        setUserDetails={props.setUserDetails}
-      />
-    );
-  } else if (
-    props.user.farmerCompanyID != null &&
-    props.user.farmerCompany.verified != undefined
-  ) {
-    console.log('Farmer \n');
-    const type = 'farmer';
-    return (
-      <FarmerNavigation
-        user={props.user}
-        updateAuthState={props.updateAuthState}
-        setUserDetails={props.setUserDetails}
-      />
-    );
   } else {
     return (
       <VerificationNavigation
@@ -174,10 +225,10 @@ const App = () => {
     var companyID = null;
     try {
       user = await Auth.currentAuthenticatedUser();
-      console.log('attempting to fix the problem');
-      console.log(user.attributes);
+      log('attempting to fix the problem');
+      log(user.attributes);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     var type = user.attributes['custom:companyType'];
     //createing new company
@@ -193,7 +244,7 @@ const App = () => {
             },
           },
         });
-        console.log('FarmCreated!');
+        log('FarmCreated!');
         companyID = response.data.createFarmerCompany.id;
       } else if (type == 'supermarket') {
         var response = await API.graphql({
@@ -206,8 +257,8 @@ const App = () => {
             },
           },
         });
-        console.log(response);
-        console.log('Supermarket Created!');
+        log(response);
+        log('Supermarket Created!');
         companyID = response.data.createRetailerCompany.id;
       } else if (type == 'supplier') {
         var response = await API.graphql({
@@ -220,13 +271,13 @@ const App = () => {
             },
           },
         });
-        console.log('Supplier Created!');
+        log('Supplier Created!');
         companyID = response.data.createSupplierCompany.id;
       } else {
-        console.log('Nothing was Created', type);
+        log('Nothing was Created', type);
       }
     } catch (err) {
-      console.log(err);
+      log(err);
     }
     try {
       var input = {
@@ -234,6 +285,7 @@ const App = () => {
         name: user.attributes.name,
         role: user.attributes['custom:role'],
         contactNumber: user.attributes.phone_number,
+        email: user.attributes.email,
       };
       if (type == 'farm') {
         input['farmerCompanyID'] = companyID;
@@ -248,11 +300,11 @@ const App = () => {
           input,
         },
       });
-      console.log('newuser: ' + newUserInfo.data.createUser);
+      log('newuser: ' + newUserInfo.data.createUser);
       setUserDetails(newUserInfo.data.createUser);
       setUserLoggedIn('loggedIn');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -263,25 +315,25 @@ const App = () => {
           query: getUser,
           variables: {id: id},
         });
-        console.log('getuser' + id);
-        console.log(userInfo);
+        log('getuser' + id);
+        log(userInfo);
         if (userInfo.data.getUser) {
-          console.log('loggingin');
+          log('loggingin');
           setUserDetails(userInfo.data.getUser);
           setUserLoggedIn('loggedIn');
         } else {
-          console.log('no user found');
-          console.log(userAttributes);
+          log('no user found');
+          log(userID + 'not found');
+          log(userAttributes);
 
-          console.log('attempting to create new user');
+          log('attempting to create new user');
           createNewUser();
         }
       } else {
         setRunAgain(true);
       }
-      console.log(userID + 'not found');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -294,13 +346,13 @@ const App = () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
       setUserID(user.attributes.sub);
-      console.log(user.attributes);
+      log(user.attributes);
       setUserAttributes(user.attributes);
-      console.log('✅ User is alreadry signed in: ' + user.attributes.sub);
+      log('✅ User is alreadry signed in: ' + user.attributes.sub);
       getUserAttributes(user.attributes.sub);
     } catch (err) {
-      console.log(err);
-      console.log('❌ User is not signed in');
+      log(err);
+      log('❌ User is not signed in');
       setUserLoggedIn('loggedOut');
     }
   }

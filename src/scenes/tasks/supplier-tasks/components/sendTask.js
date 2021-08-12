@@ -29,16 +29,21 @@ import {
 } from '../../../../graphql/mutations';
 import {goodsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
+import {BlueButton} from '_components';
+import {log} from '_utils';
+
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 
+//TODO while waiting for retailer to receive, supplier can amend the goods task since it is an update :)
+
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  console.log('send task list render');
+  log('send task list render');
   return (
     <View>
       <FlatList
@@ -62,10 +67,10 @@ export const SendTaskList = props => {
                 props.setSendTask(
                   task.data.goodsTaskRetailerForSupplierByDate.items,
                 );
-                console.log(task.data.goodsTaskRetailerForSupplierByDate.items);
-                console.log('goods task');
+                log(task.data.goodsTaskRetailerForSupplierByDate.items);
+                log('goods task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -85,6 +90,7 @@ export const SendTaskList = props => {
               createdAt={item.createdAt}
               deliverydate={item.deliveryDate}
               taskID={item.id}
+              trackingNum={item.trackingNum}
               trigger={props.trigger}
               setTrigger={props.setTrigger}
               sendTask={props.sendTask}
@@ -104,10 +110,10 @@ export const SendTaskList = props => {
 // Supplier create invoice
 const SendTask = props => {
   const [sendTaskModal, setSendTaskModal] = useState(false);
-  const [invoiceModal, setInvoiceModal] = useState(false);
+
   const [ratingModal, setRatingModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
-  console.log(props.status);
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -122,7 +128,12 @@ const SendTask = props => {
       }}>
       <View
         style={{
-          backgroundColor: Colors.GRAY_LIGHT,
+          backgroundColor:
+            props.status == 'sent'
+              ? '#d4f8d4'
+              : props.status == 'received'
+              ? '#ffff76'
+              : Colors.GRAY_LIGHT,
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
@@ -145,24 +156,19 @@ const SendTask = props => {
           }}></View>
         <View
           style={{
-            backgroundColor: Colors.GRAY_LIGHT,
+            backgroundColor:
+              props.status == 'sent'
+                ? '#d4f8d4'
+                : props.status == 'received'
+                ? '#ffff76'
+                : Colors.GRAY_LIGHT,
             height: hp('12%'),
             width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <View style={{bottom: hp('0.5%')}}>
-            {props.status == 'sent' ? (
-              <Icon
-                name="cube-outline"
-                size={wp('11%')}
-                color={Colors.LIME_GREEN}
-              />
-            ) : props.status == 'received' ? (
-              <Icon name="cube-outline" size={wp('11%')} color="gold" />
-            ) : (
-              <Icon name="cube-outline" size={wp('11%')} />
-            )}
+            <Icon name="cube-outline" size={wp('11%')} color="black" />
           </View>
         </View>
         <Text
@@ -170,12 +176,19 @@ const SendTask = props => {
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
-              top: hp('3%'),
+              top: hp('1.5%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
           {props.retailer.name}
+        </Text>
+        <Text
+          style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('4%'), position: 'absolute'},
+          ]}>
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -212,36 +225,24 @@ const SendTask = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).add(8, 'hours').format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={sendTaskModal}>
         <SendTaskModal
           taskID={props.taskID}
           goods={props.goods}
+          trackingNum={props.trackingNum}
           retailer={props.retailer}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
-          setInvoiceModal={setInvoiceModal}
           setSendTaskModal={setSendTaskModal}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
           sendTask={props.sendTask}
           setSendTask={props.setSendTask}></SendTaskModal>
       </Modal>
-      <Modal isVisible={invoiceModal}>
-        <InvoiceModal
-          setInvoiceModal={setInvoiceModal}
-          goods={props.goods}
-          retailer={props.retailer}
-          deliverydate={props.deliverydate}
-          taskID={props.taskID}
-          invoiceList={props}
-          trigger={props.trigger}
-          setTrigger={props.setTrigger}
-          sendTask={props.sendTask}
-          setSendTask={props.setSendTask}></InvoiceModal>
-      </Modal>
+
       <Modal isVisible={ratingModal}>
         <RatingModal
           taskID={props.taskID}
@@ -261,6 +262,7 @@ const SendTask = props => {
 const SendTaskModal = props => {
   const [deliverydate, setDate] = useState(props.deliverydate);
   const [confirmedDate, setConfirmedDate] = useState(false);
+  const [invoiceModal, setInvoiceModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
 
   const updateDeliveryDate = async () => {
@@ -294,7 +296,7 @@ const SendTaskModal = props => {
 
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -303,7 +305,7 @@ const SendTaskModal = props => {
     var product = item.price * item.quantity;
     sum = sum + product;
   });
-  console.log(sum);
+  log(sum);
 
   return (
     <SafeAreaView style={{height: hp('100%'), width: wp('100%')}}>
@@ -332,20 +334,19 @@ const SendTaskModal = props => {
               left: wp('8%'),
             },
           ]}>
-          {Strings.orderCreated}
+          {Strings.order}
+
+          <Text
+            style={[
+              Typography.placeholder,
+              {
+                fontStyle: 'italic',
+              },
+            ]}>
+            {'  '}#{props.trackingNum}
+          </Text>
         </Text>
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              right: wp('7%'),
-              top: hp('7%'),
-              fontStyle: 'italic',
-            },
-          ]}>
-          {Strings.order} #{props.taskID.slice(0, 6)}
-        </Text>
+
         <Text
           style={[
             Typography.header,
@@ -355,7 +356,7 @@ const SendTaskModal = props => {
               left: wp('8%'),
             },
           ]}>
-          {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM, YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
         <View
           style={{
@@ -430,7 +431,7 @@ const SendTaskModal = props => {
                 left: wp('80%'),
                 elevation: 5,
               }}
-              onPress={() => setDate(dayjs().format('DD-MM-YYYY'))}>
+              onPress={() => setDate(dayjs().format('DD MMM YYYY'))}>
               <Icon name="add-circle-outline" size={wp('5%')} />
             </TouchableOpacity>
           </View>
@@ -488,10 +489,7 @@ const SendTaskModal = props => {
                 left: wp('78%'),
                 elevation: 5,
               }}
-              onPress={item => [
-                updateDeliveryDate(),
-                console.log(deliverydate),
-              ]}>
+              onPress={item => [updateDeliveryDate(), log(deliverydate)]}>
               <Icon name="checkmark-outline" size={wp('5%')} />
             </TouchableOpacity>
           </View>
@@ -542,37 +540,36 @@ const SendTaskModal = props => {
           ]}>
           {props.retailer.name}
         </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: Colors.LIGHT_BLUE,
-            width: wp('30%'),
-            height: hp('5%'),
-            alignSelf: 'center',
-            justifyContent: 'center',
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-            position: 'absolute',
-            bottom: hp('8%'),
-            borderRadius: 10,
-          }}
+        <BlueButton
           onPress={() => {
-            [props.setInvoiceModal(true), props.setSendTaskModal(false)];
-          }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
-            {Strings.createInvoice}
-          </Text>
-        </TouchableOpacity>
+            [setInvoiceModal(true)];
+          }}
+          text={Strings.createInvoice}
+          font={Typography.normal}
+          borderRadius={10}
+          top={hp('70%')}
+          position={'absolute'}
+        />
       </View>
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [setSuccessfulModal(false)]}>
         <SuccessfulModal text={'Successfully chosen delivery date!'} />
+      </Modal>
+      <Modal isVisible={invoiceModal}>
+        <InvoiceModal
+          setSendTaskModal={props.setSendTaskModal}
+          setInvoiceModal={setInvoiceModal}
+          goods={props.goods}
+          retailer={props.retailer}
+          deliverydate={props.deliverydate}
+          taskID={props.taskID}
+          trackingNum={props.trackingNum}
+          invoiceList={props}
+          trigger={props.trigger}
+          setTrigger={props.setTrigger}
+          sendTask={props.sendTask}
+          setSendTask={props.setSendTask}></InvoiceModal>
       </Modal>
     </SafeAreaView>
   );
@@ -583,14 +580,15 @@ const InvoiceModal = props => {
   const [toggle, setToggle] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [sum, setSum] = useState(0);
+  const [verifyDoubleButton, setVerifyDoubleButton] = useState(false);
   var tempSum = 0;
   useEffect(() => {
-    console.log(itemList);
+    log(itemList);
     var tempList = itemList.forEach((item, index, array) => {
       var product = parseFloat((item.price * item.quantity).toFixed(2));
       tempSum = tempSum + product;
     });
-    console.log(tempSum);
+    log(tempSum);
     setSum(tempSum);
   }, [itemList, toggle]);
 
@@ -619,8 +617,9 @@ const InvoiceModal = props => {
         props.setTrigger(true);
       }
     } catch (e) {
-      console.log(e);
+      log(e);
     }
+    setVerifyDoubleButton(false);
   };
 
   const Seperator = () => {
@@ -659,7 +658,11 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Invoice {props.taskID.slice(0, 6)}
+        Invoice
+        <Text style={[Typography.placeholder, {fontStyle: 'italic'}]}>
+          {' '}
+          for {props.trackingNum} {/*TRANSLATION */}
+        </Text>
       </Text>
       <Text
         style={[
@@ -667,10 +670,10 @@ const InvoiceModal = props => {
           {
             position: 'absolute',
             right: wp('5%'),
-            top: hp('6%'),
+            top: hp('8.5%'),
           },
         ]}>
-        {dayjs().format('DD-MMM-YYYY')}
+        {dayjs().format('DD MMM YYYY')}
       </Text>
       <Text
         style={
@@ -735,28 +738,22 @@ const InvoiceModal = props => {
           </Text>
         </View>
       </View>
-      <TouchableOpacity
+      <BlueButton
         onPress={() => [sendForVerfication()]}
-        style={{
-          position: 'absolute',
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('35%'),
-          height: hp('5%'),
-          bottom: hp('5%'),
-          right: wp('5%'),
-          elevation: 3,
-          borderRadius: 10,
-          justifyContent: 'center',
-        }}>
-        <Text style={[Typography.normal, {left: wp('5%')}]}>
-          Send to Verify
-        </Text>
-      </TouchableOpacity>
+        text={Strings.sendToVerify}
+        borderRadius={10}
+        font={Typography.normal}
+        position={'absolute'}
+        top={hp('70%')}
+        right={wp('5%')}
+        onPressIn={() => setVerifyDoubleButton(true)}
+        disabled={verifyDoubleButton}
+      />
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [
           setSuccessfulModal(false),
-          props.setInvoiceModal(false),
+          props.setSendTaskModal(false),
         ]}>
         <SuccessfulModal />
       </Modal>
@@ -779,7 +776,7 @@ const InvoiceItem = props => {
         array[index] = item;
       }
     });
-    console.log('updating quantity to the list');
+    log('updating quantity to the list');
     props.setItemList(tempList);
     setQuantity(item2);
     if (props.toggle) {
@@ -830,7 +827,7 @@ const InvoiceItem = props => {
           Typography.small,
           {position: 'absolute', left: wp('45%'), bottom: hp('4.5%')},
         ]}>
-        kg
+        {props.siUnit}
       </Text>
       <Text
         style={[
@@ -874,7 +871,7 @@ const ProductList = props => {
         data={props.data}
         ItemSeparatorComponent={Seperator}
         renderItem={({item}) => {
-          console.log(item.name + item.variety + item.grade);
+          log(item.name + item.variety + item.grade);
           return (
             <Product
               name={item.name}
@@ -991,7 +988,7 @@ const RatingModal = props => {
           currentRating: newRating,
         };
       }
-      console.log(props.retailer, sendRating);
+      log(props.retailer, sendRating);
       const update = await API.graphql({
         query: updateRetailerCompany,
         variables: {
@@ -1002,14 +999,14 @@ const RatingModal = props => {
         },
       });
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const invoiceResponse = await API.graphql({
         query: deleteGoodsTaskBetweenRandS,
         variables: {input: {id: props.taskID}},
       });
-      console.log('done');
+      log('done');
       var tempList = props.sendTask;
       for (let [i, temp] of tempList.entries()) {
         if (temp.id == props.taskID) {
@@ -1020,8 +1017,8 @@ const RatingModal = props => {
       props.setRatingModal(false);
       props.setSuccessfulModal(true);
     } catch (e) {
-      console.log('failed to delete');
-      console.log(e);
+      log('failed to delete');
+      log(e);
     }
     if (props.trigger) {
       props.setTrigger(false);
@@ -1064,29 +1061,13 @@ const RatingModal = props => {
           tintColor={Colors.PALE_GREEN}
         />
       </View>
-      <TouchableOpacity
-        onPress={() => [updateRating()]}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('30%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('5%'),
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-        }}>
-        <Text style={[Typography.normal, {}]}>Submit rating</Text>
-      </TouchableOpacity>
+      <BlueButton
+        onPress={() => updateRating()}
+        text={'Submit Rating'}
+        font={Typography.normal}
+        borderRadius={10}
+        top={hp('8%')}
+      />
     </View>
   );
 };

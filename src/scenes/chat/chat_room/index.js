@@ -24,6 +24,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {log} from '_utils';
 
 import {API, graphqlOperation} from 'aws-amplify';
 
@@ -37,7 +39,7 @@ export const ChatRoom = props => {
   }
 
   const {itemID, chatName} = props.route.params; //props.route.params; //chatgroupid
-  console.log('chatID: ' + itemID);
+  log('chatID: ' + itemID);
   const [messages, setMessages] = useState(null);
   const [appState, setAppState] = useState(AppState.currentState);
   const [nextToken, setNextToken] = useState(null);
@@ -53,16 +55,16 @@ export const ChatRoom = props => {
         variables: {
           chatGroupID: itemID,
           sortDirection: 'DESC',
-          limit: 10,
+          limit: 50,
         },
       });
-      console.log('fetching messages');
+      log('fetching messages');
       setNextToken(message.data.messagesInChatByDate.nextToken);
       var tempMessage = message.data.messagesInChatByDate.items;
       setMessages(tempMessage);
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
   };
   useEffect(() => {
@@ -72,8 +74,8 @@ export const ChatRoom = props => {
   }, [refresh]);
   useEffect(() => {
     fetchMessages();
-    console.log('useEffect Triggered');
-  }, [itemID]);
+    log('useEffect Triggered');
+  }, []);
 
   useEffect(() => {
     const subscription = API.graphql(
@@ -83,10 +85,10 @@ export const ChatRoom = props => {
         const newMessage = data.value.data.onCreateMessage;
 
         if (newMessage.chatGroupID != itemID) {
-          console.log('Message is in another room!');
+          log('Message is in another room!');
           return;
         }
-        console.log(newMessage.senderID, props.user.id);
+        log(newMessage.senderID, props.user.id);
 
         setMessages(messages => [newMessage, ...messages]);
       },
@@ -108,11 +110,11 @@ export const ChatRoom = props => {
         query: updateChatGroupUsers,
         variables: {input: {id: uniqueID, lastOnline: dayjs()}},
       });
-      console.log('updated last seen');
+      log('updated last seen');
     } catch (e) {
-      console.log(e);
+      log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        console.log('no special connection created, creating one now');
+        log('no special connection created, creating one now');
         const createLastSeen = await API.graphql({
           query: createChatGroupUsers,
           variables: {
@@ -130,16 +132,16 @@ export const ChatRoom = props => {
 
   let a = 0;
   useEffect(() => {
-    console.log(appState);
+    log(appState);
     if (Platform.OS === 'ios') {
       if (appState == 'inactive') {
         BackgroundTimer.runBackgroundTimer(() => {
-          console.log('3 seconds');
+          log('3 seconds');
           updateLastSeen();
         }, 100);
         setTimeout(() => {
           BackgroundTimer.stopBackgroundTimer();
-          console.log('stop');
+          log('stop');
         }, 150);
       }
     }
@@ -148,14 +150,14 @@ export const ChatRoom = props => {
         if (appState == 'background') {
           BackgroundTimer.runBackgroundTimer(() => {
             if (a == 0) {
-              console.log('3seconds');
+              log('3seconds');
               updateLastSeen();
             }
             a = 1;
           }, 100);
           if (a == 1) {
             BackgroundTimer.stopBackgroundTimer();
-            console.log('stop');
+            log('stop');
           }
         }
       }
@@ -165,71 +167,90 @@ export const ChatRoom = props => {
   const getMoreMessages = async () => {
     setLoading(true);
     try {
-      console.log(nextToken);
+      log(nextToken);
       const message = await API.graphql({
         query: messagesInChatByDate,
         variables: {
           chatGroupID: itemID,
           sortDirection: 'DESC',
-          limit: 10,
+          limit: 50,
           nextToken: nextToken,
         },
       });
-      console.log('getting more messages');
+      log('getting more messages');
       setNextToken(message.data.messagesInChatByDate.nextToken);
 
       var tempMessage = message.data.messagesInChatByDate.items;
-      console.log(tempMessage);
+      log(tempMessage);
       setMessages(oldmessages => oldmessages.concat(tempMessage));
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
     setLoading(false);
   };
   return (
     <SafeAreaView
       style={{
-        flex: 1,
+        height: hp('100%'),
         backgroundColor: 'white',
         alignItems: 'center',
       }}>
-      <KeyboardAvoidingView
+      <View style={{height: hp('80%')}}>
+        <KeyboardAvoidingView
+          style={{
+            width: wp('100%'),
+          }}
+          behavior={Platform.OS === 'ios' ? 'position' : null}
+          extraScrollHeight={Platform.OS == 'ios' ? hp('25%') : 0}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? hp('7%') : null}>
+          {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'position' : 'position'}
         keyboardVerticalOffset={
           Platform.OS === 'ios' ? hp('14%') : hp('12%')
-        } /* Keyboard Offset needs to be tested against multiple phones */
+        }  Keyboard Offset needs to be tested against multiple phones 
         style={{
           top: hp('3%'),
           height: hp('85%'),
           width: wp('95%'),
+        }}> */}
+          <View
+            style={{
+              height: hp('88%'),
+            }}>
+            <View
+              style={{
+                height: hp('80%'),
+              }}>
+              <ChatBubbleList
+                data={messages}
+                userID={props.user.id}
+                userName={props.user.name}
+                chatName={chatName}
+                chatGroupID={itemID}
+                type={type}
+                setMessages={setMessages}
+                messages={messages}
+                setRefresh={setRefresh}
+                navigation={props.navigation}
+              />
+            </View>
+          </View>
+          {/* </KeyboardAvoidingView> */}
+        </KeyboardAvoidingView>
+      </View>
+      <View
+        style={{
+          width: wp('100%'),
         }}>
-        <View
-          style={{
-            height: hp('75%'),
-          }}>
-          <ChatBubbleList
-            data={messages}
-            userID={props.user.id}
-            userName={props.user.name}
-            chatName={chatName}
-            chatGroupID={itemID}
-            type={type}
-            setMessages={setMessages}
-            messages={messages}
-            setRefresh={setRefresh}
-            navigation={props.navigation}
-          />
-        </View>
-        <View style={{position: 'absolute', bottom: -hp('9%')}}>
-          <MessageInput
-            userID={props.user.id}
-            chatGroupID={itemID}
-            userName={props.user.name}
-            setMessages={setMessages}
-            messages={messages}></MessageInput>
-        </View>
-      </KeyboardAvoidingView>
+        <MessageInput
+          userID={props.user.id}
+          chatGroupID={itemID}
+          userName={props.user.name}
+          setMessages={setMessages}
+          messages={messages}></MessageInput>
+      </View>
+
       <Modal isVisible={loading}>
         <LoadingModal />
       </Modal>

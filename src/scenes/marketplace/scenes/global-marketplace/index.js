@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, TouchableOpacity, Image} from 'react-native';
+import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {Searchbar} from '../../components';
 import {LoadingModal} from '_components';
-import {MarketplaceList, FavouritesList} from './components';
+import {MarketplaceList, FavouritesList, ProductSearchBar} from './components';
 import {API} from 'aws-amplify';
 import {
   listSupplierListings,
@@ -16,7 +15,8 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import Modal from 'react-native-modal';
-import SearchableDropdown from 'react-native-searchable-dropdown';
+
+import {log} from '_utils';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -27,7 +27,7 @@ export const Marketplace = props => {
   const [loading, setLoading] = useState(false);
   const [searchable, setSearchable] = useState([]);
 
-  console.log('marketplace initial render' + props.user);
+  log('marketplace render');
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -38,33 +38,31 @@ export const Marketplace = props => {
           sortDirection: 'ASC',
         },
       });
-      console.log(products);
+      log(products);
       if (products.data.supplierListingByNameStartingWithLowestPrice) {
-        console.log('Products: \n');
-        console.log(
-          products.data.supplierListingByNameStartingWithLowestPrice.items,
-        );
+        log('Products: \n');
+        log(products.data.supplierListingByNameStartingWithLowestPrice.items);
         setProducts(
           products.data.supplierListingByNameStartingWithLowestPrice.items,
         );
       }
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
     setLoading(false);
   };
   useEffect(() => {
     if (searchPressed && choice == 'product') {
-      console.log('useEffectTriggered');
-      console.log('searching for ' + searchValue);
+      log('useEffectTriggered');
+      log('searching for ' + searchValue);
       setSearchPressed(false);
       fetchProducts();
     }
     //potentially do a search for favourites but must have a way to remove the filter
   }, [searchPressed]);
   useEffect(() => {
-    console.log('resetting search');
+    log('resetting search');
     setSearchValue('');
   }, [choice]);
 
@@ -74,18 +72,18 @@ export const Marketplace = props => {
       const listings = await API.graphql({
         query: listSupplierListings,
       });
-      console.log(listings.data.listSupplierListings.items);
+      log(listings.data.listSupplierListings.items);
       var responseList = listings.data.listSupplierListings.items;
       responseList = responseList.map(item => {
         return item.productName.toUpperCase();
       });
 
-      console.log(responseList);
+      log(responseList);
       var array = Array.from(new Set(responseList));
       array.sort();
       setSearchable(array);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -97,22 +95,22 @@ export const Marketplace = props => {
           limit: 10,
         },
       });
-      console.log(listings.data.listSupplierListings.items);
+      log(listings.data.listSupplierListings.items);
       var responseList = listings.data.listSupplierListings.items;
       setProducts(listings.data.listSupplierListings.items);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   useEffect(() => {
-    console.log('All listings');
+    log('All listings');
     getAllListings();
     getFirstTenListings();
   }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
-      console.log('Refreshed!');
+      log('Refreshed!');
       getFirstTenListings();
     });
     return unsubscribe;
@@ -128,7 +126,7 @@ export const Marketplace = props => {
       }}>
       <View
         style={{
-          top: hp('1%'),
+          top: hp('0%'),
           width: wp('100%'),
           height: hp('4%'),
           flexDirection: 'row',
@@ -207,78 +205,13 @@ export const Marketplace = props => {
           </TouchableOpacity>
         )}
       </View>
-      <View style={{top: hp('1%'), zIndex: 100}}>
+      <View style={{zIndex: 100}}>
         {choice == 'product' ? (
-          <View
-            style={{
-              backgroundColor: Colors.GRAY_MEDIUM,
-              borderRadius: 30,
-              width: wp('90%'),
-              height: hp('5%'),
-              flexDirection: 'row',
-            }}>
-            <View
-              style={{
-                position: 'absolute',
-                left: wp('5%'),
-                top: hp('0.75%'),
-              }}>
-              <Icon name="search" size={wp('7%')} color={Colors.GRAY_DARK} />
-            </View>
-            <View style={{left: wp('13%')}}>
-              <SearchableDropdown
-                items={searchable}
-                placeholder={Strings.search}
-                placeholderTextColor={Colors.DARK_GRAY}
-                itemsContainerStyle={{
-                  zIndex: 10,
-                  height: hp('80%'),
-                }}
-                itemTextStyle={{
-                  //text style of a single dropdown item
-                  color: 'black',
-                }}
-                itemStyle={{
-                  padding: 10,
-                  backgroundColor: '#ddd',
-                  borderColor: '#bbb',
-                  borderWidth: 1,
-                  borderRadius: 5,
-                }}
-                containerStyle={{
-                  padding: 1,
-                  width: wp('75%'),
-                  borderRadius: 20,
-                }}
-                textInputStyle={{
-                  width: wp('55%'),
-                  height: hp('6%'),
-                  borderBottomWidth: 0,
-                }}
-                textInputProps={{
-                  value: searchValue,
-                  underlineColorAndroid: 'transparent',
-                }}
-                resetValue={false}
-                onItemSelect={item => [setSearchValue(item)]}
-                onTextChange={item => setSearchValue(item)}
-              />
-            </View>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                left: wp('70%'),
-                top: hp('1%'),
-              }}
-              onPress={() => {
-                if (searchValue != '') {
-                  setSearchPressed(true);
-                  console.log(searchValue);
-                }
-              }}>
-              <Text style={[Typography.normal]}>{Strings.search}</Text>
-            </TouchableOpacity>
-          </View>
+          <ProductSearchBar
+            searchable={searchable}
+            setSearchValue={setSearchValue}
+            searchValue={searchValue}
+            setSearchPressed={setSearchPressed}></ProductSearchBar>
         ) : (
           <Searchbar
             setSearchPressed={setSearchPressed}
@@ -292,7 +225,8 @@ export const Marketplace = props => {
           style={{
             width: wp('95%'),
             height: hp('80%'),
-            top: hp('1%'),
+            top: hp('0%'),
+            zIndex: 1,
           }}>
           <FavouritesList
             data={props.user.retailerCompany.favouriteStores}
@@ -304,7 +238,9 @@ export const Marketplace = props => {
           style={{
             width: wp('95%'),
             height: hp('70%'),
-            top: hp('3%'),
+            top: hp('10%'),
+            position: 'absolute',
+            zIndex: 1,
           }}>
           <MarketplaceList
             chatGroups={props.user.retailerCompany.chatGroups.items}

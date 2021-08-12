@@ -8,6 +8,8 @@ import {
   Text,
   PermissionsAndroid,
   Image,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,6 +20,7 @@ import {
   updateChatGroup,
   createGoodsTask,
 } from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
 // import AudioRecorderPlayer, {
 //   AVEncoderAudioQualityIOSType,
 //   AVEncodingOption,
@@ -25,6 +28,12 @@ import {
 //   AudioSet,
 //   AudioSourceAndroidType,
 // } from 'react-native-audio-recorder-player';
+import {
+  getOrderQuotation,
+  listUsersInChat,
+  purchaseOrderItems,
+} from '../../../../graphql/queries';
+import {log} from '_utils';
 
 var dayjs = require('dayjs');
 
@@ -37,6 +46,7 @@ import {ChatBubbleList} from './chat-bubbles';
 import {ChatInfo} from './chat-info';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {DismissKeyboardView} from '_components';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export {ChatBubbleList, ChatInfo};
 
@@ -55,8 +65,11 @@ export const MessageInput = props => {
     playTime: '00:00:00',
     duration: '00:00:00',
   });
+  const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
   const [audio, setAudio] = useState(false);
   const [whenMicPressed, setMicPressed] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [inputHeight, setInputHeight] = useState(hp('6%'));
 
   // audioRecorderPlayer.setSubscriptionDuration(0.09);
 
@@ -69,20 +82,80 @@ export const MessageInput = props => {
 
     launchImageLibrary(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         setImageSource(response.assets[0].uri);
         setImageModal(true);
       }
     });
   }
+  // onSlideRight = () => {
+  //   onStopRecord();
+  // };
+  // onStartRecord = async () => {
+  //   const path = 'hello.mp4';
+  //   const audioSet = {
+  //     AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+  //     AudioSourceAndroid: AudioSourceAndroidType.MIC,
+  //     AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+  //     AVNumberOfChannelsKeyIOS: 2,
+  //     AVFormatIDKeyIOS: AVEncodingOption.aac,
+  //   };
+  //   log('audioSet', audioSet);
+  //   const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
+  //   audioRecorderPlayer.addRecordBackListener(e => {
+  //     setRecording({
+  //       recordSecs: e.current_position,
+  //       recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+  //     });
+  //   });
+  //   log(`uri: ${uri}`);
+  // };
 
+  // onStopRecord = async () => {
+  //   const result = await audioRecorderPlayer.stopRecorder();
+  //   audioRecorderPlayer.removeRecordBackListener();
+  //   setRecording({
+  //     recordSecs: 0,
+  //   });
+  //   log(result);
+  // };
+
+  // onStartPlay = async () => {
+  //   log('onStartPlay');
+  //   const path = 'hello.mp4';
+  //   const msg = await audioRecorderPlayer.startPlayer(path);
+  //   audioRecorderPlayer.setVolume(1.0);
+  //   log(msg);
+  //   audioRecorderPlayer.addPlayBackListener(e => {
+  //     if (e.current_position === e.duration) {
+  //       log('finished');
+  //       audioRecorderPlayer.stopPlayer();
+  //     }
+  //     setRecording({
+  //       currentPositionSec: e.currentPosition,
+  //       currentDurationSec: e.duration,
+  //       playTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
+  //       duration: audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+  //     });
+  //   });
+  // };
+
+  // onPausePlay = async () => {
+  //   await audioRecorderPlayer.pausePlayer();
+  // };
+
+  // onStopPlay = async () => {
+  //   log('onStopPlay');
+  //   audioRecorderPlayer.stopPlayer();
+  //   audioRecorderPlayer.removePlayBackListener();
+  // };
   const createNewMessage = async () => {
-    console.log('creating new message');
+    log('creating new message');
     try {
       const newMessage = await API.graphql({
         query: createMessage,
@@ -106,41 +179,55 @@ export const MessageInput = props => {
           },
         },
       });
-
-      setMessage('');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
+    setMessage('');
+    setSendButtonDisabled(false);
   };
+
   return (
-    <DismissKeyboardView>
-      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-        <View
+    <View
+      style={{
+        flexDirection: 'row',
+        paddingHorizontal: wp('3%'),
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        bottom:
+          Platform.OS == 'ios' && focused
+            ? hp('35')
+            : Platform.OS == 'ios' && !focused
+            ? 0
+            : null,
+      }}>
+      <View
+        style={{
+          height: hp('6%'),
+          borderRadius: 40,
+          backgroundColor: Colors.GRAY_LIGHT,
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: wp('80%'),
+        }}>
+        <TextInput
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          placeholderTextColor={Colors.GRAY_DARK}
+          placeholder={Strings.typeMessage}
+          underlineColorAndroid={'transparent'}
+          multiline={true}
+          onChangeText={text => setMessage(text)}
+          value={message}
           style={{
+            width: wp('60%'),
             height: hp('6%'),
-            borderRadius: 40,
-            backgroundColor: Colors.GRAY_LIGHT,
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: wp('80%'),
-          }}>
-          <TextInput
-            placeholderTextColor={Colors.GRAY_DARK}
-            placeholder={Strings.typeMessage}
-            underlineColorAndroid={'transparent'}
-            multiline={true}
-            onChangeText={text => setMessage(text)}
-            value={message}
-            style={{
-              width: wp('60%'),
-              height: hp('7%'),
-              borderBottomColor: 'transparent',
-              left: wp('2%'),
-              color: 'black',
-              top: hp('0%'),
-            }}
-          />
-          {/* <TouchableOpacity
+            borderBottomColor: 'transparent',
+            left: wp('2%'),
+            color: 'black',
+            top: Platform.OS == 'ios' ? hp('1%') : 0,
+          }}
+        />
+        {/* <TouchableOpacity
             onPressIn={() => [onStartRecord(), setMicPressed(true)]}
             onPressOut={() => [onStopRecord(), setAudio(true)]}
             style={{
@@ -170,48 +257,109 @@ export const MessageInput = props => {
                 width: wp('17%'),
               }}>
               {recording.recordTime}
-            </Text>
+            </Text> 
           ) : (
             <View></View>
-          )} */}
-
-          <TouchableOpacity
-            onPress={() => {
-              selectImage();
-            }}
-            style={{
-              height: hp('8%'),
-              width: hp('8%'),
-              right: wp('0%'),
-              top: hp('0.5%'),
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-              position: 'absolute',
-            }}>
-            <Icon name="images-outline" size={wp('7%')} />
-          </TouchableOpacity>
-        </View>
+          )}
+          <Modal isVisible={audio}>
+            <View
+              style={{
+                backgroundColor: Colors.GRAY_LIGHT,
+                top: hp('45%'),
+                height: hp('13%'),
+                width: wp('100%'),
+                right: wp('5%'),
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                onPress={() => [setMicPressed(false), setAudio(false)]}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  right: wp('10%'),
+                }}>
+                <Icon name="trash-outline" size={wp('8%')} color="white"></Icon>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  right: wp('5%'),
+                  top: hp('4%'),
+                  width: wp('17%'),
+                }}>
+                {recording.playTime}
+              </Text>
+              <TouchableOpacity
+                onPress={() => onStartPlay()}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: wp('5%'),
+                }}>
+                <Icon name="play" size={wp('8%')} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onStopPlay()}
+                style={{
+                  alignSelf: 'center',
+                  bottom: hp('1%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Icon name="stop" size={wp('8%')} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  height: hp('5.5%'),
+                  width: hp('5.5%'),
+                  borderRadius: 100,
+                  top: hp('2.8%'),
+                  left: wp('10%'),
+                  backgroundColor: Colors.PALE_BLUE,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                }}>
+                <Icon
+                  name="paper-plane-outline"
+                  size={wp('6%')}
+                  color={Colors.LIGHT_BLUE}
+                />
+              </TouchableOpacity>
+            </View>
+          </Modal>*/}
         <TouchableOpacity
           onPress={() => {
-            if (message.length > 0) {
-              createNewMessage();
-            }
+            selectImage();
           }}
           style={{
-            height: hp('5.5%'),
-            width: hp('5.5%'),
-            borderRadius: 100,
-            top: hp('1%'),
-            left: wp('3%'),
-            backgroundColor: Colors.PALE_BLUE,
-            justifyContent: 'center',
-            alignItems: 'center',
+            height: hp('8%'),
+            width: hp('8%'),
+            right: wp('0%'),
+            top: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
             shadowColor: '#000',
             shadowOffset: {
               width: 0,
@@ -220,24 +368,57 @@ export const MessageInput = props => {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
+            position: 'absolute',
           }}>
-          <Icon
-            name="paper-plane-outline"
-            size={wp('6%')}
-            color={Colors.LIGHT_BLUE}
-          />
+          <Icon name="images-outline" size={wp('7%')} />
         </TouchableOpacity>
-        <PreviewImageModal
-          imageModal={imageModal}
-          setImageModal={setImageModal}
-          imageSource={imageSource}
-          selectImage={selectImage}
-          userID={props.userID}
-          chatGroupID={props.chatGroupID}
-          userName={props.userName}
-        />
       </View>
-    </DismissKeyboardView>
+
+      <TouchableOpacity
+        onPress={() => {
+          if (message.length > 0) {
+            createNewMessage();
+          }
+        }}
+        onPressIn={() => {
+          if (message.length > 0) {
+            setSendButtonDisabled(true);
+          }
+        }}
+        disabled={sendButtonDisabled}
+        style={{
+          height: hp('6%'),
+          width: hp('6%'),
+          borderRadius: 100,
+          left: wp('0%'),
+          backgroundColor: Colors.PALE_BLUE,
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>
+        <Icon
+          name="paper-plane-outline"
+          size={hp('3%')}
+          color={Colors.LIGHT_BLUE}
+        />
+      </TouchableOpacity>
+      <PreviewImageModal
+        imageModal={imageModal}
+        setImageModal={setImageModal}
+        imageSource={imageSource}
+        selectImage={selectImage}
+        userID={props.userID}
+        chatGroupID={props.chatGroupID}
+        userName={props.userName}
+      />
+    </View>
   );
 };
 
@@ -245,15 +426,15 @@ const PreviewImageModal = props => {
   const uploadImage = async () => {
     try {
       let photo = props.imageSource;
-      console.log(photo);
+      log(photo);
       const response = await fetch(photo);
       const blob = await response.blob();
-      console.log('FileName: \n');
+      log('FileName: \n');
       var fileName = props.chatGroupID + dayjs().format('YYYYMMDDhhmmss');
       await Storage.put(fileName, blob, {
         contentType: 'image/jpeg',
       });
-      console.log(props.userID, props.chatGroupID, props.userName, fileName);
+      log(props.userID, props.chatGroupID, props.userName, fileName);
       const newMessage = await API.graphql({
         query: createMessage,
         variables: {
@@ -279,7 +460,7 @@ const PreviewImageModal = props => {
 
       props.setImageModal(false);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -441,7 +622,7 @@ const PreviewImageModal = props => {
 //         PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
 //       ]);
 
-//       console.log('write external stroage', grants);
+//       log('write external stroage', grants);
 
 //       if (
 //         grants['android.permission.WRITE_EXTERNAL_STORAGE'] ===
@@ -451,9 +632,9 @@ const PreviewImageModal = props => {
 //         grants['android.permission.RECORD_AUDIO'] ===
 //           PermissionsAndroid.RESULTS.GRANTED
 //       ) {
-//         console.log('Permissions granted');
+//         log('Permissions granted');
 //       } else {
-//         console.log('All required permissions not granted');
+//         log('All required permissions not granted');
 //         return;
 //       }
 //     } catch (err) {
@@ -476,7 +657,7 @@ const PreviewImageModal = props => {
 //       recordTime: audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)),
 //     });
 //   });
-//   console.log(`uri: ${uri}`);
+//   log(`uri: ${uri}`);
 // };
 
 // onStopRecord = async () => {
@@ -485,18 +666,18 @@ const PreviewImageModal = props => {
 //   setRecording({
 //     recordSecs: 0,
 //   });
-//   console.log(result);
+//   log(result);
 // };
 
 // onStartPlay = async () => {
-//   console.log('onStartPlay');
+//   log('onStartPlay');
 //   const path = 'hello.mp4';
 //   const msg = await audioRecorderPlayer.startPlayer(path);
 //   audioRecorderPlayer.setVolume(1.0);
-//   console.log(msg);
+//   log(msg);
 //   audioRecorderPlayer.addPlayBackListener(e => {
 //     if (e.current_position === e.duration) {
-//       console.log('finished');
+//       log('finished');
 //       audioRecorderPlayer.stopPlayer();
 //     }
 //     setRecording({
@@ -513,7 +694,7 @@ const PreviewImageModal = props => {
 // };
 
 // onStopPlay = async () => {
-//   console.log('onStopPlay');
+//   log('onStopPlay');
 //   audioRecorderPlayer.stopPlayer();
 //   audioRecorderPlayer.removePlayBackListener();
 // };

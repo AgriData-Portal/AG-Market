@@ -26,6 +26,9 @@ import Strings from '_utils';
 import {DismissKeyboardView} from '_components';
 import Modal from 'react-native-modal';
 import {useIsFocused} from '@react-navigation/native';
+import {BlueButton} from '_components';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {log} from '_utils';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -36,17 +39,18 @@ export const Registration = props => {
   const [value, setValue] = useState(null);
   const [secure, setSecure] = useState(true);
   const [items, setItems] = useState([
-    {label: Strings.generalManager, value: 'generalmanager'},
-    {label: Strings.owner, value: 'owner'},
-    {label: Strings.retailManager, value: 'retailmanager'},
+    {label: Strings.generalManager, value: 'General Manager'},
+    {label: Strings.owner, value: 'Owner'},
+    {label: Strings.retailManager, value: 'Retail Manager'},
   ]);
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [items2, setItems2] = useState([
     {label: 'Supplier', value: 'supplier'}, //translation
     {label: Strings.supermarket, value: 'supermarket'},
-    {label: Strings.farm, value: 'farm'},
+    // {label: Strings.farm, value: 'farm'},
   ]);
+  //TRANSLATION
   const [createAccountButton, setCreateAccountButton] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
@@ -58,25 +62,25 @@ export const Registration = props => {
   useEffect(() => {
     if (value2 == 'supermarket') {
       setItems([
-        {label: Strings.generalManager, value: 'generalmanager'},
-        {label: Strings.owner, value: 'owner'},
-        {label: Strings.retailManager, value: 'retailmanager'},
+        {label: Strings.generalManager, value: 'General Manager'},
+        {label: Strings.owner, value: 'Owner'},
+        {label: Strings.retailManager, value: 'Retail Manager'},
       ]);
-      console.log('works');
+      log('works');
     } else {
-      setItems([{label: Strings.owner, value: 'owner'}]);
-      console.log('hi');
-      console.log(items2[1]);
+      setItems([{label: Strings.owner, value: 'Owner'}]);
+      log('hi');
+      log(items2[1]);
     }
   }, [value2]);
   const signUp = async () => {
     try {
       const user = await Auth.signUp({
-        username: phone,
+        username: '+60' + phone,
         password: password,
         attributes: {
           email: email,
-          phone_number: phone,
+          phone_number: '+60' + phone,
           name: name,
           'custom:role': value,
           'custom:companyName': companyName,
@@ -85,8 +89,8 @@ export const Registration = props => {
           'custom:companyAddress': companyAddress,
         },
       });
-      console.log(user.userSub);
-      props.navigation.navigate('confirmsignup', {phone: phone});
+      log(user.userSub);
+      props.navigation.navigate('confirmsignup', {phone: '+60' + phone});
       return user.userSub;
     } catch (error) {
       if (error.message == 'Invalid phone number format.') {
@@ -94,8 +98,7 @@ export const Registration = props => {
           'Sorry you have entered an invalid phone number. Please try again.',
         );
         setUnsuccessfulModal(true);
-      }
-      if (
+      } else if (
         error.message ==
         'An account with the given phone_number already exists.'
       ) {
@@ -104,15 +107,21 @@ export const Registration = props => {
         );
         setUnsuccessfulModal(true);
       }
-      console.log('❌ Error signing up...', error);
+      log('❌ Error signing up...', error);
+      // TRANSLATION for registration
     }
   };
   var hasNumber = /\d/;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-25%')}>
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      resetScrollToCoords={{x: 0, y: 0}}
+      scrollEnabled={false}
+      extraHeight={hp('20%')}>
+      {/* // <KeyboardAvoidingView
+    //   behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+    //   keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-20%') : hp('-25%')}> */}
       <SafeAreaView
         style={{
           backgroundColor: 'white',
@@ -121,13 +130,12 @@ export const Registration = props => {
         <View style={{flex: 1}}>
           <ScrollView
             contentContainerStyle={{flexGrow: 1}}
-            contentInset={Platform.OS == 'ios' ? {} : {bottom: 50}}
             nestedScrollEnabled={true}
             scrollToOverflowEnabled={true}
             contentContainerStyle={
               Platform.OS == 'ios '
                 ? {paddingBottom: 0}
-                : {paddingBottom: hp('30%')}
+                : {paddingBottom: hp('10%')}
             }>
             <View style={{flex: 1}}>
               <View
@@ -154,7 +162,7 @@ export const Registration = props => {
                   style={[
                     Typography.largestSize,
                     {
-                      width: wp('70%'),
+                      width: wp('90%'),
                       left: wp('8%'),
                       top: hp('3%'),
                       lineHeight: hp('6%'),
@@ -186,21 +194,27 @@ export const Registration = props => {
                   state={name}
                   setState={setName}
                 />
+
                 <Input
                   name={Strings.contactNumber}
-                  placeholder="eg. +60123456789"
+                  placeholder="123456789"
                   state={phone}
                   setState={setPhone}
+                  left={wp('%')}
+                  text="yes"
+                  top={hp('2%')}
                 />
+
                 <Input
                   name={Strings.email}
                   placeholder="eg. example@example.com"
                   state={email}
                   setState={setEmail}
+                  top={hp('4%')}
                 />
                 <View
                   style={{
-                    top: hp('0%'),
+                    top: hp('6%'),
                     left: wp('8%'),
                   }}>
                   <Text
@@ -230,7 +244,7 @@ export const Registration = props => {
                   <View
                     style={{
                       bottom: hp('2.5%'),
-                      width: wp('85%'),
+                      width: wp('80%'),
                       borderBottomWidth: 1,
                       borderColor: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
                     }}></View>
@@ -243,7 +257,7 @@ export const Registration = props => {
                       }
                     }}
                     style={{
-                      right: wp('15%'),
+                      right: wp('20%'),
                       position: 'absolute',
                       bottom: hp('3%'),
                     }}>
@@ -255,12 +269,13 @@ export const Registration = props => {
                   placeholder="eg. City Grocer"
                   state={companyName}
                   setState={setCompanyName}
+                  top={hp('5%')}
                 />
                 <View
                   style={
                     Platform.OS == 'ios'
-                      ? {left: wp('7%'), zIndex: 1000}
-                      : {top: hp('-1%'), left: wp('8%')}
+                      ? {left: wp('7%'), zIndex: 1000, top: hp('7%')}
+                      : {top: hp('7%'), left: wp('7%')}
                   }>
                   <View>
                     <Text style={[Typography.placeholder]}>
@@ -307,7 +322,12 @@ export const Registration = props => {
                 {value2 == null ? (
                   <View />
                 ) : (
-                  <View style={Platform.OS == 'ios' ? {zIndex: 100} : {}}>
+                  <View
+                    style={
+                      Platform.OS == 'ios'
+                        ? {zIndex: 100, top: hp('8%')}
+                        : {top: hp('8%')}
+                    }>
                     <View style={{top: hp('0%'), left: wp('8%')}}>
                       <Text style={[Typography.placeholder]}>
                         {Strings.roleInCompany}
@@ -357,14 +377,16 @@ export const Registration = props => {
                   placeholder="######"
                   state={companyRegistrationNum}
                   setState={setCompanyRegistrationNum}
+                  top={hp('9%')}
                 />
                 <Input
                   name={Strings.companyAddress}
                   placeholder="eg. T1 Bundusan, Penampang Sabah"
                   state={companyAddress}
                   setState={setCompanyAddress}
+                  top={hp('11%')}
                 />
-                <TouchableOpacity
+                <BlueButton
                   onPress={async () => {
                     if (
                       value == null ||
@@ -378,14 +400,10 @@ export const Registration = props => {
                       items == null ||
                       items2 == null
                     ) {
-                      console.log('error');
+                      log('error');
                       setUnsuccessfulModal(true);
                       setErrorText('Please fill in all empty spaces!');
-                    } else if (
-                      !phone.startsWith('+') ||
-                      !phone.length > 5 ||
-                      isNaN(phone.slice(1))
-                    ) {
+                    } else if (!phone.length > 5 || isNaN(phone)) {
                       setUnsuccessfulModal(true);
                       setErrorText(
                         'Sorry you have entered an invalid phone number. Please try again.',
@@ -406,42 +424,17 @@ export const Registration = props => {
                         'Sorry you have entered an invalid password. Password must contain at least 1 number.',
                       );
                     } else {
-                      console.log('succes');
+                      log('succes');
                       signUp();
                     }
                   }}
-                  style={{
-                    top: hp('5%'),
-                    backgroundColor: Colors.LIGHT_BLUE,
-                    width: wp('30%'),
-                    height: hp('5%'),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    borderRadius: 10,
-                    flexDirection: 'row',
-                    shadowOffset: {
-                      width: 1,
-                      height: 2,
-                    },
-                    shadowOpacity: 2,
-                    shadowRadius: 3,
-                    shadowColor: 'grey',
-                    elevation: 3,
-                  }}>
-                  <Text
-                    style={[
-                      Typography.large,
-                      {position: 'absolute', left: wp('3%')},
-                    ]}>
-                    {Strings.next}
-                  </Text>
-                  <Icon
-                    name="arrow-forward-outline"
-                    size={wp('6%')}
-                    style={{left: wp('10%')}}
-                  />
-                </TouchableOpacity>
+                  text={Strings.next}
+                  font={Typography.large}
+                  borderRadius={10}
+                  icon="arrow-forward-outline"
+                  offsetCenter={wp('5%')}
+                  top={hp('14%')}
+                />
               </View>
               <Modal
                 isVisible={createAccountButton}
@@ -463,7 +456,8 @@ export const Registration = props => {
           </ScrollView>
         </View>
       </SafeAreaView>
-    </KeyboardAvoidingView>
+      {/* //</KeyboardAvoidingView> */}
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -526,7 +520,7 @@ const Input = props => {
     <View
       style={{
         left: wp('8%'),
-        top: hp('0%'),
+        top: props.top,
       }}>
       <Text
         style={[
@@ -535,26 +529,56 @@ const Input = props => {
         ]}>
         {props.name}
       </Text>
-      <TextInput
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        placeholderTextColor={Colors.GRAY_DARK}
-        keyboardType="default"
-        placeholder={props.placeholder}
-        underlineColorAndroid="transparent"
-        onChangeText={item => props.setState(item)}
-        value={props.state}
-        style={{
-          width: wp('80%'),
-          height: hp('6%'),
-          bottom: hp('1%'),
-          color: 'black',
-          borderBottomColor: 'transparent',
-        }}></TextInput>
       <View
         style={{
-          bottom: hp('2.5%'),
-          width: wp('85%'),
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: wp('80%'),
+          height: hp('4%'),
+        }}>
+        {props.text ? (
+          <View
+            style={{
+              alignItems: 'center',
+              height: hp('4%'),
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={[
+                Typography.small,
+                {
+                  top: hp('0.15%'),
+                  color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
+                },
+              ]}>
+              +60
+            </Text>
+          </View>
+        ) : null}
+        <TextInput
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          placeholderTextColor={Colors.GRAY_DARK}
+          keyboardType="default"
+          placeholder={props.placeholder}
+          underlineColorAndroid="transparent"
+          onChangeText={item => props.setState(item)}
+          value={props.state}
+          style={{
+            paddingVertical: 0,
+
+            left: props.left || 0,
+            width: wp('80%'),
+            height: hp('4%'),
+            bottom: hp('0%'),
+            color: 'black',
+            borderBottomColor: 'transparent',
+          }}></TextInput>
+      </View>
+      <View
+        style={{
+          bottom: hp('0%'),
+          width: wp('80%'),
           borderBottomWidth: 1,
           borderColor: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
         }}></View>

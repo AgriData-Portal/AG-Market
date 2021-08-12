@@ -27,13 +27,13 @@ import {
 } from '../../../../graphql/mutations';
 import {API} from 'aws-amplify';
 import Strings from '_utils';
-import {goodsTaskForRetailerByDate} from '../../../../graphql/queries';
+import {
+  goodsTaskForRetailerByDate,
+  getSupplierCompany,
+} from '../../../../graphql/queries';
 import {Rating} from 'react-native-ratings';
-
-const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
-  return now;
-};
+import {log} from '_utils';
+import {BlueButton} from '_components';
 
 //Retailer receive
 const ReceiveModal = props => {
@@ -46,13 +46,39 @@ const ReceiveModal = props => {
     sum = sum + product;
   });
   const received = async () => {
+    var mostRecentInvoiceNum = null;
+    try {
+      const response = await API.graphql({
+        query: getSupplierCompany,
+        variables: {id: props.supplierID},
+      });
+      mostRecentInvoiceNum =
+        response.data.getSupplierCompany.mostRecentInvoiceNumber;
+      log('newnum: ' + mostRecentInvoiceNum);
+      if (mostRecentInvoiceNum) {
+        if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(4, 11)) {
+          var number = parseInt(mostRecentInvoiceNum.slice(12, 16));
+          var numberString = (number + 1).toString().padStart(4, '0');
+          mostRecentInvoiceNum =
+            'INV-' + dayjs().format('YYYY-MM-') + numberString;
+        } else {
+          mostRecentInvoiceNum = 'INV-' + dayjs().format('YYYY-MM-') + '0001';
+        }
+      } else {
+        mostRecentInvoiceNum = 'INV-' + dayjs().format('YYYY-MM-') + '0001';
+      }
+      log('updatednum: ' + mostRecentInvoiceNum);
+    } catch (e) {
+      log(e);
+    }
     var input = {
-      id: props.taskID,
+      id: props.id,
+      trackingNum: mostRecentInvoiceNum,
       retailerID: props.retailerID,
       supplierID: props.supplierID,
       paid: false,
       amount: sum,
-      payBefore: dayjs().add(8, 'hour').add(30, 'day').format('DD-MM-YYYY'),
+      payBefore: dayjs().add(30, 'day').format('DD MMM YYYY'),
       receipt: null,
     };
     try {
@@ -60,12 +86,13 @@ const ReceiveModal = props => {
         query: createPaymentTaskBetweenRandS,
         variables: {input: input},
       });
-      console.log('payment success!');
+      log('payment success!');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     var input = {
-      id: props.taskID,
+      id: props.id,
+      trackingNum: mostRecentInvoiceNum,
       retailerID: props.retailerID,
       supplierID: props.supplierID,
       items: props.goods,
@@ -78,9 +105,24 @@ const ReceiveModal = props => {
         query: createInvoiceBetweenRandS,
         variables: {input: input},
       });
-      console.log('success!');
+      log('success!');
     } catch (e) {
-      console.log(e);
+      log(e);
+    }
+
+    try {
+      const supplierCompanyUpdate = await API.graphql({
+        query: updateSupplierCompany,
+        variables: {
+          input: {
+            id: props.supplierID,
+            mostRecentInvoiceNumber: mostRecentInvoiceNum,
+          },
+        },
+      });
+      log('update success');
+    } catch (e) {
+      log(e);
     }
     try {
       const invoiceResponse = await API.graphql({
@@ -95,9 +137,9 @@ const ReceiveModal = props => {
       });
       props.setReceiveTask(tempList);
       setRatingModal(true);
-      console.log('deleted!');
+      log('deleted!');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   return (
@@ -116,6 +158,7 @@ const ReceiveModal = props => {
         }}>
         <CloseButton setModal={props.setReceiveModal} />
       </View>
+
       <Text
         style={[
           Typography.normal,
@@ -125,20 +168,19 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {Strings.orderCreated}
+        {Strings.order}
+
+        <Text
+          style={[
+            Typography.placeholder,
+            {
+              fontStyle: 'italic',
+            },
+          ]}>
+          {'  '}#{props.trackingNum}
+        </Text>
       </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            right: wp('7%'),
-            top: hp('7%'),
-            fontStyle: 'italic',
-          },
-        ]}>
-        {Strings.order} #{props.taskID.slice(0, 6)}
-      </Text>
+
       <Text
         style={[
           Typography.header,
@@ -148,7 +190,7 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).add(8, 'hour').format('DD MMMM, YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -339,7 +381,8 @@ const Receive = props => {
       }}>
       <View
         style={{
-          backgroundColor: Colors.GRAY_LIGHT,
+          backgroundColor:
+            props.status == 'sent' ? '#d4f8d4' : Colors.GRAY_LIGHT,
           borderRadius: 10,
           flexDirection: 'row',
           width: wp('85%'),
@@ -362,24 +405,15 @@ const Receive = props => {
           }}></View>
         <View
           style={{
-            backgroundColor: Colors.GRAY_LIGHT,
+            backgroundColor:
+              props.status == 'sent' ? '#d4f8d4' : Colors.GRAY_LIGHT,
             height: hp('12%'),
             width: wp('24%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <View style={{bottom: hp('0.5%')}}>
-            {props.status == 'sent' ? (
-              <Icon
-                name="cube-outline"
-                size={wp('11%')}
-                color={Colors.LIME_GREEN}
-              />
-            ) : props.status == 'received' ? (
-              <Icon name="cube-outline" size={wp('11%')} color="gold" />
-            ) : (
-              <Icon name="cube-outline" size={wp('11%')} />
-            )}
+            <Icon name="cube-outline" size={wp('11%')} color="black" />
           </View>
         </View>
         <Text
@@ -387,12 +421,19 @@ const Receive = props => {
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
-              top: hp('3%'),
+              top: hp('1.5%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
           {props.supplier.name}
+        </Text>
+        <Text
+          style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('4%'), position: 'absolute'},
+          ]}>
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -429,7 +470,7 @@ const Receive = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).add(8, 'hours').format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveModal}>
@@ -442,6 +483,7 @@ const Receive = props => {
           retailerID={props.retailerID}
           supplierID={props.supplierID}
           status={props.status}
+          trackingNum={props.trackingNum}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
           user={props.user}
@@ -457,7 +499,7 @@ const Receive = props => {
 
 export const ReceiveList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  console.log('render flatlist');
+  log('render flatlist');
   return (
     <View>
       <FlatList
@@ -478,13 +520,13 @@ export const ReceiveList = props => {
                     sortDirection: 'ASC',
                   },
                 });
-                console.log(task.data.goodsTaskForRetailerByDate.items);
+
                 props.setReceiveTask(
                   task.data.goodsTaskForRetailerByDate.items,
                 );
-                console.log('goods task');
+                log('goods task');
               } catch (e) {
-                console.log(e);
+                log(e);
               }
               if (props.trigger) {
                 props.setTrigger(false);
@@ -496,7 +538,7 @@ export const ReceiveList = props => {
           />
         }
         renderItem={({item}) => {
-          console.log(item.supplier);
+          log(item);
           if (item.status == 'received') {
             return <View />;
           } else {
@@ -512,6 +554,7 @@ export const ReceiveList = props => {
                 taskID={item.id}
                 status={item.status}
                 user={props.user}
+                trackingNum={item.trackingNum}
                 trigger={props.trigger}
                 setTrigger={props.setTrigger}
                 receiveTask={props.receiveTask}
@@ -542,7 +585,7 @@ const ProductList = props => {
         numColumns={1}
         data={props.data}
         keyExtractor={item => {
-          console.log('productss;' + item);
+          log('productss;' + item);
           return (
             item.name + item.grade + item.variety + item.quantity.toString()
           );
@@ -636,7 +679,7 @@ const Product = props => {
   );
 };
 
-const RatingModal = props => {
+export const RatingModal = props => {
   const [rating, setRating] = useState(2.5);
 
   const updateRating = async () => {
@@ -658,7 +701,7 @@ const RatingModal = props => {
           currentRating: newRating,
         };
       }
-      console.log(props.supplier, sendRating);
+      log(props.supplier, sendRating);
       const update = await API.graphql({
         query: updateSupplierCompany,
         variables: {
@@ -669,10 +712,10 @@ const RatingModal = props => {
         },
       });
       props.setRatingModal(false);
-      console.log(rating);
+      log(rating);
       props.setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     if (props.trigger) {
       props.setTrigger(false);
@@ -681,10 +724,11 @@ const RatingModal = props => {
     }
   };
   return (
+    // TRANSLATION ratingsmodal
     <View
       style={{
         width: wp('80%'),
-        height: wp('70%'),
+        minHeight: hp('40%'),
         backgroundColor: Colors.PALE_GREEN,
         borderRadius: 10,
         alignSelf: 'center',
@@ -693,18 +737,12 @@ const RatingModal = props => {
         <Text
           style={[
             Typography.large,
-            {
-              justifyContent: 'center',
-              alignSelf: 'center',
-              top: hp('5%'),
-              marginRight: wp('5%'),
-              marginLeft: wp('5%'),
-            },
+            {textAlign: 'center', top: hp('5%'), marginHorizontal: wp('5%')},
           ]}>
           Transaction completed. Please give the supplier a rating.
         </Text>
       </View>
-      <View style={{top: hp('4%')}}>
+      <View style={{top: hp('5%')}}>
         <Rating
           showRating
           count={5}
@@ -715,29 +753,13 @@ const RatingModal = props => {
           tintColor={Colors.PALE_GREEN}
         />
       </View>
-      <TouchableOpacity
-        onPress={() => [updateRating()]}
-        style={{
-          backgroundColor: Colors.LIGHT_BLUE,
-          width: wp('30%'),
-          height: hp('5%'),
-          alignSelf: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-          elevation: 5,
-          position: 'absolute',
-          bottom: hp('5%'),
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-        }}>
-        <Text style={[Typography.normal, {}]}>Submit rating</Text>
-      </TouchableOpacity>
+      <BlueButton
+        onPress={() => updateRating()}
+        text={'Submit Rating'}
+        font={Typography.normal}
+        borderRadius={10}
+        top={hp('8%')}
+      />
     </View>
   );
 };

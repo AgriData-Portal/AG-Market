@@ -22,15 +22,25 @@ import {
   invoiceForFarmerByDate,
 } from '../../graphql/queries';
 import Strings from '_utils';
+import {log} from '_utils';
 
 export const Orders = props => {
   const [sortModal, setSortModal] = useState(false);
   const [invoiceList, setInvoiceList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [trigger, setTrigger] = useState(false);
+  const [refresh, setRefresh] = useState(0);
+  const [nextToken, setNextToken] = useState(null);
 
   useEffect(() => {
     getInvoice();
   }, []);
+
+  useEffect(() => {
+    if (nextToken != null) {
+      getMoreInvoice();
+    }
+  }, [refresh]);
 
   const getInvoice = async () => {
     if (props.user.supplierCompanyID != null) {
@@ -39,15 +49,17 @@ export const Orders = props => {
           query: invoiceRetailerForSupplierByDate,
           variables: {
             supplierID: props.user.supplierCompanyID,
-            sortDirection: 'ASC',
+            sortDirection: 'DESC',
+            limit: 20,
           },
         });
-        console.log(invoice.data.invoiceRetailerForSupplierByDate.items);
+        log(invoice.data.invoiceRetailerForSupplierByDate.items);
+        setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
         setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
         setLoading(false);
-        console.log('supplierCompanyInvoices');
+        log('supplierCompanyInvoices');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else if (props.user.retailerCompanyID != null) {
       try {
@@ -55,15 +67,17 @@ export const Orders = props => {
           query: invoiceForRetailerByDate,
           variables: {
             retailerID: props.user.retailerCompanyID,
-            sortDirection: 'ASC',
+            sortDirection: 'DESC',
+            limit: 20,
           },
         });
-        console.log(invoice.data.invoiceForRetailerByDate.items);
+        log(invoice.data.invoiceForRetailerByDate.items);
+        setNextToken(invoice.data.invoiceForRetailerByDate.nextToken);
         setInvoiceList(invoice.data.invoiceForRetailerByDate.items);
         setLoading(false);
-        console.log('retailerCompanyInvoices');
+        log('retailerCompanyInvoices');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     } else {
       try {
@@ -71,18 +85,84 @@ export const Orders = props => {
           query: invoiceForFarmerByDate,
           variables: {
             farmerID: props.user.farmerCompanyID,
-            sortDirection: 'ASC',
+            sortDirection: 'DESC',
+            limit: 20,
           },
         });
-        console.log(invoice.data.invoiceForFarmerByDate.items);
+        log(invoice.data.invoiceForFarmerByDate.items);
         setInvoiceList(invoice.data.invoiceForFarmerByDate.items);
+        setNextToken(invoice.data.invoiceForFarmerByDate.nextToken);
         setLoading(false);
-        console.log('farmerCompanyInvoices');
+        log('farmerCompanyInvoices');
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     }
-    console.log('first run');
+    log('first run');
+  };
+
+  const getMoreInvoice = async () => {
+    if (props.user.supplierCompanyID != null) {
+      try {
+        const invoice = await API.graphql({
+          query: invoiceRetailerForSupplierByDate,
+          variables: {
+            supplierID: props.user.supplierCompanyID,
+            sortDirection: 'DESC',
+            limit: 20,
+            nextToken: nextToken,
+          },
+        });
+        log(invoice.data.invoiceRetailerForSupplierByDate.items);
+        setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
+        setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
+        setLoading(false);
+        log('supplierCompanyInvoices');
+      } catch (e) {
+        log(e);
+      }
+    } else if (props.user.retailerCompanyID != null) {
+      try {
+        const invoice = await API.graphql({
+          query: invoiceForRetailerByDate,
+          variables: {
+            retailerID: props.user.retailerCompanyID,
+            sortDirection: 'DESC',
+            limit: 20,
+            nextToken: nextToken,
+          },
+        });
+        log(invoice.data.invoiceForRetailerByDate.items);
+        setNextToken(invoice.data.invoiceForRetailerByDate.nextToken);
+        setInvoiceList(oldInvoice =>
+          oldInvoice.concat(invoice.data.invoiceForRetailerByDate.items),
+        );
+        setLoading(false);
+        log('retailerCompanyInvoices');
+      } catch (e) {
+        log(e);
+      }
+    } else {
+      try {
+        const invoice = await API.graphql({
+          query: invoiceForFarmerByDate,
+          variables: {
+            farmerID: props.user.farmerCompanyID,
+            sortDirection: 'DESC',
+            limit: 20,
+            nextToken: nextToken,
+          },
+        });
+        log(invoice.data.invoiceForFarmerByDate.items);
+        setInvoiceList(invoice.data.invoiceForFarmerByDate.items);
+        setNextToken(invoice.data.invoiceForFarmerByDate.nextToken);
+        setLoading(false);
+        log('farmerCompanyInvoices');
+      } catch (e) {
+        log(e);
+      }
+    }
+    log('first run');
   };
   return (
     <SafeAreaView
@@ -95,24 +175,33 @@ export const Orders = props => {
         style={{
           width: wp('80%'),
           height: hp('5%'),
-          top: hp('3%'),
+          top: hp('0%'),
           flexDirection: 'row',
         }}>
         <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
           {Strings.results}
         </Text>
-        <TouchableOpacity
+        {/* TODO code for sort modal */}
+        {/* <TouchableOpacity
           onPress={() => setSortModal(true)}
           style={{position: 'absolute', right: wp('0%')}}>
           <Icon name="funnel-outline" size={wp('5%')}></Icon>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{
-          top: hp('5%'),
-          height: hp('64%'),
+          top: hp('0%'),
+          height: hp('72%'),
         }}>
-        <OrderList invoiceList={invoiceList} user={props.user} />
+        <OrderList
+          invoiceList={invoiceList}
+          user={props.user}
+          setInvoiceList={setInvoiceList}
+          setLoading={setLoading}
+          trigger={trigger}
+          setTrigger={setTrigger}
+          setRefresh={setRefresh}
+        />
       </View>
 
       <Modal

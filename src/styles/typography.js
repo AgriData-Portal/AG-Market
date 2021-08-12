@@ -26,9 +26,9 @@ const divide = num => {
 const byWidth = num => {
   var width = Dimensions.get('screen').width;
   var height = Dimensions.get('screen').height;
-  console.log(Math.sqrt(Math.log10(height / width)));
+  // console.log(Math.sqrt(Math.log10(height / width)));
   var aspectRatioLog = Math.sqrt(Math.log10(height / width));
-  console.log(PixelRatio.get());
+  // console.log(PixelRatio.get());
   var factor = null;
   factor = 1.7 / aspectRatioLog;
   // if (PixelRatio.get() == 1) {
@@ -103,6 +103,12 @@ export const welcome = {
 export const large = {
   fontSize: byWidth(15), //RFPercentage(divide(15)),
   fontFamily: 'Poppins-SemiBold',
+  color: '#444443',
+};
+
+export const normalBold = {
+  fontSize: byWidth(12), //RFPercentage(divide(15)),
+  fontFamily: 'Poppins-Bold',
   color: '#444443',
 };
 

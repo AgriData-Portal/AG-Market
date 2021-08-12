@@ -38,7 +38,14 @@ export {AccountsNavigation};
 
 const AccountsNavigation = props => {
   return (
-    <AppStack.Navigator>
+    <AppStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          height: Platform.OS === 'ios' ? hp('9.5%') : hp('8%'),
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+      }}>
       <AppStack.Screen
         name={Strings.inbox}
         options={({route, navigation}) => ({
@@ -91,6 +98,7 @@ const TabbedNavigator = props => {
   return (
     <TabStack.Navigator
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         style: {
           position: 'absolute',
           backgroundColor: Colors.PALE_GREEN,

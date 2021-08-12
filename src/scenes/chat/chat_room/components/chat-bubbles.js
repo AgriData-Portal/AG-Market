@@ -3,16 +3,14 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  RefreshControl,
   FlatList,
   Text,
   Image,
-  ScrollView,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
+
 import {API, Storage} from 'aws-amplify';
 
 import {
@@ -22,6 +20,8 @@ import {
 import Strings from '_utils';
 import {OrderQuotationModal} from './order-quotation';
 import {PurchaseOrder} from './purchase-order';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 var dayjs = require('dayjs');
 
@@ -29,146 +29,127 @@ const ChatBubble = props => {
   const [orderQuotationModal, setOrderQuotationModal] = useState(false);
   const [purchaseOrderModal, setPurchaseOrderModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
-  const getInitials = name => {
-    if (name) {
-      let initials = name.split(' ');
+  const [nameColour, setNameColour] = useState('black');
 
-      if (initials.length > 1) {
-        initials = initials.shift().charAt(0) + initials.pop().charAt(0);
-      } else {
-        initials = name.substring(0, 2);
+  const mapColour = () => {
+    var colourObject = props.colourID;
+    var counter = 0;
+
+    //get the user id
+    //check whether user id is a value in the JSON
+    //if yes, get the key of that value
+    //if no
+
+    if (props.senderID != props.userID)
+      try {
+        for (let i = 0; i < colourObject.length; i++) {
+          counter = counter + 1;
+          if (colourObject[i].id == props.senderID) {
+            setNameColour(colourObject[i].colour);
+            return false;
+          } else if (colourObject[i].id == '') {
+            setNameColour(colourObject[i].colour);
+            colourObject[i].id = props.senderID;
+            props.setColourID(colourObject);
+            return false;
+          }
+        }
+      } catch (e) {
+        log(e);
       }
-
-      return initials.toUpperCase();
-    } else {
-      return null;
-    }
   };
-
-  const createdAt = dayjs(props.createdAt).add(8, 'hour').format('HH:mm D/M');
+  useEffect(() => mapColour(), []);
+  const createdAt = dayjs(props.createdAt).format('HH:mm D/M');
   const isMyMessage = () => {
     if (props.senderID == props.userID) return true;
     else return false;
   };
-  const contentType = props.contentType;
-  if (contentType == 'text') {
-    return (
-      <View style={{margin: wp('2%')}}>
-        {!isMyMessage() && (
-          <View
-            style={{
-              top: hp('3%'),
-              borderColor: 'white',
-              borderWidth: 0.2,
-              width: wp('8%'),
-              height: wp('8%'),
-              position: 'absolute',
-              borderRadius: 100,
-              justifyContent: 'center',
-              backgroundColor: Colors.GRAY_WHITE,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
 
-              elevation: 5,
+  if (props.contentType == 'text') {
+    return (
+      <View style={{width: wp('100%')}}>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
             }}>
-            <Text
-              style={{
-                color: Colors.GRAY_DARK,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-              {getInitials(props.sender)}
-            </Text>
-          </View>
+            {props.sender}
+          </Text>
         )}
         <View
           style={{
-            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_LIGHT,
-            marginLeft: isMyMessage() ? wp('13%') : wp('2%'),
-
-            borderRadius: 15,
-            left: isMyMessage() ? wp('20%') : wp('9%'),
-            width: isMyMessage() ? wp('60%') : wp('50%'),
-          }}>
-          <View style={{marginTop: hp('2%')}}>
-            <Text
-              style={[Typography.normal, {margin: wp('1%'), left: wp('2%')}]}>
-              {props.content}
-            </Text>
-            <Text
-              style={[
-                Typography.small,
-                {alignSelf: 'flex-end', right: wp('3%')},
-              ]}>
-              {createdAt}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  } else if (contentType == 'inquiry') {
-    var content = props.content.split('+');
-    return (
-      <View>
-        <View>
-          {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('16%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )}
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            marginTop: hp('1%'),
-            width: wp('45%'),
-            height: hp('19%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
             borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
+            justifyContent: 'space-evenly',
+            minWidth: wp('20%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
           <Text
             style={[
               Typography.normal,
               {
-                top: hp('0%'),
-                textAlign: 'center',
+                alignSelf: 'flex-start',
+                maxWidth: wp('60%'),
+              },
+            ]}>
+            {props.content}
+          </Text>
+          <Text
+            style={[
+              Typography.small,
+              {
+                alignSelf: 'flex-end',
+                marginLeft: wp('10%'),
+              },
+            ]}>
+            {createdAt}
+          </Text>
+        </View>
+      </View>
+    );
+  } else if (props.contentType == 'inquiry') {
+    var content = props.content.split('+');
+    return (
+      <View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
+        <View
+          style={{
+            justifyContent: 'space-evenly',
+            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
+            width: wp('45%'),
+            height: hp('19%'),
+            borderRadius: 10,
+            minWidth: wp('20%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
+          }}>
+          <Text
+            style={[
+              Typography.normal,
+              {
+                alignSelf: 'center',
               },
             ]}>
             {content[0]}
@@ -176,17 +157,16 @@ const ChatBubble = props => {
           <View
             style={{
               backgroundColor: Colors.GRAY_LIGHT,
-              width: wp('40%'),
+              minWidth: wp('30%'),
               height: hp('11%'),
               alignItems: 'center',
-              top: hp('0%'),
               borderRadius: 10,
             }}>
             <Text
               style={[
                 Typography.small,
                 {
-                  top: hp('1%'),
+                  maxWidth: wp('60%'),
                 },
               ]}>
               {Strings.grade}: {content[3]}
@@ -204,7 +184,7 @@ const ChatBubble = props => {
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
+                marginLeft: wp('10%'),
                 top: hp('1%'),
               },
             ]}>
@@ -213,89 +193,49 @@ const ChatBubble = props => {
         </View>
       </View>
     );
-  } else if (contentType == 'purchaseorder') {
+  } else if (props.contentType.slice(0, 3) == 'P.O') {
     return (
       <View>
-        <View>
-          {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('8%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
             alignItems: 'center',
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            width: wp('50%'),
-            height: hp('13%'),
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            borderRadius: 15,
-            marginTop: hp('1%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('1%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
+            marginVertical: hp('1%'),
           }}>
           <Text style={[Typography.large]}>{Strings.purchaseOrder}</Text>
-
-          <TouchableOpacity
+          <Text style={Typography.normal}>{props.contentType}</Text>
+          <BlueButton
             onPress={() => setPurchaseOrderModal(true)}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 10,
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('33%'),
-              height: hp('3%'),
-              top: hp('1%'),
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
-            }}>
-            <Text style={[Typography.small]}>{Strings.inspect}</Text>
-          </TouchableOpacity>
-
+            text={Strings.inspect}
+            font={Typography.small}
+            minWidth={wp('33%')}
+            top={hp('0%')}
+            borderRadius={10}
+          />
           <Text
             style={[
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
-                top: hp('1.5%'),
+                marginTop: hp('1%'),
               },
             ]}>
             {createdAt}
@@ -303,6 +243,9 @@ const ChatBubble = props => {
         </View>
         <Modal isVisible={purchaseOrderModal}>
           <PurchaseOrder
+            id={props.id}
+            content={props.content}
+            contentType={props.contentType}
             chatName={props.chatName}
             type={props.type}
             setPurchaseOrderModal={setPurchaseOrderModal}
@@ -314,89 +257,67 @@ const ChatBubble = props => {
         </Modal>
       </View>
     );
-  } else if (contentType == 'quotation') {
+  } else if (props.contentType.slice(0, 3) == 'QUO') {
+    //DESIGN the colour and position of indicator for whether the quotation has been accepted, is new or rejected
     return (
       <View>
-        <View>
-          {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('8%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
             alignItems: 'center',
-            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            width: wp('50%'),
-            height: hp('13%'),
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            borderRadius: 15,
-            marginTop: hp('1%'),
+            backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_DARK,
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('1%'),
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
+            marginVertical: hp('1%'),
           }}>
-          <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
-
-          <TouchableOpacity
-            onPress={() => setOrderQuotationModal(true)}
+          <View
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 10,
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('33%'),
-              height: hp('3%'),
-              top: hp('1%'),
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
+              position: 'absolute',
+              right: 0,
+              height: hp('2%'),
+              width: hp('2%'),
+              borderRadius: 100,
+              backgroundColor: props.content.includes('Accepted')
+                ? Colors.LIME_GREEN
+                : props.content.includes('Declined')
+                ? Colors.FAIL
+                : Colors.GRAY_LIGHT,
+            }}
+          />
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
+          </View>
 
-              elevation: 5,
-            }}>
-            <Text style={[Typography.small]}>{Strings.inspect}</Text>
-          </TouchableOpacity>
-
+          {/* DESIGN decide how to display the PO and Quotation chat bubble with the newly introduced id*/}
+          <Text style={Typography.normal}>{props.contentType}</Text>
+          <BlueButton
+            onPress={() => setOrderQuotationModal(true)}
+            text={Strings.inspect}
+            font={Typography.small}
+            minWidth={wp('33%')}
+            borderRadius={10}
+          />
           <Text
             style={[
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
-                top: hp('1.5%'),
+                marginTop: hp('1%'),
               },
             ]}>
             {createdAt}
@@ -406,16 +327,25 @@ const ChatBubble = props => {
           isVisible={orderQuotationModal}
           onBackdropPress={() => setOrderQuotationModal(false)}>
           <OrderQuotationModal
+            id={props.id}
             chatName={props.chatName}
+            content={props.content}
             type={props.type}
+            sender={props.sender}
+            senderID={props.senderID}
+            contentType={props.contentType}
+            createdAt={props.createdAt}
             userID={props.userID}
+            messages={props.messages}
+            setMessages={props.setMessages}
             userName={props.userName}
             setOrderQuotationModal={setOrderQuotationModal}
             chatGroupID={props.chatGroupID}></OrderQuotationModal>
         </Modal>
       </View>
     );
-  } else if (contentType == 'image') {
+  } //BUG image not appearing properly on click
+  else if (props.contentType == 'image') {
     const [imageSource, setImageSource] = useState('');
     const getImage = async () => {
       try {
@@ -424,65 +354,41 @@ const ChatBubble = props => {
           uri: imageURL,
         });
       } catch (e) {
-        console.log(e);
+        log(e);
       }
     };
     useEffect(() => {
       getImage();
-      console.log('Image...');
     }, []);
     return (
       <View>
-        <View>
-          {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('8%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            width: wp('50%'),
-            height: hp('15%'),
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            borderRadius: 15,
-            marginTop: hp('1%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
+            justifyContent: 'space-evenly',
+            borderRadius: 10,
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
           <TouchableOpacity
             style={{
-              height: wp('20%'),
-              width: wp('20%'),
+              height: wp('40%'),
+              width: wp('40%'),
             }}
             onPress={() => {
               setImageModal(true);
@@ -490,11 +396,9 @@ const ChatBubble = props => {
             <Image
               resizeMode="cover"
               style={{
-                height: wp('20%'),
-                width: wp('20%'),
-                position: 'absolute',
-                top: hp('1%'),
-                left: wp('5%'),
+                height: wp('40%'),
+                width: wp('40%'),
+                alignSelf: 'center',
               }}
               source={imageSource}
             />
@@ -503,9 +407,8 @@ const ChatBubble = props => {
             style={[
               Typography.small,
               {
-                right: wp('2%'),
-                bottom: hp('0.5%'),
-                position: 'absolute',
+                alignSelf: 'flex-end',
+                marginTop: wp('2%'),
               },
             ]}>
             {createdAt}
@@ -528,66 +431,42 @@ const ChatBubble = props => {
         </Modal>
       </View>
     );
-  } else if (contentType == 'store') {
+  } else if (props.contentType == 'store') {
     const storeDetails = props.content.split('+');
-    console.log(storeDetails);
+
     return (
       <View>
-        <View>
-          {!isMyMessage() && (
-            <View
-              style={{
-                left: wp('1%'),
-                top: hp('16%'),
-                borderColor: 'white',
-                borderWidth: 0.2,
-                width: wp('8%'),
-                height: wp('8%'),
-                position: 'absolute',
-                borderRadius: 100,
-                justifyContent: 'center',
-                backgroundColor: Colors.GRAY_WHITE,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-              }}>
-              <Text
-                style={{
-                  color: Colors.GRAY_DARK,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                {getInitials(props.sender)}
-              </Text>
-            </View>
-          )}
-        </View>
+        {!isMyMessage() && (
+          <Text
+            style={{
+              color: nameColour,
+              fontWeight: 'bold',
+              textAlign: 'left',
+              left: isMyMessage() ? wp('-4%') : wp('4%'),
+              top: hp('1%'),
+            }}>
+            {props.sender}
+          </Text>
+        )}
         <View
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
             backgroundColor: isMyMessage() ? '#DCF8C5' : Colors.GRAY_MEDIUM,
-            marginLeft: isMyMessage() ? wp('40%') : 0,
-            marginRight: isMyMessage() ? 0 : wp('33%'),
-            left: isMyMessage() ? wp('5%') : wp('12%'),
-            marginTop: hp('1%'),
-            width: wp('45%'),
+            left: isMyMessage() ? wp('-4%') : wp('4%'),
+            minWidth: wp('45%'),
             height: hp('19%'),
             borderRadius: 10,
+            paddingHorizontal: wp('4%'),
+            paddingVertical: hp('2%'),
+            marginVertical: hp('1%'),
+            justifyContent: 'space-evenly',
+            alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
           <Text
             style={[
               Typography.small,
               {
-                top: hp('-1%'),
                 textAlign: 'center',
-                width: wp('43%'),
+                width: wp('40%'),
               },
             ]}>
             Come and view my store by pressing the image!
@@ -601,6 +480,7 @@ const ChatBubble = props => {
                   height: hp('6%'),
                   resizeMode: 'contain',
                   top: hp('1%'),
+                  alignSelf: 'center',
                 }}
               />
             </View>
@@ -619,6 +499,7 @@ const ChatBubble = props => {
                   height: hp('6%'),
                   resizeMode: 'contain',
                   top: hp('1%'),
+                  alignSelf: 'center',
                 }}
               />
             </TouchableOpacity>
@@ -629,8 +510,7 @@ const ChatBubble = props => {
               Typography.small,
               {
                 alignSelf: 'flex-end',
-                right: wp('3%'),
-                top: hp('2%'),
+                marginTop: hp('2.5%'),
               },
             ]}>
             {createdAt}
@@ -642,28 +522,41 @@ const ChatBubble = props => {
 };
 
 export const ChatBubbleList = props => {
+  //TODO build a store for containing all the messages
+  const [trigger, setTrigger] = useState(false);
+  const [colourID, setColourID] = useState([
+    {colour: '#D25BD2', id: ''},
+    {colour: '#D25B7B', id: ''},
+    {colour: '#E0912C', id: ''},
+    {colour: '#9CD25B', id: ''},
+    {colour: '#D2CE5B', id: ''},
+    {colour: '#FA7D7D', id: ''},
+    {colour: '#765BD2', id: ''},
+    {colour: '#5BB9D2', id: ''},
+  ]);
   return (
     <View>
       <FlatList
         inverted={true}
         keyExtractor={item => item.id}
         data={props.data}
+        initialNumToRender={10}
         numColumns={1}
         onEndReached={() => {
           props.setRefresh(state => state + 1);
-          console.log('endReached');
+          log('endReached');
         }}
         onEndReachedThreshold={0.6}
-        renderItem={item => {
+        renderItem={({item}) => {
           return (
             <ChatBubble
-              sender={item.item.sender}
-              content={item.item.content}
-              senderID={item.item.senderID}
-              createdAt={item.item.createdAt}
+              id={item.id}
+              sender={item.sender}
+              content={item.content}
+              senderID={item.senderID}
+              createdAt={item.createdAt}
               userID={props.userID}
-              contentType={item.item.type}
-              contentID={item.item.uniqueContentID}
+              contentType={item.type}
               chatName={props.chatName}
               chatGroupID={props.chatGroupID}
               type={props.type}
@@ -671,6 +564,8 @@ export const ChatBubbleList = props => {
               setMessages={props.setMessages}
               messages={props.messages}
               navigation={props.navigation}
+              colourID={colourID}
+              setColourID={setColourID}
             />
           );
         }}

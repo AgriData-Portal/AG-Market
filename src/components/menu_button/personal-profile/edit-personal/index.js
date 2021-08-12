@@ -28,13 +28,15 @@ import {
 import {API, Auth} from 'aws-amplify';
 import Strings from '_utils';
 import {updateUser} from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const EditPersonal = props => {
   const [imageSource, setImageSource] = useState(null);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [name, setName] = useState(props.user.name);
-  const [email, setEmail] = useState(props.route.params.email);
+  const [email, setEmail] = useState(props.user.email);
   const [number, setNumber] = useState(props.user.contactNumber);
   const [errorText, setErrorText] = useState('');
 
@@ -46,17 +48,17 @@ export const EditPersonal = props => {
     };
 
     launchImageLibrary(options, response => {
-      console.log({response});
+      log({response});
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         let photo = {uri: response.uri};
-        console.log({photo});
-        console.log(response.uri);
+        log({photo});
+        log(response.uri);
         setImageSource(response.uri);
       }
     });
@@ -70,26 +72,23 @@ export const EditPersonal = props => {
           input: {
             id: props.user.id,
             name: name,
-            contactNumber: number,
+            email: email,
           },
         },
       });
-      console.log('success');
-      var temp = props.user;
-      temp.name = name;
-      temp.contactNumber = number;
-      props.setUserDetails(temp);
+      log('success');
+
       setSuccessfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('0%') : hp('-20%')
+        Platform.OS === 'ios' ? hp('0%') : null
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <SafeAreaView
@@ -97,6 +96,7 @@ export const EditPersonal = props => {
           alignItems: 'center',
           justifyContent: 'center',
           height: hp('100%'),
+          backgroundColor: 'white',
         }}>
         <DismissKeyboardView
           style={{
@@ -122,7 +122,7 @@ export const EditPersonal = props => {
               </Text>
             </View>
           </View>*/}
-          <View
+          {/* <View
             style={{
               top: hp('5%'),
               alignItems: 'center',
@@ -164,10 +164,19 @@ export const EditPersonal = props => {
                 />
               </View>
             )}
-          </View>
+          </View> */}
+          <Image
+            source={require('_assets/images/agridata.png')}
+            style={{
+              resizeMode: 'contain',
+              width: wp('50%'),
+              height: hp('20%'),
+              top: hp('0%'),
+            }}
+          />
           <View
             style={{
-              top: hp('10%'),
+              top: hp('0%'),
               backgroundColor: Colors.GRAY_MEDIUM,
               width: wp('85%'),
               height: hp('27%'),
@@ -249,11 +258,10 @@ export const EditPersonal = props => {
               />
             </View> */}
           </View>
-
-          <TouchableOpacity
+          <BlueButton
             onPress={() => {
               if (name == '' || email == '' || number == '') {
-                console.log('empty field');
+                log('empty field');
                 setErrorText('Please fill in all empty spaces!');
               } else if (
                 !number.startsWith('+') ||
@@ -274,37 +282,18 @@ export const EditPersonal = props => {
                   saveChanges();
                   setSuccessfulModal(true);
                 } catch {
-                  e => console.log('error ' + e);
+                  e => log('error ' + e);
                 }
               }
             }}
-            style={{
-              alignSelf: 'center',
-              top: hp('18%'),
-              width: wp('55%'),
-              height: hp('5%'),
-              backgroundColor: Colors.LIGHT_BLUE,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.23,
-              shadowRadius: 2.62,
-              zIndex: 5,
-              elevation: 4,
-            }}>
-            <Text>{Strings.saveChanges}</Text>
-            <Icon
-              name="checkmark-circle-outline"
-              size={wp('5.5%')}
-              style={{left: wp('4%')}}
-            />
-          </TouchableOpacity>
+            text={Strings.saveChanges}
+            icon={'checkmark-circle-outline'}
+            offsetCenter={wp('5%')}
+            borderRadius={10}
+            font={Typography.small}
+            top={hp('17%')}
+          />
+
           <Modal
             isVisible={unsuccessfulModal}
             onBackdropPress={() => setUnsuccessfulModal(false)}>

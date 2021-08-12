@@ -19,8 +19,8 @@ import {
   createMessage,
   updateChatGroup,
   createGoodsTaskBetweenRandS,
+  updateMessage,
 } from '../../../../graphql/mutations';
-import {listUsersInChat, getOrderQuotation} from '../../../../graphql/queries';
 
 import {
   widthPercentageToDP as wp,
@@ -28,26 +28,49 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
+  const [succesfulModal, setSuccesfulModal] = useState(false);
+  const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
+  const [acceptButton, setAcceptButton] = useState(false);
+  const [declineButton, setDeclineButton] = useState(false);
+
   useEffect(() => {
     fetchQuotation();
   }, []);
-  const [succesfulModal, setSuccesfulModal] = useState(false);
-  const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
-
-  console.log('quotation' + props.chatGroupID);
-  const fetchQuotation = async () => {
+  const fetchQuotation = () => {
+    log(props.content);
     try {
-      const quotation = await API.graphql({
-        query: getOrderQuotation,
-        variables: {id: props.chatGroupID},
+      var quotation = props.content.split(':');
+      var items = quotation[0].split('/');
+      items.forEach((item, index, arr) => {
+        var temp = item.split('+');
+        var itemObject = {};
+        itemObject['id'] = temp[0];
+        itemObject['name'] = temp[1];
+        itemObject['quantity'] = temp[2];
+        itemObject['siUnit'] = temp[3];
+        itemObject['variety'] = temp[4];
+        itemObject['grade'] = temp[5];
+        itemObject['price'] = temp[6];
+        arr[index] = itemObject;
       });
-      console.log(quotation.data.getOrderQuotation);
-      setOrderDetails(quotation.data.getOrderQuotation);
+      var tempObject = {};
+      tempObject['items'] = items;
+      tempObject['sum'] = quotation[1];
+      tempObject['logisticsProvided'] = quotation[2] == 'true' ? true : false;
+      tempObject['paymentTerms'] = quotation[3];
+      {
+        quotation.length == 5
+          ? (tempObject['status'] = quotation[4])
+          : (tempObject['status'] = 'New');
+      }
+      setOrderDetails(tempObject);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
   const reject = async () => {
@@ -64,9 +87,18 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('message sent');
+      const updatedMessage = await API.graphql({
+        query: updateMessage,
+        variables: {
+          input: {
+            id: props.id,
+            content: props.content + ':Declined',
+          },
+        },
+      });
+      log('message sent');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updatedChatGroup = await API.graphql({
@@ -80,11 +112,30 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('chat group update successful');
+      log('chat group update successful');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
+    var messages = props.messages;
+    log(messages);
+    messages.forEach((item, index, array) => {
+      if (item.id == props.id) {
+        log('found');
+        array[index] = {
+          id: props.id,
+          chatGroupID: props.chatGroupID,
+          type: props.contentType,
+          content: props.content + ':Declined',
+          sender: props.sender,
+          senderID: props.senderID,
+          createdAt: props.createdAt,
+        };
+      }
+    });
+    props.setMessages(messages);
+    setDeclineButton(false);
   };
+
   const accept = async () => {
     try {
       const acceptanceMessage = await API.graphql({
@@ -100,9 +151,18 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('message sent');
+      const updatedMessage = await API.graphql({
+        query: updateMessage,
+        variables: {
+          input: {
+            id: props.id,
+            content: props.content + ':Accepted',
+          },
+        },
+      });
+      log('message sent');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     try {
       const updatedChatGroup = await API.graphql({
@@ -116,26 +176,50 @@ export const OrderQuotationModal = props => {
           },
         },
       });
-      console.log('chat group update successful');
+      log('chat group update successful');
     } catch (e) {
-      console.log(e);
+      log(e);
     }
+
     try {
       const goodsTask = await API.graphql({
         query: createGoodsTaskBetweenRandS,
         variables: {
           input: {
+            id: props.id,
+            trackingNum: props.contentType,
             items: orderDetails.items,
+            logisticsProvided: orderDetails.logisticsProvided,
+            paymentTerms: orderDetails.paymentTerms,
             retailerID: props.chatGroupID.slice(0, 36),
             supplierID: props.chatGroupID.slice(36, 72),
           },
         },
       });
-      console.log('goods task created');
+      log('goods task created');
+      var messages = props.messages;
+      log(messages);
+      messages.forEach((item, index, array) => {
+        if (item.id == props.id) {
+          log('found');
+          array[index] = {
+            id: props.id,
+            chatGroupID: props.chatGroupID,
+            type: props.contentType,
+            content: props.content + ':Accepted',
+            sender: props.sender,
+            senderID: props.senderID,
+            createdAt: props.createdAt,
+          };
+        }
+      });
+      props.setMessages(messages);
       setSuccesfulModal(true);
     } catch (e) {
-      console.log(e);
+      log(e);
     }
+
+    setAcceptButton(false);
   };
   return (
     <View>
@@ -143,12 +227,13 @@ export const OrderQuotationModal = props => {
         <View
           style={{
             flexDirection: 'column',
-            width: wp('100%'),
-            height: hp('95%'),
-            right: wp('5%'),
+            width: wp('95%'),
+            height: hp('90%'),
+
             backgroundColor: Colors.GRAY_LIGHT,
             borderRadius: 15,
             alignItems: 'center',
+            alignSelf: 'center',
           }}>
           <View
             style={{
@@ -158,11 +243,11 @@ export const OrderQuotationModal = props => {
             <Text style={[Typography.large, {}]}>
               {Strings.orderQuotationFrom}
             </Text>
-            <Text style={[Typography.header]}>
-              <Text style={{color: '#8EAB3D'}}>{props.chatName}</Text>
+            <Text style={[Typography.header, {color: Colors.LIME_GREEN}]}>
+              {props.chatName}
             </Text>
-            <Text style={[Typography.small]}>
-              #{orderDetails.id.slice(0, 8)}
+            <Text style={[Typography.normal]}>
+              {props.contentType} #{orderDetails.status}
             </Text>
           </View>
           <View
@@ -197,75 +282,58 @@ export const OrderQuotationModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Text style={[Typography.normal]}>
-              Logistics Provided: {'\t'}
-              {'\t'}
-              {'\t'}
-              <Text style={{left: wp('20%')}}>
-                {orderDetails.logisticsProvided ? 'Provided' : 'Not Provided'}
-              </Text>
-            </Text>
-            <Text style={[Typography.normal]}>
-              Payment Terms:{'\t'}
-              {'\t'}
-              {'\t'}
-              <Text style={{left: wp('20%')}}>
-                {orderDetails.paymentTerms == 'cashOnDelivery'
-                  ? 'Cash on Delivery'
-                  : 'Credit Terms'}
-              </Text>
-            </Text>
-          </View>
-
-          {props.type != 'supplier' ? (
             <View
               style={{
                 flexDirection: 'row',
-                top: hp('53%'),
+                width: wp('80'),
+                justifyContent: 'space-between',
               }}>
-              <TouchableOpacity
-                onPress={() => [accept()]}
-                style={{
-                  backgroundColor: Colors.LIGHT_BLUE,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
-                  right: wp('5%'),
-                  width: wp('25%'),
-                  height: hp('5%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                }}>
-                <Text style={[Typography.small]}>{Strings.accept}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => [reject(), setUnsuccesfulModal(true)]}
-                style={{
-                  backgroundColor: Colors.LIGHT_BLUE,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
+              <View>
+                <Text style={[Typography.normal]}>Logistics Provided:</Text>
+                <Text style={[Typography.normal]}>Payment Terms:</Text>
+              </View>
+              <View style={{alignItems: 'flex-end'}}>
+                <Text style={[Typography.normal]}>
+                  {orderDetails.logisticsProvided ? 'Provided' : 'Not Provided'}
+                </Text>
+                <Text style={[Typography.normal]}>
+                  {orderDetails.paymentTerms == 'cashOnDelivery'
+                    ? 'Cash on Delivery'
+                    : 'Credit Terms'}
+                </Text>
+              </View>
+            </View>
+          </View>
 
-                  elevation: 5,
-                  left: wp('5%'),
-                  width: wp('25%'),
-                  height: hp('5%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                }}>
-                <Text style={[Typography.small]}>{Strings.decline}</Text>
-              </TouchableOpacity>
+          {props.type == 'retailer' && orderDetails.status == 'New' ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                top: hp('52%'),
+              }}>
+              <BlueButton
+                text={Strings.accept}
+                font={Typography.small}
+                borderRadius={10}
+                onPress={() => [accept()]}
+                minWidth={wp('25%')}
+                right={wp('5%')}
+                position={'absolute'}
+                onPressIn={() => setAcceptButton(true)}
+                disabled={acceptButton}
+              />
+              <BlueButton
+                text={Strings.decline}
+                font={Typography.small}
+                borderRadius={10}
+                onPress={() => [reject(), setUnsuccesfulModal(true)]}
+                minWidth={wp('25%')}
+                left={wp('5%')}
+                position={'absolute'}
+                onPressIn={() => setDeclineButton(true)}
+                disabled={declineButton}
+              />
+
               <Modal
                 isVisible={succesfulModal}
                 onBackdropPress={() => [

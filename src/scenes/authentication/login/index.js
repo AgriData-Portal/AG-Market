@@ -10,6 +10,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Linking,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,6 +24,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {BlueButton} from '_components';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {log} from '_utils';
 
 export const Login = props => {
   const [secure, setSecure] = useState(true);
@@ -37,8 +41,8 @@ export const Login = props => {
     try {
       setLoading(true);
       const user = await Auth.signIn('+60' + phone, password);
-      console.log(user);
-      console.log('Successful sign in');
+      log(user);
+      log('Successful sign in');
       props.updateUserID(user.username);
       props.setUserAttributes(user.attributes);
 
@@ -47,7 +51,7 @@ export const Login = props => {
       setLoading(false);
       setTimeout(() => {
         if (error.code == 'UserNotConfirmedException') {
-          console.log('here');
+          log('here');
           setVerified(true);
         } else if (error.code == 'UserNotFoundException') {
           setUnsuccessfulModal(true);
@@ -59,16 +63,25 @@ export const Login = props => {
           setErrorText(
             'Sorry the password you entered is invalid. Please try again.',
           );
+        } else if (error.code == 'NetworkError') {
+          setUnsuccessfulModal(true);
+          setErrorText(
+            'Sorry your network seems to be down. Please try again when internet connectivity has been restored.',
+          );
+        } else {
+          setUnsuccessfulModal(true);
+          setErrorText(
+            'Something has gone horribly wrong. Please contact us by clicking the prompt below after dismissing this modal',
+          );
         }
-      }, 350);
+      }, 400);
 
-      console.log('Error signing in...', error);
+      log(error);
     }
   };
+  var hasNumber = /\d/;
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? hp('-40%') : hp('-30%%')}>
+    <KeyboardAwareScrollView>
       <SafeAreaView
         style={{
           backgroundColor: 'white',
@@ -122,8 +135,8 @@ export const Login = props => {
             <View style={{flexDirection: 'row'}}>
               <Text style={{alignSelf: 'center'}}>+60</Text>
               <TextInput
+                keyboardType={'phone-pad'}
                 placeholderTextColor={Colors.GRAY_DARK}
-                keyboardType="default"
                 placeholder="109125654"
                 underlineColorAndroid="transparent"
                 onChangeText={item => setPhone(item)}
@@ -189,7 +202,7 @@ export const Login = props => {
 
           <TouchableOpacity
             onPress={() => setForgetPassword(true)}
-            style={{top: hp('15%'), right: wp('7%')}}>
+            style={{top: hp('15%'), left: wp('65%'), width: wp('30%')}}>
             <Text
               style={[
                 Typography.welcome,
@@ -208,43 +221,40 @@ export const Login = props => {
             />
           </Modal>
         </View>
-        <View
-          style={{
-            alignItems: 'center',
-            top: hp('23%'),
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              if (password == '' || phone == '') {
-                console.log('empty input');
-                setUnsuccessfulModal(true);
-                setErrorText('Please fill in all empty spaces!');
-              } else {
-                signIn();
-              }
-            }}
-            style={{
-              backgroundColor: Colors.LIGHT_BLUE,
-              width: wp('40%'),
-              height: hp('5%'),
-              justifyContent: 'center',
-              borderRadius: 10,
-              shadowOffset: {
-                width: 1,
-                height: 2,
-              },
-              shadowOpacity: 2,
-              shadowRadius: 3,
-              shadowColor: 'grey',
-            }}>
-            <View style={{flexDirection: 'row', left: wp('6%')}}>
-              <Text style={[Typography.large]}>{Strings.logIn}</Text>
-              <View style={{position: 'absolute', left: wp('25%')}}>
-                <Icon name="arrow-forward-outline" size={wp('6%')} />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+
+        <BlueButton
+          onPress={() => {
+            if (password == '' || phone == '') {
+              log('empty input');
+              setUnsuccessfulModal(true);
+              setErrorText('Please fill in all empty spaces!');
+            } else if (!phone.length > 5 || isNaN(phone.slice(1))) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid phone number. Please try again.',
+              );
+            } else if (password.length < 8) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+              );
+            } else if (!hasNumber.test(password)) {
+              setUnsuccessfulModal(true);
+              setErrorText(
+                'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+              );
+            } else {
+              signIn();
+            }
+          }}
+          text={Strings.logIn}
+          icon={'arrow-forward-outline'}
+          top={hp('21%')}
+          offsetCenter={wp('10%')}
+          minWidth={wp('40%')}
+          font={Typography.large}
+          borderRadius={10}
+        />
 
         {/*<TouchableOpacity
           style={{
@@ -265,6 +275,17 @@ export const Login = props => {
           </TouchableOpacity>*/}
 
         <TouchableOpacity
+          onPress={() => {
+            let url =
+              'https://wa.me/601165691998?text=Hi%20I%20am%20experiencing%20problems%20verifying%20my%20phone%20number.%20Please%20help!%20Thank%20you';
+            Linking.openURL(url)
+              .then(data => {
+                log('WhatsApp Opened successfully ' + data); //<---Success
+              })
+              .catch(() => {
+                alert('Make sure WhatsApp installed on your device'); //<---Error
+              });
+          }}
           style={{
             alignItems: 'center',
             position: 'absolute',
@@ -289,7 +310,7 @@ export const Login = props => {
         <UnsuccessfulModal text={errorText} />
       </Modal>
       <LoadingModal isVisible={loading} />
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -322,7 +343,9 @@ const VerificationModal = props => {
         <TouchableOpacity
           onPress={() => [
             props.setVerified(false),
-            props.navigation.navigate('confirmsignup', {phone: props.phone}),
+            props.navigation.navigate('confirmsignup', {
+              phone: '+60' + props.phone,
+            }),
           ]}
           style={{
             height: hp('5%'),

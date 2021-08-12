@@ -24,6 +24,7 @@ import {
 import Strings from '_utils';
 import {DismissKeyboardView} from '_components';
 import Modal from 'react-native-modal';
+import {log} from '_utils';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -52,7 +53,7 @@ export const Registration = props => {
           name: name,
         },
       });
-      console.log(user.userSub);
+      log(user.userSub);
       props.navigation.navigate('confirmsignup');
       return user.userSub;
     } catch (error) {
@@ -71,7 +72,7 @@ export const Registration = props => {
         );
         setUnsuccessfulModal(true);
       }
-      console.log('❌ Error signing up...', error);
+      log('❌ Error signing up...', error);
     }
   };
   var hasNumber = /\d/;
@@ -343,7 +344,7 @@ export const Registration = props => {
                 name == '' ||
                 password == ''
               ) {
-                console.log('error');
+                log('error');
                 setUnsuccessfulModal(true);
                 setErrorText('Please fill in all empty spaces!');
               } else if (
@@ -371,7 +372,7 @@ export const Registration = props => {
                   'Sorry you have entered an invalid password. Password must contain at least 1 number.',
                 );
               } else {
-                console.log('succes');
+                log('succes');
                 signUp();
               }
             }}

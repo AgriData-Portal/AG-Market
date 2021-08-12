@@ -1,5 +1,5 @@
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-
+import {Platform} from 'react-native';
 import Share from 'react-native-share';
 import PDFLib, {PDFDocument, PDFPage} from 'react-native-pdf-lib';
 import * as RNFS from 'react-native-fs';
@@ -8,10 +8,12 @@ import XLSX from 'xlsx';
 
 import agridataLogo from '_styles/image';
 import dayjs from 'dayjs';
+import {log} from '_utils';
 
 export const createPDF = async (
   id,
-  company,
+  retailer,
+  supplier,
   createdAt,
   items,
   amount,
@@ -39,24 +41,27 @@ export const createPDF = async (
       fontName: 'Poppins-Regular',
       fontSize: 150,
     })
-    .drawText('Invoice#: ' + id.slice(0, 6), {
+    .drawText('Invoice#: ' + id, {
       x: 100,
       y: 2900,
       fontName: 'Poppins-Regular',
       fontSize: 80,
     })
-    .drawText(
-      'Date : ' + dayjs(createdAt).add(8, 'hour').format('DD MMMM YYYY'),
-      {
-        x: 100,
-        y: 2600,
-        fontName: 'Poppins-Regular',
-        fontSize: 80,
-      },
-    )
-    .drawText('Transacted With: ' + company.name, {
+    .drawText('Date : ' + dayjs(createdAt).format('DD MMMM YYYY'), {
+      x: 100,
+      y: 2600,
+      fontName: 'Poppins-Regular',
+      fontSize: 80,
+    })
+    .drawText('Bought By: ' + retailer.name, {
       x: 100,
       y: 2800,
+      fontName: 'Poppins-Regular',
+      fontSize: 80,
+    })
+    .drawText('Sold By: ' + supplier.name, {
+      x: 100,
+      y: 2700,
       fontName: 'Poppins-Regular',
       fontSize: 80,
     })
@@ -239,43 +244,43 @@ export const createPDF = async (
       });
   }
 
-  var filePath =
-    RNFS.DocumentDirectoryPath + '/AgriDataInvoice' + id.slice(0, 6) + '.pdf';
+  var filePath = RNFS.DocumentDirectoryPath + '/AG-MarketInvoice' + id + '.pdf';
   if (noProduct <= 6) {
     PDFDocument.create(filePath)
       .addPages(page1)
       .write() // Returns a promise that resolves with the PDF's path
       .then(path => {
-        console.log('PDF created at: ' + path);
-        alert('PDF created');
+        log('PDF created at: ' + path);
+        // alert('PDF created');
       })
       .catch(e => {
-        alert('PDF fail to create');
+        // alert('PDF fail to create');
       });
   } else {
     PDFDocument.create(filePath)
       .addPages(page1, page2)
       .write() // Returns a promise that resolves with the PDF's path
       .then(path => {
-        console.log('PDF created at: ' + path);
-        alert('PDF created');
+        log('PDF created at: ' + path);
+        // alert('PDF created');
       })
       .catch(e => {
-        alert('PDF fail to create');
+        // alert('PDF fail to create');
       });
   }
   const shareOptions = {
-    message: 'Share PDF Test',
     url:
-      'file:///data/user/0/com.agridata_app/files/AgriDataInvoice' +
-      id.slice(0, 6) +
-      '.pdf',
+      Platform.OS == 'ios'
+        ? filePath
+        : 'file:///data/user/0/com.agridata_app/files/AG-MarketInvoice' +
+          id +
+          '.pdf',
   };
   try {
     const ShareResponse = await Share.open(shareOptions);
     //RNFS.unlink(filePath);
   } catch (error) {
-    console.log('Error: ', error);
+    log('Error: ', error);
     RNFS.unlink(filePath);
   }
 };
@@ -300,25 +305,27 @@ export const createCSV = async (
     RNFS.DocumentDirectoryPath + '/AgriDataInvoice' + id.slice(0, 6) + '.xlsx';
   RNFS.writeFile(file, wbout, 'ascii')
     .then(r => {
-      console.log('CSV created at: ' + file);
-      alert('CSV created');
+      log('CSV created at: ' + file);
+      //alert('CSV created');
     })
     .catch(e => {
-      alert('CSV failed to create');
+      //alert('CSV failed to create');
     });
   const shareOptions = {
     message: 'Share CSV Test',
     url:
-      'file:///data/user/0/com.agridata_app/files/AgriDataInvoice' +
-      id.slice(0, 6) +
-      '.xlsx',
+      Platform.OS == 'ios'
+        ? file
+        : 'file:///data/user/0/com.agridata_app/files/AgriDataInvoice' +
+          id.slice(0, 6) +
+          '.xlsx',
   };
   try {
     const ShareResponse = await Share.open(shareOptions);
-    console.log(ShareResponse);
+    log(ShareResponse);
     //RNFS.unlink(file);
   } catch (error) {
-    console.log('Error1: ', error);
+    log('Error1: ', error);
     RNFS.unlink(file);
   }
 };

@@ -32,17 +32,23 @@ import {
   updateRetailerCompany,
   updateSupplierCompany,
 } from '../../../../graphql/mutations';
+import {BlueButton} from '_components';
+import {log} from '_utils';
 
 export const EditCompany = props => {
-  const [imageSource, setImageSource] = useState(null);
+  const [imageSource, setImageSource] = useState(props.route.params.logo);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
-  const [address, setAddress] = useState('');
   const [number, setNumber] = useState(props.route.params.contactNumber);
   const [email, setEmail] = useState(props.route.params.email);
   const [bankDetails, setBankDetails] = useState(props.route.params.bankNumber);
   const [bankName, setBankName] = useState(props.route.params.bankName);
   const [errorText, setErrorText] = useState('');
+
+  if (number.includes('+60')) {
+    var temp = number.slice(3);
+    setNumber(temp);
+  }
 
   function selectImage() {
     let options = {
@@ -52,13 +58,13 @@ export const EditCompany = props => {
     };
 
     launchImageLibrary(options, response => {
-      console.log(response.assets[0]);
+      log(response);
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
+        log('User cancelled photo picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        log('User tapped custom button: ', response.customButton);
       } else {
         let photo = {uri: response.assets[0].uri};
         setImageSource(photo);
@@ -67,67 +73,98 @@ export const EditCompany = props => {
   }
 
   const saveChanges = async () => {
-    if (props.user.retailerCompanyID == null) {
+    console.log(
+      email,
+      '  ',
+      number,
+      '  ',
+      bankName,
+      '  ',
+      bankDetails,
+      '  ',
+      imageSource,
+    );
+    if (props.user.supplierCompanyID != null) {
+      console.log('Supplier');
+      var photo;
       try {
-        let photo = imageSource;
-        const response = await fetch(photo.uri);
-        const blob = await response.blob();
-        console.log('FileName: \n');
-        photo.fileName = props.user.supplierCompany.name + '_logo';
-        await Storage.put(photo.fileName, blob, {
-          contentType: 'image/jpeg',
-        });
+        if (imageSource) {
+          photo = imageSource;
+          log('here');
+          log(photo);
+          const response = await fetch(photo.uri);
+          const blob = await response.blob();
+          log('FileName: \n');
+          photo.fileName = props.user.supplierCompany.name + '_logo';
+          await Storage.put(photo.fileName, blob, {
+            contentType: 'image/jpeg',
+          });
+        }
 
         var companyProfile = await API.graphql({
           query: updateSupplierCompany,
           variables: {
             input: {
               id: props.user.supplierCompanyID,
-              address: address,
-              logo: photo.fileName,
+              logo: imageSource == null ? null : photo.fileName,
+              contactDetails: {email: email, phone: '+60' + number},
+              bankAccount: {
+                bankName: bankName,
+                accountNumber: bankDetails,
+              },
             },
           },
         });
+
         setSuccessfulModal(true);
       } catch (e) {
-        console.log(e);
-        console.log(props.user.supplierCompanyID);
+        log(e);
+        setUnsuccessfulModal(true);
       }
-    } else if (props.user.supplierCompanyID == null) {
+    } else if (props.user.retailerCompanyID != null) {
+      console.log('Retailer');
+      var photo;
       try {
-        let photo = imageSource;
-        const response = await fetch(photo.uri);
-        const blob = await response.blob();
-        console.log('FileName: \n');
-        photo.fileName = props.user.retailerCompany.name + '_logo';
-        await Storage.put(photo.fileName, blob, {
-          contentType: 'image/jpeg',
-        });
-
+        if (imageSource) {
+          photo = imageSource;
+          log(photo);
+          const response = await fetch(photo.uri);
+          const blob = await response.blob();
+          log('FileName: \n');
+          photo.fileName = props.user.retailerCompany.name + '_logo';
+          await Storage.put(photo.fileName, blob, {
+            contentType: 'image/jpeg',
+          });
+        }
         var companyProfile = await API.graphql({
           query: updateRetailerCompany,
           variables: {
             input: {
               id: props.user.retailerCompanyID,
-              address: address,
-              logo: photo.fileName,
+              logo: imageSource == null ? null : photo.fileName,
+              contactDetails: {email: email, phone: '+60' + number},
+              bankAccount: {
+                bankName: bankName,
+                accountNumber: bankDetails,
+              },
             },
           },
         });
+        console.log(companyProfile.data);
 
         setSuccessfulModal(true);
       } catch (e) {
-        console.log(e);
-        console.log(props.user.retailerCompanyID);
+        log(e);
+        setSuccessfulModal(true);
       }
     }
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'position'}
+      behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('0%') : hp('-10%')
+        Platform.OS === 'ios' ? hp('-10%') : null
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <DismissKeyboardView>
@@ -137,6 +174,7 @@ export const EditCompany = props => {
             justifyContent: 'center',
             width: wp('100%'),
             height: hp('100%'),
+            backgroundColor: 'white',
           }}>
           <View
             style={{
@@ -163,15 +201,6 @@ export const EditCompany = props => {
                       borderRadius: 10,
                     }}
                   />
-                  <TouchableOpacity
-                    onPress={() => {
-                      selectImage();
-                    }}
-                    style={{top: hp('2%')}}>
-                    <Text style={{textAlign: 'center'}}>
-                      {Strings.changeImage}
-                    </Text>
-                  </TouchableOpacity>
                 </View>
               ) : (
                 <View>
@@ -186,6 +215,13 @@ export const EditCompany = props => {
                   />
                 </View>
               )}
+              <TouchableOpacity
+                onPress={() => {
+                  selectImage();
+                }}
+                style={{top: hp('1%')}}>
+                <Text style={{textAlign: 'center'}}>{Strings.changeImage}</Text>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -208,16 +244,25 @@ export const EditCompany = props => {
                 <Text style={[Typography.placeholderSmall]}>
                   {Strings.contactNumber}
                 </Text>
-                <TextInput
-                  underlineColorAndroid="transparent"
-                  value={number}
-                  onChangeText={item => setNumber(item)}
+                <View
                   style={{
-                    borderBottomColor: 'transparent',
-                    width: wp('75%'),
-                    height: hp('5%'),
-                    color: 'black',
-                  }}></TextInput>
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    height: hp('6%'),
+                  }}>
+                  <Text>+60</Text>
+                  <TextInput
+                    underlineColorAndroid="transparent"
+                    value={number}
+                    keyboardType={'number-pad'}
+                    onChangeText={item => setNumber(item)}
+                    style={{
+                      borderBottomColor: 'transparent',
+                      width: wp('75%'),
+                      height: hp('6%'),
+                      color: 'black',
+                    }}></TextInput>
+                </View>
               </View>
               <View
                 style={{
@@ -239,7 +284,7 @@ export const EditCompany = props => {
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                   }}></TextInput>
               </View>
@@ -254,7 +299,7 @@ export const EditCompany = props => {
                   justifyContent: 'center',
                 }}>
                 <Text style={[Typography.placeholderSmall]}>
-                  {Strings.bankDetails}
+                  Bank Account Number {/*FIXME translation for bankDetails */}
                 </Text>
                 <TextInput
                   underlineColorAndroid="transparent"
@@ -263,7 +308,7 @@ export const EditCompany = props => {
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                   }}></TextInput>
               </View>
@@ -287,13 +332,12 @@ export const EditCompany = props => {
                   style={{
                     borderBottomColor: 'transparent',
                     width: wp('75%'),
-                    height: hp('5%'),
+                    height: hp('6%'),
                     color: 'black',
                   }}></TextInput>
               </View>
             </View>
-
-            <TouchableOpacity
+            <BlueButton
               onPress={() => {
                 if (
                   email == '' ||
@@ -301,14 +345,10 @@ export const EditCompany = props => {
                   bankDetails == '' ||
                   bankName == ''
                 ) {
-                  console.log('empty field');
+                  log('empty field');
                   setErrorText('Please fill in all empty spaces!');
                   setUnsuccessfulModal(true);
-                } else if (
-                  !number.startsWith('+') ||
-                  !number.length > 5 ||
-                  isNaN(number.slice(1))
-                ) {
+                } else if (!number.length > 7 || isNaN(number)) {
                   setUnsuccessfulModal(true);
                   setErrorText(
                     'Sorry you have entered an invalid phone number. Please try again.',
@@ -321,44 +361,20 @@ export const EditCompany = props => {
                 } else if (isNaN(bankDetails)) {
                   setUnsuccessfulModal(true);
                   setErrorText(
-                    'Sorry you have entered an invalid bank detail . Please try again.',
+                    'Sorry you have entered an invalid bank number . Please try again.',
                   );
                 } else {
-                  try {
-                    console.log('saved');
-                    saveChanges();
-                    setSuccessfulModal(true);
-                  } catch {
-                    e => console.log('error ' + e);
-                  }
+                  saveChanges();
                 }
               }}
-              style={{
-                top: hp('8%'),
-                width: wp('50%'),
-                height: wp('11%'),
-                backgroundColor: Colors.LIGHT_BLUE,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                borderRadius: 10,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.23,
-                shadowRadius: 2.62,
+              text={Strings.saveChanges}
+              icon={'checkmark-circle-outline'}
+              offsetCenter={wp('5%')}
+              borderRadius={10}
+              top={hp('10%')}
+              font={Typography.small}
+            />
 
-                elevation: 4,
-              }}>
-              <Text>{Strings.saveChanges}</Text>
-              <Icon
-                name="checkmark-circle-outline"
-                size={wp('5%')}
-                style={{left: wp('3%')}}
-              />
-            </TouchableOpacity>
             <Modal
               isVisible={unsuccessfulModal}
               onBackdropPress={() => setUnsuccessfulModal(false)}>

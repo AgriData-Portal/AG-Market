@@ -10,6 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {log} from '_utils';
 
 export const FarmerStore = props => {
   const [productList, setProducts] = useState([]);
@@ -24,20 +25,20 @@ export const FarmerStore = props => {
       });
 
       if (products.data.listFarmerListings) {
-        console.log('Products: \n');
-        console.log(products);
+        log('Products: \n');
+        log(products);
         setProducts(products.data.listFarmerListings.items);
       }
       setLoading(false);
-      console.log(products.data.listFarmerListings.items);
+      log(products.data.listFarmerListings.items);
     } catch (e) {
-      console.log(e);
-      console.log("there's a problem");
+      log(e);
+      log("there's a problem");
     }
   };
   useEffect(() => {
     fetchProducts();
-    console.log('Refreshing...');
+    log('Refreshing...');
   }, []);
   return (
     <SafeAreaView
@@ -51,7 +52,7 @@ export const FarmerStore = props => {
         style={{
           width: wp('90%'),
           height: hp('80%'),
-          top: hp('1%'),
+          top: hp('0%'),
         }}>
         <SupplierplaceList
           productList={productList}
