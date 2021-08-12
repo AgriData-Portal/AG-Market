@@ -120,7 +120,7 @@ const UploadReceiptModal = props => {
           },
         ]}>
         {Strings.sendBefore}: {''}
-        {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
+        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -151,7 +151,7 @@ const UploadReceiptModal = props => {
             left: wp('40%'),
           },
         ]}>
-        {props.supplier.name}
+        {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
       </Text>
       <Text
         style={[
@@ -208,7 +208,8 @@ const UploadReceiptModal = props => {
         ]}>
         {Strings.bankName}:
       </Text>
-      {props.supplier.bankAccount == null ? (
+      {(companyType == 'retailer' && props.supplier.bankAccount == null) ||
+      (companyType == 'supplier' && props.farmer.bankAccount == null) ? (
         <Text
           style={[
             Typography.normal,
@@ -230,7 +231,9 @@ const UploadReceiptModal = props => {
               left: wp('40%'),
             },
           ]}>
-          {props.supplier.bankAccount.bankName}
+          {companyType == 'retailer'
+            ? props.supplier.bankAccount.bankName
+            : props.farmer.bankAccount.bankName}
         </Text>
       )}
       <Text
@@ -245,7 +248,8 @@ const UploadReceiptModal = props => {
         {Strings.bankDetails}:
       </Text>
       {/* TRANSLATION */}
-      {props.supplier.bankAccount == null ? (
+      {(companyType == 'retailer' && props.supplier.bankAccount == null) ||
+      (companyType == 'supplier' && props.farmer.bankAccount == null) ? (
         <Text
           style={[
             Typography.normal,
@@ -267,7 +271,9 @@ const UploadReceiptModal = props => {
               left: wp('40%'),
             },
           ]}>
-          {props.supplier.bankAccount.accountNumber}
+          {companyType == 'retailer'
+            ? props.supplier.bankAccount.accountNumber
+            : props.farmer.bankAccount.accountNumber}
         </Text>
       )}
       {/* <Text
@@ -315,6 +321,7 @@ const UploadReceiptModal = props => {
 
 const UploadReceipt = props => {
   const [uploadReceiptModal, setUploadReceiptModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setUploadReceiptModal(true)}
@@ -370,7 +377,7 @@ const UploadReceipt = props => {
               position: 'absolute',
             },
           ]}>
-          {props.supplier.name}
+          {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
         </Text>
         <Text
           style={[
@@ -414,7 +421,7 @@ const UploadReceipt = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
+          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={uploadReceiptModal}>
@@ -422,6 +429,7 @@ const UploadReceipt = props => {
           setUploadReceiptModal={setUploadReceiptModal}
           retailer={props.retailer}
           supplier={props.supplier}
+          farmer={props.farmer}
           paid={props.paid}
           amount={props.amount}
           payBefore={props.payBefore}
@@ -497,6 +505,7 @@ export const UploadReceiptList = props => {
             <UploadReceipt
               retailer={item.retailer}
               supplier={item.supplier}
+              farmer={item.farmer}
               paid={item.paid}
               trackingNum={item.trackingNum}
               amount={item.amount}

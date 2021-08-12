@@ -29,7 +29,7 @@ import {log} from '_utils';
 import {RatingModal} from './components/receive-goods';
 import {userStore} from '_store';
 
-export const RetailerTasks = props => {
+export const BuyerTask = props => {
   const [sortModal, setSortModal] = useState(false);
   const [task, setTask] = useState('receive');
   const [receiveTask, setReceiveTask] = useState([]);

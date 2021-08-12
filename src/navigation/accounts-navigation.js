@@ -4,7 +4,7 @@ import 'react-native-gesture-handler';
 
 import {
   Orders, //Done
-  RetailerTasks, //done
+  BuyerTask, //done
 } from '_scenes';
 
 import {Colors} from '_styles/';
@@ -166,7 +166,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <RetailerTasks
+          <BuyerTask
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}

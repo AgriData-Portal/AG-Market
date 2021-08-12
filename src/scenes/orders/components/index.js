@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -34,6 +34,7 @@ export const OrderList = props => {
   const [refreshing, setRefreshing] = useState(false);
   const companyID = userStore(state => state.companyID);
   const companyType = userStore(state => state.companyType);
+
   return (
     <View>
       <FlatList
@@ -212,9 +213,9 @@ const Order = props => {
           ]}>
           {companyType == 'retailer'
             ? props.supplier.name
-            : companyType == 'supplier' && props.sellerState
+            : companyType == 'supplier' && props.sellerState == true
             ? props.farmer.name
-            : companyType == 'supplier' && !props.sellerState
+            : companyType == 'supplier' && props.sellerState == false
             ? props.retailer.name
             : props.supplier.name}
         </Text>

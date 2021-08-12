@@ -379,7 +379,7 @@ const ReceiveModal = props => {
             left: wp('40%'),
           },
         ]}>
-        {props.supplier.name}
+        {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
       </Text>
       {props.status == 'sent' ? (
         <TouchableOpacity
@@ -437,18 +437,28 @@ const ReceiveModal = props => {
           setSuccessfulModal(false),
           props.setReceiveModal(false),
         ]}>
-        <SuccessfulModal
-          text={
-            'You have successfully received your products from ' +
-            props.supplier.name
-          }
-        />
+        {companyType == 'retailer' ? (
+          <SuccessfulModal
+            text={
+              'You have successfully received your products from ' +
+              props.supplier.name
+            }
+          />
+        ) : (
+          <SuccessfulModal
+            text={
+              'You have successfully received your products from ' +
+              props.farmer.name
+            }
+          />
+        )}
       </Modal>
       <Modal isVisible={ratingModal}>
         <RatingModal
           setRatingModal={setRatingModal}
           setSuccessfulModal={setSuccessfulModal}
           supplier={props.supplier}
+          farmer={props.farmer}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
         />
@@ -459,6 +469,7 @@ const ReceiveModal = props => {
 
 const Receive = props => {
   const [receiveModal, setReceiveModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setReceiveModal(true)}
@@ -514,7 +525,7 @@ const Receive = props => {
               position: 'absolute',
             },
           ]}>
-          {props.supplier.name}
+          {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
         </Text>
         <Text
           style={[
@@ -788,36 +799,66 @@ const Product = props => {
 
 export const RatingModal = props => {
   const [rating, setRating] = useState(2.5);
-
+  const companyType = userStore(state => state.companyType);
   const updateRating = async () => {
     try {
-      if (props.supplier.rating == null) {
-        var sendRating = {
-          numberOfRatings: 1,
-          currentRating: rating,
-        };
-      } else {
-        var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
-        var newRating =
-          (props.supplier.rating.currentRating *
-            props.supplier.rating.numberOfRatings +
-            rating) /
-          newNumberOfRating;
-        var sendRating = {
-          numberOfRatings: newNumberOfRating,
-          currentRating: newRating,
-        };
-      }
-      log(props.supplier, sendRating);
-      const update = await API.graphql({
-        query: updateSupplierCompany,
-        variables: {
-          input: {
-            id: props.supplier.id,
-            rating: sendRating,
+      if (companyType == 'retailer') {
+        if (props.supplier.rating == null) {
+          var sendRating = {
+            numberOfRatings: 1,
+            currentRating: rating,
+          };
+        } else {
+          var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
+          var newRating =
+            (props.supplier.rating.currentRating *
+              props.supplier.rating.numberOfRatings +
+              rating) /
+            newNumberOfRating;
+          var sendRating = {
+            numberOfRatings: newNumberOfRating,
+            currentRating: newRating,
+          };
+        }
+        log(props.supplier, sendRating);
+        const update = await API.graphql({
+          query: updateSupplierCompany,
+          variables: {
+            input: {
+              id: props.supplier.id,
+              rating: sendRating,
+            },
           },
-        },
-      });
+        });
+      } else {
+        if (props.farmer.rating == null) {
+          var sendRating = {
+            numberOfRatings: 1,
+            currentRating: rating,
+          };
+        } else {
+          var newNumberOfRating = props.farmer.rating.numberOfRatings + 1;
+          var newRating =
+            (props.farmer.rating.currentRating *
+              props.farmer.rating.numberOfRatings +
+              rating) /
+            newNumberOfRating;
+          var sendRating = {
+            numberOfRatings: newNumberOfRating,
+            currentRating: newRating,
+          };
+        }
+        log(props.farmer, sendRating);
+        const update = await API.graphql({
+          query: updateFarmerCompany,
+          variables: {
+            input: {
+              id: props.farmer.id,
+              rating: sendRating,
+            },
+          },
+        });
+      }
       props.setRatingModal(false);
       log(rating);
       props.setSuccessfulModal(true);
@@ -831,7 +872,6 @@ export const RatingModal = props => {
     }
   };
   return (
-    // TRANSLATION ratingsmodal
     <View
       style={{
         width: wp('80%'),
@@ -848,6 +888,7 @@ export const RatingModal = props => {
           ]}>
           Transaction completed. Please give the supplier a rating.
         </Text>
+        {/* TRANSLATION ratingsmodal*/}
       </View>
       <View style={{top: hp('5%')}}>
         <Rating

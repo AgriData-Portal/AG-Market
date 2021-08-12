@@ -9,7 +9,7 @@ import {
   Inbox, //done
   ChatRoom, //done but no modal
   Orders, //Done
-  RetailerTasks, //done
+  BuyerTask, //done
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -472,7 +472,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <RetailerTasks
+          <BuyerTask
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}

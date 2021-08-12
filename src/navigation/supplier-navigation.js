@@ -9,8 +9,8 @@ import {
   ChatRoom, //done but no modal
   Orders, //Done
   SupplierStore, // done most
-  SupplierTasks, //done
-  RetailerTasks, //done
+  SellerTask, //done
+  BuyerTask, //done
   RetailerModalButton,
 } from '_scenes';
 import 'react-native-gesture-handler';
@@ -556,14 +556,14 @@ const TabbedNavigator = props => {
         }}>
         {screenProps =>
           props.sellerState ? (
-            <RetailerTasks
+            <BuyerTask
               {...screenProps}
               updateAuthState={props.updateAuthState}
               user={props.user}
               company={props.company}
             />
           ) : (
-            <SupplierTasks
+            <SellerTask
               {...screenProps}
               updateAuthState={props.updateAuthState}
               user={props.user}
