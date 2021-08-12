@@ -7,7 +7,8 @@ import {
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  Orders, //Done
+  BuyingOrders, //Done
+  SellingOrders,
   SupplierStore, // done most
   SellerTask, //done
   BuyerTask, //done
@@ -60,9 +61,7 @@ function getHeaderTitle(route, sellerState) {
     case 'marketplace':
       return sellerState ? Strings.marketplace : Strings.myStore;
     case 'orders': //TRANSLATION
-      return sellerState
-        ? Strings.orders + ' (Buying)'
-        : Strings.orders + ' (Selling)';
+      return sellerState ? 'Purchase Invoice' : 'Sales Invoice';
     case 'tasks':
       return Strings.tasks;
     case 'dataanalytics':
@@ -405,15 +404,25 @@ const TabbedNavigator = props => {
             return null;
           },
         }}>
-        {screenProps => (
-          <Orders
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            user={props.user}
-            sellerState={props.sellerState}
-            company={props.company}
-          />
-        )}
+        {screenProps =>
+          props.sellerState ? (
+            <BuyingOrders
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              sellerState={props.sellerState}
+              company={props.company}
+            />
+          ) : (
+            <SellingOrders
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              sellerState={props.sellerState}
+              company={props.company}
+            />
+          )
+        }
       </TabStack.Screen>
 
       <TabStack.Screen

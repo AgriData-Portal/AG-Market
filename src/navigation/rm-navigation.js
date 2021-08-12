@@ -8,7 +8,7 @@ import {
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  Orders, //Done
+  BuyerOrders, //Done
   BuyerTask, //done
 } from '_scenes';
 
@@ -331,7 +331,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <BuyerOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
