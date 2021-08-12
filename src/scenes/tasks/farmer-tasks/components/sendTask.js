@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {DismissKeyboard} from '_components';
+import {BlueButton} from '_components';
 import Strings from '_utils';
 import {API} from 'aws-amplify';
 import {
@@ -30,6 +30,7 @@ import {
 import {goodsTaskForFarmerByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -40,6 +41,7 @@ const now = () => {
 
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
+  const companyID = userStore(state => state.companyID);
   log('send task list render');
   return (
     <View>
@@ -57,7 +59,7 @@ export const SendTaskList = props => {
                 const task = await API.graphql({
                   query: goodsTaskForFarmerByDate,
                   variables: {
-                    supplierID: props.user.supplierCompanyID,
+                    farmerID: companyID,
                     sortDirection: 'ASC',
                   },
                 });
@@ -79,10 +81,11 @@ export const SendTaskList = props => {
         renderItem={({item}) => {
           return (
             <SendTask
-              retailer={item.retailer}
               supplier={item.supplier}
+              farmer={item.farmer}
               goods={item.items}
               createdAt={item.createdAt}
+              trackingNum={item.trackingNum}
               deliverydate={item.deliveryDate}
               taskID={item.id}
               trigger={props.trigger}
@@ -174,7 +177,7 @@ const SendTask = props => {
               position: 'absolute',
             },
           ]}>
-          {props.retailer.name}
+          {props.supplier.name}
         </Text>
         <Text
           style={[
@@ -218,14 +221,16 @@ const SendTask = props => {
         <SendTaskModal
           taskID={props.taskID}
           goods={props.goods}
-          retailer={props.retailer}
+          supplier={props.supplier}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
           setInvoiceModal={setInvoiceModal}
+          invoiceModal={invoiceModal}
           setSendTaskModal={setSendTaskModal}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
           sendTask={props.sendTask}
+          trackingNum={props.trackingNum}
           setSendTask={props.setSendTask}></SendTaskModal>
       </Modal>
 
@@ -234,7 +239,7 @@ const SendTask = props => {
           taskID={props.taskID}
           setRatingModal={setRatingModal}
           setSuccessfulModal={setSuccessfulModal}
-          retailer={props.retailer}
+          supplier={props.supplier}
           sendTask={props.sendTask}
           setSendTask={props.setSendTask}
           trigger={props.trigger}
@@ -331,7 +336,7 @@ const SendTaskModal = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {Strings.order} #{props.taskID.slice(0, 6)}
+          {Strings.order} #{props.trackingNum}
         </Text>
         <Text
           style={[
@@ -524,7 +529,7 @@ const SendTaskModal = props => {
               left: wp('35%'),
             },
           ]}>
-          {props.retailer.name}
+          {props.supplier.name}
         </Text>
         <BlueButton
           onPress={() => {
@@ -542,15 +547,14 @@ const SendTaskModal = props => {
         onBackdropPress={() => [setSuccessfulModal(false)]}>
         <SuccessfulModal text={'Successfully chosen delivery date!'} />
       </Modal>
-      <Modal isVisible={invoiceModal}>
+      <Modal isVisible={props.invoiceModal}>
         <InvoiceModal
           setSendTaskModal={props.setSendTaskModal}
-          setInvoiceModal={setInvoiceModal}
+          setInvoiceModal={props.setInvoiceModal}
           goods={props.goods}
-          retailer={props.retailer}
+          supplier={props.supplier}
           deliverydate={props.deliverydate}
           taskID={props.taskID}
-          invoiceList={props}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
           sendTask={props.sendTask}
@@ -665,7 +669,7 @@ const InvoiceModal = props => {
             left: wp('5%'),
           })
         }>
-        {props.retailer.name}
+        {props.supplier.name}
       </Text>
       <View
         style={{
@@ -926,16 +930,16 @@ const RatingModal = props => {
 
   const updateRating = async () => {
     try {
-      if (props.retailer.rating == null) {
+      if (props.supplier.rating == null) {
         var sendRating = {
           numberOfRatings: 1,
           currentRating: rating,
         };
       } else {
-        var newNumberOfRating = props.retailer.rating.numberOfRatings + 1;
+        var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
         var newRating =
-          (props.retailer.rating.currentRating *
-            props.retailer.rating.numberOfRatings +
+          (props.supplier.rating.currentRating *
+            props.supplier.rating.numberOfRatings +
             rating) /
           newNumberOfRating;
         var sendRating = {
@@ -943,12 +947,12 @@ const RatingModal = props => {
           currentRating: newRating,
         };
       }
-      log(props.retailer, sendRating);
+      log(props.supplier, sendRating);
       const update = await API.graphql({
         query: updateSupplierCompany,
         variables: {
           input: {
-            id: props.retailer.id,
+            id: props.supplier.id,
             rating: sendRating,
           },
         },
@@ -1002,8 +1006,9 @@ const RatingModal = props => {
               marginLeft: wp('5%'),
             },
           ]}>
-          Transaction completed. Please give the retailer a rating.
+          Transaction completed. Please give the supplier a rating.
         </Text>
+        {/* TRANSLATION */}
       </View>
       <View style={{top: hp('4%')}}>
         <Rating

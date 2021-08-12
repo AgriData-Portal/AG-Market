@@ -20,6 +20,7 @@ import {
   updateChatGroup,
   createGoodsTaskBetweenRandS,
   updateMessage,
+  createGoodsTaskBetweenSandF,
 } from '../../../../graphql/mutations';
 
 import {
@@ -40,6 +41,7 @@ export const OrderQuotationModal = props => {
   const [declineButton, setDeclineButton] = useState(false);
   const companyType = userStore(state => state.companyType);
   const userID = userStore(state => state.userID);
+  const companyID = userStore(state => state.companyID);
   const userName = userStore(state => state.userName);
   useEffect(() => {
     fetchQuotation();
@@ -185,20 +187,37 @@ export const OrderQuotationModal = props => {
     }
 
     try {
-      const goodsTask = await API.graphql({
-        query: createGoodsTaskBetweenRandS,
-        variables: {
-          input: {
-            id: props.id,
-            trackingNum: props.contentType,
-            items: orderDetails.items,
-            logisticsProvided: orderDetails.logisticsProvided,
-            paymentTerms: orderDetails.paymentTerms,
-            retailerID: props.chatGroupID.slice(0, 36),
-            supplierID: props.chatGroupID.slice(36, 72),
+      if (companyType == 'retailer') {
+        const goodsTask = await API.graphql({
+          query: createGoodsTaskBetweenRandS,
+          variables: {
+            input: {
+              id: props.id,
+              trackingNum: props.contentType,
+              items: orderDetails.items,
+              logisticsProvided: orderDetails.logisticsProvided,
+              paymentTerms: orderDetails.paymentTerms,
+              retailerID: props.chatGroupID.slice(0, 36),
+              supplierID: props.chatGroupID.slice(36, 72),
+            },
           },
-        },
-      });
+        });
+      } else {
+        const goodsTask = await API.graphql({
+          query: createGoodsTaskBetweenSandF,
+          variables: {
+            input: {
+              id: props.id,
+              trackingNum: props.contentType,
+              items: orderDetails.items,
+              logisticsProvided: orderDetails.logisticsProvided,
+              paymentTerms: orderDetails.paymentTerms,
+              supplierID: props.chatGroupID.slice(0, 36),
+              farmerID: props.chatGroupID.slice(36, 72),
+            },
+          },
+        });
+      }
       log('goods task created');
       var messages = props.messages;
       log(messages);
@@ -308,7 +327,10 @@ export const OrderQuotationModal = props => {
             </View>
           </View>
 
-          {companyType == 'retailer' && orderDetails.status == 'New' ? (
+          {(companyType == 'retailer' ||
+            (companyType == 'supplier' &&
+              companyID == props.chatGroupID.slice(0, 36))) &&
+          orderDetails.status == 'New' ? (
             <View
               style={{
                 flexDirection: 'row',

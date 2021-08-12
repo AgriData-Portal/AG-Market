@@ -191,6 +191,8 @@ const ProductPopUp = props => {
 
   const companyName = userStore(state => state.companyName);
   const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
+
   const userName = userStore(state => state.userName);
   const userID = userStore(state => state.userID);
 
@@ -210,14 +212,26 @@ const ProductPopUp = props => {
     } catch (e) {
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
-          const chatGroup = {
-            id: props.purchaseOrder,
-            name: companyName + '+' + props.storeName,
-            retailerID: companyID,
-            supplierID: props.purchaseOrder.slice(36, 72),
-            mostRecentMessage: 'Product Inquiry',
-            mostRecentMessageSender: userName,
-          };
+          var chatGroup;
+          if (companyType == 'retailer') {
+            chatGroup = {
+              id: props.purchaseOrder,
+              name: companyName + '+' + props.storeName,
+              retailerID: companyID,
+              supplierID: props.purchaseOrder.slice(36, 72),
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            };
+          } else {
+            chatGroup = {
+              id: props.purchaseOrder,
+              name: companyName + '+' + props.storeName,
+              supplierID: companyID,
+              farmerID: props.purchaseOrder.slice(36, 72),
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            };
+          }
 
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
@@ -606,7 +620,7 @@ const PurchaseOrder = props => {
               chatGroup = {
                 id: props.purchaseOrder,
                 name: companyName + '+' + props.storeName,
-                retailerID: userID,
+                retailerID: companyID,
                 supplierID: props.purchaseOrder.slice(36, 72),
                 mostRecentMessage: 'Purchase Order',
                 mostRecentMessageSender: userName,
@@ -615,7 +629,7 @@ const PurchaseOrder = props => {
               log('supplier here!');
               chatGroup = {
                 id: props.purchaseOrder,
-                name: props.storeName + '+' + companyName,
+                name: companyName + '+' + props.storeName,
                 supplierID: companyID,
                 farmerID: props.purchaseOrder.slice(36, 72),
                 mostRecentMessage: 'Purchase Order',

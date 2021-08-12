@@ -23,7 +23,7 @@ import {
   paymentsTaskForFarmerByDate,
 } from '../../../graphql/queries';
 import Strings from '_utils';
-import {MenuButton} from '_components';
+import {userStore} from '_store';
 import {log} from '_utils';
 
 export const FarmerTasks = props => {
@@ -33,6 +33,7 @@ export const FarmerTasks = props => {
   const [task, setTask] = useState('send');
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
+  const companyID = userStore(state => state.companyID);
 
   useEffect(() => {
     if (task == 'send' && sendTask.length == 0) {
@@ -47,7 +48,7 @@ export const FarmerTasks = props => {
       const task = await API.graphql({
         query: goodsTaskForFarmerByDate,
         variables: {
-          farmerID: props.user.farmerCompanyID,
+          farmerID: companyID,
           sortDirection: 'ASC',
         },
       });
@@ -66,7 +67,7 @@ export const FarmerTasks = props => {
       const task = await API.graphql({
         query: paymentsTaskForFarmerByDate,
         variables: {
-          farmerID: props.user.farmerCompanyID,
+          farmerID: companyID,
           sortDirection: 'ASC',
         },
       });
@@ -191,7 +192,6 @@ export const FarmerTasks = props => {
         }}>
         {task == 'claim' ? (
           <ReceivePaymentTaskList
-            user={props.user}
             data={claimTask}
             trigger={trigger}
             setTrigger={setTrigger}
@@ -206,7 +206,6 @@ export const FarmerTasks = props => {
             setTrigger={setTrigger}
             sendTask={sendTask}
             setSendTask={setSendTask}
-            user={props.user}
             getSendTask={getSendTask}
           />
         )}

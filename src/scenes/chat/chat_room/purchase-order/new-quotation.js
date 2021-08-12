@@ -10,8 +10,12 @@ import {
   createMessage,
   updateChatGroup,
   updateSupplierCompany,
+  updateFarmerCompany,
 } from '../../../../graphql/mutations';
-import {getSupplierCompany} from '../../../../graphql/queries';
+import {
+  getSupplierCompany,
+  getFarmerCompany,
+} from '../../../../graphql/queries';
 import {
   QuotationItemsContext,
   QuotationItemsProvider,
@@ -47,6 +51,7 @@ const NewOrderQuotation = props => {
     {label: 'Credit Term', value: 'creditTerm'},
   ]);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
 
   var productsWIndex = quotationItems;
   productsWIndex.forEach((item, index, arr) => {
@@ -81,41 +86,81 @@ const NewOrderQuotation = props => {
     if (valid == true) {
       var mostRecentQuotationNumber;
       try {
-        const response = await API.graphql({
-          query: getSupplierCompany,
-          variables: {id: props.chatGroupID.slice(36, 72)},
-        });
-        mostRecentQuotationNumber =
-          response.data.getSupplierCompany.mostRecentQuotationNumber;
-        log('newnum: ' + mostRecentQuotationNumber);
-        if (mostRecentQuotationNumber) {
-          if (
-            dayjs().format('YYYY-MM') == mostRecentQuotationNumber.slice(4, 11)
-          ) {
-            var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
-            var numberString = (number + 1).toString().padStart(4, '0');
-            mostRecentQuotationNumber =
-              'QUO-' + dayjs().format('YYYY-MM-') + numberString;
+        if (companyType == 'supplier') {
+          const response = await API.graphql({
+            query: getSupplierCompany,
+            variables: {id: props.chatGroupID.slice(36, 72)},
+          });
+          mostRecentQuotationNumber =
+            response.data.getSupplierCompany.mostRecentQuotationNumber;
+          log('newnum: ' + mostRecentQuotationNumber);
+          if (mostRecentQuotationNumber) {
+            if (
+              dayjs().format('YYYY-MM') ==
+              mostRecentQuotationNumber.slice(4, 11)
+            ) {
+              var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
+              var numberString = (number + 1).toString().padStart(4, '0');
+              mostRecentQuotationNumber =
+                'QUO-' + dayjs().format('YYYY-MM-') + numberString;
+            } else {
+              mostRecentQuotationNumber =
+                'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+            }
           } else {
             mostRecentQuotationNumber =
               'QUO-' + dayjs().format('YYYY-MM-') + '0001';
           }
-        } else {
-          mostRecentQuotationNumber =
-            'QUO-' + dayjs().format('YYYY-MM-') + '0001';
-        }
-        log('updatednum: ' + mostRecentQuotationNumber);
+          log('updatednum: ' + mostRecentQuotationNumber);
 
-        log('creating purchase order');
-        const supplierCompanyUpdate = await API.graphql({
-          query: updateSupplierCompany,
-          variables: {
-            input: {
-              id: props.chatGroupID.slice(36, 72),
-              mostRecentQuotationNumber: mostRecentQuotationNumber,
+          log('creating purchase order');
+          const supplierCompanyUpdate = await API.graphql({
+            query: updateSupplierCompany,
+            variables: {
+              input: {
+                id: props.chatGroupID.slice(36, 72),
+                mostRecentQuotationNumber: mostRecentQuotationNumber,
+              },
             },
-          },
-        });
+          });
+        } else if (companyType == 'farmer') {
+          const response = await API.graphql({
+            query: getFarmerCompany,
+            variables: {id: props.chatGroupID.slice(36, 72)},
+          });
+          mostRecentQuotationNumber =
+            response.data.getFarmerCompany.mostRecentQuotationNumber;
+          log('newnum: ' + mostRecentQuotationNumber);
+          if (mostRecentQuotationNumber) {
+            if (
+              dayjs().format('YYYY-MM') ==
+              mostRecentQuotationNumber.slice(4, 11)
+            ) {
+              var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
+              var numberString = (number + 1).toString().padStart(4, '0');
+              mostRecentQuotationNumber =
+                'QUO-' + dayjs().format('YYYY-MM-') + numberString;
+            } else {
+              mostRecentQuotationNumber =
+                'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+            }
+          } else {
+            mostRecentQuotationNumber =
+              'QUO-' + dayjs().format('YYYY-MM-') + '0001';
+          }
+          log('updatednum: ' + mostRecentQuotationNumber);
+
+          log('creating purchase order');
+          const farmerCompanyUpdate = await API.graphql({
+            query: updateFarmerCompany,
+            variables: {
+              input: {
+                id: props.chatGroupID.slice(36, 72),
+                mostRecentQuotationNumber: mostRecentQuotationNumber,
+              },
+            },
+          });
+        }
       } catch (e) {
         log(e);
       }

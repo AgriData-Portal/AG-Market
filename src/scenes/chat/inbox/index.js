@@ -74,6 +74,7 @@ export const Inbox = props => {
           chats.data.getChatGroupsContainingSuppliersByUpdatedAt.items,
         );
       } else {
+        log('imafarmer');
         const chats = await API.graphql({
           query: getChatGroupsContainingFarmersByUpdatedAt,
           variables: {
@@ -82,6 +83,7 @@ export const Inbox = props => {
           },
         });
         log('fetching chats');
+        log(chats.data.getChatGroupsContainingFarmersByUpdatedAt.items);
         setChatRooms(
           chats.data.getChatGroupsContainingFarmersByUpdatedAt.items,
         );

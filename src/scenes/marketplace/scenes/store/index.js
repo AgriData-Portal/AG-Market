@@ -7,9 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
-
 import {MarketplaceList, PurchaseOrderButton} from './components';
-
 import {API, Storage} from 'aws-amplify';
 import {
   getSupplierCompany,
