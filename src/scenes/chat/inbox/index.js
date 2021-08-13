@@ -18,12 +18,22 @@ import {
 } from 'react-native-responsive-screen';
 import {onUpdateChatGroup} from '../../../graphql/subscriptions';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {userStore, versionStore} from '_store';
+import {UpdateAppModal} from '_components';
+import Modal from 'react-native-modal';
 
 export const Inbox = props => {
   const companyType = userStore(state => state.companyType);
   const companyID = userStore(state => state.companyID);
   const [chatRooms, setChatRooms] = useState(null);
+  const updateStatus = versionStore(state => state.updateStatus);
+  const [updateModal, setUpdateModal] = useState(false);
+
+  useEffect(() => {
+    if (updateStatus == 'forceUpdate' || updateStatus == 'updateLater') {
+      setUpdateModal(true);
+    }
+  }, [updateStatus]);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -116,6 +126,9 @@ export const Inbox = props => {
         }}>
         <ChatList data={chatRooms} navigation={props.navigation} />
       </View>
+      <Modal isVisible={updateModal}>
+        <UpdateAppModal setUpdateModal={setUpdateModal} />
+      </Modal>
     </SafeAreaView>
   );
 };

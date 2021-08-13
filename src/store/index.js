@@ -1,2 +1,3 @@
 import {userStore} from './user-store';
-export {userStore};
+import {versionStore} from './version-store';
+export {userStore, versionStore};
