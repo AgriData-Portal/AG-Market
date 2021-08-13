@@ -24,7 +24,7 @@ import {
 import Strings from '_utils';
 import {API} from 'aws-amplify';
 import dayjs from 'dayjs';
-import {createPDF, createCSV} from './file-creation';
+import {createPDF, createCSV, createPDF2} from './file-creation';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 
@@ -472,6 +472,22 @@ const InvoiceModal = props => {
           )
         }
       />
+      <TouchableOpacity
+        onPress={() =>
+          createPDF2(
+            (id = props.id),
+            (createdAt = props.createdAt),
+            (items = props.goods),
+          )
+        }
+        style={{
+          backgroundColor: 'red',
+          width: wp('8%'),
+          top: hp('55%'),
+          left: wp('15%'),
+        }}>
+        <Text>Test</Text>
+      </TouchableOpacity>
     </View>
   );
 };
