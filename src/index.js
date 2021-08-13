@@ -23,7 +23,7 @@ import {
   getVersion,
 } from 'react-native-device-info';
 
-import {userStore} from './store';
+import {userStore, versionStore} from './store';
 import {
   GMNavigation,
   RMNavigation,
@@ -36,8 +36,6 @@ import {
   AuthenticationNavigator,
   FarmerNavigation,
 } from './navigation';
-import {UpdateAppModal} from '_components';
-import Modal from 'react-native-modal';
 
 Amplify.configure(config);
 
@@ -64,8 +62,8 @@ Amplify.configure(config);
 // });
 
 const AppNavigator = props => {
-  const [globalSettings, setGlobalSettings] = useState([]);
-  const [updateAppModal, setUpdateAppModal] = useState(false);
+  const [globalSettings, setGlobalSettings] = useState('');
+  const changeUpdateStatus = versionStore(state => state.changeUpdateStatus);
   const [upToDate, setUpToDate] = useState(false);
 
   const getSettingsInfo = async () => {
@@ -76,10 +74,28 @@ const AppNavigator = props => {
       });
 
       setGlobalSettings(settings.data.getGlobalSettings);
-      if (DeviceInfo.getVersion() != globalSettings.latestVersionNumber) {
-        setUpToDate(true);
-        log(upToDate);
+      var status = '';
+
+      if (
+        DeviceInfo.getVersion() !=
+        settings.data.getGlobalSettings.latestVersionNumber
+      ) {
+        if (settings.data.getGlobalSettings.forceUpdate) {
+          status = 'forceUpdate';
+        } else {
+          status = 'updateLater';
+        }
+      } else {
+        status = 'latestVersion';
       }
+      console.log('1: ', settings.data.getGlobalSettings.forceUpdate);
+      changeUpdateStatus(status);
+      console.log('DeviceInfo: ');
+      console.log('Version: ' + DeviceInfo.getVersion());
+      console.log(
+        'Latest Version: ',
+        settings.data.getGlobalSettings.latestVersionNumber,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -87,9 +103,6 @@ const AppNavigator = props => {
 
   useEffect(() => {
     getSettingsInfo();
-    log('DeviceInfo: ');
-    log('Version: ' + DeviceInfo.getVersion());
-    log('Latest Version: ', globalSettings.latestVersionNumber);
   }, []);
   const changeCompanyName = userStore(state => state.changeCompanyName);
   const changeUserName = userStore(state => state.changeUserName);
