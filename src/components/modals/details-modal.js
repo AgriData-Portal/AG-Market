@@ -13,7 +13,11 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 
-import {getSupplierCompany, getRetailerCompany} from '_graphql/queries';
+import {
+  getSupplierCompany,
+  getRetailerCompany,
+  getFarmerCompany,
+} from '_graphql/queries';
 
 import {log} from '_utils';
 import {userStore} from '_store';
@@ -22,27 +26,44 @@ const DetailsModal = props => {
   const [companyDetails, setCompanyDetails] = useState([]);
   const [imageSource, setImageSource] = useState(null);
   const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
 
   const getStoreDetails = async () => {
-    if (companyType == 'retailer') {
+    log(props.id);
+
+    if (companyType == 'retailer' || companyType == 'farmer') {
       try {
+        log('getting supplier');
         var storeDetails = await API.graphql({
           query: getSupplierCompany,
           variables: {id: props.id},
         });
-        log('retailer');
+
         setCompanyDetails(storeDetails.data.getSupplierCompany);
       } catch (e) {
         log(e);
       }
-    } else if (companyType == 'supplier') {
+    } else if (companyType == 'supplier' && !props.buyingMode) {
       try {
+        log('getting retailer');
         var storeDetails = await API.graphql({
           query: getRetailerCompany,
           variables: {id: props.id},
         });
-        log('supplier');
+
         setCompanyDetails(storeDetails.data.getRetailerCompany);
+      } catch (e) {
+        log(e);
+      }
+    } else if (companyType == 'supplier' && props.buyingMode) {
+      try {
+        log('getting farmer');
+        var storeDetails = await API.graphql({
+          query: getFarmerCompany,
+          variables: {id: props.id},
+        });
+
+        setCompanyDetails(storeDetails.data.getFarmerCompany);
       } catch (e) {
         log(e);
       }

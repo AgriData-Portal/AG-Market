@@ -47,6 +47,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -72,7 +73,6 @@ function getHeaderTitle(route, sellerState) {
 function getIcon(route, user, navigation, sellerState) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
   if (routeName == 'marketplace' && !sellerState) {
-    log('test');
     return (
       <ShareStoreButton user={user} navigation={navigation}></ShareStoreButton>
     );
@@ -86,6 +86,7 @@ export {SupplierNavigation};
 const SupplierNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [sellerState, setSellerState] = useState(false);
+  const companyID = userStore(state => state.companyID);
   return (
     <AppStack.Navigator
       screenOptions={{
@@ -138,16 +139,20 @@ const SupplierNavigation = props => {
           ),
           headerTitle: () => (
             <View>
-              <TouchableOpacity onPress={() => setDetailsModal(true)}>
+              <TouchableOpacity
+                onPress={() => [
+                  setDetailsModal(true),
+                  log('itemID: ', route.params),
+                ]}>
                 <Text style={[Typography.large]}>{route.params.storeName}</Text>
               </TouchableOpacity>
               <Modal
                 isVisible={detailsModal}
-                onBackdropPress={() => setDetailsModal(false)}>
+                onBackdropPress={() => [setDetailsModal(false)]}>
                 <DetailsModal
-                  companyType={'retailer'}
                   name={route.params.storeName}
                   id={route.params.itemId}
+                  buyingMode={true}
                   setDetailsModal={setDetailsModal}></DetailsModal>
               </Modal>
             </View>
@@ -165,22 +170,44 @@ const SupplierNavigation = props => {
       <AppStack.Screen
         name="chatroom"
         options={({route, navigation}) => ({
-          headerTitle: () => (
-            <View>
-              <TouchableOpacity onPress={() => setDetailsModal(true)}>
-                <Text style={[Typography.large]}>{route.params.chatName}</Text>
-              </TouchableOpacity>
-              <Modal
-                isVisible={detailsModal}
-                onBackdropPress={() => setDetailsModal(false)}>
-                <DetailsModal
-                  companyType={'supplier'}
-                  name={route.params.chatName}
-                  id={route.params.itemID.slice(0, 36)}
-                  setDetailsModal={setDetailsModal}></DetailsModal>
-              </Modal>
-            </View>
-          ),
+          headerTitle: () => {
+            return (
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (companyID == route.params.itemID.slice(0, 36)) {
+                      navigation.navigate('store', {
+                        itemId: route.params.itemID.slice(36, 72),
+                        storeName: route.params.chatName,
+                      });
+                    } else {
+                      setDetailsModal(true);
+                    }
+                  }}>
+                  <Text style={[Typography.large]}>
+                    {route.params.chatName}
+                  </Text>
+                </TouchableOpacity>
+                <Modal
+                  isVisible={detailsModal}
+                  onBackdropPress={() => setDetailsModal(false)}>
+                  <DetailsModal
+                    name={route.params.chatName}
+                    id={
+                      companyID == route.params.itemID.slice(0, 36)
+                        ? route.params.itemID.slice(36, 72)
+                        : route.params.itemID.slice(0, 36)
+                    }
+                    buyingMode={
+                      companyID == route.params.itemID.slice(0, 36)
+                        ? true
+                        : false
+                    }
+                    setDetailsModal={setDetailsModal}></DetailsModal>
+                </Modal>
+              </View>
+            );
+          },
           headerTitleAlign: 'center',
           // headerRight: () => <ChatInfo />,
           headerLeft: () => (
@@ -656,7 +683,7 @@ const updateLastSeen = async (userID, chatGroupID, navigation) => {
       variables: {input: {id: uniqueID, lastOnline: dayjs()}},
     });
     log('updated last seen');
-    log(updatedLastSeen);
+
     navigation.navigate('inbox');
   } catch (e) {
     log(e);
