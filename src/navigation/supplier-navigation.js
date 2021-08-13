@@ -104,6 +104,7 @@ export {SupplierNavigation};
 
 const SupplierNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
+
   return (
     <AppStack.Navigator
       screenOptions={{

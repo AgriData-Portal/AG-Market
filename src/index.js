@@ -5,7 +5,7 @@ import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import config from './aws-exports';
 import {View, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
-import {getUser} from './graphql/queries';
+import {getGlobalSettings, getUser} from './graphql/queries';
 import {
   createUser,
   createFarmerCompany,
@@ -35,6 +35,8 @@ import {
   AuthenticationNavigator,
   FarmerNavigation,
 } from './navigation';
+import {UpdateAppModal} from '_components';
+import Modal from 'react-native-modal';
 
 Amplify.configure(config);
 
@@ -61,12 +63,34 @@ Amplify.configure(config);
 // });
 
 const AppNavigator = props => {
-  log('DeviceInfo: ');
-  log('API LEVEL: ' + DeviceInfo.getApiLevelSync());
-  log('FONTSCALE: ' + DeviceInfo.getFontScaleSync());
-  log('MODEL: ' + DeviceInfo.getModel());
-  log('Version: ' + DeviceInfo.getVersion());
-  log('user:' + props.user);
+  const [globalSettings, setGlobalSettings] = useState([]);
+  const [updateAppModal, setUpdateAppModal] = useState(false);
+  const [upToDate, setUpToDate] = useState(false);
+
+  const getSettingsInfo = async () => {
+    try {
+      const settings = await API.graphql({
+        query: getGlobalSettings,
+        variables: {id: 'AGRIDATA'},
+      });
+
+      setGlobalSettings(settings.data.getGlobalSettings);
+      if (DeviceInfo.getVersion() != globalSettings.latestVersionNumber) {
+        setUpToDate(true);
+        log(upToDate);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getSettingsInfo();
+    log('DeviceInfo: ');
+    log('Version: ' + DeviceInfo.getVersion());
+    log('Latest Version: ', globalSettings.latestVersionNumber);
+  }, []);
+
   const type = props.user.role;
   const retailer = props.user.retailerCompany;
   const supplier = props.user.supplierCompany;
@@ -156,6 +180,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
           />
         );
       } else if (company.role == 'Sales Manager') {
@@ -165,6 +190,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
           />
         );
       } else if (company.role == 'Delivery Man') {
@@ -174,6 +200,7 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
           />
         );
       } else if (company.role == 'Accounts') {
@@ -183,6 +210,16 @@ const AppNavigator = props => {
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
+          />
+        );
+      } else {
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
           />
         );
       }

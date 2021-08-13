@@ -11,6 +11,7 @@ import {
   UnsuccessfulModal,
   LoadingModal,
   SuccessNavigateChatModal,
+  UpdateAppModal,
 } from './modals';
 import {DismissKeyboardView} from './dismiss-keyboard';
 import {
@@ -23,6 +24,7 @@ import {
 } from './menu_button';
 
 export {
+  UpdateAppModal,
   CloseButton,
   AddButton,
   BackButton,

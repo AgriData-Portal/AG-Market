@@ -19,6 +19,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {UpdateAppModal} from './update-modal';
+export {UpdateAppModal};
 
 export const SuccessfulModal = props => {
   return (
@@ -200,6 +202,7 @@ export const SuccesfulChangesModal = props => {
     </View>
   );
 };
+
 export const LoadingModal = props => {
   return (
     <Modal isVisible={props.isVisible}>
