@@ -29,11 +29,13 @@ import {
 import Strings from '_utils';
 import {API, Storage} from 'aws-amplify';
 import {
+  updateFarmerCompany,
   updateRetailerCompany,
   updateSupplierCompany,
 } from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(props.route.params.logo);
@@ -44,6 +46,9 @@ export const EditCompany = props => {
   const [bankDetails, setBankDetails] = useState(props.route.params.bankNumber);
   const [bankName, setBankName] = useState(props.route.params.bankName);
   const [errorText, setErrorText] = useState('');
+  const companyType = userStore(state => state.companyType);
+  const companyName = userStore(state => state.companyName);
+  const companyID = userStore(state => state.companyID);
 
   if (number.includes('+60')) {
     var temp = number.slice(3);
@@ -84,7 +89,7 @@ export const EditCompany = props => {
       '  ',
       imageSource,
     );
-    if (props.user.supplierCompanyID != null) {
+    if (companyType == 'supplier') {
       console.log('Supplier');
       var photo;
       try {
@@ -95,7 +100,7 @@ export const EditCompany = props => {
           const response = await fetch(photo.uri);
           const blob = await response.blob();
           log('FileName: \n');
-          photo.fileName = props.user.supplierCompany.name + '_logo';
+          photo.fileName = companyName + '_logo';
           await Storage.put(photo.fileName, blob, {
             contentType: 'image/jpeg',
           });
@@ -105,7 +110,7 @@ export const EditCompany = props => {
           query: updateSupplierCompany,
           variables: {
             input: {
-              id: props.user.supplierCompanyID,
+              id: companyID,
               logo: imageSource == null ? null : photo.fileName,
               contactDetails: {email: email, phone: '+60' + number},
               bankAccount: {
@@ -121,7 +126,7 @@ export const EditCompany = props => {
         log(e);
         setUnsuccessfulModal(true);
       }
-    } else if (props.user.retailerCompanyID != null) {
+    } else if (companyType == 'retailer') {
       console.log('Retailer');
       var photo;
       try {
@@ -131,7 +136,7 @@ export const EditCompany = props => {
           const response = await fetch(photo.uri);
           const blob = await response.blob();
           log('FileName: \n');
-          photo.fileName = props.user.retailerCompany.name + '_logo';
+          photo.fileName = companyName + '_logo';
           await Storage.put(photo.fileName, blob, {
             contentType: 'image/jpeg',
           });
@@ -140,7 +145,43 @@ export const EditCompany = props => {
           query: updateRetailerCompany,
           variables: {
             input: {
-              id: props.user.retailerCompanyID,
+              id: companyID,
+              logo: imageSource == null ? null : photo.fileName,
+              contactDetails: {email: email, phone: '+60' + number},
+              bankAccount: {
+                bankName: bankName,
+                accountNumber: bankDetails,
+              },
+            },
+          },
+        });
+        console.log(companyProfile.data);
+
+        setSuccessfulModal(true);
+      } catch (e) {
+        log(e);
+        setSuccessfulModal(true);
+      }
+    } else {
+      console.log('Farm');
+      var photo;
+      try {
+        if (imageSource) {
+          photo = imageSource;
+          log(photo);
+          const response = await fetch(photo.uri);
+          const blob = await response.blob();
+          log('FileName: \n');
+          photo.fileName = companyName + '_logo';
+          await Storage.put(photo.fileName, blob, {
+            contentType: 'image/jpeg',
+          });
+        }
+        var companyProfile = await API.graphql({
+          query: updateFarmerCompany,
+          variables: {
+            input: {
+              id: companyID,
               logo: imageSource == null ? null : photo.fileName,
               contactDetails: {email: email, phone: '+60' + number},
               bankAccount: {

@@ -3,8 +3,8 @@ import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 import {
-  Orders, //Done
-  RetailerTasks, //done
+  BuyerOrders, //Done
+  BuyerTask, //done
 } from '_scenes';
 
 import {Colors} from '_styles/';
@@ -65,6 +65,7 @@ const AccountsNavigation = props => {
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -165,10 +166,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <RetailerTasks
+          <BuyerTask
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -231,10 +233,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <BuyerOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>

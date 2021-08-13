@@ -3,33 +3,16 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
-  AccountsDashboard, //done
-  RetailManagerDashboard, // done
-  GeneralManagerDashboard, //done
   Marketplace, //done
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  EmployeeDashboard, //done
-  OwnerDashboard, //done
-  Orders, //Done
+  BuyingOrders, //Done
+  SellingOrders,
   SupplierStore, // done most
-  SupplierTasks, //done
-  RetailerTasks, //done
-  //CompanyProfile, //done
-  //EditCompany, //done
-  //HumanResource, //done
-  //PersonalProfile, //done.
-  //EditPersonal, //done.
-  //DataAnalytics,
-  Registration, //done
-  SupplierDashboard, //done
-  Login, //done
-  CreateCompany, //done
-  Landing, //done
-  Verification, //done
-  ConfirmSignUp, //done
-  RetailerModalButton,
+  SellerTask, //done
+  BuyerTask, //done
+  ShareStoreButton,
 } from '_scenes';
 import 'react-native-gesture-handler';
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -61,24 +44,25 @@ import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
 const AppStack = createStackNavigator();
 
-function getHeaderTitle(route) {
+function getHeaderTitle(route, sellerState) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
 
   switch (routeName) {
     case 'inbox':
       return Strings.inbox;
     case 'marketplace':
-      return Strings.myStore;
-    case 'orders':
-      return Strings.orders;
+      return sellerState ? Strings.marketplace : Strings.myStore;
+    case 'orders': //TRANSLATION
+      return sellerState ? 'Purchase Invoice' : 'Sales Invoice';
     case 'tasks':
       return Strings.tasks;
     case 'dataanalytics':
@@ -86,14 +70,11 @@ function getHeaderTitle(route) {
   }
 }
 
-function getIcon(route, user, navigation) {
+function getIcon(route, user, navigation, sellerState) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
-  if (routeName == 'marketplace') {
-    log('test');
+  if (routeName == 'marketplace' && !sellerState) {
     return (
-      <RetailerModalButton
-        user={user}
-        navigation={navigation}></RetailerModalButton>
+      <ShareStoreButton user={user} navigation={navigation}></ShareStoreButton>
     );
   } else {
     return null;
@@ -104,7 +85,8 @@ export {SupplierNavigation};
 
 const SupplierNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
-
+  const [sellerState, setSellerState] = useState(false);
+  const companyID = userStore(state => state.companyID);
   return (
     <AppStack.Navigator
       screenOptions={{
@@ -117,7 +99,7 @@ const SupplierNavigation = props => {
       <AppStack.Screen
         name={Strings.inbox}
         options={({route, navigation}) => ({
-          headerTitle: getHeaderTitle(route),
+          headerTitle: getHeaderTitle(route, sellerState),
           headerTitleStyle: [Typography.large],
           headerTitleAlign: 'center',
           headerLeft: () => (
@@ -125,6 +107,9 @@ const SupplierNavigation = props => {
               navigation={navigation}
               updateAuthState={props.updateAuthState}
               userType={props.user.role}
+              company={props.company}
+              on={sellerState}
+              off={setSellerState}
             />
           ),
           headerRight: () =>
@@ -132,6 +117,7 @@ const SupplierNavigation = props => {
               (route = route),
               (user = props.user),
               (navigation = navigation),
+              sellerState,
             ),
         })}>
         {screenProps => (
@@ -139,29 +125,89 @@ const SupplierNavigation = props => {
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            sellerState={sellerState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
-
       <AppStack.Screen
-        name="chatroom"
+        name="store"
         options={({route, navigation}) => ({
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <HeaderBackButton onPress={() => navigation.goBack()} />
+          ),
           headerTitle: () => (
             <View>
-              <TouchableOpacity onPress={() => setDetailsModal(true)}>
-                <Text style={[Typography.large]}>{route.params.chatName}</Text>
+              <TouchableOpacity
+                onPress={() => [
+                  setDetailsModal(true),
+                  log('itemID: ', route.params),
+                ]}>
+                <Text style={[Typography.large]}>{route.params.storeName}</Text>
               </TouchableOpacity>
               <Modal
                 isVisible={detailsModal}
-                onBackdropPress={() => setDetailsModal(false)}>
+                onBackdropPress={() => [setDetailsModal(false)]}>
                 <DetailsModal
-                  companyType={'supplier'}
-                  name={route.params.chatName}
-                  id={route.params.itemID.slice(0, 36)}
+                  name={route.params.storeName}
+                  id={route.params.itemId}
+                  buyingMode={true}
                   setDetailsModal={setDetailsModal}></DetailsModal>
               </Modal>
             </View>
           ),
+        })}>
+        {screenProps => (
+          <Store
+            {...screenProps}
+            updateAuthState={props.updateAuthState}
+            user={props.user}
+            company={props.company}
+          />
+        )}
+      </AppStack.Screen>
+      <AppStack.Screen
+        name="chatroom"
+        options={({route, navigation}) => ({
+          headerTitle: () => {
+            return (
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (companyID == route.params.itemID.slice(0, 36)) {
+                      navigation.navigate('store', {
+                        itemId: route.params.itemID.slice(36, 72),
+                        storeName: route.params.chatName,
+                      });
+                    } else {
+                      setDetailsModal(true);
+                    }
+                  }}>
+                  <Text style={[Typography.large]}>
+                    {route.params.chatName}
+                  </Text>
+                </TouchableOpacity>
+                <Modal
+                  isVisible={detailsModal}
+                  onBackdropPress={() => setDetailsModal(false)}>
+                  <DetailsModal
+                    name={route.params.chatName}
+                    id={
+                      companyID == route.params.itemID.slice(0, 36)
+                        ? route.params.itemID.slice(36, 72)
+                        : route.params.itemID.slice(0, 36)
+                    }
+                    buyingMode={
+                      companyID == route.params.itemID.slice(0, 36)
+                        ? true
+                        : false
+                    }
+                    setDetailsModal={setDetailsModal}></DetailsModal>
+                </Modal>
+              </View>
+            );
+          },
           headerTitleAlign: 'center',
           // headerRight: () => <ChatInfo />,
           headerLeft: () => (
@@ -383,13 +429,25 @@ const TabbedNavigator = props => {
             return null;
           },
         }}>
-        {screenProps => (
-          <Orders
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            user={props.user}
-          />
-        )}
+        {screenProps =>
+          props.sellerState ? (
+            <BuyingOrders
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              sellerState={props.sellerState}
+              company={props.company}
+            />
+          ) : (
+            <SellingOrders
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              sellerState={props.sellerState}
+              company={props.company}
+            />
+          )
+        }
       </TabStack.Screen>
 
       <TabStack.Screen
@@ -455,13 +513,22 @@ const TabbedNavigator = props => {
             return null;
           },
         }}>
-        {screenProps => (
-          <SupplierStore
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            user={props.user}
-          />
-        )}
+        {screenProps =>
+          props.sellerState ? (
+            <Marketplace
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              company={props.company}
+            />
+          ) : (
+            <SupplierStore
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+            />
+          )
+        }
       </TabStack.Screen>
       <TabStack.Screen
         name="tasks"
@@ -521,13 +588,22 @@ const TabbedNavigator = props => {
             return null;
           },
         }}>
-        {screenProps => (
-          <SupplierTasks
-            {...screenProps}
-            updateAuthState={props.updateAuthState}
-            user={props.user}
-          />
-        )}
+        {screenProps =>
+          props.sellerState ? (
+            <BuyerTask
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+              company={props.company}
+            />
+          ) : (
+            <SellerTask
+              {...screenProps}
+              updateAuthState={props.updateAuthState}
+              user={props.user}
+            />
+          )
+        }
       </TabStack.Screen>
       <TabStack.Screen
         name="dataanalytics"
@@ -607,7 +683,7 @@ const updateLastSeen = async (userID, chatGroupID, navigation) => {
       variables: {input: {id: uniqueID, lastOnline: dayjs()}},
     });
     log('updated last seen');
-    log(updatedLastSeen);
+
     navigation.navigate('inbox');
   } catch (e) {
     log(e);

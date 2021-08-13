@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -16,6 +16,7 @@ import {
   invoiceForRetailerByDate,
   invoiceRetailerForSupplierByDate,
   invoiceForFarmerByDate,
+  invoiceFarmerForSupplierByDate,
 } from '../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
@@ -27,14 +28,19 @@ import dayjs from 'dayjs';
 import {createPDF, createCSV} from './file-creation';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const OrderList = props => {
   const [refreshing, setRefreshing] = useState(false);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
+
   return (
     <View>
       <FlatList
         keyExtractor={item => item.id}
         data={props.invoiceList}
+        extraData={props.sellerState}
         numColumns={1}
         onEndReached={() => {
           props.setRefresh(state => state + 1);
@@ -46,30 +52,46 @@ export const OrderList = props => {
             refreshing={refreshing}
             onRefresh={async () => {
               setRefreshing(true);
-              if (props.user.supplierCompanyID != null) {
+              if (companyType == 'supplier') {
                 try {
-                  const invoice = await API.graphql({
-                    query: invoiceRetailerForSupplierByDate,
-                    variables: {
-                      supplierID: props.user.supplierCompanyID,
-                      sortDirection: 'DESC',
-                    },
-                  });
-                  log(invoice.data.invoiceRetailerForSupplierByDate.items);
-                  props.setInvoiceList(
-                    invoice.data.invoiceRetailerForSupplierByDate.items,
-                  );
-                  props.setLoading(false);
-                  log('supplierCompanyInvoices');
+                  if (props.sellerState == false) {
+                    const invoice = await API.graphql({
+                      query: invoiceRetailerForSupplierByDate,
+                      variables: {
+                        supplierID: companyID,
+                        sortDirection: 'DESC',
+                      },
+                    });
+                    log(invoice.data.invoiceRetailerForSupplierByDate.items);
+                    props.setInvoiceList(
+                      invoice.data.invoiceRetailerForSupplierByDate.items,
+                    );
+                    props.setLoading(false);
+                    log('supplierCompanyWithRetailerInvoices');
+                  } else {
+                    const invoice = await API.graphql({
+                      query: invoiceFarmerForSupplierByDate,
+                      variables: {
+                        supplierID: companyID,
+                        sortDirection: 'DESC',
+                      },
+                    });
+                    log(invoice.data.invoiceFarmerForSupplierByDate.items);
+                    props.setInvoiceList(
+                      invoice.data.invoiceFarmerForSupplierByDate.items,
+                    );
+                    props.setLoading(false);
+                    log('supplierCompanyWithFarmerInvoices');
+                  }
                 } catch (e) {
                   log(e);
                 }
-              } else if (props.user.retailerCompanyID != null) {
+              } else if (companyType == 'retailer') {
                 try {
                   const invoice = await API.graphql({
                     query: invoiceForRetailerByDate,
                     variables: {
-                      retailerID: props.user.retailerCompanyID,
+                      retailerID: companyID,
                       sortDirection: 'DESC',
                     },
                   });
@@ -87,7 +109,7 @@ export const OrderList = props => {
                   const invoice = await API.graphql({
                     query: invoiceForFarmerByDate,
                     variables: {
-                      farmerID: props.user.farmerCompanyID,
+                      farmerID: companyID,
                       sortDirection: 'DESC',
                     },
                   });
@@ -111,25 +133,20 @@ export const OrderList = props => {
           />
         }
         renderItem={({item}) => {
-          if (props.user.retailerCompanyID == null) {
-            var company = item.retailer;
-          } else {
-            var company = item.supplier;
-          }
           return (
             <Order
               id={item.id}
               trackingNum={item.trackingNum}
               amount={item.amount}
-              company={company}
               supplier={item.supplier}
               retailer={item.retailer}
+              farmer={item.farmer}
               goods={item.items}
               paid={item.paid}
               amount={item.amount}
               receivedBy={item.receivedBy}
               createdAt={item.createdAt}
-              user={props.user}
+              sellerState={props.sellerState}
             />
           );
         }}
@@ -140,6 +157,7 @@ export const OrderList = props => {
 
 const Order = props => {
   const [invoiceModal, setInvoiceModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setInvoiceModal(true)}
@@ -193,7 +211,13 @@ const Order = props => {
               fontWeight: 'bold',
             },
           ]}>
-          {props.company.name}
+          {companyType == 'retailer'
+            ? props.supplier.name
+            : companyType == 'supplier' && props.sellerState == true
+            ? props.farmer.name
+            : companyType == 'supplier' && props.sellerState == false
+            ? props.retailer.name
+            : props.supplier.name}
         </Text>
         <Text
           style={[
@@ -273,14 +297,15 @@ const Order = props => {
           id={props.id}
           trackingNum={props.trackingNum}
           amount={props.amount}
-          company={props.company}
           supplier={props.supplier}
           retailer={props.retailer}
+          farmer={props.farmer}
           goods={props.goods}
           paid={props.paid}
           amount={props.amount}
           receivedBy={props.receivedBy}
           createdAt={props.createdAt}
+          sellerState={props.sellerState}
         />
       </Modal>
     </TouchableOpacity>
@@ -288,6 +313,8 @@ const Order = props => {
 };
 
 const InvoiceModal = props => {
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
   const Seperator = () => {
     return (
       <View
@@ -346,7 +373,13 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {props.company.name}
+        {companyType == 'retailer'
+          ? props.supplier.name
+          : companyType == 'supplier' && props.sellerState
+          ? props.farmer.name
+          : companyType == 'supplier' && !props.sellerState
+          ? props.retailer.name
+          : props.supplier.name}
       </Text>
       {props.paid ? (
         <Text
@@ -451,17 +484,42 @@ const InvoiceModal = props => {
         offsetCenter={wp('2%')}
         top={hp('70%')}
         left={wp('61%')}
-        onPress={() =>
-          createPDF(
-            (id = props.trackingNum),
-            (retailer = props.retailer),
-            (supplier = props.supplier),
-            (createdAt = props.createdAt),
-            (items = props.goods),
-            (amount = props.amount),
-            (receivedBy = props.receivedBy),
-          )
-        }
+        onPress={() => {
+          if (companyType == 'supplier') {
+            log('supplier');
+            if (props.sellerState == false) {
+              createPDF(
+                (id = props.trackingNum),
+                (buyer = props.retailer),
+                (seller = props.supplier),
+                (createdAt = props.createdAt),
+                (items = props.goods),
+                (amount = props.amount),
+                (receivedBy = props.receivedBy),
+              );
+            } else {
+              createPDF(
+                (id = props.trackingNum),
+                (buyer = props.supplier),
+                (seller = props.farmer),
+                (createdAt = props.createdAt),
+                (items = props.goods),
+                (amount = props.amount),
+                (receivedBy = props.receivedBy),
+              );
+            }
+          } else if (companyType == 'retailer') {
+            createPDF(
+              (id = props.trackingNum),
+              (buyer = props.retailer),
+              (seller = props.supplier),
+              (createdAt = props.createdAt),
+              (items = props.goods),
+              (amount = props.amount),
+              (receivedBy = props.receivedBy),
+            );
+          }
+        }}
       />
       <BlueButton
         position={'absolute'}
