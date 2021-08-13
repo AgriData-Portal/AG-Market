@@ -20,17 +20,22 @@ import {API} from 'aws-amplify';
 import {
   goodsTaskRetailerForSupplierByDate,
   paymentsTaskRetailerForSupplierByDate,
+  goodsTaskForFarmerByDate,
+  paymentsTaskForFarmerByDate,
 } from '../../../graphql/queries';
 import Strings from '_utils';
 import {log} from '_utils';
+import {userStore} from '_store';
 
-export const SupplierTasks = props => {
+export const SellerTask = props => {
   const [sendTask, setSendTask] = useState([]);
   const [claimTask, setClaimTask] = useState([]);
   const [sortModal, setSortModal] = useState(false);
   const [task, setTask] = useState('send');
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
 
   useEffect(() => {
     if (task == 'send' && sendTask.length == 0) {
@@ -42,15 +47,27 @@ export const SupplierTasks = props => {
   const getSendTask = async () => {
     setLoading(true);
     try {
-      const task = await API.graphql({
-        query: goodsTaskRetailerForSupplierByDate,
-        variables: {
-          supplierID: props.user.supplierCompanyID,
-          sortDirection: 'ASC',
-        },
-      });
-      setSendTask(task.data.goodsTaskRetailerForSupplierByDate.items);
-      log(task.data.goodsTaskRetailerForSupplierByDate.items);
+      if (companyType == 'supplier') {
+        const task = await API.graphql({
+          query: goodsTaskRetailerForSupplierByDate,
+          variables: {
+            supplierID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        setSendTask(task.data.goodsTaskRetailerForSupplierByDate.items);
+        log(task.data.goodsTaskRetailerForSupplierByDate.items);
+      } else {
+        const task = await API.graphql({
+          query: goodsTaskForFarmerByDate,
+          variables: {
+            farmerID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        setSendTask(task.data.goodsTaskForFarmerByDate.items);
+        log(task.data.goodsTaskForFarmerByDate.items);
+      }
       log('goods task');
       setLoading(false);
     } catch (e) {
@@ -61,15 +78,27 @@ export const SupplierTasks = props => {
   const getClaimTask = async () => {
     setLoading(true);
     try {
-      const task = await API.graphql({
-        query: paymentsTaskRetailerForSupplierByDate,
-        variables: {
-          supplierID: props.user.supplierCompanyID,
-          sortDirection: 'ASC',
-        },
-      });
-      setClaimTask(task.data.paymentsTaskRetailerForSupplierByDate.items);
-      log(task.data.paymentsTaskRetailerForSupplierByDate.items);
+      if (companyType == 'supplier') {
+        const task = await API.graphql({
+          query: paymentsTaskRetailerForSupplierByDate,
+          variables: {
+            supplierID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        setClaimTask(task.data.paymentsTaskRetailerForSupplierByDate.items);
+        log(task.data.paymentsTaskRetailerForSupplierByDate.items);
+      } else {
+        const task = await API.graphql({
+          query: paymentsTaskForFarmerByDate,
+          variables: {
+            farmerID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        setClaimTask(task.data.paymentsTaskForFarmerByDate.items);
+        log(task.data.paymentsTaskForFarmerByDate.items);
+      }
       log('payment task');
       setLoading(false);
     } catch (e) {
@@ -190,7 +219,6 @@ export const SupplierTasks = props => {
         }}>
         {task == 'claim' ? (
           <ReceivePaymentTaskList
-            user={props.user}
             data={claimTask}
             trigger={trigger}
             setTrigger={setTrigger}
@@ -205,7 +233,6 @@ export const SupplierTasks = props => {
             setTrigger={setTrigger}
             sendTask={sendTask}
             setSendTask={setSendTask}
-            user={props.user}
             getSendTask={getSendTask}
           />
         )}

@@ -1,5 +1,5 @@
-import {SupplierTasks} from './supplier-tasks';
-import {RetailerTasks} from './retailer-tasks';
+import {SellerTask} from './supplier-tasks';
+import {BuyerTask} from './buying-task';
 import {FarmerTasks} from './farmer-tasks';
 
-export {SupplierTasks, RetailerTasks, FarmerTasks};
+export {SellerTask, BuyerTask, FarmerTasks};

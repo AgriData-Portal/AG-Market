@@ -7,8 +7,8 @@ import {
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  Orders, //Done
-  RetailerTasks, //done
+  BuyingOrders, //Done
+  BuyerTask, //done
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -41,13 +41,13 @@ import {
   createChatGroupUsers,
   updateRetailerCompany,
 } from '../graphql/mutations';
-import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -153,6 +153,7 @@ const GMNavigation = props => {
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -211,46 +212,13 @@ const GMNavigation = props => {
               </Modal>
             </View>
           ),
-          // headerRight: () => (
-          //   <View>
-          //     {checkIsFavourite(
-          //       (userDetails = props.user),
-          //       (itemId = route.params.itemId),
-          //     ) || isFavourite ? (
-          //       <View
-          //         style={{
-          //           position: 'absolute',
-          //           right: wp('5%'),
-          //           top: hp('4%'),
-          //         }}>
-          //         <Icon color="gold" name="star-outline" size={wp('7%')} />
-          //       </View>
-          //     ) : (
-          //       <TouchableOpacity
-          //         onPress={() =>
-          //           updateFavourites(
-          //             (userDetails = props.user),
-          //             (itemId = route.params.itemId),
-          //             (storeName = route.params.storeName),
-          //             (setIsFavourite = setIsFavourite()),
-          //           )
-          //         }
-          //         style={{
-          //           position: 'absolute',
-          //           right: wp('5%'),
-          //           top: hp('4%'),
-          //         }}>
-          //         <Icon name="star-outline" size={wp('7%')} />
-          //       </TouchableOpacity>
-          //     )}
-          //   </View>
-          // ),
         })}>
         {screenProps => (
           <Store
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -451,10 +419,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <BuyingOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -527,6 +496,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -589,11 +559,12 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <RetailerTasks
+          <BuyerTask
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
             userType={props.user.role}
+            company={props.company}
           />
         )}
       </TabStack.Screen>

@@ -12,8 +12,8 @@ import {log} from '_utils';
 
 export const createPDF = async (
   id,
-  retailer,
-  supplier,
+  buyer,
+  seller,
   createdAt,
   items,
   amount,
@@ -53,13 +53,13 @@ export const createPDF = async (
       fontName: 'Poppins-Regular',
       fontSize: 80,
     })
-    .drawText('Bought By: ' + retailer.name, {
+    .drawText('Bought By: ' + buyer.name, {
       x: 100,
       y: 2800,
       fontName: 'Poppins-Regular',
       fontSize: 80,
     })
-    .drawText('Sold By: ' + supplier.name, {
+    .drawText('Sold By: ' + seller.name, {
       x: 100,
       y: 2700,
       fontName: 'Poppins-Regular',

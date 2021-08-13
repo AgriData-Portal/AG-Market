@@ -8,8 +8,8 @@ import {
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  Orders, //Done
-  RetailerTasks, //done
+  BuyerOrders, //Done
+  BuyerTask, //done
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -41,7 +41,7 @@ import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 
@@ -98,6 +98,7 @@ const RMNavigation = props => {
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -162,6 +163,7 @@ const RMNavigation = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -329,10 +331,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <BuyerOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -406,6 +409,7 @@ const TabbedNavigator = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -468,10 +472,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <RetailerTasks
+          <BuyerTask
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>

@@ -5,12 +5,13 @@ import {
   BlueButton,
   ProductSearchBar,
 } from './buttons';
-import {NavBar} from './navigation_panel';
+
 import {
   SuccessfulModal,
   UnsuccessfulModal,
   LoadingModal,
   SuccessNavigateChatModal,
+  DetailsModal,
 } from './modals';
 import {DismissKeyboardView} from './dismiss-keyboard';
 import {
@@ -26,7 +27,6 @@ export {
   CloseButton,
   AddButton,
   BackButton,
-  NavBar,
   SuccessfulModal,
   UnsuccessfulModal,
   DismissKeyboardView,
@@ -39,4 +39,5 @@ export {
   EditPersonal,
   BlueButton,
   SuccessNavigateChatModal,
+  DetailsModal,
 };

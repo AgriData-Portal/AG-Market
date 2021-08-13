@@ -25,6 +25,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const ProductCard = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -91,9 +92,8 @@ export const ProductCard = props => {
           lowPrice={props.lowPrice}
           highPrice={props.highPrice}
           minimumQuantity={props.minimumQuantity}
-          supplierID={props.supplierID}
+          sellerID={props.sellerID}
           siUnit={props.siUnit}
-          chatGroups={props.chatGroups}
           supplier={props.supplier}
           user={props.user}></ProductPopUp>
       </Modal>
@@ -102,6 +102,7 @@ export const ProductCard = props => {
 };
 
 export const MarketplaceList = props => {
+  const companyType = userStore(state => state.companyType);
   const OpenWhatsapp = () => {
     let url =
       'https://wa.me/601165691998?text=Hi%20I%20am%20interested%20to%20purchase%20' +
@@ -170,7 +171,6 @@ export const MarketplaceList = props => {
       renderItem={({item}) => {
         return (
           <ProductCard
-            chatGroups={props.chatGroups}
             navigation={props.navigation}
             productName={item.productName}
             grade={item.grade}
@@ -182,9 +182,10 @@ export const MarketplaceList = props => {
             lowPrice={item.lowPrice}
             highPrice={item.highPrice}
             minimumQuantity={item.minimumQuantity}
-            supplierID={item.supplierID}
-            supplier={item.supplier}
-            user={props.user}
+            sellerID={
+              companyType == 'retailer' ? item.supplierID : item.farmerID
+            }
+            supplier={companyType == 'retailer' ? item.supplier : item.farmer}
           />
         );
       }}
@@ -193,37 +194,70 @@ export const MarketplaceList = props => {
 };
 
 export const ProductPopUp = props => {
+  const userName = userStore(state => state.userName);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
+  const userID = userStore(state => state.userID);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const sendProductInquiry = async () => {
     try {
-      const updateChat = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.user.retailerCompanyID + props.supplierID,
-            mostRecentMessage: 'Product Inquiry',
-            mostRecentMessageSender: props.user.name,
+      if (companyType == 'retailer') {
+        const updateChat = await API.graphql({
+          query: updateChatGroup,
+          variables: {
+            input: {
+              id: companyID + props.sellerID,
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            },
           },
-        },
-      });
+        });
+      } else {
+        const updateChat = await API.graphql({
+          query: updateChatGroup,
+          variables: {
+            input: {
+              id: props.sellerID + companyID,
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            },
+          },
+        });
+      }
       log('chat group already exist');
     } catch (e) {
       log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
-          const chatGroup = {
-            id: props.user.retailerCompanyID + props.supplierID,
-            name: props.user.retailerCompany.name + '+' + props.supplier.name,
-            retailerID: props.user.retailerCompanyID,
-            supplierID: props.supplierID,
-            mostRecentMessage: 'Product Inquiry',
-            mostRecentMessageSender: props.user.name,
-          };
-          log(chatGroup);
-          const createdChatGroup = await API.graphql({
-            query: createChatGroup,
-            variables: {input: chatGroup},
-          });
+          if (companytype == 'retailer') {
+            const chatGroup = {
+              id: companyID + props.sellerID,
+              name: userName + '+' + props.supplier.name,
+              retailerID: userID,
+              supplierID: props.sellerID,
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            };
+            log(chatGroup);
+            const createdChatGroup = await API.graphql({
+              query: createChatGroup,
+              variables: {input: chatGroup},
+            });
+          } else {
+            const chatGroup = {
+              id: props.sellerID + companyID,
+              name: userName + '+' + props.supplier.name,
+              retailerID: userID,
+              supplierID: props.sellerID,
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            };
+            log(chatGroup);
+            const createdChatGroup = await API.graphql({
+              query: createChatGroup,
+              variables: {input: chatGroup},
+            });
+          }
           log(createdChatGroup);
         } catch (e) {
           log(e.errors[0].errorType);
@@ -236,7 +270,7 @@ export const ProductPopUp = props => {
     log('creating product inquiry');
 
     const inquiry = {
-      chatGroupID: props.user.retailerCompanyID + props.supplierID,
+      chatGroupID: props.user.retailerCompanyID + props.sellerID,
       type: 'inquiry',
       content:
         props.productName +
@@ -329,7 +363,7 @@ export const ProductPopUp = props => {
             <TouchableOpacity
               onPress={() => [
                 props.navigation.navigate('store', {
-                  itemId: props.supplierID,
+                  itemId: props.sellerID,
                   storeName: props.supplier.name,
                 }),
                 props.setProductModal(false),

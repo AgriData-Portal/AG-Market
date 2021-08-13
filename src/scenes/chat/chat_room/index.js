@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {LoadingModal} from '_components';
-import {ChatBubbleList, MessageInput, ChatInfo} from './components';
+import ChatBubbleList from './chat-list/chat-bubbles';
+import MessageInput from './message-bar/messagebar';
 import BackgroundTimer from 'react-native-background-timer';
 import {messagesInChatByDate} from '../../../graphql/queries';
 import {onCreateMessage} from '../../../graphql/subscriptions';
@@ -23,21 +24,14 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Strings from '_utils';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 import {log} from '_utils';
+import {userStore} from '_store';
 
 import {API, graphqlOperation} from 'aws-amplify';
 
 export const ChatRoom = props => {
-  if (props.user.retailerCompanyID != null) {
-    var type = 'retailer';
-  } else if (props.user.supplierCompanyID != null) {
-    var type = 'supplier';
-  } else {
-    var type = 'farmer';
-  }
-
+  const userID = userStore(state => state.userID);
   const {itemID, chatName} = props.route.params; //props.route.params; //chatgroupid
   log('chatID: ' + itemID);
   const [messages, setMessages] = useState(null);
@@ -88,7 +82,7 @@ export const ChatRoom = props => {
           log('Message is in another room!');
           return;
         }
-        log(newMessage.senderID, props.user.id);
+        log(newMessage.senderID, userID);
 
         setMessages(messages => [newMessage, ...messages]);
       },
@@ -104,7 +98,7 @@ export const ChatRoom = props => {
   }, []);
 
   const updateLastSeen = async () => {
-    const uniqueID = props.user.id + itemID;
+    const uniqueID = userID + itemID;
     try {
       const updatedLastSeen = await API.graphql({
         query: updateChatGroupUsers,
@@ -121,7 +115,7 @@ export const ChatRoom = props => {
             input: {
               id: uniqueID,
               lastOnline: dayjs(),
-              userID: props.user.id,
+              userID: userID,
               chatGroupID: itemID,
             },
           },
@@ -224,11 +218,8 @@ export const ChatRoom = props => {
               }}>
               <ChatBubbleList
                 data={messages}
-                userID={props.user.id}
-                userName={props.user.name}
                 chatName={chatName}
                 chatGroupID={itemID}
-                type={type}
                 setMessages={setMessages}
                 messages={messages}
                 setRefresh={setRefresh}
@@ -244,9 +235,7 @@ export const ChatRoom = props => {
           width: wp('100%'),
         }}>
         <MessageInput
-          userID={props.user.id}
           chatGroupID={itemID}
-          userName={props.user.name}
           setMessages={setMessages}
           messages={messages}></MessageInput>
       </View>
