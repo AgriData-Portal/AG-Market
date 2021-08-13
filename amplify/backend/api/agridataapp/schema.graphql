@@ -55,17 +55,6 @@ enum PushNotificationService {
   ADM
 }
 
-type PushNotificationDeviceToken {
-  service: PushNotificationService
-  deviceTokens: [String]
-}
-
-enum PushNotificationService {
-  APNS,
-  GCM,
-  BAIDU,
-  ADM
-}
 
 type RetailerCompany @model {
   id: ID
