@@ -16,16 +16,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings, {log} from '_utils';
+import {userStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
-// var utc = require('dayjs/plugin/utc');
-// var timezone = require('dayjs/plugin/timezone'); // dependent on utc plugin
-// dayjs.extend(utc);
-// dayjs.extend(timezone);
-// dayjs.tz.setDefault('Asia/Singapore');
 
 export const Searchbar = props => {
   return (
@@ -55,6 +51,8 @@ export const Searchbar = props => {
 };
 
 export const ChatList = props => {
+  const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
   const Seperator = () => {
     return (
       <View
@@ -112,10 +110,16 @@ export const ChatList = props => {
       renderItem={({item}) => {
         var nameArray = item.name.split('+');
         var chatName = null;
-        if (props.companyType == 'supplier') {
-          chatName = nameArray[0];
-        } else {
+        if (companyType == 'supplier') {
+          if (item.id.slice(0, 36) == companyID) {
+            chatName = nameArray[1];
+          } else {
+            chatName = nameArray[0];
+          }
+        } else if (companyType == 'retailer') {
           chatName = nameArray[1];
+        } else if (companyType == 'farmer') {
+          chatName = nameArray[0];
         }
         var senderArray = item.mostRecentMessageSender.split(' ');
         var firstName = senderArray[0];
@@ -128,7 +132,6 @@ export const ChatList = props => {
             chatGroupID={item.id}
             navigation={props.navigation}
             chatParticipants={item.chatParticipants.items}
-            userID={props.userID}
           />
         );
       }}
@@ -137,6 +140,7 @@ export const ChatList = props => {
 };
 
 const ChatRoom = props => {
+  const userID = userStore(state => state.userID);
   const lastUpdated = dayjs(props.updatedAt).add(8, 'hour');
   var listOfParticipants = props.chatParticipants;
 
@@ -158,7 +162,7 @@ const ChatRoom = props => {
 
   if (listOfParticipants != undefined || listOfParticipants != null) {
     var tempList = listOfParticipants.filter(item => {
-      return item.userID == props.userID;
+      return item.userID == userID;
     });
     if (tempList.length == 0) {
       var lastSeen = dayjs().subtract(1, 'month');

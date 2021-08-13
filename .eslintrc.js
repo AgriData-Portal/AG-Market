@@ -13,6 +13,7 @@ module.exports = {
           _styles: './src/styles',
           _utils: './src/utils',
           _store: './src/store',
+          _graphql: './src/graphql',
         },
       },
     },

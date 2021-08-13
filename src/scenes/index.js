@@ -2,13 +2,13 @@ import {
   Marketplace,
   Store,
   SupplierStore,
-  RetailerModalButton,
+  ShareStoreButton,
   FarmerStore,
   SupplierModalButton,
 } from './marketplace';
 import {Inbox, ChatRoom} from './chat';
-import {Orders} from './orders';
-import {SupplierTasks, RetailerTasks, FarmerTasks} from './tasks';
+import {BuyingOrders, SellingOrders} from './orders';
+import {SellerTask, BuyerTask, FarmerTasks} from './tasks';
 import {DataAnalytics} from './data-analytics';
 import {
   Registration,
@@ -25,10 +25,11 @@ export {
   Store,
   Inbox,
   ChatRoom,
-  Orders,
+  SellingOrders,
+  BuyingOrders,
   SupplierStore,
-  SupplierTasks,
-  RetailerTasks,
+  SellerTask,
+  BuyerTask,
   DataAnalytics,
   Registration,
   Login,
@@ -36,7 +37,7 @@ export {
   Landing,
   Verification,
   ConfirmSignUp,
-  RetailerModalButton,
+  ShareStoreButton,
   FarmerStore,
   FarmerTasks,
   SupplierModalButton,

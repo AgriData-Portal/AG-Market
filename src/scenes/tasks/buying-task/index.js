@@ -16,6 +16,8 @@ import {API} from 'aws-amplify';
 import {
   goodsTaskForRetailerByDate,
   paymentsTaskForRetailerByDate,
+  goodsTaskFarmerForSupplierByDate,
+  paymentsTaskFarmerForSupplierByDate,
 } from '../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
@@ -25,13 +27,17 @@ import Strings from '_utils';
 import {MenuButton} from '_components';
 import {log} from '_utils';
 import {RatingModal} from './components/receive-goods';
+import {userStore} from '_store';
 
-export const RetailerTasks = props => {
+export const BuyerTask = props => {
   const [sortModal, setSortModal] = useState(false);
   const [task, setTask] = useState('receive');
   const [receiveTask, setReceiveTask] = useState([]);
   const [payTask, setPayTask] = useState([]);
   const [trigger, setTrigger] = useState(false);
+  const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
+  const roleInCompany = userStore(state => state.roleInCompany);
 
   useEffect(() => {
     if (task == 'pay') {
@@ -40,17 +46,30 @@ export const RetailerTasks = props => {
       getReceiveTask();
     }
   }, [task]);
+
   const getReceiveTask = async () => {
     try {
-      const task = await API.graphql({
-        query: goodsTaskForRetailerByDate,
-        variables: {
-          retailerID: props.user.retailerCompanyID,
-          sortDirection: 'ASC',
-        },
-      });
-      log(task.data.goodsTaskForRetailerByDate.items);
-      setReceiveTask(task.data.goodsTaskForRetailerByDate.items);
+      if (companyType == 'retailer') {
+        const task = await API.graphql({
+          query: goodsTaskForRetailerByDate,
+          variables: {
+            retailerID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.goodsTaskForRetailerByDate.items);
+        setReceiveTask(task.data.goodsTaskForRetailerByDate.items);
+      } else {
+        const task = await API.graphql({
+          query: goodsTaskFarmerForSupplierByDate,
+          variables: {
+            supplierID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.goodsTaskFarmerForSupplierByDate.items);
+        setReceiveTask(task.data.goodsTaskFarmerForSupplierByDate.items);
+      }
       log('goods task');
     } catch (e) {
       log(e);
@@ -59,15 +78,27 @@ export const RetailerTasks = props => {
 
   const getPayTask = async () => {
     try {
-      const task = await API.graphql({
-        query: paymentsTaskForRetailerByDate,
-        variables: {
-          retailerID: props.user.retailerCompanyID,
-          sortDirection: 'ASC',
-        },
-      });
-      log(task.data.paymentsTaskForRetailerByDate.items);
-      setPayTask(task.data.paymentsTaskForRetailerByDate.items);
+      if (companyType == 'retailer') {
+        const task = await API.graphql({
+          query: paymentsTaskForRetailerByDate,
+          variables: {
+            retailerID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.paymentsTaskForRetailerByDate.items);
+        setPayTask(task.data.paymentsTaskForRetailerByDate.items);
+      } else {
+        const task = await API.graphql({
+          query: paymentsTaskFarmerForSupplierByDate,
+          variables: {
+            supplierID: companyID,
+            sortDirection: 'ASC',
+          },
+        });
+        log(task.data.paymentsTaskFarmerForSupplierByDate.items);
+        setPayTask(task.data.paymentsTaskFarmerForSupplierByDate.items);
+      }
       log('payment task');
     } catch (e) {
       log(e);
@@ -83,7 +114,7 @@ export const RetailerTasks = props => {
         height: hp('100%'),
         alignItems: 'center',
       }}>
-      {props.user.role == 'receiver' ? (
+      {roleInCompany == 'receiver' ? (
         <View
           style={{
             top: hp('0%'),
@@ -199,11 +230,9 @@ export const RetailerTasks = props => {
             payTask={payTask}
             setPayTask={setPayTask}
             getPayTask={getPayTask}
-            user={props.user}
           />
         ) : (
           <ReceiveList
-            user={props.user}
             trigger={trigger}
             setTrigger={setTrigger}
             receiveTask={receiveTask}

@@ -1,12 +1,14 @@
 {
-    "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-        "_assets": ["src/assets/*"],
-        "_components": ["src/components/*"],
-        "_scenes": ["src/scenes/*"],
-        "_styles": ["src/styles/*"],
-        "_utils": ["src/utils/*"]
-      }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "_assets": ["src/assets/*"],
+      "_components": ["src/components/*"],
+      "_scenes": ["src/scenes/*"],
+      "_styles": ["src/styles/*"],
+      "_utils": ["src/utils/*"],
+      "_store": ["src/store/*"],
+      "_graphql": ["src/graphql/*"]
     }
   }
+}

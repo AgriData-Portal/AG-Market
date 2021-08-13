@@ -32,6 +32,7 @@ import {
   createChatGroup,
   updateChatGroup,
   updateSupplierCompany,
+  updateFarmerCompany,
 } from '../../../../../graphql/mutations';
 import {
   widthPercentageToDP as wp,
@@ -42,9 +43,11 @@ import Strings from '_utils';
 import {
   getSupplierCompany,
   getRetailerCompany,
+  getFarmerCompany,
 } from '../../../../../graphql/queries';
 
 import {log} from '_utils';
+import {userStore} from '_store';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -64,7 +67,7 @@ const ProductCard = props => {
   }, []);
   return (
     <TouchableOpacity
-      onPress={() => setProductModal(true)}
+      onPress={() => [setProductModal(true), log(props.purchaseOrder)]}
       style={{
         backgroundColor: Colors.GRAY_LIGHT,
         width: wp('43%'),
@@ -123,8 +126,7 @@ const ProductCard = props => {
           setPOList={props.setPOList}
           id={props.id}
           setTrigger={props.setTrigger}
-          trigger={props.trigger}
-          user={props.user}></ProductPopUp>
+          trigger={props.trigger}></ProductPopUp>
       </Modal>
     </TouchableOpacity>
   );
@@ -170,7 +172,6 @@ export const MarketplaceList = props => {
             POList={props.POList}
             storeName={props.storeName}
             setPOList={props.setPOList}
-            user={props.user}
             trigger={props.trigger}
             setTrigger={props.setTrigger}
           />
@@ -188,6 +189,13 @@ const ProductPopUp = props => {
   const [addPO, setAddPO] = useState(false);
   const [productInquire, setProductInquire] = useState(false);
 
+  const companyName = userStore(state => state.companyName);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
+
+  const userName = userStore(state => state.userName);
+  const userID = userStore(state => state.userID);
+
   const sendProductInquiry = async () => {
     try {
       const updateChat = await API.graphql({
@@ -196,7 +204,7 @@ const ProductPopUp = props => {
           input: {
             id: props.purchaseOrder,
             mostRecentMessage: 'Product Inquiry',
-            mostRecentMessageSender: props.user.name,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -204,14 +212,26 @@ const ProductPopUp = props => {
     } catch (e) {
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
-          const chatGroup = {
-            id: props.purchaseOrder,
-            name: props.user.retailerCompany.name + '+' + props.storeName,
-            retailerID: props.user.retailerCompany.id,
-            supplierID: props.purchaseOrder.slice(36, 72),
-            mostRecentMessage: 'Product Inquiry',
-            mostRecentMessageSender: props.user.name,
-          };
+          var chatGroup;
+          if (companyType == 'retailer') {
+            chatGroup = {
+              id: props.purchaseOrder,
+              name: companyName + '+' + props.storeName,
+              retailerID: companyID,
+              supplierID: props.purchaseOrder.slice(36, 72),
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            };
+          } else {
+            chatGroup = {
+              id: props.purchaseOrder,
+              name: companyName + '+' + props.storeName,
+              supplierID: companyID,
+              farmerID: props.purchaseOrder.slice(36, 72),
+              mostRecentMessage: 'Product Inquiry',
+              mostRecentMessageSender: userName,
+            };
+          }
 
           const createdChatGroup = await API.graphql({
             query: createChatGroup,
@@ -240,8 +260,8 @@ const ProductPopUp = props => {
         props.variety +
         '+' +
         props.grade,
-      sender: props.user.name,
-      senderID: props.user.id,
+      sender: userName,
+      senderID: userID,
     };
     try {
       const message = await API.graphql({
@@ -536,7 +556,6 @@ export const PurchaseOrderButton = props => {
           setPurchaseOrderModal={setPurchaseOrderModal}
           POList={props.POList}
           setPOList={props.setPOList}
-          user={props.user}
           purchaseOrder={props.purchaseOrder}
           navigation={props.navigation}
           trigger={props.trigger}
@@ -550,8 +569,15 @@ const PurchaseOrder = props => {
   const [poSuccessfulModal, setpoSuccessfulModal] = useState(false);
   const [poUnsuccessfulModal, setpoUnsuccessfulModal] = useState(false);
   const [sendPOButton, setSendPOButton] = useState(false);
+  const userName = userStore(state => state.userName);
+  const companyType = userStore(state => state.companyType);
+  const companyName = userStore(state => state.companyName);
+  const companyID = userStore(state => state.companyID);
+  const userID = userStore(state => state.userID);
+
   log('PO \n \n \n');
   log(props.POList);
+
   const sendPO = async () => {
     var message = '';
     var positiveQuantity = true;
@@ -578,7 +604,7 @@ const PurchaseOrder = props => {
             input: {
               id: props.purchaseOrder,
               mostRecentMessage: 'Purchase Order',
-              mostRecentMessageSender: props.user.name,
+              mostRecentMessageSender: userName,
             },
           },
         });
@@ -588,74 +614,130 @@ const PurchaseOrder = props => {
           e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException'
         ) {
           try {
-            const chatGroup = {
-              id: props.purchaseOrder,
-              name: props.user.retailerCompany.name + '+' + props.storeName,
-              retailerID: props.user.retailerCompany.id,
-              supplierID: props.purchaseOrder.slice(36, 72),
-              mostRecentMessage: 'Purchase Order',
-              mostRecentMessageSender: props.user.name,
-            };
-
+            var chatGroup;
+            if (companyType == 'retailer') {
+              log('retailer here!');
+              chatGroup = {
+                id: props.purchaseOrder,
+                name: companyName + '+' + props.storeName,
+                retailerID: companyID,
+                supplierID: props.purchaseOrder.slice(36, 72),
+                mostRecentMessage: 'Purchase Order',
+                mostRecentMessageSender: userName,
+              };
+            } else {
+              log('supplier here!');
+              chatGroup = {
+                id: props.purchaseOrder,
+                name: companyName + '+' + props.storeName,
+                supplierID: companyID,
+                farmerID: props.purchaseOrder.slice(36, 72),
+                mostRecentMessage: 'Purchase Order',
+                mostRecentMessageSender: userName,
+              };
+            }
+            log(chatGroup);
+            log('created');
             const createdChatGroup = await API.graphql({
               query: createChatGroup,
               variables: {input: chatGroup},
             });
+            log(createdChatGroup);
           } catch (e) {
             log(e.errors[0].errorType);
           }
-        } else {
-          log(e.errors[0].errorType);
         }
       }
-
       var mostRecentPurchaseOrderNumber;
       try {
-        const response = await API.graphql({
-          query: getSupplierCompany,
-          variables: {id: props.purchaseOrder.slice(36, 72)},
-        });
-        mostRecentPurchaseOrderNumber =
-          response.data.getSupplierCompany.mostRecentPurchaseOrderNumber;
+        if (companyType == 'retailer') {
+          const response = await API.graphql({
+            query: getSupplierCompany,
+            variables: {id: props.purchaseOrder.slice(36, 72)},
+          });
+          mostRecentPurchaseOrderNumber =
+            response.data.getSupplierCompany.mostRecentPurchaseOrderNumber;
 
-        if (mostRecentPurchaseOrderNumber) {
-          if (
-            dayjs().format('YYYY-MM') ==
-            mostRecentPurchaseOrderNumber.slice(4, 11)
-          ) {
-            var number = parseInt(mostRecentPurchaseOrderNumber.slice(12, 16));
-            var numberString = (number + 1).toString().padStart(4, '0');
-            mostRecentPurchaseOrderNumber =
-              'P.O-' + dayjs().format('YYYY-MM-') + numberString;
+          if (mostRecentPurchaseOrderNumber) {
+            if (
+              dayjs().format('YYYY-MM') ==
+              mostRecentPurchaseOrderNumber.slice(4, 11)
+            ) {
+              var number = parseInt(
+                mostRecentPurchaseOrderNumber.slice(12, 16),
+              );
+              var numberString = (number + 1).toString().padStart(4, '0');
+              mostRecentPurchaseOrderNumber =
+                'P.O-' + dayjs().format('YYYY-MM-') + numberString;
+            } else {
+              mostRecentPurchaseOrderNumber =
+                'P.O-' + dayjs().format('YYYY-MM-') + '0001';
+            }
           } else {
             mostRecentPurchaseOrderNumber =
               'P.O-' + dayjs().format('YYYY-MM-') + '0001';
           }
-        } else {
-          mostRecentPurchaseOrderNumber =
-            'P.O-' + dayjs().format('YYYY-MM-') + '0001';
-        }
 
-        log('creating purchase order');
-        const supplierCompanyUpdate = await API.graphql({
-          query: updateSupplierCompany,
-          variables: {
-            input: {
-              id: props.purchaseOrder.slice(36, 72),
-              mostRecentPurchaseOrderNumber: mostRecentPurchaseOrderNumber,
+          log('creating purchase order');
+          const supplierCompanyUpdate = await API.graphql({
+            query: updateSupplierCompany,
+            variables: {
+              input: {
+                id: props.purchaseOrder.slice(36, 72),
+                mostRecentPurchaseOrderNumber: mostRecentPurchaseOrderNumber,
+              },
             },
-          },
-        });
+          });
+        } else {
+          const response = await API.graphql({
+            query: getFarmerCompany,
+            variables: {id: props.purchaseOrder.slice(36, 72)},
+          });
+          mostRecentPurchaseOrderNumber =
+            response.data.getFarmerCompany.mostRecentPurchaseOrderNumber;
+
+          if (mostRecentPurchaseOrderNumber) {
+            if (
+              dayjs().format('YYYY-MM') ==
+              mostRecentPurchaseOrderNumber.slice(4, 11)
+            ) {
+              var number = parseInt(
+                mostRecentPurchaseOrderNumber.slice(12, 16),
+              );
+              var numberString = (number + 1).toString().padStart(4, '0');
+              mostRecentPurchaseOrderNumber =
+                'P.O-' + dayjs().format('YYYY-MM-') + numberString;
+            } else {
+              mostRecentPurchaseOrderNumber =
+                'P.O-' + dayjs().format('YYYY-MM-') + '0001';
+            }
+          } else {
+            mostRecentPurchaseOrderNumber =
+              'P.O-' + dayjs().format('YYYY-MM-') + '0001';
+          }
+
+          log('creating purchase order');
+          const supplierCompanyUpdate = await API.graphql({
+            query: updateFarmerCompany,
+            variables: {
+              input: {
+                id: props.purchaseOrder.slice(36, 72),
+                mostRecentPurchaseOrderNumber: mostRecentPurchaseOrderNumber,
+              },
+            },
+          });
+        }
       } catch (e) {
         log(e);
       }
+
       try {
         const inquiry = {
           chatGroupID: props.purchaseOrder,
           type: mostRecentPurchaseOrderNumber,
           content: message,
-          sender: props.user.name,
-          senderID: props.user.id,
+          sender: userName,
+          senderID: userID,
         };
         const messageSent = await API.graphql({
           query: createMessage,
@@ -665,6 +747,7 @@ const PurchaseOrder = props => {
         setpoSuccessfulModal(true);
       } catch (e) {
         log(e);
+        log('fail');
       }
     } else {
       setpoUnsuccessfulModal(true);
@@ -974,166 +1057,6 @@ const PurchaseOrderComponent = props => {
             </View>
           )}
         </View>
-      </View>
-    </View>
-  );
-};
-
-export const DetailsModal = props => {
-  const [companyDetails, setCompanyDetails] = useState([]);
-  const [imageSource, setImageSource] = useState(null);
-
-  const getStoreDetails = async () => {
-    if (props.companyType == 'retailer') {
-      try {
-        var storeDetails = await API.graphql({
-          query: getSupplierCompany,
-          variables: {id: props.id},
-        });
-        log('retailer');
-        setCompanyDetails(storeDetails.data.getSupplierCompany);
-      } catch (e) {
-        log(e);
-      }
-    } else if (props.companyType == 'supplier') {
-      try {
-        var storeDetails = await API.graphql({
-          query: getRetailerCompany,
-          variables: {id: props.id},
-        });
-        log('supplier');
-        setCompanyDetails(storeDetails.data.getRetailerCompany);
-      } catch (e) {
-        log(e);
-      }
-    }
-  };
-  useEffect(() => {
-    getStoreDetails();
-    log('Fetching Details');
-  }, []);
-  useEffect(async () => {
-    if (companyDetails.logo) {
-      try {
-        const imageURL = await Storage.get(companyDetails.logo);
-        setImageSource({
-          uri: imageURL,
-        });
-      } catch (e) {
-        log(e);
-      }
-    }
-  }, [companyDetails]);
-  return (
-    <View
-      style={{
-        backgroundColor: 'white',
-        width: wp('90%'),
-        height: hp('85%'),
-        borderRadius: 10,
-        alignSelf: 'center',
-        alignItems: 'center',
-      }}>
-      <View style={{position: 'absolute', right: hp('1%'), top: hp('1%')}}>
-        <CloseButton setModal={props.setDetailsModal} />
-      </View>
-      <View style={{alignItems: 'center', top: hp('3%')}}>
-        <Text style={[Typography.header, {top: hp('2%')}]}>{props.name}</Text>
-
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: wp('80%'),
-            height: hp('25%'),
-          }}>
-          {imageSource == null ? (
-            <Image
-              source={require('_assets/images/company-logo.png')}
-              style={{
-                resizeMode: 'contain',
-                width: wp('80%'),
-                height: hp('20%'),
-              }}
-            />
-          ) : (
-            <Image
-              source={imageSource}
-              style={{
-                resizeMode: 'contain',
-                width: wp('80%'),
-                height: hp('20%'),
-              }}
-            />
-          )}
-        </View>
-        {companyDetails.rating == null ? (
-          <Text style={[Typography.normal]}>No ratings yet</Text>
-        ) : (
-          <View style={{flexDirection: 'row'}}>
-            <Rating
-              imageSize={wp('6%')}
-              readonly={true}
-              startingValue={companyDetails.rating.currentRating}></Rating>
-            <Text style={[Typography.normal, {left: wp('1%')}]}>
-              ( {companyDetails.rating.numberOfRatings} )
-            </Text>
-          </View>
-        )}
-        <View
-          style={{
-            alignItems: 'flex-start',
-            backgroundColor: Colors.GRAY_LIGHT,
-            width: wp('80%'),
-            height: hp('33%'),
-            top: hp('3%'),
-            borderRadius: 10,
-          }}>
-          <View
-            style={{alignItems: 'flex-start', top: hp('2%'), left: wp('5%')}}>
-            <View>
-              <Text style={[Typography.placeholder]}>
-                {Strings.companyRegistrationNum}
-              </Text>
-              <Text style={[Typography.normal]}>
-                {companyDetails.registrationNumber}
-              </Text>
-            </View>
-            <View style={{top: hp('1%')}}>
-              <Text style={[Typography.placeholder]}>
-                {Strings.companyAddress}
-              </Text>
-              <Text style={[Typography.normal, {width: wp('70%')}]}>
-                {companyDetails.address}
-              </Text>
-            </View>
-            <View style={{top: hp('2%')}}>
-              <Text style={[Typography.placeholder]}>
-                {Strings.contactNumber}
-              </Text>
-              {companyDetails.contactDetails != null ? (
-                <Text style={[Typography.normal]}>
-                  {companyDetails.contactDetails.phone}
-                </Text>
-              ) : (
-                <Text style={[Typography.normal]}>Not Added Yet</Text>
-              )}
-            </View>
-          </View>
-        </View>
-        {props.button == 'true' ? (
-          <BlueButton
-            top={hp('5%')}
-            borderRadius={10}
-            text={'Send Catalog'}
-            font={Typography.normal}
-            onPress={props.onSend}
-            onPressIn={props.onOut}
-            disabled={props.disabled}
-          />
-        ) : (
-          <View />
-        )}
       </View>
     </View>
   );
