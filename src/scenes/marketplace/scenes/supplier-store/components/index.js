@@ -1101,7 +1101,6 @@ const RetailerCard = props => {
         height: hp('8%'),
         borderColor: Colors.GRAY_DARK,
         borderWidth: 0.2,
-
         justifyContent: 'center',
         borderRadius: 10,
       }}>
@@ -1183,16 +1182,21 @@ export const RetailerModalButton = props => {
 
 const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
-
+  var storeName = user.supplierCompany.name;
+  var msg = 'Check ' + storeName + '\n';
   const shareStore = async () => {
     const shareOptions = {
-      message: 'Message test\n',
+      message: msg,
       url: 'https://agridataportal.com/app.html?store=Hinsou@Farm&storeID=aeeaf305-6f51-4fb6-bd81-5c5c88d7461d',
+      social: Share.Social.WHATSAPP,
     };
     try {
-      const shareResponse = await Share.open(shareOptions);
+      const shareResponse = await Share.shareSingle(shareOptions);
     } catch (e) {
       log(e);
+    }
+    {
+      /*TODO zustand */
     }
   };
 
@@ -1235,7 +1239,7 @@ const RetailerModal = props => {
       <TouchableOpacity
         onPress={() => shareStore()}
         style={{backgroundColor: Colors.LIGHT_BLUE, alignSelf: 'center'}}>
-        <Text>Share</Text>
+        <Text>Share to Whatsapp</Text>
       </TouchableOpacity>
     </View>
   );

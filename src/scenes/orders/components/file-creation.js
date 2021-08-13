@@ -31,8 +31,8 @@ export const createPDF = async (
     .drawImage(logoPath, 'png', {
       x: 1800,
       y: 2500,
-      width: 500,
-      height: 500,
+      width: 965,
+      height: 519,
     })
     .drawText('Thanks For Your Order!', {
       x: 100,
