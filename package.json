@@ -28,6 +28,7 @@
     "amazon-cognito-identity-js": "^5.0.3",
     "aws-amplify": "^4.1.2",
     "aws-amplify-react-native": "^5.0.2",
+    "aws-sdk": "^2.967.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "dayjs": "^1.10.5",
     "react": "17.0.1",
