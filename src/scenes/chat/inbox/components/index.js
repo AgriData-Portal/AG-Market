@@ -52,6 +52,7 @@ export const Searchbar = props => {
 
 export const ChatList = props => {
   const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
   const Seperator = () => {
     return (
       <View
@@ -110,9 +111,15 @@ export const ChatList = props => {
         var nameArray = item.name.split('+');
         var chatName = null;
         if (companyType == 'supplier') {
-          chatName = nameArray[0];
-        } else {
+          if (item.id.slice(0, 36) == companyID) {
+            chatName = nameArray[1];
+          } else {
+            chatName = nameArray[0];
+          }
+        } else if (companyType == 'retailer') {
           chatName = nameArray[1];
+        } else if (companyType == 'farmer') {
+          chatName = nameArray[0];
         }
         var senderArray = item.mostRecentMessageSender.split(' ');
         var firstName = senderArray[0];

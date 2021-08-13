@@ -44,9 +44,12 @@ import {BlueButton} from '_components';
 import {listSupplierCompanys} from '../../../../../graphql/queries';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
+import {userStore} from '_store';
 
 const AddItemModal = props => {
+  const companyID = userStore(state => state.companyID);
+  const companyName = userStore(state => state.companyName);
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState('kg');
   const [items2, setItems2] = useState([
@@ -73,14 +76,13 @@ const AddItemModal = props => {
       const response = await fetch(photo.uri);
       const blob = await response.blob();
       log('FileName: \n');
-      photo.fileName =
-        productName + '_' + variety + '_' + props.user.supplierCompany.name;
+      photo.fileName = productName + '_' + variety + '_' + companyName;
       await Storage.put(photo.fileName, blob, {
         contentType: 'image/jpeg',
       });
 
       var listing = {
-        supplierID: props.user.supplierCompanyID,
+        supplierID: companyID,
         productName: productName.toUpperCase(),
         variety: variety,
         quantityAvailable: parseInt(quantityAvailable),
@@ -458,7 +460,6 @@ export const AddItemsButton = props => {
       <Modal isVisible={addItemsButton}>
         <AddItemModal
           setAddItemsButton={setAddItemsButton}
-          user={props.user}
           productList={props.productList}
           setProducts={props.setProducts}></AddItemModal>
       </Modal>
@@ -1064,7 +1065,6 @@ const RetailerList = props => {
 
         return (
           <RetailerCard
-            user={props.user}
             name={item.name}
             id={item.id}
             navigation={props.navigation}
@@ -1080,32 +1080,36 @@ const RetailerCard = props => {
   const [supermarketButton, setSupermarketButton] = useState(false);
   const [detailsModal, setDetailsModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const companyID = userStore(state => state.companyID);
+  const userName = userStore(state => state.userName);
+  const userID = userStore(state => state.userID);
+  const companyName = userStore(state => state.companyName);
   const sendStoreDetails = async () => {
     try {
-      log(props.id + props.user.supplierCompanyID);
+      log(props.id + companyID);
       const updateChat = await API.graphql({
         query: updateChatGroup,
         variables: {
           input: {
-            id: props.id + props.user.supplierCompanyID,
+            id: props.id + companyID,
             mostRecentMessage: 'Store Catalog',
-            mostRecentMessageSender: props.user.name,
+            mostRecentMessageSender: userName,
           },
         },
       });
       log('chat group already exist');
-      setDetailsModal(true);
+      log(props.name);
     } catch (e) {
       log(e);
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
           const chatGroup = {
-            id: props.id + props.user.supplierCompanyID,
-            name: props.name + '+' + props.user.supplierCompany.name,
+            id: props.id + companyID,
+            name: props.name + '+' + companyName,
             retailerID: props.id,
-            supplierID: props.user.supplierCompanyID,
+            supplierID: companyID,
             mostRecentMessage: 'Store Catalog',
-            mostRecentMessageSender: props.user.name,
+            mostRecentMessageSender: userName,
           };
           log(chatGroup);
           const createdChatGroup = await API.graphql({
@@ -1113,7 +1117,6 @@ const RetailerCard = props => {
             variables: {input: chatGroup},
           });
           log(createdChatGroup);
-          setDetailsModal(true);
         } catch (e) {
           log(e.errors[0].errorType);
         }
@@ -1122,15 +1125,14 @@ const RetailerCard = props => {
       }
     }
 
-    log('creating store ' + props.user.supplierCompany.name);
+    log('creating store ' + companyName);
 
     const store = {
-      chatGroupID: props.id + props.user.supplierCompanyID,
+      chatGroupID: props.id + companyID,
       type: 'store',
-      content:
-        props.user.supplierCompanyID + '+' + props.user.supplierCompany.name,
-      sender: props.user.name,
-      senderID: props.user.id,
+      content: companyID + '+' + companyName,
+      sender: userName,
+      senderID: userID,
     };
     try {
       const message = await API.graphql({
@@ -1138,12 +1140,13 @@ const RetailerCard = props => {
         variables: {input: store},
       });
       log(message.data.createMessage);
-      //setSuccessfulModal(true);
     } catch {
       e => log(e);
     }
-    setSupermarketButton(false);
+
     setSuccessModal(true);
+    //setSuccessModal(true);
+    setSupermarketButton(false);
   };
   return (
     <TouchableOpacity
@@ -1184,38 +1187,39 @@ const RetailerCard = props => {
         <DetailsModal
           setDetailsModal={setDetailsModal}
           navigation={props.navigation}
-          user={props.user}
-          companyType="supplier"
           id={props.id}
-          name={props.name}
-          button="true"
-          onSend={() => sendStoreDetails()}
-          onOut={() => setSupermarketButton(true)}
-          disabled={supermarketButton}
-        />
-      </Modal>
-      <Modal
-        isVisible={successModal}
-        onBackdropPress={() => setSuccessModal(false)}>
-        <SuccessNavigateChatModal
-          onPress={() => [
-            props.navigation.navigate('chatroom', {
-              itemID: props.id + props.user.supplierCompanyID,
-              chatName: props.name,
-            }),
-            props.setRetailerModal(false),
-          ]}
-          navigation={props.navigation}
-          text="Catalog sent!"
-          chatGroupID={props.id + props.user.supplierCompanyID}
-          chatName={props.name}
-        />
+          name={props.name}>
+          <BlueButton
+            onPress={() => [sendStoreDetails()]}
+            onPressIn={() => setSupermarketButton(true)}
+            disabled={supermarketButton}
+            top={hp('5%')}
+            borderRadius={10}
+            text={'Send Catalog'}
+            font={Typography.normal}
+          />
+        </DetailsModal>
+        <Modal
+          isVisible={successModal}
+          onBackdropPress={() => setSuccessModal(false)}>
+          <SuccessNavigateChatModal
+            onPress={() => [
+              props.navigation.navigate('chatroom', {
+                itemID: props.id + companyID,
+                chatName: props.name,
+              }),
+              props.setRetailerModal(false),
+            ]}
+            navigation={props.navigation}
+            text="Catalog sent!"
+          />
+        </Modal>
       </Modal>
     </TouchableOpacity>
   );
 };
 
-export const RetailerModalButton = props => {
+export const ShareStoreButton = props => {
   const [retailerModal, setRetailerModal] = useState(false);
   return (
     <View>
@@ -1230,7 +1234,6 @@ export const RetailerModalButton = props => {
         <RetailerModal
           setRetailerModal={setRetailerModal}
           navigation={props.navigation}
-          user={props.user}
         />
       </Modal>
     </View>
@@ -1270,7 +1273,6 @@ const RetailerModal = props => {
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
         <RetailerList
-          user={props.user}
           supermarkets={supermarkets}
           navigation={props.navigation}
           setRetailerModal={props.setRetailerModal}

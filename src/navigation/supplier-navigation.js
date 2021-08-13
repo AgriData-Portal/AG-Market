@@ -12,7 +12,7 @@ import {
   SupplierStore, // done most
   SellerTask, //done
   BuyerTask, //done
-  RetailerModalButton,
+  ShareStoreButton,
 } from '_scenes';
 import 'react-native-gesture-handler';
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -44,7 +44,7 @@ import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 
@@ -74,9 +74,7 @@ function getIcon(route, user, navigation, sellerState) {
   if (routeName == 'marketplace' && !sellerState) {
     log('test');
     return (
-      <RetailerModalButton
-        user={user}
-        navigation={navigation}></RetailerModalButton>
+      <ShareStoreButton user={user} navigation={navigation}></ShareStoreButton>
     );
   } else {
     return null;

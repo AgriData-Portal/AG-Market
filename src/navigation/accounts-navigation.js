@@ -3,7 +3,7 @@ import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
 import {
-  Orders, //Done
+  BuyerOrders, //Done
   BuyerTask, //done
 } from '_scenes';
 
@@ -233,7 +233,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <BuyerOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}

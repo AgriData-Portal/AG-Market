@@ -6,9 +6,9 @@ import {
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  Orders, //Done
+  SellingOrders, //Done
   SellerTask, //done
-  SupplierModalButton,
+  ShareStoreButton,
   FarmerStore,
 } from '_scenes';
 import 'react-native-gesture-handler';
@@ -35,7 +35,7 @@ import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 
@@ -64,7 +64,7 @@ function getIcon(route, user) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
   if (routeName == 'marketplace') {
     log('test');
-    return <SupplierModalButton user={user}></SupplierModalButton>;
+    return <ShareStoreButton user={user}></ShareStoreButton>;
   } else {
     return null;
   }
@@ -368,7 +368,7 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <SellingOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}

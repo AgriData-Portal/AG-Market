@@ -2,7 +2,7 @@ import {
   Marketplace,
   Store,
   SupplierStore,
-  RetailerModalButton,
+  ShareStoreButton,
   FarmerStore,
   SupplierModalButton,
 } from './marketplace';
@@ -37,7 +37,7 @@ export {
   Landing,
   Verification,
   ConfirmSignUp,
-  RetailerModalButton,
+  ShareStoreButton,
   FarmerStore,
   FarmerTasks,
   SupplierModalButton,

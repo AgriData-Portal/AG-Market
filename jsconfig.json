@@ -7,7 +7,8 @@
       "_scenes": ["src/scenes/*"],
       "_styles": ["src/styles/*"],
       "_utils": ["src/utils/*"],
-      "_store": ["src/store/*"]
+      "_store": ["src/store/*"],
+      "_graphql": ["src/graphql/*"]
     }
   }
 }

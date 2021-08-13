@@ -41,7 +41,7 @@ import {ChatInfo} from '_scenes/chat/chat_room/components/chat-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 
