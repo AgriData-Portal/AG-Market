@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BackButton} from '_components/buttons';
@@ -136,7 +137,6 @@ export const HumanResource = props => {
     <SafeAreaView
       style={{
         alignItems: 'center',
-
         backgroundColor: 'white',
         height: hp('100%'),
       }}>
@@ -224,7 +224,11 @@ const Participant = props => {
           paddingVertical: hp('0.5%'),
         }}>
         <Text style={[Typography.normal]}>{props.name}</Text>
-        <Text style={[Typography.placeholderSmall, {bottom: hp('1%')}]}>
+        <Text
+          style={[
+            Typography.placeholderSmall,
+            {bottom: Platform.OS == 'ios' ? hp('0%') : hp('1%')},
+          ]}>
           {props.role}
         </Text>
       </View>

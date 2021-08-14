@@ -602,7 +602,6 @@ const ProductModal = props => {
               backgroundColor: Colors.GRAY_LIGHT,
               borderRadius: 15,
               width: wp('80%'),
-              height: hp('33%'),
               alignItems: 'center',
               zIndex: 10,
               shadowColor: '#000',
@@ -613,6 +612,7 @@ const ProductModal = props => {
               shadowOpacity: 0.23,
               shadowRadius: 2.62,
               elevation: 3,
+              paddingBottom: hp('2%'),
             }}>
             {editMode ? (
               <View
@@ -766,29 +766,86 @@ const ProductModal = props => {
             ) : (
               <View
                 style={{
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  margin: wp('1%'),
+                  marginHorizontal: wp('1%'),
                   top: hp('1%'),
+                  marginVertical: hp('1%'),
                 }}>
-                <Text style={[Typography.large, {margin: wp('0.5%')}]}>
+                <Text style={[Typography.large, {margin: wp('1%')}]}>
                   {Strings.productDetails}
                 </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.grade}: {props.grade}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.variety}: {props.variety}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.priceRange}: RM {lowPrice} - {highPrice}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  {Strings.available}: {available} {props.siUnit}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
-                  MOQ: {moq} {props.siUnit}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.grade}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {props.grade}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.variety}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {props.variety}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.priceRange}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    RM {lowPrice} - {highPrice}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    {Strings.available}:
+                  </Text>
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {available} {props.siUnit}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: wp('60%'),
+                  }}>
+                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                    MOQ:
+                  </Text>
+
+                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                    {moq} {props.siUnit}
+                  </Text>
+                </View>
               </View>
             )}
           </View>

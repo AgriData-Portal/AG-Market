@@ -36,7 +36,7 @@ import {log} from '_utils';
 import {BlueButton} from '_components';
 
 const now = () => {
-  const now = dayjs().format('DD-MM-YYYY');
+  const now = dayjs().format('DD MMM YYYY');
   return now;
 };
 
@@ -61,15 +61,16 @@ const ReceiveModal = props => {
         response.data.getSupplierCompany.mostRecentInvoiceNumber;
       log('newnum: ' + mostRecentInvoiceNum);
       if (mostRecentInvoiceNum) {
-        if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(0, 7)) {
-          var number = parseInt(mostRecentInvoiceNum.slice(8, 13));
-          var numberString = (number + 1).toString().padStart(5, '0');
-          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + numberString;
+        if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(4, 11)) {
+          var number = parseInt(mostRecentInvoiceNum.slice(12, 16));
+          var numberString = (number + 1).toString().padStart(4, '0');
+          mostRecentInvoiceNum =
+            'INV-' + dayjs().format('YYYY-MM-') + numberString;
         } else {
-          mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '00001';
+          mostRecentInvoiceNum = 'INV-' + dayjs().format('YYYY-MM-') + '0001';
         }
       } else {
-        mostRecentInvoiceNum = dayjs().format('YYYY-MM-') + '00001';
+        mostRecentInvoiceNum = 'INV-' + dayjs().format('YYYY-MM-') + '0001';
       }
       log('updatednum: ' + mostRecentInvoiceNum);
     } catch (e) {
@@ -81,7 +82,7 @@ const ReceiveModal = props => {
       supplierID: props.supplierID,
       paid: false,
       amount: sum,
-      payBefore: dayjs().add(30, 'day').format('DD-MM-YYYY'),
+      payBefore: dayjs().add(30, 'day').format('DD MMM YYYY'),
       receipt: null,
     };
     try {
@@ -170,20 +171,19 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {Strings.orderCreated}
+        {Strings.order}
+
+        <Text
+          style={[
+            Typography.placeholder,
+            {
+              fontStyle: 'italic',
+            },
+          ]}>
+          {'  '}#{props.taskID}
+        </Text>
       </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            right: wp('7%'),
-            top: hp('7%'),
-            fontStyle: 'italic',
-          },
-        ]}>
-        {Strings.order} #{props.taskID.slice(0, 6)}
-      </Text>
+
       <Text
         style={[
           Typography.header,
@@ -193,7 +193,7 @@ const ReceiveModal = props => {
             left: wp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM, YYYY')}
+        {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -424,12 +424,19 @@ const Receive = props => {
             Typography.normal,
             {
               color: Colors.LIME_GREEN,
-              top: hp('3%'),
+              top: hp('1.5%'),
               left: wp('25%'),
               position: 'absolute',
             },
           ]}>
           {props.supplier.name}
+        </Text>
+        <Text
+          style={[
+            Typography.small,
+            {left: wp('25%'), top: hp('4%'), position: 'absolute'},
+          ]}>
+          {props.taskID}
         </Text>
         <Text
           style={[
@@ -466,7 +473,7 @@ const Receive = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.createdAt).format('DD MM YYYY')}
+          {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={receiveModal}>

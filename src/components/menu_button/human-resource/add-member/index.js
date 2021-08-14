@@ -198,7 +198,7 @@ export const AddEmployeeButtonModal = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={
-        Platform.OS === 'ios' ? hp('-10%') : null
+        Platform.OS === 'ios' ? hp('-25%') : null
       } /* Keyboard Offset needs to be tested against multiple phones */
     >
       <View

@@ -19,8 +19,8 @@ import {
   createMessage,
   updateChatGroup,
   createGoodsTaskBetweenRandS,
+  updateMessage,
 } from '../../../../graphql/mutations';
-import {listUsersInChat, getOrderQuotation} from '../../../../graphql/queries';
 
 import {
   widthPercentageToDP as wp,
@@ -33,23 +33,42 @@ import {log} from '_utils';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
-  useEffect(() => {
-    fetchQuotation();
-  }, []);
   const [succesfulModal, setSuccesfulModal] = useState(false);
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
   const [acceptButton, setAcceptButton] = useState(false);
   const [declineButton, setDeclineButton] = useState(false);
 
-  log('quotation' + props.chatGroupID);
-  const fetchQuotation = async () => {
+  useEffect(() => {
+    fetchQuotation();
+  }, []);
+  const fetchQuotation = () => {
+    log(props.content);
     try {
-      const quotation = await API.graphql({
-        query: getOrderQuotation,
-        variables: {id: props.chatGroupID},
+      var quotation = props.content.split(':');
+      var items = quotation[0].split('/');
+      items.forEach((item, index, arr) => {
+        var temp = item.split('+');
+        var itemObject = {};
+        itemObject['id'] = temp[0];
+        itemObject['name'] = temp[1];
+        itemObject['quantity'] = temp[2];
+        itemObject['siUnit'] = temp[3];
+        itemObject['variety'] = temp[4];
+        itemObject['grade'] = temp[5];
+        itemObject['price'] = temp[6];
+        arr[index] = itemObject;
       });
-      log(quotation.data.getOrderQuotation);
-      setOrderDetails(quotation.data.getOrderQuotation);
+      tempObject = {};
+      tempObject['items'] = items;
+      tempObject['sum'] = quotation[1];
+      tempObject['logisticsProvided'] = quotation[2] == 'true' ? true : false;
+      tempObject['paymentTerms'] = quotation[3];
+      {
+        quotation.length == 5
+          ? (tempObject['status'] = quotation[4])
+          : (tempObject['status'] = 'New');
+      }
+      setOrderDetails(tempObject);
     } catch (e) {
       log(e);
     }
@@ -65,6 +84,15 @@ export const OrderQuotationModal = props => {
             content: 'The quotation has been rejected. Please re-negotiate',
             senderID: props.userID,
             sender: props.userName,
+          },
+        },
+      });
+      const updatedMessage = await API.graphql({
+        query: updateMessage,
+        variables: {
+          input: {
+            id: props.id,
+            content: props.content + ':Declined',
           },
         },
       });
@@ -88,6 +116,23 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       log(e);
     }
+    var messages = props.messages;
+    log(messages);
+    messages.forEach((item, index, array) => {
+      if (item.id == props.id) {
+        log('found');
+        array[index] = {
+          id: props.id,
+          chatGroupID: props.chatGroupID,
+          type: props.contentType,
+          content: props.content + ':Declined',
+          sender: props.sender,
+          senderID: props.senderID,
+          createdAt: props.createdAt,
+        };
+      }
+    });
+    props.setMessages(messages);
     setDeclineButton(false);
   };
 
@@ -103,6 +148,15 @@ export const OrderQuotationModal = props => {
               'The quotation has been accepted. Task has been added to to-do',
             senderID: props.userID,
             sender: props.userName,
+          },
+        },
+      });
+      const updatedMessage = await API.graphql({
+        query: updateMessage,
+        variables: {
+          input: {
+            id: props.id,
+            content: props.content + ':Accepted',
           },
         },
       });
@@ -126,22 +180,44 @@ export const OrderQuotationModal = props => {
     } catch (e) {
       log(e);
     }
+
     try {
       const goodsTask = await API.graphql({
         query: createGoodsTaskBetweenRandS,
         variables: {
           input: {
+            id: props.id,
             items: orderDetails.items,
+            logisticsProvided: orderDetails.logisticsProvided,
+            paymentTerms: orderDetails.paymentTerms,
             retailerID: props.chatGroupID.slice(0, 36),
             supplierID: props.chatGroupID.slice(36, 72),
           },
         },
       });
       log('goods task created');
+      var messages = props.messages;
+      log(messages);
+      messages.forEach((item, index, array) => {
+        if (item.id == props.id) {
+          log('found');
+          array[index] = {
+            id: props.id,
+            chatGroupID: props.chatGroupID,
+            type: props.contentType,
+            content: props.content + ':Accepted',
+            sender: props.sender,
+            senderID: props.senderID,
+            createdAt: props.createdAt,
+          };
+        }
+      });
+      props.setMessages(messages);
       setSuccesfulModal(true);
     } catch (e) {
       log(e);
     }
+
     setAcceptButton(false);
   };
   return (
@@ -166,8 +242,11 @@ export const OrderQuotationModal = props => {
             <Text style={[Typography.large, {}]}>
               {Strings.orderQuotationFrom}
             </Text>
-            <Text style={[Typography.header]}>
-              <Text style={{color: '#8EAB3D'}}>{props.chatName}</Text>
+            <Text style={[Typography.header, {color: Colors.LIME_GREEN}]}>
+              {props.chatName}
+            </Text>
+            <Text style={[Typography.normal]}>
+              {props.id} #{orderDetails.status}
             </Text>
           </View>
           <View
@@ -225,7 +304,7 @@ export const OrderQuotationModal = props => {
             </View>
           </View>
 
-          {props.type != 'supplier' ? (
+          {props.type == 'retailer' && orderDetails.status == 'New' ? (
             <View
               style={{
                 flexDirection: 'row',
