@@ -3640,6 +3640,9 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           verified
           logo
@@ -3651,6 +3654,9 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentInvoiceNumber
           registrationNumber
           verified
@@ -3701,6 +3707,9 @@ export const invoiceRetailerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           verified
           logo
@@ -3712,6 +3721,9 @@ export const invoiceRetailerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentInvoiceNumber
           registrationNumber
           verified
@@ -3762,6 +3774,9 @@ export const invoiceForFarmerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           mostRecentInvoiceNumber
           verified
@@ -3774,6 +3789,9 @@ export const invoiceForFarmerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentInvoiceNumber
           registrationNumber
           verified
@@ -3824,6 +3842,9 @@ export const invoiceFarmerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           mostRecentInvoiceNumber
           verified
@@ -3836,6 +3857,9 @@ export const invoiceFarmerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentInvoiceNumber
           registrationNumber
           verified
