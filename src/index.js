@@ -5,7 +5,7 @@ import Amplify, {Auth, API, graphqlOperation} from 'aws-amplify';
 import PushNotification from '@aws-amplify/pushnotification';
 import config from './aws-exports';
 import {View, ActivityIndicator, TouchableOpacity, Text} from 'react-native';
-import {getUser} from './graphql/queries';
+import {getGlobalSettings, getUser} from './graphql/queries';
 import {
   createUser,
   createFarmerCompany,
@@ -14,7 +14,16 @@ import {
 } from './graphql/mutations';
 import {StatusBar, Linking} from 'react-native';
 import {log} from '_utils';
+import DeviceInfo from 'react-native-device-info';
+import {
+  getApiLevel,
+  getBuildId,
+  getFontScale,
+  getModel,
+  getVersion,
+} from 'react-native-device-info';
 
+import {userStore, versionStore} from './store';
 import {
   GMNavigation,
   RMNavigation,
@@ -54,133 +63,229 @@ Amplify.configure(config);
 // });
 
 const AppNavigator = props => {
+  const [globalSettings, setGlobalSettings] = useState('');
+  const changeUpdateStatus = versionStore(state => state.changeUpdateStatus);
+  const [upToDate, setUpToDate] = useState(false);
+
+  const getSettingsInfo = async () => {
+    try {
+      const settings = await API.graphql({
+        query: getGlobalSettings,
+        variables: {id: 'AGRIDATA'},
+      });
+
+      setGlobalSettings(settings.data.getGlobalSettings);
+      var status = '';
+
+      if (
+        DeviceInfo.getVersion() !=
+        settings.data.getGlobalSettings.latestVersionNumber
+      ) {
+        if (settings.data.getGlobalSettings.forceUpdate) {
+          status = 'forceUpdate';
+        } else {
+          status = 'updateLater';
+        }
+      } else {
+        status = 'latestVersion';
+      }
+      console.log('1: ', settings.data.getGlobalSettings.forceUpdate);
+      changeUpdateStatus(status);
+      console.log('DeviceInfo: ');
+      console.log('Version: ' + DeviceInfo.getVersion());
+      console.log(
+        'Latest Version: ',
+        settings.data.getGlobalSettings.latestVersionNumber,
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getSettingsInfo();
+  }, []);
+  const changeCompanyName = userStore(state => state.changeCompanyName);
+  const changeUserName = userStore(state => state.changeUserName);
+  const changeUserID = userStore(state => state.changeUserID);
+  const changeCompanyType = userStore(state => state.changeCompanyType);
+  const changeCompanyID = userStore(state => state.changeCompanyID);
+  const changeRoleInCompany = userStore(state => state.changeRoleInCompany);
+  const changeVerified = userStore(state => state.changeVerified);
+  const changeCompanyFavouriteStores = userStore(
+    state => state.changeCompanyFavouriteStores,
+  );
+  const verified = userStore(state => state.verified);
+  const companyType = userStore(state => state.companyType);
+  const roleInCompany = userStore(state => state.roleInCompany);
+
   log('user:' + props.user);
+
   const type = props.user.role;
+  changeUserID(props.user.id);
+  changeUserName(props.user.name);
+  changeRoleInCompany(props.user.role);
   const retailer = props.user.retailerCompany;
   const supplier = props.user.supplierCompany;
   const farmer = props.user.farmerCompany;
   const company = {type: '', verified: '', role: ''};
   if (retailer != null && retailer.verified == true) {
     log('Retailer Verified\n');
-    company.type = 'retailer';
-    company.verified = true;
+    changeCompanyType('retailer');
+    changeVerified(true);
+    changeCompanyID(props.user.retailerCompanyID);
+    changeCompanyName(props.user.retailerCompany.name);
+    changeCompanyFavouriteStores(props.user.retailerCompany.favouriteStores);
   } else if (retailer != null && retailer.verified == undefined) {
     log('Retailer Not Verified\n');
-    company.type = 'retailer';
-    company.verified = false;
+    changeCompanyType('retailer');
+    changeVerified(false);
+    changeCompanyID(props.user.retailerCompanyID);
+    changeCompanyName(props.user.retailerCompany.name);
   } else if (supplier != null && supplier.verified == true) {
     log('Supplier Verified\n');
-    company.type = 'supplier';
-    company.verified = true;
+    changeCompanyType('supplier');
+    changeVerified(true);
+    changeCompanyID(props.user.supplierCompanyID);
+    changeCompanyName(props.user.supplierCompany.name);
+    changeCompanyFavouriteStores(props.user.supplierCompany.favouriteStores);
   } else if (supplier != null && supplier.verified == undefined) {
     log('Supplier Not Verified\n');
-    company.type = 'supplier';
-    company.verified = false;
+    changeCompanyType('supplier');
+    changeVerified(false);
+    changeCompanyID(props.user.supplierCompanyID);
+    changeCompanyName(props.user.supplierCompany.name);
   } else if (farmer != null && farmer.verified == true) {
     log('Farmer Verified\n');
-    company.type = 'farmer';
-    company.verified = true;
+    changeCompanyType('farmer');
+    changeVerified(true);
+    changeCompanyID(props.user.farmerCompanyID);
+    changeCompanyName(props.user.farmerCompany.name);
   } else if (farmer != null && farmer.verified == undefined) {
     log('Farmer Not Verified\n');
-    company.type = 'farmer';
-    company.verified = false;
+    changeCompanyType('farmer');
+    changeVerified(false);
+    changeCompanyID(props.user.farmerCompanyID);
+    changeCompanyName(props.user.farmerCompany.name);
   }
-  company.role = props.user.role;
+
   //to remove create comp nav thing
 
-  if (company.verified) {
-    if (company.type == 'retailer') {
-      if (company.role == 'Retail Manager') {
+  if (verified) {
+    if (companyType == 'retailer') {
+      if (roleInCompany == 'Retail Manager') {
         log('Retail Manager \n');
         return (
           <RMNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
-      } else if (company.role == 'Accounts') {
+      } else if (roleInCompany == 'Accounts') {
         log('Retail Accounts \n');
         return (
           <AccountsNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
-      } else if (company.role == 'Owner') {
+      } else if (roleInCompany == 'Owner') {
         log('Retail Owner \n');
         return (
           <OwnerNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
-      } else if (company.role == 'Receiver') {
+      } else if (roleInCompany == 'Receiver') {
         log('Retail Receiver \n');
         return (
           <RetailEmployeeNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
-      } else if (company.role == 'General Manager') {
+      } else if (roleInCompany == 'General Manager') {
         log('Retail General Manager \n');
         return (
           <GMNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            company={company}
           />
         );
       }
-    } else if (company.type == 'supplier') {
-      if (company.role == 'Owner') {
+    } else if (companyType == 'supplier') {
+      if (roleInCompany == 'Owner') {
         log('Supplier Owner \n');
         return (
           <SupplierNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
+            company={company}
           />
         );
-      } else if (company.role == 'Sales Manager') {
+      } else if (roleInCompany == 'Sales Manager') {
         log('Supplier Sales Manager\n');
         return (
           <SupplierNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
+            company={company}
           />
         );
-      } else if (company.role == 'Delivery Man') {
+      } else if (roleInCompany == 'Delivery Man') {
         log('Supplier Delivery Man\n');
         return (
           <SupplierNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
+            company={company}
           />
         );
-      } else if (company.role == 'Accounts') {
+      } else if (roleInCompany == 'Accounts') {
         log('Supplier Accounts \n');
         return (
           <SupplierNavigation
             user={props.user}
             updateAuthState={props.updateAuthState}
             setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
+          />
+        );
+      } else {
+        return (
+          <SupplierNavigation
+            user={props.user}
+            updateAuthState={props.updateAuthState}
+            setUserDetails={props.setUserDetails}
+            upToDate={upToDate}
           />
         );
       }
-    } else if (company.type == 'farmer') {
+    } else if (companyType == 'farmer') {
       log('Farmer \n');
       return (
         <FarmerNavigation
           user={props.user}
           updateAuthState={props.updateAuthState}
           setUserDetails={props.setUserDetails}
+          company={company}
         />
       );
     }

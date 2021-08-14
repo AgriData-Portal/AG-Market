@@ -2,7 +2,7 @@ import Strings from './language';
 
 export default Strings;
 
-const MODE = 'DEBUG';
+const MODE = 'production';
 
 export const log = text => {
   if (MODE == 'DEBUG') {
