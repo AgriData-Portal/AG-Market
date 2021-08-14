@@ -267,7 +267,7 @@ export const PurchaseOrder = props => {
                 top: hp('3%'),
               },
             ]}>
-            {props.id}
+            {props.contentType}
           </Text>
         </View>
         <View
@@ -440,9 +440,8 @@ const NewOrderQuotation = props => {
           query: createMessage,
           variables: {
             input: {
-              id: mostRecentQuotationNumber,
               chatGroupID: props.chatGroupID,
-              type: 'quotation',
+              type: mostRecentQuotationNumber,
               content: message,
               sender: props.userName,
               senderID: props.userID,
