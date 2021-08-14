@@ -18,6 +18,8 @@ import {
 } from 'react-native-responsive-screen';
 import {onUpdateChatGroup} from '../../../graphql/subscriptions';
 import {log} from '_utils';
+import Modal from 'react-native-modal';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 export const Inbox = props => {
   //log(props.user.role);
@@ -127,6 +129,18 @@ export const Inbox = props => {
           userID={props.user.id}
         />
       </View>
+      <Modal isVisible={true}>
+        <View style={{alignSelf: 'center'}}>
+          <TouchableOpacity
+            onPress={() => console.log('hey')}
+            style={{
+              height: 200,
+              width: 400,
+              backgroundColor: 'red',
+            }}
+          />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
