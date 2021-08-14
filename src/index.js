@@ -12,7 +12,7 @@ import {
   createSupplierCompany,
   createRetailerCompany,
 } from './graphql/mutations';
-import {StatusBar} from 'react-native';
+import {StatusBar, Linking} from 'react-native';
 import {log} from '_utils';
 import DeviceInfo from 'react-native-device-info';
 import {
@@ -36,6 +36,7 @@ import {
   AuthenticationNavigator,
   FarmerNavigation,
 } from './navigation';
+import linking from './linking';
 
 Amplify.configure(config);
 
@@ -307,12 +308,38 @@ const Initializing = () => {
   );
 };
 
+const useMount = func => useEffect(() => func(), []);
+
+const useInitialURL = () => {
+  const [url, setUrl] = useState(null);
+  const [processing, setProcessing] = useState(true);
+
+  useMount(() => {
+    const getUrlAsync = async () => {
+      // Get the deep link used to open the app
+      const initialUrl = await Linking.getInitialURL();
+
+      // The setTimeout is just for testing purpose
+      setTimeout(() => {
+        setUrl(initialUrl);
+        setProcessing(false);
+      }, 1000);
+    };
+
+    getUrlAsync();
+  });
+
+  return {url, processing};
+};
+
 const App = () => {
   const [isUserLoggedIn, setUserLoggedIn] = useState('initializing');
   const [userID, setUserID] = useState(null);
   const [userAttributes, setUserAttributes] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [runAgain, setRunAgain] = useState(false);
+
+  const {url: initialUrl, processing} = useInitialURL();
 
   const createNewUser = async () => {
     var user = null;
@@ -462,7 +489,7 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <StatusBar barStyle="dark-content" />
       {isUserLoggedIn === 'initializing' && <Initializing />}
       {isUserLoggedIn === 'loggedIn' && (

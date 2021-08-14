@@ -17,7 +17,7 @@ type User
     name: "usersBySupplierCompany"
     fields: ["supplierCompanyID"]
     queryField: "getUsersBySupplierCompany"
-  ) 
+  )
   @key(
     name: "usersByFarmerCompany"
     fields: ["farmerCompanyID"]
@@ -67,11 +67,12 @@ type RetailerCompany @model {
     @connection(keyName: "goodsTasksByRetailer", fields: ["id"])
   paymentTask: [PaymentTaskBetweenRandS]
     @connection(keyName: "paymentTasksByRetailer", fields: ["id"])
-  invoice: [InvoiceBetweenRandS] @connection(keyName: "invoiceByRetailer", fields: ["id"])
+  invoice: [InvoiceBetweenRandS]
+    @connection(keyName: "invoiceByRetailer", fields: ["id"])
   chatGroups: [ChatGroup]
     @connection(keyName: "chatGroupbyRetailer", fields: ["id"])
   verified: Boolean
-  contactDetails:ContactDetails
+  contactDetails: ContactDetails
   logo: String
   updatedAt: String
   createdAt: String
@@ -85,8 +86,8 @@ type SupplierCompany @model {
   address: String
   rating: Rating
   bankAccount: BankDetails
-  mostRecentPurchaseOrderNumber:String
-  mostRecentInvoiceNumber:String
+  mostRecentPurchaseOrderNumber: String
+  mostRecentInvoiceNumber: String
   mostRecentQuotationNumber: String
   favouriteStores: [Favourites]
   registrationNumber: String
@@ -100,12 +101,14 @@ type SupplierCompany @model {
     @connection(keyName: "paymentTasksRetailerBySupplier", fields: ["id"])
   paymentTaskFarmer: [PaymentTaskBetweenSandF]
     @connection(keyName: "paymentTasksFarmerBySupplier", fields: ["id"])
-  invoiceRetailer: [InvoiceBetweenRandS] @connection(keyName: "invoiceRetailerBySupplier", fields: ["id"])
-  invoiceFarmer: [InvoiceBetweenSandF] @connection(keyName: "invoiceFarmerBySupplier", fields: ["id"])
+  invoiceRetailer: [InvoiceBetweenRandS]
+    @connection(keyName: "invoiceRetailerBySupplier", fields: ["id"])
+  invoiceFarmer: [InvoiceBetweenSandF]
+    @connection(keyName: "invoiceFarmerBySupplier", fields: ["id"])
   chatGroups: [ChatGroup]
     @connection(keyName: "chatGroupbySupplier", fields: ["id"])
   verified: Boolean
-  contactDetails:ContactDetails
+  contactDetails: ContactDetails
   logo: String
   updatedAt: String
   createdAt: String
@@ -114,26 +117,30 @@ type SupplierCompany @model {
 type FarmerCompany @model {
   id: ID
   name: String
-  employees: [User]
-    @connection(keyName: "usersByFarmerCompany", fields: ["id"])
+  employees: [User] @connection(keyName: "usersByFarmerCompany", fields: ["id"])
   address: String
+  "Unit, Street, City and Postcode"
   bankAccount: BankDetails
   rating: Rating
   registrationNumber: String
-  mostRecentPurchaseOrderNumber:String "P.O-YYYY-MM-XXXX"
-  mostRecentInvoiceNumber:String "INV-YYYY-MM-XXXX"
-  mostRecentQuotationNumber: String "QUO-YYYY-MM-XXXX"
+  mostRecentPurchaseOrderNumber: String
+  "P.O-YYYY-MM-XXXX"
+  mostRecentInvoiceNumber: String
+  "INV-YYYY-MM-XXXX"
+  mostRecentQuotationNumber: String
+  "QUO-YYYY-MM-XXXX"
   listings: [FarmerListing]
     @connection(keyName: "listingsByFarmer", fields: ["id"])
   goodsTask: [GoodsTaskBetweenSandF]
     @connection(keyName: "goodsTasksByFarmer", fields: ["id"])
   paymentTask: [PaymentTaskBetweenSandF]
     @connection(keyName: "paymentTasksByFarmer", fields: ["id"])
-  invoice: [InvoiceBetweenSandF] @connection(keyName: "invoiceByFarmer", fields: ["id"])
+  invoice: [InvoiceBetweenSandF]
+    @connection(keyName: "invoiceByFarmer", fields: ["id"])
   chatGroups: [ChatGroup]
     @connection(keyName: "chatGroupbyFarmer", fields: ["id"])
   verified: Boolean
-  contactDetails:ContactDetails
+  contactDetails: ContactDetails
   logo: String
   updatedAt: String
   createdAt: String
@@ -142,9 +149,9 @@ type FarmerCompany @model {
 """
 to add a chatgroup list per company so that we have a base truth to query/check from
 """
-type ContactDetails{
+type ContactDetails {
   email: String
-  phone:String
+  phone: String
 }
 
 type Favourites {
@@ -181,7 +188,7 @@ type ChatGroup
     fields: ["supplierID", "updatedAt"]
     queryField: "getChatGroupsContainingSuppliersByUpdatedAt"
   )
-   @key(
+  @key(
     name: "chatGroupbyFarmer"
     fields: ["farmerID", "updatedAt"]
     queryField: "getChatGroupsContainingFarmersByUpdatedAt"
@@ -327,7 +334,7 @@ type OrderQuotation @model {
 }
 
 type Items {
-  id:ID
+  id: ID
   name: String
   quantity: Float
   siUnit: String
@@ -443,7 +450,7 @@ type PaymentTaskBetweenSandF
   updatedAt: String
   createdAt: String
 }
-
+"add payment terms to invoice"
 type InvoiceBetweenRandS
   @model
   @key(

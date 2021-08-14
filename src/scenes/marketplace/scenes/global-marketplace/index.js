@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableOpacityBase,
+} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {Searchbar} from '../../components';
 import {LoadingModal} from '_components';
@@ -283,6 +289,14 @@ export const Marketplace = props => {
             top: hp('0%'),
             zIndex: 1,
           }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'red',
+              width: wp('30%'),
+              height: hp('5%'),
+            }}>
+            <Text>hello</Text>
+          </TouchableOpacity>
           <FavouritesList
             data={companyFavouriteStores}
             navigation={props.navigation}

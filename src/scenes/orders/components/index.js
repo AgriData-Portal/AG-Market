@@ -25,7 +25,8 @@ import {
 import Strings from '_utils';
 import {API} from 'aws-amplify';
 import dayjs from 'dayjs';
-import {createPDF, createCSV} from './file-creation';
+import {createPDF} from './create-pdf';
+import {createCSV} from './create-csv';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {userStore} from '_store';
@@ -513,6 +514,16 @@ const InvoiceModal = props => {
               (id = props.trackingNum),
               (buyer = props.retailer),
               (seller = props.supplier),
+              (createdAt = props.createdAt),
+              (items = props.goods),
+              (amount = props.amount),
+              (receivedBy = props.receivedBy),
+            );
+          } else {
+            createPDF(
+              (id = props.trackingNum),
+              (buyer = props.supplier),
+              (seller = props.farmer),
               (createdAt = props.createdAt),
               (items = props.goods),
               (amount = props.amount),

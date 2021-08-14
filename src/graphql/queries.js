@@ -3905,6 +3905,9 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           verified
           logo
@@ -3916,6 +3919,9 @@ export const invoiceForRetailerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentPurchaseOrderNumber
           mostRecentInvoiceNumber
           mostRecentQuotationNumber
@@ -3969,6 +3975,9 @@ export const invoiceRetailerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           verified
           logo
@@ -3980,6 +3989,9 @@ export const invoiceRetailerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentPurchaseOrderNumber
           mostRecentInvoiceNumber
           mostRecentQuotationNumber
@@ -4033,6 +4045,9 @@ export const invoiceForFarmerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           mostRecentPurchaseOrderNumber
           mostRecentInvoiceNumber
@@ -4047,6 +4062,9 @@ export const invoiceForFarmerByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentPurchaseOrderNumber
           mostRecentInvoiceNumber
           mostRecentQuotationNumber
@@ -4100,6 +4118,9 @@ export const invoiceFarmerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           registrationNumber
           mostRecentPurchaseOrderNumber
           mostRecentInvoiceNumber
@@ -4114,6 +4135,9 @@ export const invoiceFarmerForSupplierByDate = /* GraphQL */ `
           id
           name
           address
+          contactDetails {
+            phone
+          }
           mostRecentPurchaseOrderNumber
           mostRecentInvoiceNumber
           mostRecentQuotationNumber
