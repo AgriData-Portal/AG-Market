@@ -2,7 +2,8 @@
     "ApplicationId": "eebc9ecad55748a39df6511fe38b16d6",
     "MessageRequest": {
       "Endpoints": {
-        "f2924360-ed15-11eb-a023-437f56d8ce84": {}
+        "5bd03b00-fc18-11eb-99b0-63e0308937fb": {},
+        "f32d9240-fb69-11eb-b86e-0900ccf48d89":{}
       },
       "MessageConfiguration": {
         "DefaultPushNotificationMessage": {

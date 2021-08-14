@@ -46,7 +46,7 @@ PushNotification.onNotification(notification => {
     console.log('onNotification background or closed', notification);
   }
   // extract the data passed in the push notification
-  const data = JSON.parse(notification.data['pinpoint.jsonBody']);
+  const data = notification.data;
   console.log('onNotification data', data);
   // iOS only
   if (Platform.OS == 'ios') {
@@ -56,11 +56,11 @@ PushNotification.onNotification(notification => {
 PushNotification.onNotificationOpened(notification => {
   console.log('onNotificationOpened', notification);
   // extract the data passed in the push notification
-  const data = JSON.parse(notification['pinpoint.jsonBody']);
+  const data = notification.data;
   console.log('onNotificationOpened data', data);
 });
 
-const endpointId = Analytics.getPluggable('AWSPinpoint')['_config'];
+const endpointId = Analytics.getPluggable('AWSPinpoint');
 
 const AppNavigator = props => {
   log('user:' + props.user);
