@@ -13,7 +13,7 @@ import {checkLocationAccuracy} from 'react-native-permissions';
 
 /* Old PDF Design */
 
-export const createPDF = async (
+const createPDF = async (
   id,
   buyer,
   seller,

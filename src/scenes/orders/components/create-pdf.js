@@ -36,17 +36,17 @@ text of address
 
 export const createPDF = async (
   id,
-  retailer,
-  supplier,
+  buyer,
+  seller,
   createdAt,
   items,
   amount,
   receivedBy,
 ) => {
-  const rAddress = retailer.address;
-  const sAddress = supplier.address;
-  const [retailerUnit, retailerStreet, retailerCity] = rAddress.split(',');
-  const [supplierUnit, supplierStreet, supplierCity] = sAddress.split(',');
+  const rAddress = buyer.address;
+  const sAddress = seller.address;
+  const [buyerUnit, buyerStreet, buyerCity] = rAddress.split(',');
+  const [sellerUnit, sellerStreet, sellerCity] = sAddress.split(',');
   const base64img = agridataLogo;
   const logoPath = RNFS.DocumentDirectoryPath + '/logo.png';
   await RNFS.writeFile(logoPath, base64img, 'base64');
@@ -106,7 +106,7 @@ export const createPDF = async (
       fontSize: 40,
     })
     // Buyer
-    .drawText(retailer.name, {
+    .drawText(buyer.name, {
       x: 122,
       y: 3083,
       fontName: 'Poppins-SemiBold',
@@ -130,31 +130,31 @@ export const createPDF = async (
       fontName: 'Poppins-SemiBold',
       fontSize: 40,
     })
-    .drawText(': ' + retailer.contactDetails.phone, {
+    .drawText(': ' + buyer.contactDetails.phone, {
       x: 494,
       y: 3023,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(': ' + retailer.registrationNumber, {
+    .drawText(': ' + buyer.registrationNumber, {
       x: 494,
       y: 2957,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(': ' + retailerUnit, {
+    .drawText(': ' + buyerUnit, {
       x: 494,
       y: 2891,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(' ' + retailerStreet, {
+    .drawText(' ' + buyerStreet, {
       x: 494,
       y: 2825,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(' ' + retailerCity, {
+    .drawText(' ' + buyerCity, {
       x: 494,
       y: 2759,
       fontName: 'Poppins-Regular',
@@ -173,7 +173,7 @@ export const createPDF = async (
       fontSize: 45,
     })
     //Seller
-    .drawText(supplier.name, {
+    .drawText(seller.name, {
       x: 122,
       y: 2526,
       fontName: 'Poppins-SemiBold',
@@ -197,31 +197,31 @@ export const createPDF = async (
       fontName: 'Poppins-SemiBold',
       fontSize: 40,
     })
-    .drawText(': ' + supplier.contactDetails.phone, {
+    .drawText(': ' + seller.contactDetails.phone, {
       x: 494,
       y: 2466,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(': ' + supplier.registrationNumber, {
+    .drawText(': ' + seller.registrationNumber, {
       x: 494,
       y: 2400,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(': ' + supplierUnit, {
+    .drawText(': ' + sellerUnit, {
       x: 494,
       y: 2334,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(' ' + supplierStreet, {
+    .drawText(' ' + sellerStreet, {
       x: 494,
       y: 2268,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(' ' + supplierCity, {
+    .drawText(' ' + sellerCity, {
       x: 494,
       y: 2202,
       fontName: 'Poppins-Regular',
@@ -646,19 +646,19 @@ export const createPDF = async (
         height: 2,
         color: '#0C5E99',
       })
-      .drawText(retailer.name, {
+      .drawText(buyer.name, {
         x: 242,
         y: 318,
         fontName: 'Poppins-Bold',
         fontSize: 70,
       })
-      .drawText(retailerUnit + retailerStreet, {
+      .drawText(buyerUnit + buyerStreet, {
         x: 266,
         y: 274,
         fontName: 'Poppins-Medium',
         fontSize: 19,
       })
-      .drawText(retailerCity, {
+      .drawText(buyerCity, {
         x: 338,
         y: 252,
         fontName: 'Poppins-Medium',
@@ -670,7 +670,7 @@ export const createPDF = async (
         fontName: 'Poppins-Bold',
         fontSize: 19,
       })
-      .drawText(retailerCity, {
+      .drawText(buyerCity, {
         x: 505,
         y: 231,
         fontName: 'Poppins-Medium',
@@ -754,19 +754,19 @@ export const createPDF = async (
         height: 2,
         color: '#0C5E99',
       })
-      .drawText(supplier.name, {
+      .drawText(seller.name, {
         x: 1788,
         y: 318,
         fontName: 'Poppins-Bold',
         fontSize: 70,
       })
-      .drawText(supplierUnit + supplierStreet, {
+      .drawText(sellerUnit + sellerStreet, {
         x: 1812,
         y: 274,
         fontName: 'Poppins-Medium',
         fontSize: 19,
       })
-      .drawText(supplierCity, {
+      .drawText(sellerCity, {
         x: 1884,
         y: 252,
         fontName: 'Poppins-Medium',
@@ -778,7 +778,7 @@ export const createPDF = async (
         fontName: 'Poppins-Bold',
         fontSize: 19,
       })
-      .drawText(supplier.registrationNumber, {
+      .drawText(seller.registrationNumber, {
         x: 2051,
         y: 231,
         fontName: 'Poppins-Medium',
@@ -876,19 +876,19 @@ export const createPDF = async (
         height: 2,
         color: '#0C5E99',
       })
-      .drawText(retailer.name, {
+      .drawText(buyer.name, {
         x: 242,
         y: 318,
         fontName: 'Poppins-Bold',
         fontSize: 70,
       })
-      .drawText(retailerUnit + retailerStreet, {
+      .drawText(buyerUnit + buyerStreet, {
         x: 266,
         y: 274,
         fontName: 'Poppins-Medium',
         fontSize: 19,
       })
-      .drawText(retailerCity, {
+      .drawText(buyerCity, {
         x: 338,
         y: 252,
         fontName: 'Poppins-Medium',
@@ -900,7 +900,7 @@ export const createPDF = async (
         fontName: 'Poppins-Bold',
         fontSize: 19,
       })
-      .drawText(retailer.registrationNumber, {
+      .drawText(buyer.registrationNumber, {
         x: 505,
         y: 231,
         fontName: 'Poppins-Medium',
@@ -984,19 +984,19 @@ export const createPDF = async (
         height: 2,
         color: '#0C5E99',
       })
-      .drawText(supplier.name, {
+      .drawText(seller.name, {
         x: 1788,
         y: 318,
         fontName: 'Poppins-Bold',
         fontSize: 70,
       })
-      .drawText(supplierUnit + supplierStreet, {
+      .drawText(sellerUnit + sellerStreet, {
         x: 1812,
         y: 274,
         fontName: 'Poppins-Medium',
         fontSize: 19,
       })
-      .drawText(supplierCity, {
+      .drawText(sellerCity, {
         x: 1884,
         y: 252,
         fontName: 'Poppins-Medium',
@@ -1008,7 +1008,7 @@ export const createPDF = async (
         fontName: 'Poppins-Bold',
         fontSize: 19,
       })
-      .drawText(supplier.registrationNumber, {
+      .drawText(seller.registrationNumber, {
         x: 2051,
         y: 231,
         fontName: 'Poppins-Medium',
