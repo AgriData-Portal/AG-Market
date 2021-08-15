@@ -247,7 +247,7 @@ const RetailerModal = props => {
       message: 'Check out ' + companyName + '\n',
       url:
         'https://agridataportal.com/app.html?store=' +
-        companyName.replace(' ', '@') +
+        companyName.replace(/ /g, '@') +
         '&storeID=' +
         companyID,
       social: Share.Social.WHATSAPP,
