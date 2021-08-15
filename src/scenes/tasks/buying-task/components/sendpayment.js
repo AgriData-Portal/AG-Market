@@ -21,33 +21,58 @@ import {
 } from 'react-native-responsive-screen';
 import {DismissKeyboard} from '_components';
 import {API} from 'aws-amplify';
-import {updatePaymentTaskBetweenRandS} from '../../../../graphql/mutations';
+import {
+  updatePaymentTaskBetweenRandS,
+  updatePaymentTaskBetweenSandF,
+} from '../../../../graphql/mutations';
 import Strings from '_utils';
 const now = () => {
   const now = dayjs().format('DD MMM YYYY');
   return now;
 };
-import {paymentsTaskForRetailerByDate} from '../../../../graphql/queries';
+import {
+  paymentsTaskForRetailerByDate,
+  paymentsTaskFarmerForSupplierByDate,
+} from '../../../../graphql/queries';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import {userStore} from '_store';
 
 //Retailer upload receipt
 const UploadReceiptModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
+  log(props.supplier);
   const sendReceipt = async () => {
     try {
-      const updated = await API.graphql({
-        query: updatePaymentTaskBetweenRandS,
-        variables: {input: {id: props.id, receipt: 'some receipt'}},
-      });
-      log(updated);
-      setSuccessfulModal(true);
-      var tempList = props.payTask;
-      tempList.forEach((item, index, arr) => {
-        if (item.id == props.id) {
-          arr[index] = updated.data.updatePaymentTaskBetweenRandS;
-        }
-      });
+      if (companyType == 'retailer') {
+        const updated = await API.graphql({
+          query: updatePaymentTaskBetweenRandS,
+          variables: {input: {id: props.id, receipt: 'some receipt'}},
+        });
+        log(updated);
+        setSuccessfulModal(true);
+        var tempList = props.payTask;
+        tempList.forEach((item, index, arr) => {
+          if (item.id == props.id) {
+            arr[index] = updated.data.updatePaymentTaskBetweenRandS;
+          }
+        });
+      } else {
+        const updated = await API.graphql({
+          query: updatePaymentTaskBetweenSandF,
+          variables: {input: {id: props.id, receipt: 'some receipt'}},
+        });
+        log(updated);
+        setSuccessfulModal(true);
+        var tempList = props.payTask;
+        tempList.forEach((item, index, arr) => {
+          if (item.id == props.id) {
+            arr[index] = updated.data.updatePaymentTaskBetweenSandF;
+          }
+        });
+      }
       if (props.trigger) {
         props.setTrigger(false);
       } else {
@@ -73,7 +98,6 @@ const UploadReceiptModal = props => {
         }}>
         <CloseButton setModal={props.setUploadReceiptModal} />
       </View>
-
       <Text
         style={[
           Typography.header,
@@ -96,7 +120,7 @@ const UploadReceiptModal = props => {
           },
         ]}>
         {Strings.sendBefore}: {''}
-        {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
+        {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMM YYYY')}
       </Text>
       <View
         style={{
@@ -127,7 +151,7 @@ const UploadReceiptModal = props => {
             left: wp('40%'),
           },
         ]}>
-        {props.supplier.name}
+        {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
       </Text>
       <Text
         style={[
@@ -149,7 +173,7 @@ const UploadReceiptModal = props => {
             left: wp('40%'),
           },
         ]}>
-        #{props.id}
+        #{props.trackingNum}
       </Text>
       <Text
         style={[
@@ -184,7 +208,8 @@ const UploadReceiptModal = props => {
         ]}>
         {Strings.bankName}:
       </Text>
-      {props.supplier.bankAccount == null ? (
+      {(companyType == 'retailer' && props.supplier.bankAccount == null) ||
+      (companyType == 'supplier' && props.farmer.bankAccount == null) ? (
         <Text
           style={[
             Typography.normal,
@@ -206,7 +231,9 @@ const UploadReceiptModal = props => {
               left: wp('40%'),
             },
           ]}>
-          {props.supplier.bankAccount.bankName}
+          {companyType == 'retailer'
+            ? props.supplier.bankAccount.bankName
+            : props.farmer.bankAccount.bankName}
         </Text>
       )}
       <Text
@@ -220,7 +247,9 @@ const UploadReceiptModal = props => {
         ]}>
         {Strings.bankDetails}:
       </Text>
-      {props.supplier.bankAccount == null ? (
+      {/* TRANSLATION */}
+      {(companyType == 'retailer' && props.supplier.bankAccount == null) ||
+      (companyType == 'supplier' && props.farmer.bankAccount == null) ? (
         <Text
           style={[
             Typography.normal,
@@ -242,7 +271,9 @@ const UploadReceiptModal = props => {
               left: wp('40%'),
             },
           ]}>
-          {props.supplier.bankAccount.accountNumber}
+          {companyType == 'retailer'
+            ? props.supplier.bankAccount.accountNumber
+            : props.farmer.bankAccount.accountNumber}
         </Text>
       )}
       {/* <Text
@@ -276,7 +307,6 @@ const UploadReceiptModal = props => {
         offsetCenter={wp('5%')}
         top={hp('65%')}
       />
-
       <Modal
         isVisible={successfulModal}
         onBackdropPress={() => [
@@ -291,6 +321,7 @@ const UploadReceiptModal = props => {
 
 const UploadReceipt = props => {
   const [uploadReceiptModal, setUploadReceiptModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setUploadReceiptModal(true)}
@@ -346,14 +377,14 @@ const UploadReceipt = props => {
               position: 'absolute',
             },
           ]}>
-          {props.supplier.name}
+          {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
         </Text>
         <Text
           style={[
             Typography.small,
             {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
           ]}>
-          {props.id}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -390,7 +421,7 @@ const UploadReceipt = props => {
               fontStyle: 'italic',
             },
           ]}>
-          {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
+          {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMM YYYY')}
         </Text>
       </View>
       <Modal isVisible={uploadReceiptModal}>
@@ -398,11 +429,13 @@ const UploadReceipt = props => {
           setUploadReceiptModal={setUploadReceiptModal}
           retailer={props.retailer}
           supplier={props.supplier}
+          farmer={props.farmer}
           paid={props.paid}
           amount={props.amount}
           payBefore={props.payBefore}
           receipt={props.receipt}
           id={props.id}
+          trackingNum={props.trackingNum}
           createdAt={props.createdAt}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
@@ -415,6 +448,8 @@ const UploadReceipt = props => {
 
 export const UploadReceiptList = props => {
   const [refreshing, setRefreshing] = useState(false);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
   return (
     <View>
       <FlatList
@@ -427,15 +462,31 @@ export const UploadReceiptList = props => {
             onRefresh={async () => {
               setRefreshing(true);
               try {
-                const task = await API.graphql({
-                  query: paymentsTaskForRetailerByDate,
-                  variables: {
-                    retailerID: props.user.retailerCompanyID,
-                    sortDirection: 'ASC',
-                  },
-                });
-                log(task.data.paymentsTaskForRetailerByDate.items);
-                props.setPayTask(task.data.paymentsTaskForRetailerByDate.items);
+                if (companyType == 'retailer') {
+                  const task = await API.graphql({
+                    query: paymentsTaskForRetailerByDate,
+                    variables: {
+                      retailerID: companyID,
+                      sortDirection: 'ASC',
+                    },
+                  });
+                  log(task.data.paymentsTaskForRetailerByDate.items);
+                  props.setPayTask(
+                    task.data.paymentsTaskForRetailerByDate.items,
+                  );
+                } else {
+                  const task = await API.graphql({
+                    query: paymentsTaskFarmerForSupplierByDate,
+                    variables: {
+                      supplierID: companyID,
+                      sortDirection: 'ASC',
+                    },
+                  });
+                  log(task.data.paymentsTaskFarmerForSupplierByDate.items);
+                  props.setPayTask(
+                    task.data.paymentsTaskFarmerForSupplierByDate.items,
+                  );
+                }
                 log('payment task');
               } catch (e) {
                 log(e);
@@ -454,7 +505,9 @@ export const UploadReceiptList = props => {
             <UploadReceipt
               retailer={item.retailer}
               supplier={item.supplier}
+              farmer={item.farmer}
               paid={item.paid}
+              trackingNum={item.trackingNum}
               amount={item.amount}
               payBefore={item.payBefore}
               receipt={item.receipt}

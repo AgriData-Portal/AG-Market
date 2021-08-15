@@ -2,7 +2,10 @@ import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
 import {ProductPopUp, AddItemsButton, SupplierplaceList} from './components';
 import {NavBar, LoadingModal} from '_components';
-import {listSupplierListings} from '../../../../graphql/queries';
+import {
+  listSupplierListings,
+  listFarmerListings,
+} from '../../../../graphql/queries';
 import {API} from 'aws-amplify';
 import {
   widthPercentageToDP as wp,
@@ -11,26 +14,41 @@ import {
 import Strings from '_utils';
 import {MenuButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const SupplierStore = props => {
   const [productList, setProducts] = useState([]);
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
 
   const fetchProducts = async () => {
     try {
-      const products = await API.graphql({
-        query: listSupplierListings,
-        variables: {filter: {supplierID: {eq: props.user.supplierCompanyID}}},
-      });
+      if (companyType == 'supplier') {
+        const products = await API.graphql({
+          query: listSupplierListings,
+          variables: {filter: {supplierID: {eq: companyID}}},
+        });
 
-      if (products.data.listSupplierListings) {
-        log('Products: \n');
-        log(products);
-        setProducts(products.data.listSupplierListings.items);
+        if (products.data.listSupplierListings) {
+          log('Products: \n');
+          log(products);
+          setProducts(products.data.listSupplierListings.items);
+        }
+      } else {
+        const products = await API.graphql({
+          query: listFarmerListings,
+          variables: {filter: {farmerID: {eq: companyID}}},
+        });
+
+        if (products.data.listFarmerListings) {
+          log('Products: \n');
+          log(products);
+          setProducts(products.data.listFarmerListings.items);
+        }
       }
       setLoading(false);
-      log(products.data.listSupplierListings.items);
     } catch (e) {
       log(e);
       log("there's a problem");

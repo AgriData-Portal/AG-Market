@@ -20,6 +20,7 @@ import {
   updateChatGroup,
   createGoodsTaskBetweenRandS,
   updateMessage,
+  createGoodsTaskBetweenSandF,
 } from '../../../../graphql/mutations';
 
 import {
@@ -30,6 +31,7 @@ import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -37,7 +39,10 @@ export const OrderQuotationModal = props => {
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
   const [acceptButton, setAcceptButton] = useState(false);
   const [declineButton, setDeclineButton] = useState(false);
-
+  const companyType = userStore(state => state.companyType);
+  const userID = userStore(state => state.userID);
+  const companyID = userStore(state => state.companyID);
+  const userName = userStore(state => state.userName);
   useEffect(() => {
     fetchQuotation();
   }, []);
@@ -58,7 +63,7 @@ export const OrderQuotationModal = props => {
         itemObject['price'] = temp[6];
         arr[index] = itemObject;
       });
-      tempObject = {};
+      var tempObject = {};
       tempObject['items'] = items;
       tempObject['sum'] = quotation[1];
       tempObject['logisticsProvided'] = quotation[2] == 'true' ? true : false;
@@ -82,8 +87,8 @@ export const OrderQuotationModal = props => {
             chatGroupID: props.chatGroupID,
             type: 'text',
             content: 'The quotation has been rejected. Please re-negotiate',
-            senderID: props.userID,
-            sender: props.userName,
+            senderID: userID,
+            sender: userName,
           },
         },
       });
@@ -108,7 +113,7 @@ export const OrderQuotationModal = props => {
             id: props.chatGroupID,
             mostRecentMessage:
               'The quotation has been rejected. Please re-negotiate',
-            mostRecentMessageSender: props.userName,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -146,8 +151,8 @@ export const OrderQuotationModal = props => {
             type: 'text',
             content:
               'The quotation has been accepted. Task has been added to to-do',
-            senderID: props.userID,
-            sender: props.userName,
+            senderID: userID,
+            sender: userName,
           },
         },
       });
@@ -172,7 +177,7 @@ export const OrderQuotationModal = props => {
             id: props.chatGroupID,
             mostRecentMessage:
               'The quotation has been accepted. Task has been added to to-do',
-            mostRecentMessageSender: props.userName,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -182,19 +187,37 @@ export const OrderQuotationModal = props => {
     }
 
     try {
-      const goodsTask = await API.graphql({
-        query: createGoodsTaskBetweenRandS,
-        variables: {
-          input: {
-            id: props.id,
-            items: orderDetails.items,
-            logisticsProvided: orderDetails.logisticsProvided,
-            paymentTerms: orderDetails.paymentTerms,
-            retailerID: props.chatGroupID.slice(0, 36),
-            supplierID: props.chatGroupID.slice(36, 72),
+      if (companyType == 'retailer') {
+        const goodsTask = await API.graphql({
+          query: createGoodsTaskBetweenRandS,
+          variables: {
+            input: {
+              id: props.id,
+              trackingNum: props.contentType,
+              items: orderDetails.items,
+              logisticsProvided: orderDetails.logisticsProvided,
+              paymentTerms: orderDetails.paymentTerms,
+              retailerID: props.chatGroupID.slice(0, 36),
+              supplierID: props.chatGroupID.slice(36, 72),
+            },
           },
-        },
-      });
+        });
+      } else {
+        const goodsTask = await API.graphql({
+          query: createGoodsTaskBetweenSandF,
+          variables: {
+            input: {
+              id: props.id,
+              trackingNum: props.contentType,
+              items: orderDetails.items,
+              logisticsProvided: orderDetails.logisticsProvided,
+              paymentTerms: orderDetails.paymentTerms,
+              supplierID: props.chatGroupID.slice(0, 36),
+              farmerID: props.chatGroupID.slice(36, 72),
+            },
+          },
+        });
+      }
       log('goods task created');
       var messages = props.messages;
       log(messages);
@@ -246,7 +269,7 @@ export const OrderQuotationModal = props => {
               {props.chatName}
             </Text>
             <Text style={[Typography.normal]}>
-              {props.id} #{orderDetails.status}
+              {props.contentType} #{orderDetails.status}
             </Text>
           </View>
           <View
@@ -304,7 +327,10 @@ export const OrderQuotationModal = props => {
             </View>
           </View>
 
-          {props.type == 'retailer' && orderDetails.status == 'New' ? (
+          {(companyType == 'retailer' ||
+            (companyType == 'supplier' &&
+              companyID == props.chatGroupID.slice(0, 36))) &&
+          orderDetails.status == 'New' ? (
             <View
               style={{
                 flexDirection: 'row',

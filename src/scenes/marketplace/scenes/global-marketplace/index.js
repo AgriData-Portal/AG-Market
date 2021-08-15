@@ -13,7 +13,9 @@ import {MarketplaceList, FavouritesList, ProductSearchBar} from './components';
 import {API} from 'aws-amplify';
 import {
   listSupplierListings,
+  listFarmerListings,
   supplierListingByNameStartingWithLowestPrice,
+  farmerListingByNameStartingWithLowestPrice,
 } from '../../../../graphql/queries';
 import {
   widthPercentageToDP as wp,
@@ -23,6 +25,8 @@ import Strings from '_utils';
 import Modal from 'react-native-modal';
 
 import {log} from '_utils';
+import {CompanyProfile} from '_components';
+import {userStore} from '_store';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -32,25 +36,48 @@ export const Marketplace = props => {
   const [searchPressed, setSearchPressed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchable, setSearchable] = useState([]);
+  const companyType = userStore(state => state.companyType);
+  const companyFavouriteStores = userStore(
+    state => state.companyFavouriteStores,
+  );
 
   log('marketplace render');
   const fetchProducts = async () => {
     setLoading(true);
+
     try {
-      const products = await API.graphql({
-        query: supplierListingByNameStartingWithLowestPrice,
-        variables: {
-          productName: searchValue.toUpperCase().trim(),
-          sortDirection: 'ASC',
-        },
-      });
-      log(products);
-      if (products.data.supplierListingByNameStartingWithLowestPrice) {
-        log('Products: \n');
-        log(products.data.supplierListingByNameStartingWithLowestPrice.items);
-        setProducts(
-          products.data.supplierListingByNameStartingWithLowestPrice.items,
-        );
+      if (companyType == 'retailer') {
+        const products = await API.graphql({
+          query: supplierListingByNameStartingWithLowestPrice,
+          variables: {
+            productName: searchValue.toUpperCase().trim(),
+            sortDirection: 'ASC',
+          },
+        });
+        log(products);
+        if (products.data.supplierListingByNameStartingWithLowestPrice) {
+          log('Products: \n');
+          log(products.data.supplierListingByNameStartingWithLowestPrice.items);
+          setProducts(
+            products.data.supplierListingByNameStartingWithLowestPrice.items,
+          );
+        }
+      } else if (companyType == 'supplier') {
+        const products = await API.graphql({
+          query: farmerListingByNameStartingWithLowestPrice,
+          variables: {
+            productName: searchValue.toUpperCase().trim(),
+            sortDirection: 'ASC',
+          },
+        });
+        log(products);
+        if (products.data.farmerListingByNameStartingWithLowestPrice) {
+          log('Products: \n');
+          log(products.data.farmerListingByNameStartingWithLowestPrice.items);
+          setProducts(
+            products.data.farmerListingByNameStartingWithLowestPrice.items,
+          );
+        }
       }
     } catch (e) {
       log(e);
@@ -75,19 +102,35 @@ export const Marketplace = props => {
   const getAllListings = async () => {
     //EDIT NODEMODULES FOR SEARCHABLE DROPDOWN AND DELETE ALL NAME IN ITEM.NAME
     try {
-      const listings = await API.graphql({
-        query: listSupplierListings,
-      });
-      log(listings.data.listSupplierListings.items);
-      var responseList = listings.data.listSupplierListings.items;
-      responseList = responseList.map(item => {
-        return item.productName.toUpperCase();
-      });
+      if (companyType == 'retailer') {
+        const listings = await API.graphql({
+          query: listSupplierListings,
+        });
+        log(listings.data.listSupplierListings.items);
+        var responseList = listings.data.listSupplierListings.items;
+        responseList = responseList.map(item => {
+          return item.productName.toUpperCase();
+        });
 
-      log(responseList);
-      var array = Array.from(new Set(responseList));
-      array.sort();
-      setSearchable(array);
+        log(responseList);
+        var array = Array.from(new Set(responseList));
+        array.sort();
+        setSearchable(array);
+      } else if (companyType) {
+        const listings = await API.graphql({
+          query: listFarmerListings,
+        });
+        log(listings.data.listFarmerListings.items);
+        var responseList = listings.data.listFarmerListings.items;
+        responseList = responseList.map(item => {
+          return item.productName.toUpperCase();
+        });
+
+        log(responseList);
+        var array = Array.from(new Set(responseList));
+        array.sort();
+        setSearchable(array);
+      }
     } catch (e) {
       log(e);
     }
@@ -95,15 +138,27 @@ export const Marketplace = props => {
 
   const getFirstTenListings = async () => {
     try {
-      const listings = await API.graphql({
-        query: listSupplierListings,
-        variables: {
-          limit: 10,
-        },
-      });
-      log(listings.data.listSupplierListings.items);
-      var responseList = listings.data.listSupplierListings.items;
-      setProducts(listings.data.listSupplierListings.items);
+      if (companyType == 'retailer') {
+        const listings = await API.graphql({
+          query: listSupplierListings,
+          variables: {
+            limit: 10,
+          },
+        });
+        log(listings.data.listSupplierListings.items);
+        var responseList = listings.data.listSupplierListings.items;
+        setProducts(listings.data.listSupplierListings.items);
+      } else if (companyType == 'supplier') {
+        const listings = await API.graphql({
+          query: listFarmerListings,
+          variables: {
+            limit: 10,
+          },
+        });
+        log(listings.data.listFarmerListings.items);
+        var responseList = listings.data.listFarmerListings.items;
+        setProducts(listings.data.listFarmerListings.items);
+      }
     } catch (e) {
       log(e);
     }
@@ -243,7 +298,7 @@ export const Marketplace = props => {
             <Text>hello</Text>
           </TouchableOpacity>
           <FavouritesList
-            data={props.user.retailerCompany.favouriteStores}
+            data={companyFavouriteStores}
             navigation={props.navigation}
           />
         </View>
@@ -257,11 +312,11 @@ export const Marketplace = props => {
             zIndex: 1,
           }}>
           <MarketplaceList
-            chatGroups={props.user.retailerCompany.chatGroups.items}
             productList={productsList}
             navigation={props.navigation}
-            user={props.user}
             searchValue={searchValue}
+            //user={props.user}
+            // company={props.company}
           />
         </View>
       )}

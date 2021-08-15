@@ -42,6 +42,7 @@ import Strings from '_utils';
 import {listSupplierCompanys} from '../../../../../graphql/queries';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 const AddItemModal = props => {
   const [open2, setOpen2] = useState(false);
@@ -62,6 +63,8 @@ const AddItemModal = props => {
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [focus, setFocus] = useState('');
   const [addProductButton, setAddProductButton] = useState(false);
+  const companyName = userStore(state => state.companyName);
+  const companyID = userStore(state => state.companyID);
 
   async function addListing() {
     try {
@@ -69,14 +72,13 @@ const AddItemModal = props => {
       const response = await fetch(photo.uri);
       const blob = await response.blob();
       log('FileName: \n');
-      photo.fileName =
-        productName + '_' + variety + '_' + props.user.supplierCompany.name;
+      photo.fileName = productName + '_' + variety + '_' + companyName;
       await Storage.put(photo.fileName, blob, {
         contentType: 'image/jpeg',
       });
 
       var listing = {
-        supplierID: props.user.supplierCompanyID,
+        supplierID: companyID,
         productName: productName.toUpperCase(),
         variety: variety,
         quantityAvailable: parseInt(quantityAvailable),
@@ -745,7 +747,6 @@ export const AddItemsButton = props => {
       <Modal isVisible={addItemsButton}>
         <AddItemModal
           setAddItemsButton={setAddItemsButton}
-          user={props.user}
           productList={props.productList}
           setProducts={props.setProducts}></AddItemModal>
       </Modal>
@@ -1289,10 +1290,8 @@ export const SupplierplaceList = props => {
 export const RetailerList = props => {
   return (
     <FlatList
-      data={props.supermarkets}
+      data={props.supplier}
       renderItem={({item}) => {
-        log(item);
-
         return (
           <RetailerCard
             name={item.name}
@@ -1305,16 +1304,20 @@ export const RetailerList = props => {
 };
 
 const RetailerCard = props => {
+  const companyID = userStore(state => state.companyID);
+  const userName = userStore(state => state.userName);
+  const userID = userStore(state => state.userID);
+  const companyName = userStore(state => state.companyName);
   const sendStoreDetails = async () => {
     try {
-      log(props.id + props.user.supplierCompanyID);
+      log(props.id + companyID);
       const updateChat = await API.graphql({
         query: updateChatGroup,
         variables: {
           input: {
-            id: props.id + props.user.supplierCompanyID,
+            id: props.id + companyID,
             mostRecentMessage: 'Store Catalog',
-            mostRecentMessageSender: props.user.name,
+            mostRecentMessageSender: userName,
           },
         },
       });
@@ -1324,12 +1327,12 @@ const RetailerCard = props => {
       if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
         try {
           const chatGroup = {
-            id: props.id + props.user.supplierCompanyID,
-            name: props.name + '+' + props.user.supplierCompany.name,
-            retailerID: props.id,
-            supplierID: props.user.supplierCompanyID,
+            id: props.id + companyID,
+            name: props.name + '+' + companyName,
+            supplierID: props.id,
+            farmerID: companyID,
             mostRecentMessage: 'Store Catalog',
-            mostRecentMessageSender: props.user.name,
+            mostRecentMessageSender: userName,
           };
           log(chatGroup);
           const createdChatGroup = await API.graphql({
@@ -1345,15 +1348,14 @@ const RetailerCard = props => {
       }
     }
 
-    log('creating store ' + props.user.supplierCompany.name);
+    log('creating store ' + companyID);
 
     const store = {
-      chatGroupID: props.id + props.user.supplierCompanyID,
+      chatGroupID: props.id + companyID,
       type: 'store',
-      content:
-        props.user.supplierCompanyID + '+' + props.user.supplierCompany.name,
-      sender: props.user.name,
-      senderID: props.user.id,
+      content: companyID + '+' + companyName,
+      sender: userName,
+      senderID: userID,
     };
     try {
       const message = await API.graphql({
@@ -1422,21 +1424,21 @@ export const SupplierModalButton = props => {
 };
 
 const RetailerModal = props => {
-  const [supermarkets, setSupermarkets] = useState([]);
-  const getAllSupermarkets = async () => {
+  const [supplier, setSupplier] = useState([]);
+  const getAllSupplier = async () => {
     try {
       const listSupplier = await API.graphql({
         query: listSupplierCompanys,
       });
 
-      setSupermarkets(listSupplier.data.listSupplierCompanys.items);
+      setSupplier(listSupplier.data.listSupplierCompanys.items);
     } catch (e) {
       log(e);
     }
   };
 
   useEffect(() => {
-    getAllSupermarkets();
+    getAllSupplier();
   }, []);
   return (
     <View
@@ -1452,7 +1454,7 @@ const RetailerModal = props => {
         <Text style={[Typography.large]}>Suppliers</Text>
       </View>
       <View style={{height: hp('60%'), top: hp('3%')}}>
-        <RetailerList supermarkets={supermarkets} />
+        <RetailerList supplier={supplier} />
       </View>
     </View>
   );

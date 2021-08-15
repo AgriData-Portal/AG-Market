@@ -26,11 +26,18 @@ import {
   updateGoodsTaskBetweenRandS,
   updateRetailerCompany,
   deleteGoodsTaskBetweenRandS,
+  updateGoodsTaskBetweenSandF,
+  updateSupplierCompany,
+  deleteGoodsTaskBetweenSandF,
 } from '../../../../graphql/mutations';
-import {goodsTaskRetailerForSupplierByDate} from '../../../../graphql/queries';
+import {
+  goodsTaskRetailerForSupplierByDate,
+  goodsTaskForFarmerByDate,
+} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -43,6 +50,8 @@ const now = () => {
 
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
+  const companyID = userStore(state => state.companyID);
+  const companyType = userStore(state => state.companyType);
   log('send task list render');
   return (
     <View>
@@ -57,17 +66,29 @@ export const SendTaskList = props => {
             onRefresh={async () => {
               setRefreshing(true);
               try {
-                const task = await API.graphql({
-                  query: goodsTaskRetailerForSupplierByDate,
-                  variables: {
-                    supplierID: props.user.supplierCompanyID,
-                    sortDirection: 'ASC',
-                  },
-                });
-                props.setSendTask(
-                  task.data.goodsTaskRetailerForSupplierByDate.items,
-                );
-                log(task.data.goodsTaskRetailerForSupplierByDate.items);
+                if (companyType == 'supplier') {
+                  const task = await API.graphql({
+                    query: goodsTaskRetailerForSupplierByDate,
+                    variables: {
+                      supplierID: companyID,
+                      sortDirection: 'ASC',
+                    },
+                  });
+                  props.setSendTask(
+                    task.data.goodsTaskRetailerForSupplierByDate.items,
+                  );
+                  log(task.data.goodsTaskRetailerForSupplierByDate.items);
+                } else {
+                  const task = await API.graphql({
+                    query: goodsTaskForFarmerByDate,
+                    variables: {
+                      farmerID: companyID,
+                      sortDirection: 'ASC',
+                    },
+                  });
+                  props.setSendTask(task.data.goodsTaskForFarmerByDate.items);
+                  log(task.data.goodsTaskForFarmerByDate.items);
+                }
                 log('goods task');
               } catch (e) {
                 log(e);
@@ -88,8 +109,10 @@ export const SendTaskList = props => {
               supplier={item.supplier}
               goods={item.items}
               createdAt={item.createdAt}
+              trackingNum={item.trackingNum}
               deliverydate={item.deliveryDate}
               taskID={item.id}
+              trackingNum={item.trackingNum}
               trigger={props.trigger}
               setTrigger={props.setTrigger}
               sendTask={props.sendTask}
@@ -112,6 +135,7 @@ const SendTask = props => {
 
   const [ratingModal, setRatingModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
 
   return (
     <TouchableOpacity
@@ -180,14 +204,16 @@ const SendTask = props => {
               position: 'absolute',
             },
           ]}>
-          {props.retailer.name}
+          {companyType == 'supplier'
+            ? props.retailer.name
+            : props.supplier.name}
         </Text>
         <Text
           style={[
             Typography.small,
             {left: wp('25%'), top: hp('4%'), position: 'absolute'},
           ]}>
-          {props.taskID}
+          {props.trackingNum}
         </Text>
         <Text
           style={[
@@ -231,7 +257,9 @@ const SendTask = props => {
         <SendTaskModal
           taskID={props.taskID}
           goods={props.goods}
+          trackingNum={props.trackingNum}
           retailer={props.retailer}
+          supplier={props.supplier}
           createdAt={props.createdAt}
           deliverydate={props.deliverydate}
           setSendTaskModal={setSendTaskModal}
@@ -262,18 +290,31 @@ const SendTaskModal = props => {
   const [confirmedDate, setConfirmedDate] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
+  const companyType = userStore(state => state.companyType);
 
   const updateDeliveryDate = async () => {
     try {
-      const response = await API.graphql({
-        query: updateGoodsTaskBetweenRandS,
-        variables: {
-          input: {
-            id: props.taskID,
-            deliveryDate: deliverydate,
+      if (companyType == 'supplier') {
+        const response = await API.graphql({
+          query: updateGoodsTaskBetweenRandS,
+          variables: {
+            input: {
+              id: props.taskID,
+              deliveryDate: deliverydate,
+            },
           },
-        },
-      });
+        });
+      } else {
+        const response = await API.graphql({
+          query: updateGoodsTaskBetweenSandF,
+          variables: {
+            input: {
+              id: props.taskID,
+              deliveryDate: deliverydate,
+            },
+          },
+        });
+      }
 
       setDate(deliverydate);
       setConfirmedDate(true);
@@ -341,7 +382,7 @@ const SendTaskModal = props => {
                 fontStyle: 'italic',
               },
             ]}>
-            {'  '}#{props.taskID}
+            {'  '}#{props.trackingNum}
           </Text>
         </Text>
 
@@ -474,7 +515,7 @@ const SendTaskModal = props => {
               placeholderTextColor={Colors.GRAY_DARK}
               placeholder="Pick a date"
               showIcon={true}
-              minDate={now()}
+              minDate={dayjs().format('DD MMM YYYY')}
               date={deliverydate}
               onDateChange={item => setDate(item)}
               androidMode="spinner"
@@ -536,7 +577,9 @@ const SendTaskModal = props => {
               left: wp('35%'),
             },
           ]}>
-          {props.retailer.name}
+          {companyType == 'supplier'
+            ? props.retailer.name
+            : props.supplier.name}
         </Text>
         <BlueButton
           onPress={() => {
@@ -560,8 +603,10 @@ const SendTaskModal = props => {
           setInvoiceModal={setInvoiceModal}
           goods={props.goods}
           retailer={props.retailer}
+          supplier={props.supplier}
           deliverydate={props.deliverydate}
           taskID={props.taskID}
+          trackingNum={props.trackingNum}
           invoiceList={props}
           trigger={props.trigger}
           setTrigger={props.setTrigger}
@@ -579,6 +624,7 @@ const InvoiceModal = props => {
   const [sum, setSum] = useState(0);
   const [verifyDoubleButton, setVerifyDoubleButton] = useState(false);
   var tempSum = 0;
+  const companyType = userStore(state => state.companyType);
   useEffect(() => {
     log(itemList);
     var tempList = itemList.forEach((item, index, array) => {
@@ -591,23 +637,43 @@ const InvoiceModal = props => {
 
   const sendForVerfication = async () => {
     try {
-      const response = await API.graphql({
-        query: updateGoodsTaskBetweenRandS,
-        variables: {
-          input: {
-            id: props.taskID,
-            status: 'sent',
-            items: itemList,
+      if (companyType == 'supplier') {
+        const response = await API.graphql({
+          query: updateGoodsTaskBetweenRandS,
+          variables: {
+            input: {
+              id: props.taskID,
+              status: 'sent',
+              items: itemList,
+            },
           },
-        },
-      });
-      setSuccessfulModal(true);
-      var tempList = props.sendTask;
-      tempList.forEach((item, index, arr) => {
-        if (item.id == props.taskID) {
-          arr[index] = response.data.updateGoodsTaskBetweenRandS;
-        }
-      });
+        });
+        setSuccessfulModal(true);
+        var tempList = props.sendTask;
+        tempList.forEach((item, index, arr) => {
+          if (item.id == props.taskID) {
+            arr[index] = response.data.updateGoodsTaskBetweenRandS;
+          }
+        });
+      } else {
+        const response = await API.graphql({
+          query: updateGoodsTaskBetweenSandF,
+          variables: {
+            input: {
+              id: props.taskID,
+              status: 'sent',
+              items: itemList,
+            },
+          },
+        });
+        setSuccessfulModal(true);
+        var tempList = props.sendTask;
+        tempList.forEach((item, index, arr) => {
+          if (item.id == props.taskID) {
+            arr[index] = response.data.updateGoodsTaskBetweenSandF;
+          }
+        });
+      }
       if (props.trigger) {
         props.setTrigger(false);
       } else {
@@ -655,7 +721,11 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Invoice {props.taskID.slice(0, 6)}
+        Invoice
+        <Text style={[Typography.placeholder, {fontStyle: 'italic'}]}>
+          {' '}
+          for {props.trackingNum} {/*TRANSLATION */}
+        </Text>
       </Text>
       <Text
         style={[
@@ -663,7 +733,7 @@ const InvoiceModal = props => {
           {
             position: 'absolute',
             right: wp('5%'),
-            top: hp('6%'),
+            top: hp('8.5%'),
           },
         ]}>
         {dayjs().format('DD MMM YYYY')}
@@ -677,7 +747,7 @@ const InvoiceModal = props => {
             left: wp('5%'),
           })
         }>
-        {props.retailer.name}
+        {companyType == 'supplier' ? props.retailer.name : props.supplier.name}
       </Text>
       <View
         style={{
@@ -961,44 +1031,82 @@ const Product = props => {
 
 const RatingModal = props => {
   const [rating, setRating] = useState(2.5);
+  const companyType = userStore(state => state.companyType);
 
   const updateRating = async () => {
     try {
-      if (props.retailer.rating == null) {
-        var sendRating = {
-          numberOfRatings: 1,
-          currentRating: rating,
-        };
-      } else {
-        var newNumberOfRating = props.retailer.rating.numberOfRatings + 1;
-        var newRating =
-          (props.retailer.rating.currentRating *
-            props.retailer.rating.numberOfRatings +
-            rating) /
-          newNumberOfRating;
-        var sendRating = {
-          numberOfRatings: newNumberOfRating,
-          currentRating: newRating,
-        };
-      }
-      log(props.retailer, sendRating);
-      const update = await API.graphql({
-        query: updateRetailerCompany,
-        variables: {
-          input: {
-            id: props.retailer.id,
-            rating: sendRating,
+      if (companyType == 'supplier') {
+        if (props.retailer.rating == null) {
+          var sendRating = {
+            numberOfRatings: 1,
+            currentRating: rating,
+          };
+        } else {
+          var newNumberOfRating = props.retailer.rating.numberOfRatings + 1;
+          var newRating =
+            (props.retailer.rating.currentRating *
+              props.retailer.rating.numberOfRatings +
+              rating) /
+            newNumberOfRating;
+          var sendRating = {
+            numberOfRatings: newNumberOfRating,
+            currentRating: newRating,
+          };
+        }
+        log(props.retailer, sendRating);
+        const update = await API.graphql({
+          query: updateRetailerCompany,
+          variables: {
+            input: {
+              id: props.retailer.id,
+              rating: sendRating,
+            },
           },
-        },
-      });
+        });
+      } else {
+        if (props.supplier.rating == null) {
+          var sendRating = {
+            numberOfRatings: 1,
+            currentRating: rating,
+          };
+        } else {
+          var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
+          var newRating =
+            (props.supplier.rating.currentRating *
+              props.supplier.rating.numberOfRatings +
+              rating) /
+            newNumberOfRating;
+          var sendRating = {
+            numberOfRatings: newNumberOfRating,
+            currentRating: newRating,
+          };
+        }
+        log(props.supplier, sendRating);
+        const update = await API.graphql({
+          query: updateSupplierCompany,
+          variables: {
+            input: {
+              id: props.supplier.id,
+              rating: sendRating,
+            },
+          },
+        });
+      }
     } catch (e) {
       log(e);
     }
     try {
-      const invoiceResponse = await API.graphql({
-        query: deleteGoodsTaskBetweenRandS,
-        variables: {input: {id: props.taskID}},
-      });
+      if (companyType == 'supplier') {
+        const invoiceResponse = await API.graphql({
+          query: deleteGoodsTaskBetweenRandS,
+          variables: {input: {id: props.taskID}},
+        });
+      } else {
+        const invoiceResponse = await API.graphql({
+          query: deleteGoodsTaskBetweenSandF,
+          variables: {input: {id: props.taskID}},
+        });
+      }
       log('done');
       var tempList = props.sendTask;
       for (let [i, temp] of tempList.entries()) {
@@ -1042,6 +1150,7 @@ const RatingModal = props => {
           ]}>
           Transaction completed. Please give the retailer a rating.
         </Text>
+        {/* TRANSLATION */}
       </View>
       <View style={{top: hp('4%')}}>
         <Rating

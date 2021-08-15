@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
-  Orders, //Done
+  BuyerOrders, //Done
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -81,6 +81,7 @@ const OwnerNavigation = props => {
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -222,10 +223,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <BuyerOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
