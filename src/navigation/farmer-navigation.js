@@ -64,7 +64,6 @@ function getHeaderTitle(route) {
 function getIcon(route, user, navigation) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
   if (routeName == 'marketplace') {
-    log('test');
     return (
       <ShareStoreButton user={user} navigation={navigation}></ShareStoreButton>
     );

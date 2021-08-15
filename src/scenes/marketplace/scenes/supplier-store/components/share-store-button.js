@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, FlatList, Image} from 'react-native';
 import {SuccessNavigateChatModal} from '_components';
 import {Typography, Colors} from '_styles';
 import Modal from 'react-native-modal';
+import Share from 'react-native-share';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -215,6 +216,8 @@ const ShareStoreButton = props => {
 const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
   const companyType = userStore(state => state.companyType);
+  const companyName = userStore(state => state.companyName);
+  const companyID = userStore(state => state.companyID);
 
   const getAllSupermarkets = async () => {
     try {
@@ -239,6 +242,22 @@ const RetailerModal = props => {
   useEffect(() => {
     getAllSupermarkets();
   }, []);
+  const shareStore = async () => {
+    const shareOptions = {
+      message: 'Check out ' + companyName + '\n',
+      url:
+        'https://agridataportal.com/app.html?store=' +
+        companyName.replace(/ /g, '@') +
+        '&storeID=' +
+        companyID,
+      social: Share.Social.WHATSAPP,
+    };
+    try {
+      const shareResponse = await Share.shareSingle(shareOptions);
+    } catch (e) {
+      log(e);
+    }
+  };
   return (
     <View
       style={{
@@ -250,16 +269,25 @@ const RetailerModal = props => {
       }}>
       {/* TRANSLATION */}
       <View
-        style={{alignItems: 'center', justifyContent: 'center', top: hp('2%')}}>
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: hp('2%'),
+        }}>
         <Text style={[Typography.large]}>Supermarkets</Text>
       </View>
-      <View style={{height: hp('60%'), top: hp('3%')}}>
+      <View style={{height: hp('65%'), top: hp('3%')}}>
         <RetailerList
           supermarkets={supermarkets}
           navigation={props.navigation}
           setRetailerModal={props.setRetailerModal}
         />
       </View>
+      <BlueButton
+        onPress={() => shareStore()}
+        top={hp('3%')}
+        text={'Share to WhatsApp'}
+      />
     </View>
   );
 };

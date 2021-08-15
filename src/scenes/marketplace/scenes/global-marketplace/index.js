@@ -289,14 +289,6 @@ export const Marketplace = props => {
             top: hp('0%'),
             zIndex: 1,
           }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'red',
-              width: wp('30%'),
-              height: hp('5%'),
-            }}>
-            <Text>hello</Text>
-          </TouchableOpacity>
           <FavouritesList
             data={companyFavouriteStores}
             navigation={props.navigation}
