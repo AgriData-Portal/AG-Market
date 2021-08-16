@@ -89,11 +89,11 @@ const AppNavigator = props => {
       } else {
         status = 'latestVersion';
       }
-      console.log('1: ', settings.data.getGlobalSettings.forceUpdate);
+      log('1: ', settings.data.getGlobalSettings.forceUpdate);
       changeUpdateStatus(status);
-      console.log('DeviceInfo: ');
+      log('DeviceInfo: ');
       console.log('Version: ' + DeviceInfo.getVersion());
-      console.log(
+      log(
         'Latest Version: ',
         settings.data.getGlobalSettings.latestVersionNumber,
       );
