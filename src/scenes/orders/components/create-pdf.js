@@ -5,7 +5,6 @@ import PDFLib, {PDFDocument, PDFPage} from 'react-native-pdf-lib';
 import * as RNFS from 'react-native-fs';
 
 import XLSX from 'xlsx';
-
 import agridataLogo from '_styles/image';
 import dayjs from 'dayjs';
 import {log} from '_utils';
@@ -42,14 +41,21 @@ export const createPDF = async (
   items,
   amount,
   receivedBy,
+  phototest,
 ) => {
   const rAddress = buyer.address;
   const sAddress = seller.address;
   const [buyerUnit, buyerStreet, buyerCity] = rAddress.split(',');
   const [sellerUnit, sellerStreet, sellerCity] = sAddress.split(',');
   const base64img = agridataLogo;
+
+  var phototest1;
+  await RNFS.readFile(phototest, 'base64').then(res => {
+    console.log(res);
+    phototest1 = res;
+  });
   const logoPath = RNFS.DocumentDirectoryPath + '/logo.png';
-  await RNFS.writeFile(logoPath, base64img, 'base64');
+  await RNFS.writeFile(logoPath, phototest1, 'base64');
   var noProduct = items.length;
   var positionY = 1970;
   var positionY2 = 2900;

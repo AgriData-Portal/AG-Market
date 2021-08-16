@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TextInput,
@@ -30,6 +30,8 @@ import {createCSV} from './create-csv';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {userStore} from '_store';
+import ViewShot from 'react-native-view-shot';
+import Share from 'react-native-share';
 
 export const OrderList = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -316,6 +318,26 @@ const Order = props => {
 const InvoiceModal = props => {
   const companyID = userStore(state => state.companyID);
   const companyType = userStore(state => state.companyType);
+  const rAddress = props.retailer.address;
+  const sAddress = props.supplier.address;
+  const [retailerUnit, retailerStreet, retailerCity] = rAddress.split(',');
+  const [supplierUnit, supplierStreet, supplierCity] = sAddress.split(',');
+  const viewShotRef = useRef();
+  const [phototest, setPhotoTest] = useState(null);
+  async function captureViewShot() {
+    const imageURI = await viewShotRef.current.capture();
+    setPhotoTest(imageURI);
+    console.log(typeof imageURI);
+    console.log(imageURI);
+    const shareOptions = {
+      url: imageURI,
+    };
+    try {
+      const ShareResponse = await Share.open(shareOptions);
+    } catch (error) {
+      log('Error: ', error);
+    }
+  }
   const Seperator = () => {
     return (
       <View
@@ -463,7 +485,87 @@ const InvoiceModal = props => {
           {Strings.total}: RM {props.amount}
         </Text>
       </View>
-
+      <ViewShot
+        ref={viewShotRef}
+        style={{top: hp('25%'), backgroundColor: 'white'}}
+        options={{format: 'png', quality: 0.8}}>
+        <View
+          style={{
+            width: wp('80%'),
+            borderColor: '#0C5E99',
+            borderWidth: 5,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            paddingVertical: hp('1%'),
+          }}>
+          <View
+            style={{
+              width: wp('70%'),
+              borderColor: '#0C5E99',
+              borderWidth: 2,
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Bold',
+                color: '#0C5E99',
+                fontSize: 20,
+                alignSelf: 'center',
+              }}>
+              {props.retailer.name}
+            </Text>
+            <View
+              style={{
+                borderBottomWidth: 2,
+                width: wp('60%'),
+                alignSelf: 'center',
+                borderColor: '#0C5E99',
+              }}></View>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: '#0C5E99',
+                fontSize: 8,
+                alignSelf: 'center',
+              }}>
+              {retailerUnit}, {retailerStreet}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: '#0C5E99',
+                fontSize: 8,
+                alignSelf: 'center',
+              }}>
+              {retailerCity}
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Bold',
+                  color: '#0C5E99',
+                  fontSize: 8,
+                }}>
+                Registration No:
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Medium',
+                  color: '#0C5E99',
+                  fontSize: 8,
+                }}>
+                {props.retailer.registrationNumber}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </ViewShot>
       <Text
         style={[
           Typography.normal,
@@ -476,6 +578,13 @@ const InvoiceModal = props => {
         ]}>
         {Strings.recievedBy}: {props.receivedBy}
       </Text>
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'red',
+          width: wp('5%'),
+          height: hp('5%'),
+        }}
+        onPress={captureViewShot}></TouchableOpacity>
       <BlueButton
         position={'absolute'}
         borderRadius={10}
@@ -497,6 +606,7 @@ const InvoiceModal = props => {
                 (items = props.goods),
                 (amount = props.amount),
                 (receivedBy = props.receivedBy),
+                phototest,
               );
             } else {
               createPDF(
@@ -507,6 +617,7 @@ const InvoiceModal = props => {
                 (items = props.goods),
                 (amount = props.amount),
                 (receivedBy = props.receivedBy),
+                phototest,
               );
             }
           } else if (companyType == 'retailer') {
@@ -518,6 +629,7 @@ const InvoiceModal = props => {
               (items = props.goods),
               (amount = props.amount),
               (receivedBy = props.receivedBy),
+              phototest,
             );
           } else {
             createPDF(
@@ -528,6 +640,7 @@ const InvoiceModal = props => {
               (items = props.goods),
               (amount = props.amount),
               (receivedBy = props.receivedBy),
+              phototest,
             );
           }
         }}
