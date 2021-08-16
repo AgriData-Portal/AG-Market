@@ -5,8 +5,10 @@ import {
   View,
   Image,
   KeyboardAvoidingView,
+  Switch,
   TextInput,
   BackHandler,
+  Platform,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -24,6 +26,8 @@ import {CompanyProfile, EditCompany} from './company-profile';
 import {PersonalProfile, EditPersonal} from './personal-profile';
 import {HumanResource} from './human-resource';
 import {log} from '_utils';
+import SwitchToggle from 'react-native-switch-toggle';
+import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 export {
   CompanyProfile,
@@ -55,6 +59,9 @@ export const MenuButton = props => {
           setMenuButtonModal={setMenuButtonModal}
           navigation={props.navigation}
           updateAuthState={props.updateAuthState}
+          company={props.company}
+          on={props.on}
+          off={props.off}
         />
       </Modal>
     </TouchableOpacity>
@@ -231,7 +238,9 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>Personal Profile</Text>
+                <Text style={[Typography.placeholder]}>
+                  {Strings.personalProfile}
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -252,11 +261,89 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>Logout</Text>
+                <Text style={[Typography.placeholder]}>{Strings.logOut}</Text>
               </View>
             </View>
           </TouchableOpacity>
         </View>
+      )}
+      {props.company ? (
+        <View
+          style={{
+            position: 'absolute',
+            left: wp('70%'),
+            top: hp('4%'),
+          }}>
+          <SwitchToggle
+            switchOn={props.on}
+            onPress={() => props.off(!props.on)}
+            containerStyle={{
+              marginTop: 16,
+              width: wp('25%'),
+              height: Platform.OS == 'ios' ? hp('4%') : hp('5%'),
+              borderRadius: 25,
+              padding: wp('1.5%'),
+              borderColor: 'gray',
+              borderWidth: 0.5,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+            }}
+            backTextLeft={props.on ? 'Sell' : null}
+            textLeftStyle={[
+              Typography.normal,
+              {
+                position: 'absolute',
+
+                bottom: Platform.OS == 'ios' ? hp('-1.4%') : hp('-2%'),
+              },
+            ]}
+            backTextRight={props.on ? null : 'Buy'}
+            textRightStyle={[
+              Typography.normal,
+              {
+                position: 'absolute',
+                left: Platform.OS == 'ios' ? wp('3.5%') : wp('5.5%'),
+                bottom: Platform.OS == 'ios' ? hp('-1.4%') : hp('-2%'),
+              },
+            ]}
+            backgroundColorOn="white"
+            backgroundColorOff="white"
+            circleColorOff={Colors.LIGHT_BLUE}
+            circleColorOn={Colors.LIGHT_BLUE}
+            buttonText={props.on ? 'Buy' : 'Sell'}
+            buttonTextStyle={[
+              Typography.normal,
+              {
+                top: Platform.OS == 'ios' ? hp('0.8%') : hp('1%'),
+                textAlign: 'center',
+                right: wp('0.3%'),
+              },
+            ]}
+            circleStyle={{
+              width: Platform.OS == 'ios' ? hp('4.5%') : wp('9%'),
+              height: Platform.OS == 'ios' ? hp('4.5%') : wp('9%'),
+              borderRadius: 100,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 0.34,
+              shadowRadius: 6.27,
+
+              elevation: 10,
+            }}
+          />
+        </View>
+      ) : (
+        <View />
       )}
     </View>
   );

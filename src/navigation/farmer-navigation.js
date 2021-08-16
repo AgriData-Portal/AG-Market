@@ -6,10 +6,10 @@ import {
   Store, //done
   Inbox, //done
   ChatRoom, //done but no modal
-  Orders, //Done
-  FarmerTasks, //done
-  SupplierModalButton,
-  FarmerStore,
+  SellingOrders, //Done
+  SellerTask, //done
+  ShareStoreButton,
+  SupplierStore,
 } from '_scenes';
 import 'react-native-gesture-handler';
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -35,9 +35,10 @@ import {updateChatGroupUsers, createChatGroupUsers} from '../graphql/mutations';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {DetailsModal} from '_scenes/marketplace/scenes/store/components';
+import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -60,11 +61,12 @@ function getHeaderTitle(route) {
   }
 }
 
-function getIcon(route, user) {
+function getIcon(route, user, navigation) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'inbox';
   if (routeName == 'marketplace') {
-    log('test');
-    return <SupplierModalButton user={user}></SupplierModalButton>;
+    return (
+      <ShareStoreButton user={user} navigation={navigation}></ShareStoreButton>
+    );
   } else {
     return null;
   }
@@ -74,6 +76,7 @@ export {FarmerNavigation};
 
 const FarmerNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
+  const userID = userStore(state => state.userID);
   return (
     <AppStack.Navigator
       screenOptions={{
@@ -96,13 +99,19 @@ const FarmerNavigation = props => {
               userType={props.user.role}
             />
           ),
-          headerRight: () => getIcon((route = route), (user = props.user)),
+          headerRight: () =>
+            getIcon(
+              (route = route),
+              (user = props.user),
+              (navigation = navigation),
+            ),
         })}>
         {screenProps => (
           <TabbedNavigator
             {...screenProps}
             user={props.user}
             updateAuthState={props.updateAuthState}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -132,7 +141,7 @@ const FarmerNavigation = props => {
             <HeaderBackButton
               onPress={() => [
                 updateLastSeen(
-                  (userID = props.user.id),
+                  userID,
                   (chatGroupID = route.params.itemID),
                   (navigation = navigation),
                 ),
@@ -157,6 +166,7 @@ const FarmerNavigation = props => {
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </AppStack.Screen>
@@ -366,10 +376,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <Orders
+          <SellingOrders
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -438,10 +449,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <FarmerStore
+          <SupplierStore
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>
@@ -504,10 +516,11 @@ const TabbedNavigator = props => {
           },
         }}>
         {screenProps => (
-          <FarmerTasks
+          <SellerTask
             {...screenProps}
             updateAuthState={props.updateAuthState}
             user={props.user}
+            company={props.company}
           />
         )}
       </TabStack.Screen>

@@ -18,20 +18,22 @@ import {
 } from 'react-native-responsive-screen';
 import {onUpdateChatGroup} from '../../../graphql/subscriptions';
 import {log} from '_utils';
+import {userStore, versionStore} from '_store';
+import {UpdateAppModal} from '_components';
+import Modal from 'react-native-modal';
 
 export const Inbox = props => {
-  //log(props.user.role);
+  const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
   const [chatRooms, setChatRooms] = useState(null);
-  if (props.user.supplierCompanyID != null) {
-    var companyID = props.user.supplierCompanyID;
-    var companyType = 'supplier';
-  } else if (props.user.retailerCompanyID != null) {
-    var companyID = props.user.retailerCompanyID;
-    var companyType = 'retailer';
-  } else {
-    var companyID = props.user.farmerCompanyID;
-    var companyType = 'farmer';
-  }
+  const updateStatus = versionStore(state => state.updateStatus);
+  const [updateModal, setUpdateModal] = useState(false);
+
+  useEffect(() => {
+    if (updateStatus == 'forceUpdate' || updateStatus == 'updateLater') {
+      setUpdateModal(true);
+    }
+  }, [updateStatus]);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -82,6 +84,7 @@ export const Inbox = props => {
           chats.data.getChatGroupsContainingSuppliersByUpdatedAt.items,
         );
       } else {
+        log('imafarmer');
         const chats = await API.graphql({
           query: getChatGroupsContainingFarmersByUpdatedAt,
           variables: {
@@ -90,6 +93,7 @@ export const Inbox = props => {
           },
         });
         log('fetching chats');
+        log(chats.data.getChatGroupsContainingFarmersByUpdatedAt.items);
         setChatRooms(
           chats.data.getChatGroupsContainingFarmersByUpdatedAt.items,
         );
@@ -120,13 +124,11 @@ export const Inbox = props => {
           width: wp('95%'),
           top: hp('0%'),
         }}>
-        <ChatList
-          data={chatRooms}
-          navigation={props.navigation}
-          companyType={companyType}
-          userID={props.user.id}
-        />
+        <ChatList data={chatRooms} navigation={props.navigation} />
       </View>
+      <Modal isVisible={updateModal}>
+        <UpdateAppModal setUpdateModal={setUpdateModal} />
+      </Modal>
     </SafeAreaView>
   );
 };

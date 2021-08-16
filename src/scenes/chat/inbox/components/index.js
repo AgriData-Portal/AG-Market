@@ -16,16 +16,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings, {log} from '_utils';
+import {userStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
 var relativeTime = require('dayjs/plugin/relativeTime');
 dayjs.extend(relativeTime);
-// var utc = require('dayjs/plugin/utc');
-// var timezone = require('dayjs/plugin/timezone'); // dependent on utc plugin
-// dayjs.extend(utc);
-// dayjs.extend(timezone);
-// dayjs.tz.setDefault('Asia/Singapore');
 
 export const Searchbar = props => {
   return (
@@ -55,6 +51,8 @@ export const Searchbar = props => {
 };
 
 export const ChatList = props => {
+  const companyType = userStore(state => state.companyType);
+  const companyID = userStore(state => state.companyID);
   const Seperator = () => {
     return (
       <View
@@ -112,10 +110,16 @@ export const ChatList = props => {
       renderItem={({item}) => {
         var nameArray = item.name.split('+');
         var chatName = null;
-        if (props.companyType == 'supplier') {
-          chatName = nameArray[0];
-        } else {
+        if (companyType == 'supplier') {
+          if (item.id.slice(0, 36) == companyID) {
+            chatName = nameArray[1];
+          } else {
+            chatName = nameArray[0];
+          }
+        } else if (companyType == 'retailer') {
           chatName = nameArray[1];
+        } else if (companyType == 'farmer') {
+          chatName = nameArray[0];
         }
         var senderArray = item.mostRecentMessageSender.split(' ');
         var firstName = senderArray[0];
@@ -128,7 +132,6 @@ export const ChatList = props => {
             chatGroupID={item.id}
             navigation={props.navigation}
             chatParticipants={item.chatParticipants.items}
-            userID={props.userID}
           />
         );
       }}
@@ -137,12 +140,29 @@ export const ChatList = props => {
 };
 
 const ChatRoom = props => {
+  const userID = userStore(state => state.userID);
   const lastUpdated = dayjs(props.updatedAt).add(8, 'hour');
   var listOfParticipants = props.chatParticipants;
 
+  const getInitials = name => {
+    if (name) {
+      let initials = name.split(' ');
+
+      if (initials.length > 1) {
+        initials = initials.shift().charAt(0) + initials.pop().charAt(0);
+      } else {
+        initials = name.substring(0, 2);
+      }
+
+      return initials.toUpperCase();
+    } else {
+      return null;
+    }
+  };
+
   if (listOfParticipants != undefined || listOfParticipants != null) {
     var tempList = listOfParticipants.filter(item => {
-      return item.userID == props.userID;
+      return item.userID == userID;
     });
     if (tempList.length == 0) {
       var lastSeen = dayjs().subtract(1, 'month');
@@ -168,8 +188,8 @@ const ChatRoom = props => {
       }}>
       <View
         style={{
-          width: wp('15%'),
-          height: wp('15%'),
+          width: hp('7%'),
+          height: hp('7%'),
           top: hp('1.5%'),
           left: wp('2%'),
           backgroundColor: Colors.LIGHT_BLUE,
@@ -177,15 +197,30 @@ const ChatRoom = props => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Image
+        <Text>{getInitials(props.chatName)}</Text>
+        {/* <Image
           style={{
             resizeMode: 'center',
             width: wp('15%'),
             height: wp('15%'),
           }}
           source={require('_assets/images/agridata.png')}
-        />
+        /> */}
       </View>
+      {!lastUpdated.from(lastSeen).includes('ago') ? (
+        <View
+          style={{
+            position: 'absolute',
+            width: hp('2%'),
+            height: hp('2%'),
+            backgroundColor: '#8EAB3D',
+            borderRadius: 100,
+            left: hp('6%'),
+            top: hp('2%'),
+          }}></View>
+      ) : (
+        <View></View>
+      )}
       <View style={{left: wp('7%'), top: hp('1.5%'), width: wp('60%')}}>
         <Text style={Typography.normal}>{props.chatName}</Text>
         {props.mostRecentMessage.length > 48 ? (
@@ -220,20 +255,6 @@ const ChatRoom = props => {
           </Text>
         )}
       </View>
-      {!lastUpdated.from(lastSeen).includes('ago') ? (
-        <View
-          style={{
-            position: 'absolute',
-            width: wp('5%'),
-            height: wp('5%'),
-            backgroundColor: Colors.PALE_GREEN,
-            borderRadius: 100,
-            right: wp('7%'),
-            top: hp('5%'),
-          }}></View>
-      ) : (
-        <View></View>
-      )}
     </TouchableOpacity>
   );
 };
