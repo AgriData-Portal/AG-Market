@@ -76,11 +76,11 @@ export const Registration = props => {
   const signUp = async () => {
     try {
       const user = await Auth.signUp({
-        username: '+60' + phone,
+        username: '+6' + phone,
         password: password,
         attributes: {
           email: email,
-          phone_number: '+60' + phone,
+          phone_number: '+6' + phone,
           name: name,
           'custom:role': value,
           'custom:companyName': companyName,
@@ -90,7 +90,7 @@ export const Registration = props => {
         },
       });
       log(user.userSub);
-      props.navigation.navigate('confirmsignup', {phone: '+60' + phone});
+      props.navigation.navigate('confirmsignup', {phone: '+6' + phone});
       return user.userSub;
     } catch (error) {
       if (error.message == 'Invalid phone number format.') {
@@ -536,7 +536,7 @@ const Input = props => {
           width: wp('80%'),
           height: hp('4%'),
         }}>
-        {props.text ? (
+        {/* {props.text ? (
           <View
             style={{
               alignItems: 'center',
@@ -551,10 +551,10 @@ const Input = props => {
                   color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
                 },
               ]}>
-              +60
+              +6
             </Text>
           </View>
-        ) : null}
+        ) : null} */}
         <TextInput
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}

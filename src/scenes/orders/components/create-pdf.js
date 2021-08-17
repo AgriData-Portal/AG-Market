@@ -293,7 +293,7 @@ export const createPDF = async (
           height: 130,
           color: '#C4C4C4',
         })
-        .drawText(items[i].id, {
+        .drawText(items[i].id.slice(0, 6), {
           x: 249,
           y: positionY,
           fontName: 'Poppins-SemiBold',
@@ -417,7 +417,7 @@ export const createPDF = async (
           height: 130,
           color: '#C4C4C4',
         })
-        .drawText(items[i].id, {
+        .drawText(items[i].id.slice(0, 6), {
           x: 249,
           y: positionY2 - 87,
           fontName: 'Poppins-SemiBold',
@@ -498,7 +498,7 @@ export const createPDF = async (
           height: 130,
           color: '#C4C4C4',
         })
-        .drawText(items[i].id, {
+        .drawText(items[i].id.slice(0, 6), {
           x: 249,
           y: positionY2,
           fontName: 'Poppins-SemiBold',
