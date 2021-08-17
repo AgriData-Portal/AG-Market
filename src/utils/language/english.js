@@ -217,4 +217,5 @@ export default {
   sendQuotation: 'Send Quotation',
   sendToVerify: 'Send to Verify',
   thisFeature: 'This Feature is coming soon! Stay tuned!',
+  sentOrderQuotation: 'Order Quotation has been sent to the buyer!',
 };

@@ -21,8 +21,8 @@ import {
 } from 'react-native-responsive-screen';
 import {UpdateAppModal} from './update-modal';
 export {UpdateAppModal};
-
 import DetailsModal from './details-modal';
+
 export const SuccessfulModal = props => {
   return (
     <View
