@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TextInput,
@@ -30,6 +30,8 @@ import {createCSV} from './create-csv';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {userStore} from '_store';
+import ViewShot from 'react-native-view-shot';
+import Share from 'react-native-share';
 
 export const OrderList = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -316,6 +318,40 @@ const Order = props => {
 const InvoiceModal = props => {
   const companyID = userStore(state => state.companyID);
   const companyType = userStore(state => state.companyType);
+  const rAddress = props.retailer.address;
+  const sAddress = props.supplier.address;
+  const [retailerUnit, retailerStreet, retailerCity] = rAddress.split(',');
+  const [supplierUnit, supplierStreet, supplierCity] = sAddress.split(',');
+  const buyerChopref = useRef();
+  const sellerChopref = useRef();
+  async function captureBuyerChop() {
+    const bChop = await buyerChopref.current.capture();
+    // console.log(typeof imageURI);
+    // console.log(imageURI);
+    // const shareOptions = {
+    //   url: imageURI,
+    // };
+    // try {
+    //   const ShareResponse = await Share.open(shareOptions);
+    // } catch (error) {
+    //   log('Error: ', error);
+    // }
+    return bChop;
+  }
+  async function captureSellerChop() {
+    const sChop = await sellerChopref.current.capture();
+    // console.log(typeof imageURI);
+    // console.log(imageURI);
+    // const shareOptions = {
+    //   url: imageURI,
+    // };
+    // try {
+    //   const ShareResponse = await Share.open(shareOptions);
+    // } catch (error) {
+    //   log('Error: ', error);
+    // }
+    return sChop;
+  }
   const Seperator = () => {
     return (
       <View
@@ -364,7 +400,7 @@ const InvoiceModal = props => {
             top: hp('8%'),
           },
         ]}>
-        {dayjs(props.createdAt).format('DD MMMM YYYY')}
+        {dayjs(props.createdAt).format('hh:mm a DD MMMM YYYY')}
       </Text>
       <Text
         style={[
@@ -423,7 +459,7 @@ const InvoiceModal = props => {
         <View
           style={{
             width: wp('90%'),
-            maxHeight: hp('50%'),
+            maxHeight: hp('40%'),
           }}>
           <FlatList
             keyExtractor={item =>
@@ -463,7 +499,174 @@ const InvoiceModal = props => {
           {Strings.total}: RM {props.amount}
         </Text>
       </View>
-
+      <ViewShot
+        ref={buyerChopref}
+        style={{top: hp('200%'), backgroundColor: 'white'}}
+        options={{format: 'png', quality: 0.8}}>
+        <View
+          style={{
+            width: wp('80%'),
+            borderColor: '#0C5E99',
+            borderWidth: 5,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            paddingVertical: hp('1%'),
+          }}>
+          <View
+            style={{
+              width: wp('70%'),
+              borderColor: '#0C5E99',
+              borderWidth: 2,
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Bold',
+                color: '#0C5E99',
+                fontSize: 20,
+                alignSelf: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+              }}>
+              {props.retailer.name}
+            </Text>
+            <View
+              style={{
+                borderBottomWidth: 2,
+                width: wp('60%'),
+                alignSelf: 'center',
+                borderColor: '#0C5E99',
+              }}></View>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: '#0C5E99',
+                fontSize: 8,
+                alignSelf: 'center',
+                textAlign: 'center',
+              }}>
+              {retailerUnit}, {retailerStreet}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: '#0C5E99',
+                fontSize: 8,
+                alignSelf: 'center',
+                textAlign: 'center',
+              }}>
+              {retailerCity}
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Bold',
+                  color: '#0C5E99',
+                  fontSize: 8,
+                }}>
+                Registration No:
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Medium',
+                  color: '#0C5E99',
+                  fontSize: 8,
+                }}>
+                {props.retailer.registrationNumber}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </ViewShot>
+      <ViewShot
+        ref={sellerChopref}
+        style={{top: hp('200%'), backgroundColor: 'white'}}
+        options={{format: 'png', quality: 0.8}}>
+        <View
+          style={{
+            width: wp('80%'),
+            borderColor: '#0C5E99',
+            borderWidth: 5,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            paddingVertical: hp('1%'),
+          }}>
+          <View
+            style={{
+              width: wp('70%'),
+              borderColor: '#0C5E99',
+              borderWidth: 2,
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Bold',
+                color: '#0C5E99',
+                fontSize: 20,
+                alignSelf: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+              }}>
+              {props.supplier.name}
+            </Text>
+            <View
+              style={{
+                borderBottomWidth: 2,
+                width: wp('60%'),
+                alignSelf: 'center',
+                borderColor: '#0C5E99',
+              }}></View>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: '#0C5E99',
+                fontSize: 8,
+                alignSelf: 'center',
+              }}>
+              {supplierUnit}, {supplierStreet}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: '#0C5E99',
+                fontSize: 8,
+                alignSelf: 'center',
+              }}>
+              {supplierCity}
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Bold',
+                  color: '#0C5E99',
+                  fontSize: 8,
+                }}>
+                Registration No:
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Medium',
+                  color: '#0C5E99',
+                  fontSize: 8,
+                }}>
+                {props.supplier.registrationNumber}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </ViewShot>
       <Text
         style={[
           Typography.normal,
@@ -485,7 +688,9 @@ const InvoiceModal = props => {
         offsetCenter={wp('2%')}
         top={hp('70%')}
         left={wp('61%')}
-        onPress={() => {
+        onPress={async () => {
+          const buyerChop = await captureBuyerChop();
+          const sellerChop = await captureSellerChop();
           if (companyType == 'supplier') {
             log('supplier');
             if (props.sellerState == false) {
@@ -497,6 +702,8 @@ const InvoiceModal = props => {
                 (items = props.goods),
                 (amount = props.amount),
                 (receivedBy = props.receivedBy),
+                buyerChop,
+                sellerChop,
               );
             } else {
               createPDF(
@@ -507,6 +714,8 @@ const InvoiceModal = props => {
                 (items = props.goods),
                 (amount = props.amount),
                 (receivedBy = props.receivedBy),
+                buyerChop,
+                sellerChop,
               );
             }
           } else if (companyType == 'retailer') {
@@ -518,6 +727,8 @@ const InvoiceModal = props => {
               (items = props.goods),
               (amount = props.amount),
               (receivedBy = props.receivedBy),
+              buyerChop,
+              sellerChop,
             );
           } else {
             createPDF(
@@ -528,6 +739,8 @@ const InvoiceModal = props => {
               (items = props.goods),
               (amount = props.amount),
               (receivedBy = props.receivedBy),
+              buyerChop,
+              sellerChop,
             );
           }
         }}
