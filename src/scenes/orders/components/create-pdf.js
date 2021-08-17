@@ -41,21 +41,27 @@ export const createPDF = async (
   items,
   amount,
   receivedBy,
-  phototest,
+  buyerChop,
+  sellerChop,
 ) => {
   const rAddress = buyer.address;
   const sAddress = seller.address;
   const [buyerUnit, buyerStreet, buyerCity] = rAddress.split(',');
   const [sellerUnit, sellerStreet, sellerCity] = sAddress.split(',');
-  const base64img = agridataLogo;
-
-  var phototest1;
-  await RNFS.readFile(phototest, 'base64').then(res => {
-    console.log(res);
-    phototest1 = res;
+  var bChop;
+  var sChop;
+  await RNFS.readFile(buyerChop, 'base64').then(res => {
+    bChop = res;
+  });
+  await RNFS.readFile(sellerChop, 'base64').then(res => {
+    sChop = res;
   });
   const logoPath = RNFS.DocumentDirectoryPath + '/logo.png';
-  await RNFS.writeFile(logoPath, phototest1, 'base64');
+  const bChopPath = RNFS.DocumentDirectoryPath + '/buyerChop.png';
+  const sChopPath = RNFS.DocumentDirectoryPath + '/sellerChop.png';
+  await RNFS.writeFile(logoPath, agridataLogo, 'base64');
+  await RNFS.writeFile(bChopPath, bChop, 'base64');
+  await RNFS.writeFile(sChopPath, sChop, 'base64');
   var noProduct = items.length;
   var positionY = 1970;
   var positionY2 = 2900;
@@ -76,37 +82,37 @@ export const createPDF = async (
       fontSize: 100,
     })
     .drawText('Invoice No. ', {
-      x: 1597,
+      x: 1550,
       y: 2453,
       fontName: 'Poppins-SemiBold',
       fontSize: 40,
     })
     .drawText('Invoice Date', {
-      x: 1597,
+      x: 1550,
       y: 2402,
       fontName: 'Poppins-SemiBold',
       fontSize: 40,
     })
     .drawText('Terms', {
-      x: 1597,
+      x: 1550,
       y: 2351,
       fontName: 'Poppins-SemiBold',
       fontSize: 40,
     })
     .drawText(': ' + id, {
-      x: 1971,
+      x: 1900,
       y: 2453,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(': ' + dayjs(createdAt).format('DD MMMM YYYY'), {
-      x: 1971,
+    .drawText(': ' + dayjs(createdAt).format('hh:mm a DD MMMM YYYY'), {
+      x: 1900,
       y: 2402,
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
     .drawText(': COD', {
-      x: 1971,
+      x: 1900,
       y: 2351,
       fontName: 'Poppins-Regular',
       fontSize: 40,
@@ -580,107 +586,11 @@ export const createPDF = async (
         fontName: 'Poppins-SemiBold',
         fontSize: 45,
       })
-      //draw big box top horizontal line
-      .drawRectangle({
-        x: 120,
-        y: 401,
+      .drawImage(bChopPath, 'png', {
+        x: 80,
+        y: 200,
         width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      //draw big box btm horizontal ine
-      .drawRectangle({
-        x: 120,
-        y: 190,
-        width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      // draw big box left vertical line
-      .drawRectangle({
-        x: 120,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw big box right vertical line
-      .drawRectangle({
-        x: 826,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw small box top horizontal line
-      .drawRectangle({
-        x: 144,
-        y: 381,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box bottom horizontal line
-      .drawRectangle({
-        x: 144,
-        y: 210,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box left vertical line
-      .drawRectangle({
-        x: 142,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw small box right vertical line
-      .drawRectangle({
-        x: 813,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw middle line
-      .drawRectangle({
-        x: 168,
-        y: 309,
-        width: 621,
-        height: 2,
-        color: '#0C5E99',
-      })
-      .drawText(buyer.name, {
-        x: 242,
-        y: 318,
-        fontName: 'Poppins-Bold',
-        fontSize: 70,
-      })
-      .drawText(buyerUnit + buyerStreet, {
-        x: 266,
-        y: 274,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText(buyerCity, {
-        x: 338,
-        y: 252,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText('Registration No:', {
-        x: 340,
-        y: 231,
-        fontName: 'Poppins-Bold',
-        fontSize: 19,
-      })
-      .drawText(buyerCity, {
-        x: 505,
-        y: 231,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
+        height: 219,
       })
       .drawText('Delivered by:', {
         x: 1642,
@@ -688,107 +598,11 @@ export const createPDF = async (
         fontName: 'Poppins-SemiBold',
         fontSize: 45,
       })
-      //draw big box top horizontal line
-      .drawRectangle({
-        x: 1642,
-        y: 401,
+      .drawImage(sChopPath, 'png', {
+        x: 1600,
+        y: 200,
         width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      //draw big box btm horizontal ine
-      .drawRectangle({
-        x: 1642,
-        y: 190,
-        width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      // draw big box left vertical line
-      .drawRectangle({
-        x: 1642,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw big box right vertical line
-      .drawRectangle({
-        x: 2348,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw small box top horizontal line
-      .drawRectangle({
-        x: 1666,
-        y: 381,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box bottom horizontal line
-      .drawRectangle({
-        x: 1666,
-        y: 210,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box left vertical line
-      .drawRectangle({
-        x: 1664,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw small box right vertical line
-      .drawRectangle({
-        x: 2335,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw middle line
-      .drawRectangle({
-        x: 1690,
-        y: 309,
-        width: 621,
-        height: 2,
-        color: '#0C5E99',
-      })
-      .drawText(seller.name, {
-        x: 1788,
-        y: 318,
-        fontName: 'Poppins-Bold',
-        fontSize: 70,
-      })
-      .drawText(sellerUnit + sellerStreet, {
-        x: 1812,
-        y: 274,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText(sellerCity, {
-        x: 1884,
-        y: 252,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText('Registration No:', {
-        x: 1886,
-        y: 231,
-        fontName: 'Poppins-Bold',
-        fontSize: 19,
-      })
-      .drawText(seller.registrationNumber, {
-        x: 2051,
-        y: 231,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
+        height: 219,
       });
   } else {
     page2
@@ -810,107 +624,11 @@ export const createPDF = async (
         fontName: 'Poppins-SemiBold',
         fontSize: 45,
       })
-      //draw big box top horizontal line
-      .drawRectangle({
-        x: 120,
-        y: 401,
+      .drawImage(bChopPath, 'png', {
+        x: 80,
+        y: 200,
         width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      //draw big box btm horizontal ine
-      .drawRectangle({
-        x: 120,
-        y: 190,
-        width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      // draw big box left vertical line
-      .drawRectangle({
-        x: 120,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw big box right vertical line
-      .drawRectangle({
-        x: 826,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw small box top horizontal line
-      .drawRectangle({
-        x: 144,
-        y: 381,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box bottom horizontal line
-      .drawRectangle({
-        x: 144,
-        y: 210,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box left vertical line
-      .drawRectangle({
-        x: 142,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw small box right vertical line
-      .drawRectangle({
-        x: 813,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw middle line
-      .drawRectangle({
-        x: 168,
-        y: 309,
-        width: 621,
-        height: 2,
-        color: '#0C5E99',
-      })
-      .drawText(buyer.name, {
-        x: 242,
-        y: 318,
-        fontName: 'Poppins-Bold',
-        fontSize: 70,
-      })
-      .drawText(buyerUnit + buyerStreet, {
-        x: 266,
-        y: 274,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText(buyerCity, {
-        x: 338,
-        y: 252,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText('Registration No:', {
-        x: 340,
-        y: 231,
-        fontName: 'Poppins-Bold',
-        fontSize: 19,
-      })
-      .drawText(buyer.registrationNumber, {
-        x: 505,
-        y: 231,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
+        height: 219,
       })
       .drawText('Delivered by:', {
         x: 1642,
@@ -918,107 +636,11 @@ export const createPDF = async (
         fontName: 'Poppins-SemiBold',
         fontSize: 45,
       })
-      //draw big box top horizontal line
-      .drawRectangle({
-        x: 1642,
-        y: 401,
+      .drawImage(sChopPath, 'png', {
+        x: 1600,
+        y: 200,
         width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      //draw big box btm horizontal ine
-      .drawRectangle({
-        x: 1642,
-        y: 190,
-        width: 718,
-        height: 10,
-        color: '#0C5E99',
-      })
-      // draw big box left vertical line
-      .drawRectangle({
-        x: 1642,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw big box right vertical line
-      .drawRectangle({
-        x: 2348,
-        y: 190,
-        width: 10,
-        height: 211,
-        color: '#0C5E99',
-      })
-      //draw small box top horizontal line
-      .drawRectangle({
-        x: 1666,
-        y: 381,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box bottom horizontal line
-      .drawRectangle({
-        x: 1666,
-        y: 210,
-        width: 674,
-        height: 3,
-        color: '#0C5E99',
-      })
-      //draw small box left vertical line
-      .drawRectangle({
-        x: 1664,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw small box right vertical line
-      .drawRectangle({
-        x: 2335,
-        y: 210,
-        width: 3,
-        height: 178,
-        color: '#0C5E99',
-      })
-      //draw middle line
-      .drawRectangle({
-        x: 1690,
-        y: 309,
-        width: 621,
-        height: 2,
-        color: '#0C5E99',
-      })
-      .drawText(seller.name, {
-        x: 1788,
-        y: 318,
-        fontName: 'Poppins-Bold',
-        fontSize: 70,
-      })
-      .drawText(sellerUnit + sellerStreet, {
-        x: 1812,
-        y: 274,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText(sellerCity, {
-        x: 1884,
-        y: 252,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
-      })
-      .drawText('Registration No:', {
-        x: 1886,
-        y: 231,
-        fontName: 'Poppins-Bold',
-        fontSize: 19,
-      })
-      .drawText(seller.registrationNumber, {
-        x: 2051,
-        y: 231,
-        fontName: 'Poppins-Medium',
-        fontSize: 19,
+        height: 219,
       });
   }
   var filePath = RNFS.DocumentDirectoryPath + '/AG-MarketInvoice' + id + '.pdf';
