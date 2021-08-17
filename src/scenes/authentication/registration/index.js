@@ -50,7 +50,7 @@ export const Registration = props => {
     {label: Strings.supermarket, value: 'supermarket'},
     {label: Strings.farm, value: 'farm'},
   ]);
-  //TRANSLATION
+
   const [createAccountButton, setCreateAccountButton] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
@@ -94,21 +94,16 @@ export const Registration = props => {
       return user.userSub;
     } catch (error) {
       if (error.message == 'Invalid phone number format.') {
-        setErrorText(
-          'Sorry you have entered an invalid phone number. Please try again.',
-        );
+        setErrorText(Strings.invalidPhoneNum);
         setUnsuccessfulModal(true);
       } else if (
         error.message ==
         'An account with the given phone_number already exists.'
       ) {
-        setErrorText(
-          'Sorry an account with the given number already exist. Please contact us for support.',
-        );
+        setErrorText(existingPhoneNum);
         setUnsuccessfulModal(true);
       }
       log('❌ Error signing up...', error);
-      // TRANSLATION for registration
     }
   };
   var hasNumber = /\d/;
@@ -402,27 +397,19 @@ export const Registration = props => {
                     ) {
                       log('error');
                       setUnsuccessfulModal(true);
-                      setErrorText('Please fill in all empty spaces!');
+                      setErrorText(Strings.pleaseFillIn);
                     } else if (!phone.length > 5 || isNaN(phone)) {
                       setUnsuccessfulModal(true);
-                      setErrorText(
-                        'Sorry you have entered an invalid phone number. Please try again.',
-                      );
+                      setErrorText(Strings.invalidPhoneNum);
                     } else if (!email.includes('@')) {
                       setUnsuccessfulModal(true);
-                      setErrorText(
-                        'Sorry you have entered an invalid email address. Please try again.',
-                      );
+                      setErrorText(Strings.invalidEmail);
                     } else if (password.length < 8) {
                       setUnsuccessfulModal(true);
-                      setErrorText(
-                        'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
-                      );
+                      setErrorText(Strings.invalidPassword);
                     } else if (!hasNumber.test(password)) {
                       setUnsuccessfulModal(true);
-                      setErrorText(
-                        'Sorry you have entered an invalid password. Password must contain at least 1 number.',
-                      );
+                      setErrorText(Strings.invalidPassword1);
                     } else {
                       log('succes');
                       signUp();

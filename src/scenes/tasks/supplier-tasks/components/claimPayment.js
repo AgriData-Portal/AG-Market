@@ -442,7 +442,7 @@ const ReceivePaymentModal = props => {
         ]}>
         {Strings.bankName}:
       </Text>
-      {/* TRANSLATION */}
+
       {(companyType == 'supplier' && props.supplier.bankAccount == null) ||
       (companyType == 'farmer' && props.farmer.bankAccount == null) ? (
         <Text
@@ -454,7 +454,7 @@ const ReceivePaymentModal = props => {
               left: wp('40%'),
             },
           ]}>
-          Not Added Yet
+          {Strings.notAddedYet}
         </Text>
       ) : (
         <Text
@@ -482,7 +482,7 @@ const ReceivePaymentModal = props => {
         ]}>
         {Strings.bankDetails}:
       </Text>
-      {/* TRANSLATION */}
+  
       {(companyType == 'supplier' && props.supplier.bankAccount == null) ||
       (companyType == 'farmer' && props.farmer.bankAccount == null) ? (
         <Text
@@ -494,7 +494,7 @@ const ReceivePaymentModal = props => {
               left: wp('40%'),
             },
           ]}>
-          Not Added Yet
+          {Strings.notAddedYet}
         </Text>
       ) : (
         <Text

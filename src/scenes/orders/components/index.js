@@ -588,6 +588,7 @@ const InvoiceItem = props => {
     </View>
   );
 };
+
 export const SortModal = props => {
   return (
     <View

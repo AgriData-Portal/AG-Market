@@ -219,7 +219,7 @@ const UploadReceiptModal = props => {
               left: wp('40%'),
             },
           ]}>
-          Not Added Yet
+          {Strings.notAddedYet}
         </Text>
       ) : (
         <Text
@@ -247,7 +247,7 @@ const UploadReceiptModal = props => {
         ]}>
         {Strings.bankDetails}:
       </Text>
-      {/* TRANSLATION */}
+
       {(companyType == 'retailer' && props.supplier.bankAccount == null) ||
       (companyType == 'supplier' && props.farmer.bankAccount == null) ? (
         <Text
@@ -259,7 +259,7 @@ const UploadReceiptModal = props => {
               left: wp('40%'),
             },
           ]}>
-          Not Added Yet
+          {Strings.notAddedYet}
         </Text>
       ) : (
         <Text

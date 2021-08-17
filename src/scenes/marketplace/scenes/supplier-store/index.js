@@ -54,10 +54,12 @@ export const SupplierStore = props => {
       log("there's a problem");
     }
   };
+
   useEffect(() => {
     fetchProducts();
     log('Refreshing...');
   }, []);
+
   return (
     <SafeAreaView
       style={{
