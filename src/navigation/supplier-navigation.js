@@ -13,6 +13,11 @@ import {
   SellerTask, //done
   BuyerTask, //done
   ShareStoreButton,
+  CompanyProfile,
+  EditCompany,
+  PersonalProfile,
+  EditPersonal,
+  HumanResource,
 } from '_scenes';
 import 'react-native-gesture-handler';
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -26,14 +31,7 @@ import {
   Image,
 } from 'react-native';
 import {Typography} from '_styles';
-import {
-  MenuButton,
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
-} from '_components';
+import {MenuButton} from '_components';
 import Strings from '_utils';
 import {
   widthPercentageToDP as wp,

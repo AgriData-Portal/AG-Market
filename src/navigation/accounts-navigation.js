@@ -5,12 +5,14 @@ import 'react-native-gesture-handler';
 import {
   BuyerOrders, //Done
   BuyerTask, //done
+  PersonalProfile,
+  EditPersonal,
 } from '_scenes';
 
 import {Colors} from '_styles/';
 import {View, Text, Image} from 'react-native';
 import {Typography} from '_styles';
-import {MenuButton, PersonalProfile, EditPersonal} from '_components';
+import {MenuButton} from '_components';
 import Strings from '_utils';
 import {
   widthPercentageToDP as wp,

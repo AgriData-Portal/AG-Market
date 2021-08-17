@@ -10,7 +10,6 @@ export const companyStore = create(set => ({
   changeCompanyType: type => set({companyType: type}),
   changeCompanyName: name => set({companyName: name}),
   changeCompanyID: id => set({companyID: id}),
-
   changeVerified: verify => set({verified: verify}),
   changeCompanyFavouriteStores: store => set({companyFavouriteStores: store}),
 }));
