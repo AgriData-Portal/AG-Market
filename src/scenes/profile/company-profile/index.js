@@ -25,19 +25,32 @@ import {
 } from '../../../graphql/queries';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {companyStore} from '_store';
 
 export {EditCompany};
 
 export const CompanyProfile = props => {
   const [company, setCompany] = useState('');
   const [imageSource, setImageSource] = useState(null);
+  const companyName = companyStore(state => state.companyName);
+  const companyRegistrationNumber = companyStore(
+    state => state.companyRegistrationNumber,
+  );
+  const companyAddress = companyStore(state => state.companyAddress);
+  const companyNumber = companyStore(state => state.companyNumber);
+  const companyEmail = companyStore(state => state.companyEmail);
+  const companyBankDetails = companyStore(state => state.companyBankDetails);
+  const companyBankName = companyStore(state => state.companyBankName);
+  const companyLogoFileName = companyStore(state => state.companyLogoFileName);
+
   useEffect(() => {
     getCompanyProfile();
   }, []);
+
   useEffect(async () => {
-    if (company.logo) {
+    if (companyLogoFileName) {
       try {
-        const imageURL = await Storage.get(company.logo);
+        const imageURL = await Storage.get(companyLogoFileName);
         setImageSource({
           uri: imageURL,
         });
@@ -46,6 +59,7 @@ export const CompanyProfile = props => {
       }
     }
   }, [company]);
+
   const getCompanyProfile = async () => {
     if (props.user.supplierCompanyID != null) {
       try {
@@ -125,7 +139,7 @@ export const CompanyProfile = props => {
             }}
           />
         )}
-        <Text style={[Typography.header, {top: hp('2%')}]}>{company.name}</Text>
+        <Text style={[Typography.header, {top: hp('2%')}]}>{companyName}</Text>
       </View>
       <View
         style={{
@@ -159,7 +173,7 @@ export const CompanyProfile = props => {
               </Text>
               <View>
                 <Text style={[Typography.normal]}>
-                  {company.registrationNumber}
+                  {companyRegistrationNumber}
                 </Text>
               </View>
             </View>
@@ -174,7 +188,7 @@ export const CompanyProfile = props => {
                 {Strings.companyAddress}
               </Text>
               <View>
-                <Text style={[Typography.normal]}>{company.address}</Text>
+                <Text style={[Typography.normal]}>{companyAddress}</Text>
               </View>
             </View>
             <View
@@ -188,10 +202,8 @@ export const CompanyProfile = props => {
                 {Strings.contactNumber}
               </Text>
               <View>
-                {company.contactDetails != null ? (
-                  <Text style={[Typography.normal]}>
-                    {company.contactDetails.phone}
-                  </Text>
+                {companyNumber != null ? (
+                  <Text style={[Typography.normal]}>{companyNumber}</Text>
                 ) : (
                   <Text style={[Typography.normal]}>Not Added Yet</Text>
                 )}
@@ -205,11 +217,10 @@ export const CompanyProfile = props => {
                 marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
               }}>
               <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
+              {/* TRANSLATION */}
               <View>
-                {company.contactDetails != null ? (
-                  <Text style={[Typography.normal]}>
-                    {company.contactDetails.email}
-                  </Text>
+                {companyEmail != null ? (
+                  <Text style={[Typography.normal]}>{companyEmail}</Text>
                 ) : (
                   <Text style={[Typography.normal]}>Not Added Yet</Text>
                 )}
@@ -225,10 +236,8 @@ export const CompanyProfile = props => {
               <Text style={[Typography.placeholderSmall]}>
                 {Strings.bankDetails}
               </Text>
-              {company.bankAccount != null ? (
-                <Text style={[Typography.normal]}>
-                  {company.bankAccount.accountNumber}
-                </Text>
+              {companyBankDetails != null ? (
+                <Text style={[Typography.normal]}>{companyBankDetails}</Text>
               ) : (
                 <Text style={[Typography.normal]}>Not Added Yet</Text>
               )}
@@ -243,10 +252,8 @@ export const CompanyProfile = props => {
               <Text style={[Typography.placeholderSmall]}>
                 {Strings.bankName}
               </Text>
-              {company.bankAccount != null ? (
-                <Text style={[Typography.normal]}>
-                  {company.bankAccount.bankName}
-                </Text>
+              {companyBankName != null ? (
+                <Text style={[Typography.normal]}>{companyBankName}</Text>
               ) : (
                 <Text style={[Typography.normal]}>Not Added Yet</Text>
               )}
@@ -256,30 +263,20 @@ export const CompanyProfile = props => {
       </View>
       <BlueButton
         onPress={() => {
-          if (company.contactDetails && company.bankAccount) {
-            if (imageSource) {
-              props.navigation.navigate('editcompany', {
-                contactNumber: company.contactDetails.phone,
-                email: company.contactDetails.email,
-                bankNumber: company.bankAccount.accountNumber,
-                bankName: company.bankAccount.bankName,
-                logo: imageSource,
-              });
-            } else {
-              props.navigation.navigate('editcompany', {
-                contactNumber: company.contactDetails.phone,
-                email: company.contactDetails.email,
-                bankNumber: company.bankAccount.accountNumber,
-                bankName: company.bankAccount.bankName,
-                logo: null,
-              });
-            }
+          if (imageSource) {
+            props.navigation.navigate('editcompany', {
+              contactNumber: companyNumber,
+              email: companyEmail,
+              bankNumber: companyBankDetails,
+              bankName: companyBankName,
+              logo: imageSource,
+            });
           } else {
             props.navigation.navigate('editcompany', {
-              contactNumber: '',
-              email: '',
-              bankNumber: '',
-              bankName: '',
+              contactNumber: companyNumber,
+              email: companyEmail,
+              bankNumber: companyBankDetails,
+              bankName: companyBankName,
               logo: null,
             });
           }

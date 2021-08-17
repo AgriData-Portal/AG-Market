@@ -9,6 +9,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ImageStore,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BackButton} from '_components/buttons';
@@ -49,6 +50,17 @@ export const EditCompany = props => {
   const companyType = companyStore(state => state.companyType);
   const companyName = companyStore(state => state.companyName);
   const companyID = companyStore(state => state.companyID);
+  const changeCompanyEmail = companyStore(state => state.changeCompanyEmail);
+  const changeCompanyBankDetails = companyStore(
+    state => state.changeCompanyBankDetails,
+  );
+  const changeCompanyBankName = companyStore(
+    state => state.changeCompanyBankName,
+  );
+  const changeCompanyNumber = companyStore(state => state.changeCompanyNumber);
+  const changeCompanyLogoFileName = companyStore(
+    state => state.changeCompanyLogoFileName,
+  );
 
   if (number.includes('+60')) {
     var temp = number.slice(3);
@@ -199,6 +211,11 @@ export const EditCompany = props => {
         setSuccessfulModal(true);
       }
     }
+    changeCompanyBankDetails(bankDetails);
+    changeCompanyBankName(bankName);
+    changeCompanyEmail(email);
+    changeCompanyLogoFileName(imageSource);
+    changeCompanyNumber('+60' + number);
   };
 
   return (
@@ -339,6 +356,7 @@ export const EditCompany = props => {
                   borderBottomWidth: 1,
                   justifyContent: 'center',
                 }}>
+                {/* TRANSLATION */}
                 <Text style={[Typography.placeholderSmall]}>
                   Bank Account Number {/*FIXME translation for bankDetails */}
                 </Text>
