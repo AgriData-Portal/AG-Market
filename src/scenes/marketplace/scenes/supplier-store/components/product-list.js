@@ -34,7 +34,7 @@ import {BlueButton} from '_components';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 const ProductModal = props => {
   const [lowPrice, setLowPrice] = useState(props.lowPrice.toString());
@@ -49,7 +49,7 @@ const ProductModal = props => {
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
 
   const deleteListing = async () => {
     try {

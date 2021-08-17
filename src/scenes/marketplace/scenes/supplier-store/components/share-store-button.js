@@ -26,7 +26,7 @@ import {
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {DetailsModal} from '_components';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 const RetailerList = props => {
   return (
@@ -52,10 +52,10 @@ const RetailerCard = props => {
   const [supermarketButton, setSupermarketButton] = useState(false);
   const [detailsModal, setDetailsModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
   const userName = userStore(state => state.userName);
   const userID = userStore(state => state.userID);
-  const companyName = userStore(state => state.companyName);
+  const companyName = companyStore(state => state.companyName);
 
   const sendStoreDetails = async () => {
     try {
@@ -215,9 +215,9 @@ const ShareStoreButton = props => {
 
 const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
-  const companyType = userStore(state => state.companyType);
-  const companyName = userStore(state => state.companyName);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyName = companyStore(state => state.companyName);
+  const companyID = companyStore(state => state.companyID);
 
   const getAllSupermarkets = async () => {
     try {

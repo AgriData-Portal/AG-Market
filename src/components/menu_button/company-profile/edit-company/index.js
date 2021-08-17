@@ -35,7 +35,7 @@ import {
 } from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(props.route.params.logo);
@@ -46,9 +46,9 @@ export const EditCompany = props => {
   const [bankDetails, setBankDetails] = useState(props.route.params.bankNumber);
   const [bankName, setBankName] = useState(props.route.params.bankName);
   const [errorText, setErrorText] = useState('');
-  const companyType = userStore(state => state.companyType);
-  const companyName = userStore(state => state.companyName);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyName = companyStore(state => state.companyName);
+  const companyID = companyStore(state => state.companyID);
 
   if (number.includes('+60')) {
     var temp = number.slice(3);

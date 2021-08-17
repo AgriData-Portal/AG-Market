@@ -20,13 +20,13 @@ import {
 } from '_graphql/queries';
 
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 const DetailsModal = props => {
   const [companyDetails, setCompanyDetails] = useState([]);
   const [imageSource, setImageSource] = useState(null);
-  const companyType = userStore(state => state.companyType);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
 
   const getStoreDetails = async () => {
     log(props.id);

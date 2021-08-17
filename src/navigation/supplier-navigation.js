@@ -47,7 +47,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -86,7 +86,7 @@ export {SupplierNavigation};
 const SupplierNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [sellerState, setSellerState] = useState(false);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
   return (
     <AppStack.Navigator
       screenOptions={{

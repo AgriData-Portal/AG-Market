@@ -29,12 +29,12 @@ import {createPDF} from './create-pdf';
 import {createCSV} from './create-csv';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const OrderList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
 
   return (
     <View>
@@ -158,7 +158,7 @@ export const OrderList = props => {
 
 const Order = props => {
   const [invoiceModal, setInvoiceModal] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setInvoiceModal(true)}
@@ -314,8 +314,8 @@ const Order = props => {
 };
 
 const InvoiceModal = props => {
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
   const Seperator = () => {
     return (
       <View

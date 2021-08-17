@@ -30,7 +30,7 @@ import {
 import {goodsTaskForFarmerByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -41,7 +41,7 @@ const now = () => {
 
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
   log('send task list render');
   return (
     <View>

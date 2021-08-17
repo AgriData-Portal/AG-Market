@@ -48,7 +48,6 @@ import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 import linking from '../linking';
-import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();

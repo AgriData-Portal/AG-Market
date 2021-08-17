@@ -23,7 +23,7 @@ import {
   getVersion,
 } from 'react-native-device-info';
 
-import {userStore, versionStore} from './store';
+import {userStore, versionStore, companyStore} from './store';
 import {
   GMNavigation,
   RMNavigation,
@@ -105,18 +105,18 @@ const AppNavigator = props => {
   useEffect(() => {
     getSettingsInfo();
   }, []);
-  const changeCompanyName = userStore(state => state.changeCompanyName);
+  const changeCompanyName = companyStore(state => state.changeCompanyName);
   const changeUserName = userStore(state => state.changeUserName);
   const changeUserID = userStore(state => state.changeUserID);
-  const changeCompanyType = userStore(state => state.changeCompanyType);
-  const changeCompanyID = userStore(state => state.changeCompanyID);
+  const changeCompanyType = companyStore(state => state.changeCompanyType);
+  const changeCompanyID = companyStore(state => state.changeCompanyID);
   const changeRoleInCompany = userStore(state => state.changeRoleInCompany);
-  const changeVerified = userStore(state => state.changeVerified);
-  const changeCompanyFavouriteStores = userStore(
+  const changeVerified = companyStore(state => state.changeVerified);
+  const changeCompanyFavouriteStores = companyStore(
     state => state.changeCompanyFavouriteStores,
   );
-  const verified = userStore(state => state.verified);
-  const companyType = userStore(state => state.companyType);
+  const verified = companyStore(state => state.verified);
+  const companyType = companyStore(state => state.companyType);
   const roleInCompany = userStore(state => state.roleInCompany);
 
   log('user:' + props.user);

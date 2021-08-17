@@ -18,13 +18,13 @@ import {
 } from 'react-native-responsive-screen';
 import {onUpdateChatGroup} from '../../../graphql/subscriptions';
 import {log} from '_utils';
-import {userStore, versionStore} from '_store';
+import {versionStore, companyStore} from '_store';
 import {UpdateAppModal} from '_components';
 import Modal from 'react-native-modal';
 
 export const Inbox = props => {
-  const companyType = userStore(state => state.companyType);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
   const [chatRooms, setChatRooms] = useState(null);
   const updateStatus = versionStore(state => state.updateStatus);
   const [updateModal, setUpdateModal] = useState(false);
