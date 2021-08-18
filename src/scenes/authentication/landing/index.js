@@ -25,7 +25,7 @@ export const Landing = props => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      {/* <View style={{position: 'absolute', top: hp('15%')}}>
+      <View style={{position: 'absolute', top: hp('15%')}}>
         <Image
           source={require('_assets/images/agridata.png')}
           style={{
@@ -34,8 +34,8 @@ export const Landing = props => {
             width: wp('50%'),
           }}
         />
-      </View> */}
-      <Text>Testing</Text>
+      </View>
+      {/* <Text>test</Text> */}
       <BlueButton
         onPress={() => props.navigation.navigate('signup')}
         text={Strings.signUp}
