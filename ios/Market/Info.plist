@@ -8,6 +8,8 @@
 	<string>Market</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CodePushDeploymentKey</key>
+	<string>_XOFxdJsKMY7X183iIPS5jOSA0MY5BHOnI-KH</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
