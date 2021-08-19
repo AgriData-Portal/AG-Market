@@ -135,6 +135,8 @@ const AppNavigator = props => {
   const changeCompanyAddress = companyStore(
     state => state.changeCompanyAddress,
   );
+  const changeUserPhoneNumber = userStore(state => state.changeUserPhoneNumber);
+  const changeUserEmail = userStore(state => state.changeUserEmail);
   const verified = companyStore(state => state.verified);
   const companyType = companyStore(state => state.companyType);
   const roleInCompany = userStore(state => state.roleInCompany);
@@ -142,16 +144,16 @@ const AppNavigator = props => {
   log('user:' + props.user);
 
   const type = props.user.role;
-
+  changeUserEmail(props.user.email);
   changeUserID(props.user.id);
   changeUserName(props.user.name);
   changeRoleInCompany(props.user.role);
+  changeUserPhoneNumber(props.user.contactNumber);
   const retailer = props.user.retailerCompany;
   const supplier = props.user.supplierCompany;
   const farmer = props.user.farmerCompany;
-  console.log('retailer ', retailer);
-  console.log('supplier ', supplier);
-  console.log('farmer ', farmer);
+
+  console.log(props.user);
   const company = {type: '', verified: '', role: ''};
   if (retailer != null && retailer.verified == true) {
     log('Retailer Verified\n');
