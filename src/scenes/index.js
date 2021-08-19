@@ -19,6 +19,13 @@ import {
   CreateAccountPopUp,
   ConfirmSignUp,
 } from './authentication';
+import {
+  CompanyProfile,
+  EditCompany,
+  PersonalProfile,
+  EditPersonal,
+  HumanResource,
+} from './profile';
 
 export {
   Marketplace,
@@ -41,4 +48,9 @@ export {
   FarmerStore,
   FarmerTasks,
   SupplierModalButton,
+  CompanyProfile,
+  EditCompany,
+  PersonalProfile,
+  EditPersonal,
+  HumanResource,
 };

@@ -29,7 +29,7 @@ import Strings from '_utils';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {UnsuccessfulModal} from '_components';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 const NewOrderQuotation = props => {
   const userID = userStore(state => state.userID);
@@ -52,7 +52,8 @@ const NewOrderQuotation = props => {
   ]);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const [sendQuoteButton, setSendQuoteButton] = useState(false);
-  const companyType = userStore(state => state.companyType);
+
+  const companyType = companyStore(state => state.companyType);
 
   var productsWIndex = quotationItems;
   productsWIndex.forEach((item, index, arr) => {

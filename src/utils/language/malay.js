@@ -29,8 +29,8 @@ export default {
   purchaseOrder: 'Pembelian',
   inspect: 'Memeriksa',
   purchaseOrderFrom: 'Pembelian untuk',
-  orderQuotation: 'Harga Pesanan',
-  orderQuotationFrom: 'Sebut Harga Pesanan Daripada',
+  orderQuotation: 'Sebut Harga',
+  orderQuotationFrom: 'Sebut Harga Daripada',
   totalCost: 'Jumlah Kos',
   deliveryMethod: 'Kaedah Penghantaran',
   paymentMethod: 'Kaedah Pembayaran',
@@ -188,7 +188,7 @@ export default {
     'Anda tidak mempunyai sebarang mesej. Sila cari peruncit untuk memulakan pembelian.',
   amount: 'Jumlah',
   recieveBefore: 'Terima Sebelum',
-  orderedOn: 'Dipesan pada',
+  orderedOn: 'Tarikh Pesanan',
   recievedPayment:
     'Anda telah menerima pembayaran anda. Tugas pembayaran sekarang akan dipadam. Sila dapatkan invois dalam senarai invois anda.',
   orderCreated: 'Pesanan Dicipta',
@@ -219,4 +219,34 @@ export default {
   sendQuotation: 'Hantar Sebut Harga',
   sendToVerify: 'Hantar Untuk Disahkan',
   thisFeature: 'Fungsi ini akan datang! Sila bersabar.',
+
+  invalidPhoneNum:
+    'Maaf, anda telah masukkan nombor telefon yang tidak sah. Sila cuba lagi.',
+  existingPhoneNum:
+    'Maaf, telefon nombor yang anda masukkan sudah digunakan. Sila hubungi kami untuk bantuan.',
+  invalidEmail:
+    'Maaf, anda telah masukkan emel yang tidak sah. Sila cuba lagi.',
+  invalidPassword: 'Maaf, kata laluan harus mempunyai 8 huruf. Sila cuba lagi.',
+  invalidPassword1:
+    'Maaf, kata laluan harus mempunyai 1 nombor. Sila cuba lagi.',
+  sentOrderQuotation:
+    'Anda telah berjaya menghantar sebut harga kepada pembeli.',
+  inputItemPrice: 'Sila letak harga barang anda.',
+  cash: 'Tunai',
+  notAddedYet: 'Belum Ditambah',
+  updateApp: 'Sila Kemas Kini Aplikasi Anda!!',
+  updateNow: 'Kemas Kini Sekarang',
+  updateLater: 'Kemas Kini Kemudian',
+  sentPOwaitSupplier:
+    'Anda telah berjaya menghantar pesanan pembelian, sila tunggu maklum balas.',
+  noValidInput: 'Pesanan anda tidak lengkap. Sila periksa semula.',
+  purchaseInvoice: 'Pembelian',
+  salesInvoice: 'Penjualan',
+  supermarkets: 'Supermarkets',
+  suppliers: 'Pembekal',
+  ratingsTransactionDone: 'Transaksi berjaya, sila berikan penilaian anda.',
+  submitRating: 'Hantar Penilaian',
+  for: 'untuk',
+  ratingsTransactionDoneRetailer:
+    'Transaksi berjaya, sila berikan penilaian anda.',
 };

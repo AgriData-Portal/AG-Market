@@ -33,12 +33,12 @@ import {
 } from '../../../../graphql/queries';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const ReceivePaymentTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
   return (
     <View>
       <FlatList
@@ -114,7 +114,7 @@ export const ReceivePaymentTaskList = props => {
 
 const ReceivePaymentTask = props => {
   const [receiveTaskModal, setReceiveTaskModal] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setReceiveTaskModal(true)}
@@ -270,7 +270,7 @@ const ReceivePaymentTask = props => {
 
 const ReceivePaymentModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
 
   const receivedPayment = async () => {
     try {
@@ -442,7 +442,7 @@ const ReceivePaymentModal = props => {
         ]}>
         {Strings.bankName}:
       </Text>
-      {/* TRANSLATION */}
+
       {(companyType == 'supplier' && props.supplier.bankAccount == null) ||
       (companyType == 'farmer' && props.farmer.bankAccount == null) ? (
         <Text
@@ -454,7 +454,7 @@ const ReceivePaymentModal = props => {
               left: wp('40%'),
             },
           ]}>
-          Not Added Yet
+          {Strings.notAddedYet}
         </Text>
       ) : (
         <Text
@@ -482,7 +482,7 @@ const ReceivePaymentModal = props => {
         ]}>
         {Strings.bankDetails}:
       </Text>
-      {/* TRANSLATION */}
+  
       {(companyType == 'supplier' && props.supplier.bankAccount == null) ||
       (companyType == 'farmer' && props.farmer.bankAccount == null) ? (
         <Text
@@ -494,7 +494,7 @@ const ReceivePaymentModal = props => {
               left: wp('40%'),
             },
           ]}>
-          Not Added Yet
+          {Strings.notAddedYet}
         </Text>
       ) : (
         <Text

@@ -23,7 +23,7 @@ import {
   paymentsTaskForFarmerByDate,
 } from '../../../graphql/queries';
 import Strings from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 import {log} from '_utils';
 
 export const FarmerTasks = props => {
@@ -33,7 +33,7 @@ export const FarmerTasks = props => {
   const [task, setTask] = useState('send');
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
 
   useEffect(() => {
     if (task == 'send' && sendTask.length == 0) {

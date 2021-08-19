@@ -27,7 +27,7 @@ import Strings from '_utils';
 import {MenuButton} from '_components';
 import {log} from '_utils';
 import {RatingModal} from './components/receive-goods';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 export const BuyerTask = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -35,8 +35,8 @@ export const BuyerTask = props => {
   const [receiveTask, setReceiveTask] = useState([]);
   const [payTask, setPayTask] = useState([]);
   const [trigger, setTrigger] = useState(false);
-  const companyType = userStore(state => state.companyType);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
   const roleInCompany = userStore(state => state.roleInCompany);
 
   useEffect(() => {

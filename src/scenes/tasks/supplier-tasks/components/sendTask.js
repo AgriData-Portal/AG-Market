@@ -37,7 +37,7 @@ import {
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -50,8 +50,8 @@ const now = () => {
 
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
   log('send task list render');
   return (
     <View>
@@ -135,7 +135,7 @@ const SendTask = props => {
 
   const [ratingModal, setRatingModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
 
   return (
     <TouchableOpacity
@@ -290,7 +290,7 @@ const SendTaskModal = props => {
   const [confirmedDate, setConfirmedDate] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
 
   const updateDeliveryDate = async () => {
     try {
@@ -624,7 +624,7 @@ const InvoiceModal = props => {
   const [sum, setSum] = useState(0);
   const [verifyDoubleButton, setVerifyDoubleButton] = useState(false);
   var tempSum = 0;
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   useEffect(() => {
     log(itemList);
     var tempList = itemList.forEach((item, index, array) => {
@@ -721,10 +721,10 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Invoice
+        {Strings.invoice}
         <Text style={[Typography.placeholder, {fontStyle: 'italic'}]}>
           {' '}
-          for {props.trackingNum} {/*TRANSLATION */}
+          {Strings.for} {props.trackingNum}
         </Text>
       </Text>
       <Text
@@ -797,7 +797,7 @@ const InvoiceModal = props => {
                 textAlign: 'right',
               },
             ]}>
-            TOTAL: RM {sum}
+            {Strings.total}: RM {sum}
           </Text>
         </View>
       </View>
@@ -1031,7 +1031,7 @@ const Product = props => {
 
 const RatingModal = props => {
   const [rating, setRating] = useState(2.5);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
 
   const updateRating = async () => {
     try {
@@ -1148,9 +1148,8 @@ const RatingModal = props => {
               marginLeft: wp('5%'),
             },
           ]}>
-          Transaction completed. Please give the retailer a rating.
+          {Strings.ratingsTransactionDoneRetailer}
         </Text>
-        {/* TRANSLATION */}
       </View>
       <View style={{top: hp('4%')}}>
         <Rating

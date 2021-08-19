@@ -1,3 +1,4 @@
 import {userStore} from './user-store';
 import {versionStore} from './version-store';
-export {userStore, versionStore};
+import {companyStore} from './company-store';
+export {userStore, versionStore, companyStore};

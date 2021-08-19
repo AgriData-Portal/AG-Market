@@ -278,6 +278,8 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
+  - react-native-view-shot (3.1.2):
+    - React
   - React-perflogger (0.64.2)
   - React-RCTActionSheet (0.64.2):
     - React-Core/RCTActionSheetHeaders (= 0.64.2)
@@ -347,6 +349,8 @@ PODS:
   - rn-fetch-blob (0.12.0):
     - React-Core
   - RNAWSCognito (5.0.4):
+    - React-Core
+  - RNBootSplash (3.2.4):
     - React-Core
   - RNCAsyncStorage (1.15.5):
     - React-Core
@@ -451,6 +455,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -466,6 +471,7 @@ DEPENDENCIES:
   - ReactNativeLocalization (from `../node_modules/react-native-localization`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
+  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
@@ -544,6 +550,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-view-shot:
+    :path: "../node_modules/react-native-view-shot"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -574,6 +582,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNAWSCognito:
     :path: "../node_modules/amazon-cognito-identity-js"
+  RNBootSplash:
+    :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
@@ -639,6 +649,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: c07b072faa83f3480b473a15ea3c19cc39b3d6fa
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
+  react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
   React-RCTActionSheet: af7796ba49ffe4ca92e7277a5d992d37203f7da5
   React-RCTAnimation: 6a2e76ab50c6f25b428d81b76a5a45351c4d77aa
@@ -654,6 +665,7 @@ SPEC CHECKSUMS:
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAWSCognito: 14872bf41aca1a7f48114e7f4f470c00b45bef4d
+  RNBootSplash: 4844706cbb56a3270556c9b94e59dedadccd47e4
   RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
   RNCMaskedView: b7a3b119b1d738734a9d761e4220c6850bb248a3
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191

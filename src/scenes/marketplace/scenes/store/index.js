@@ -24,7 +24,7 @@ import {
 } from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid
@@ -33,9 +33,9 @@ export const Store = props => {
   const [storeName, setStoreName] = useState('');
   const [trigger, setTrigger] = useState(false);
 
-  const companyType = userStore(state => state.companyType);
-  const companyID = userStore(state => state.companyID);
-  const companyFavouriteStores = userStore(
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyFavouriteStores = companyStore(
     state => state.companyFavouriteStores,
   );
 
@@ -44,12 +44,13 @@ export const Store = props => {
 
   log('purchase Order:' + purchaseOrder);
   const [isFavourite, setIsFavourite] = useState(false);
+
   useEffect(() => {
     log('Fetching Products from ' + itemId);
     fetchProducts();
     log('Fetching PO from ' + purchaseOrder);
     getPOList();
-  }, []);
+  }, [itemId]);
 
   const getPOList = async () => {
     log('gettingPO');

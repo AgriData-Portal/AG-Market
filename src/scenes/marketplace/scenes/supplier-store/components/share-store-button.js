@@ -26,7 +26,8 @@ import {
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {DetailsModal} from '_components';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
+import Strings from '_utils';
 
 const RetailerList = props => {
   return (
@@ -52,10 +53,10 @@ const RetailerCard = props => {
   const [supermarketButton, setSupermarketButton] = useState(false);
   const [detailsModal, setDetailsModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
   const userName = userStore(state => state.userName);
   const userID = userStore(state => state.userID);
-  const companyName = userStore(state => state.companyName);
+  const companyName = companyStore(state => state.companyName);
 
   const sendStoreDetails = async () => {
     try {
@@ -215,9 +216,9 @@ const ShareStoreButton = props => {
 
 const RetailerModal = props => {
   const [supermarkets, setSupermarkets] = useState([]);
-  const companyType = userStore(state => state.companyType);
-  const companyName = userStore(state => state.companyName);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyName = companyStore(state => state.companyName);
+  const companyID = companyStore(state => state.companyID);
 
   const getAllSupermarkets = async () => {
     try {
@@ -267,14 +268,17 @@ const RetailerModal = props => {
         alignSelf: 'center',
         borderRadius: 10,
       }}>
-      {/* TRANSLATION */}
       <View
         style={{
           alignItems: 'center',
           justifyContent: 'center',
           marginTop: hp('2%'),
         }}>
-        <Text style={[Typography.large]}>Supermarkets</Text>
+        {companyType == 'supplier' ? (
+          <Text style={[Typography.large]}>{Strings.supermarkets}</Text>
+        ) : (
+          <Text style={[Typography.large]}>{Strings.suppliers}</Text>
+        )}
       </View>
       <View style={{height: hp('65%'), top: hp('3%')}}>
         <RetailerList
@@ -285,8 +289,9 @@ const RetailerModal = props => {
       </View>
       <BlueButton
         onPress={() => shareStore()}
-        top={hp('3%')}
+        top={hp('2%')}
         text={'Share to WhatsApp'}
+        borderRadius={10}
       />
     </View>
   );

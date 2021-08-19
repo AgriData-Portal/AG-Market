@@ -31,7 +31,7 @@ import Strings from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -39,9 +39,9 @@ export const OrderQuotationModal = props => {
   const [unsuccesfulModal, setUnsuccesfulModal] = useState(false);
   const [acceptButton, setAcceptButton] = useState(false);
   const [declineButton, setDeclineButton] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   const userID = userStore(state => state.userID);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
   const userName = userStore(state => state.userName);
   useEffect(() => {
     fetchQuotation();

@@ -41,14 +41,14 @@ import {
 import {Rating} from 'react-native-ratings';
 import {log} from '_utils';
 import {BlueButton} from '_components';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 //Retailer receive
 const ReceiveModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [ratingModal, setRatingModal] = useState(false);
   const userName = userStore(state => state.userName);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
 
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
@@ -469,7 +469,7 @@ const ReceiveModal = props => {
 
 const Receive = props => {
   const [receiveModal, setReceiveModal] = useState(false);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   return (
     <TouchableOpacity
       onPress={() => setReceiveModal(true)}
@@ -600,8 +600,8 @@ const Receive = props => {
 export const ReceiveList = props => {
   const [refreshing, setRefreshing] = useState(false);
   log('render flatlist');
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
   return (
     <View>
       <FlatList
@@ -799,7 +799,7 @@ const Product = props => {
 
 export const RatingModal = props => {
   const [rating, setRating] = useState(2.5);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   const updateRating = async () => {
     try {
       if (companyType == 'retailer') {
@@ -886,9 +886,8 @@ export const RatingModal = props => {
             Typography.large,
             {textAlign: 'center', top: hp('5%'), marginHorizontal: wp('5%')},
           ]}>
-          Transaction completed. Please give the supplier a rating.
+          {Strings.ratingsTransactionDone}
         </Text>
-        {/* TRANSLATION ratingsmodal*/}
       </View>
       <View style={{top: hp('5%')}}>
         <Rating

@@ -208,7 +208,7 @@ export default {
   successfullyUploaded: 'You have uploaded your payment receipt',
   logisticsProvided: 'Logistics Provided',
   paymentTerms: 'Payment Terms',
-  creditTerm: 'Credit Terms',
+  creditTerm: 'Credit Term',
   sendQuotationToRetailer: 'Send Quotation To Retailer',
   edit: 'Edit',
   bankName: 'Bank Name',
@@ -217,5 +217,36 @@ export default {
   sendQuotation: 'Send Quotation',
   sendToVerify: 'Send to Verify',
   thisFeature: 'This Feature is coming soon! Stay tuned!',
-  sentOrderQuotation: 'Order Quotation has been sent to the buyer!',
+  invalidPhoneNum:
+    'Sorry you have entered an invalid phone number. Please try again.',
+  existingPhoneNum:
+    'Sorry an account with the given number already exist. Please contact us for support.',
+  invalidEmail:
+    'Sorry you have entered an invalid email address. Please try again.',
+  invalidPassword:
+    'Sorry you have entered an invalid password. Password must contain at least 8 characters.',
+  invalidPassword1:
+    'Sorry you have entered an invalid password. Password must contain at least 1 number.',
+  sentOrderQuotation:
+    'You have successfully sent the order quotation to the customer!',
+  inputItemPrice: 'Please input the price for your items',
+  cash: 'Cash',
+  notAddedYet: 'Not Added Yet',
+  updateApp: 'Please Update The App to Continue Usage!!',
+  updateNow: 'Update Now',
+  updateLater: 'Update Later',
+  sentPOwaitSupplier:
+    'You have successfully sent your purchase order, wait for the supplier to get back',
+  noValidInput:
+    'One or more of your orders does not have a valid input. Please check and try again',
+  purchaseInvoice: 'Purchase Invoice',
+  salesInvoice: 'Sales Invoice',
+  supermarkets: 'Supermarkets',
+  suppliers: 'Suppliers',
+  ratingsTransactionDone:
+    'Transaction completed. Please give the supplier a rating.',
+  submitRating: 'Submit rating',
+  for: 'for',
+  ratingsTransactionDoneRetailer:
+    'Transaction completed. Please give the retailer a rating.',
 };

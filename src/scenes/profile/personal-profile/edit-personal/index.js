@@ -30,15 +30,21 @@ import Strings from '_utils';
 import {updateUser} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {userStore} from '_store';
 
 export const EditPersonal = props => {
+  const userName = userStore(state => state.userName);
+  const userEmail = userStore(state => state.userEmail);
+  const userID = userStore(state => state.userID);
   const [imageSource, setImageSource] = useState(null);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
-  const [name, setName] = useState(props.user.name);
-  const [email, setEmail] = useState(props.user.email);
+  const [name, setName] = useState(userName);
+  const [email, setEmail] = useState(userEmail);
   const [number, setNumber] = useState(props.user.contactNumber);
   const [errorText, setErrorText] = useState('');
+  const changeUserName = userStore(state => state.changeUserName);
+  const changeUserEmail = userStore(state => state.changeUserEmail);
 
   function selectImage() {
     let options = {
@@ -70,14 +76,15 @@ export const EditPersonal = props => {
         query: updateUser,
         variables: {
           input: {
-            id: props.user.id,
+            id: userID,
             name: name,
             email: email,
           },
         },
       });
       log('success');
-
+      changeUserName(name);
+      changeUserEmail(email);
       setSuccessfulModal(true);
     } catch (e) {
       log(e);

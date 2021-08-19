@@ -9,6 +9,11 @@ import {
   ChatRoom, //done but no modal
   BuyingOrders, //Done
   BuyerTask, //done
+  CompanyProfile,
+  EditCompany,
+  PersonalProfile,
+  EditPersonal,
+  HumanResource,
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -23,14 +28,7 @@ import {
   Platform,
 } from 'react-native';
 import {Typography} from '_styles';
-import {
-  MenuButton,
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
-} from '_components';
+import {MenuButton} from '_components';
 import Strings from '_utils';
 import {
   widthPercentageToDP as wp,
@@ -48,7 +46,6 @@ import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 import linking from '../linking';
-import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -74,6 +71,7 @@ function getHeaderTitle(route) {
 const GMNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
+  const [movement, setMovement] = useState(false);
   const updateFavourites = async (userDetails, itemId, store) => {
     try {
       log(userDetails, itemId, store);
@@ -164,10 +162,13 @@ const GMNavigation = props => {
           headerTitle: () => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('store', {
-                  itemId: route.params.itemID.slice(36, 72),
-                  storeName: route.params.chatName,
-                });
+                [
+                  navigation.navigate('store', {
+                    itemId: route.params.itemID.slice(36, 72),
+                    storeName: route.params.chatName,
+                  }),
+                  setMovement(true),
+                ];
               }}>
               <Text style={[Typography.large]}>{route.params.chatName}</Text>
             </TouchableOpacity>
@@ -194,7 +195,19 @@ const GMNavigation = props => {
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton
-              onPress={() => [navigation.goBack(), setIsFavourite(false)]}
+              onPress={() =>
+                movement
+                  ? [
+                      navigation.goBack(),
+                      setIsFavourite(false),
+                      setMovement(false),
+                    ]
+                  : [
+                      navigation.navigate('marketplace'),
+                      setIsFavourite(false),
+                      setMovement(false),
+                    ]
+              }
             />
           ),
           headerTitle: () => (

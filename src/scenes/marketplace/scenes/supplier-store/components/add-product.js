@@ -46,12 +46,12 @@ import {listSupplierCompanys} from '../../../../../graphql/queries';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
 import {DetailsModal} from '_components';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 const AddItemModal = props => {
-  const companyID = userStore(state => state.companyID);
-  const companyName = userStore(state => state.companyName);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyName = companyStore(state => state.companyName);
+  const companyType = companyStore(state => state.companyType);
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState('kg');
   const [items2, setItems2] = useState([

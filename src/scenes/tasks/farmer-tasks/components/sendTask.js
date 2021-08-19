@@ -30,7 +30,7 @@ import {
 import {goodsTaskForFarmerByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -41,7 +41,7 @@ const now = () => {
 
 export const SendTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
   log('send task list render');
   return (
     <View>
@@ -1006,9 +1006,8 @@ const RatingModal = props => {
               marginLeft: wp('5%'),
             },
           ]}>
-          Transaction completed. Please give the supplier a rating.
+          {Strings.ratingsTransactionDone}
         </Text>
-        {/* TRANSLATION */}
       </View>
       <View style={{top: hp('4%')}}>
         <Rating
@@ -1042,7 +1041,7 @@ const RatingModal = props => {
           shadowOpacity: 0.22,
           shadowRadius: 2.22,
         }}>
-        <Text style={[Typography.normal, {}]}>Submit rating</Text>
+        <Text style={[Typography.normal, {}]}>{Strings.submitRating}</Text>
       </TouchableOpacity>
     </View>
   );

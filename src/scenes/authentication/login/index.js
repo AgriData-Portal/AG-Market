@@ -40,7 +40,7 @@ export const Login = props => {
   const signIn = async () => {
     try {
       setLoading(true);
-      const user = await Auth.signIn('+60' + phone, password);
+      const user = await Auth.signIn('+6' + phone, password);
       log(user);
       log('Successful sign in');
       props.updateUserID(user.username);
@@ -133,7 +133,6 @@ export const Login = props => {
             }}>
             <Text style={[Typography.placeholder]}>{Strings.phoneNumber}</Text>
             <View style={{flexDirection: 'row'}}>
-              <Text style={{alignSelf: 'center'}}>+60</Text>
               <TextInput
                 keyboardType={'phone-pad'}
                 placeholderTextColor={Colors.GRAY_DARK}
@@ -344,7 +343,7 @@ const VerificationModal = props => {
           onPress={() => [
             props.setVerified(false),
             props.navigation.navigate('confirmsignup', {
-              phone: '+60' + props.phone,
+              phone: '+6' + props.phone,
             }),
           ]}
           style={{

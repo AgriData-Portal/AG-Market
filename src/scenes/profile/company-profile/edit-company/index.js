@@ -9,6 +9,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ImageStore,
 } from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BackButton} from '_components/buttons';
@@ -35,7 +36,7 @@ import {
 } from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(props.route.params.logo);
@@ -46,11 +47,22 @@ export const EditCompany = props => {
   const [bankDetails, setBankDetails] = useState(props.route.params.bankNumber);
   const [bankName, setBankName] = useState(props.route.params.bankName);
   const [errorText, setErrorText] = useState('');
-  const companyType = userStore(state => state.companyType);
-  const companyName = userStore(state => state.companyName);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyName = companyStore(state => state.companyName);
+  const companyID = companyStore(state => state.companyID);
+  const changeCompanyEmail = companyStore(state => state.changeCompanyEmail);
+  const changeCompanyBankDetails = companyStore(
+    state => state.changeCompanyBankDetails,
+  );
+  const changeCompanyBankName = companyStore(
+    state => state.changeCompanyBankName,
+  );
+  const changeCompanyNumber = companyStore(state => state.changeCompanyNumber);
+  const changeCompanyLogoFileName = companyStore(
+    state => state.changeCompanyLogoFileName,
+  );
 
-  if (number.includes('+60')) {
+  if (number.includes('+6')) {
     var temp = number.slice(3);
     setNumber(temp);
   }
@@ -112,7 +124,7 @@ export const EditCompany = props => {
             input: {
               id: companyID,
               logo: imageSource == null ? null : photo.fileName,
-              contactDetails: {email: email, phone: '+60' + number},
+              contactDetails: {email: email, phone: '+6' + number},
               bankAccount: {
                 bankName: bankName,
                 accountNumber: bankDetails,
@@ -147,7 +159,7 @@ export const EditCompany = props => {
             input: {
               id: companyID,
               logo: imageSource == null ? null : photo.fileName,
-              contactDetails: {email: email, phone: '+60' + number},
+              contactDetails: {email: email, phone: '+6' + number},
               bankAccount: {
                 bankName: bankName,
                 accountNumber: bankDetails,
@@ -183,7 +195,7 @@ export const EditCompany = props => {
             input: {
               id: companyID,
               logo: imageSource == null ? null : photo.fileName,
-              contactDetails: {email: email, phone: '+60' + number},
+              contactDetails: {email: email, phone: '+6' + number},
               bankAccount: {
                 bankName: bankName,
                 accountNumber: bankDetails,
@@ -199,6 +211,11 @@ export const EditCompany = props => {
         setSuccessfulModal(true);
       }
     }
+    changeCompanyBankDetails(bankDetails);
+    changeCompanyBankName(bankName);
+    changeCompanyEmail(email);
+    changeCompanyLogoFileName(imageSource);
+    changeCompanyNumber('+60' + number);
   };
 
   return (
@@ -291,7 +308,6 @@ export const EditCompany = props => {
                     alignItems: 'center',
                     height: hp('6%'),
                   }}>
-                  <Text>+60</Text>
                   <TextInput
                     underlineColorAndroid="transparent"
                     value={number}
@@ -339,6 +355,7 @@ export const EditCompany = props => {
                   borderBottomWidth: 1,
                   justifyContent: 'center',
                 }}>
+                {/* TRANSLATION */}
                 <Text style={[Typography.placeholderSmall]}>
                   Bank Account Number {/*FIXME translation for bankDetails */}
                 </Text>
