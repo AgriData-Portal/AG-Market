@@ -1,0 +1,31 @@
+import create from 'zustand';
+
+export const companyStore = create(set => ({
+  companyName: '',
+  companyType: '',
+  companyID: '',
+  verified: false,
+  companyFavouriteStores: [],
+  companyEmail: '',
+  companyBankDetails: '',
+  companyBankName: '',
+  companyNumber: '',
+  companyLogoFileName: '',
+  companyRatings: 0,
+  companyRegistrationNumber: '',
+  companyAddress: '',
+
+  changeCompanyType: type => set({companyType: type}),
+  changeCompanyName: name => set({companyName: name}),
+  changeCompanyID: id => set({companyID: id}),
+  changeVerified: verify => set({verified: verify}),
+  changeCompanyFavouriteStores: store => set({companyFavouriteStores: store}),
+  changeCompanyEmail: email => set({companyEmail: email}),
+  changeCompanyBankDetails: details => set({companyBankDetails: details}),
+  changeCompanyBankName: name => set({companyBankName: name}),
+  changeCompanyNumber: num => set({companyNumber: num}),
+  changeCompanyLogoFileName: name => set({companyLogoFileName: name}),
+  changeCompanyRatings: rating => set({companyRatings: rating}),
+  changeCompanyRegistrationNumber: num => set({companyRegistrationNumber: num}),
+  changeCompanyAddress: address => set({companyAddress: address}),
+}));

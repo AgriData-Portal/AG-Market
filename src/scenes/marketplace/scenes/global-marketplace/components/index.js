@@ -25,7 +25,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 export const ProductCard = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -102,7 +102,7 @@ export const ProductCard = props => {
 };
 
 export const MarketplaceList = props => {
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   const OpenWhatsapp = () => {
     let url =
       'https://wa.me/601165691998?text=Hi%20I%20am%20interested%20to%20purchase%20' +
@@ -195,8 +195,8 @@ export const MarketplaceList = props => {
 
 export const ProductPopUp = props => {
   const userName = userStore(state => state.userName);
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
   const userID = userStore(state => state.userID);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const sendProductInquiry = async () => {

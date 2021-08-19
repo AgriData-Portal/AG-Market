@@ -24,7 +24,7 @@ import {
   getVersion,
 } from 'react-native-device-info';
 
-import {userStore, versionStore} from './store';
+import {userStore, versionStore, companyStore} from './store';
 import {
   GMNavigation,
   RMNavigation,
@@ -106,29 +106,55 @@ const AppNavigator = props => {
   useEffect(() => {
     getSettingsInfo();
   }, []);
-  const changeCompanyName = userStore(state => state.changeCompanyName);
+  const changeCompanyName = companyStore(state => state.changeCompanyName);
   const changeUserName = userStore(state => state.changeUserName);
   const changeUserID = userStore(state => state.changeUserID);
-  const changeCompanyType = userStore(state => state.changeCompanyType);
-  const changeCompanyID = userStore(state => state.changeCompanyID);
+  const changeCompanyType = companyStore(state => state.changeCompanyType);
+  const changeCompanyID = companyStore(state => state.changeCompanyID);
   const changeRoleInCompany = userStore(state => state.changeRoleInCompany);
-  const changeVerified = userStore(state => state.changeVerified);
-  const changeCompanyFavouriteStores = userStore(
+  const changeVerified = companyStore(state => state.changeVerified);
+  const changeCompanyFavouriteStores = companyStore(
     state => state.changeCompanyFavouriteStores,
   );
-  const verified = userStore(state => state.verified);
-  const companyType = userStore(state => state.companyType);
+  const changeCompanyEmail = companyStore(state => state.changeCompanyEmail);
+  const changeCompanyBankDetails = companyStore(
+    state => state.changeCompanyBankDetails,
+  );
+  const changeCompanyBankName = companyStore(
+    state => state.changeCompanyBankName,
+  );
+  const changeCompanyNumber = companyStore(state => state.changeCompanyNumber);
+  const changeCompanyLogoFileName = companyStore(
+    state => state.changeCompanyLogoFileName,
+  );
+  const changeCompanyRatings = companyStore(
+    state => state.changeCompanyRatings,
+  );
+  const changeCompanyRegistrationNumber = companyStore(
+    state => state.changeCompanyRegistrationNumber,
+  );
+  const changeCompanyAddress = companyStore(
+    state => state.changeCompanyAddress,
+  );
+  const changeUserPhoneNumber = userStore(state => state.changeUserPhoneNumber);
+  const changeUserEmail = userStore(state => state.changeUserEmail);
+  const verified = companyStore(state => state.verified);
+  const companyType = companyStore(state => state.companyType);
   const roleInCompany = userStore(state => state.roleInCompany);
 
   log('user:' + props.user);
 
   const type = props.user.role;
+  changeUserEmail(props.user.email);
   changeUserID(props.user.id);
   changeUserName(props.user.name);
   changeRoleInCompany(props.user.role);
+  changeUserPhoneNumber(props.user.contactNumber);
   const retailer = props.user.retailerCompany;
   const supplier = props.user.supplierCompany;
   const farmer = props.user.farmerCompany;
+
+  console.log(props.user);
   const company = {type: '', verified: '', role: ''};
   if (retailer != null && retailer.verified == true) {
     log('Retailer Verified\n');
@@ -137,6 +163,18 @@ const AppNavigator = props => {
     changeCompanyID(props.user.retailerCompanyID);
     changeCompanyName(props.user.retailerCompany.name);
     changeCompanyFavouriteStores(props.user.retailerCompany.favouriteStores);
+    changeCompanyEmail(props.user.retailerCompany.contactDetails.email);
+    changeCompanyNumber(props.user.retailerCompany.contactDetails.phone);
+    changeCompanyBankDetails(
+      props.user.retailerCompany.bankAccount.accountNumber,
+    );
+    changeCompanyBankName(props.user.retailerCompany.bankAccount.bankName);
+    changeCompanyLogoFileName(props.user.retailerCompany.logo);
+    changeCompanyRatings(props.user.retailerCompany.rating);
+    changeCompanyRegistrationNumber(
+      props.user.retailerCompany.registrationNumber,
+    );
+    changeCompanyAddress(props.user.retailerCompany.address);
   } else if (retailer != null && retailer.verified == undefined) {
     log('Retailer Not Verified\n');
     changeCompanyType('retailer');
@@ -150,6 +188,18 @@ const AppNavigator = props => {
     changeCompanyID(props.user.supplierCompanyID);
     changeCompanyName(props.user.supplierCompany.name);
     changeCompanyFavouriteStores(props.user.supplierCompany.favouriteStores);
+    changeCompanyEmail(props.user.supplierCompany.contactDetails.email);
+    changeCompanyNumber(props.user.supplierCompany.contactDetails.phone);
+    changeCompanyBankDetails(
+      props.user.supplierCompany.bankAccount.accountNumber,
+    );
+    changeCompanyBankName(props.user.supplierCompany.bankAccount.bankName);
+    changeCompanyLogoFileName(props.user.supplierCompany.logo);
+    changeCompanyRatings(props.user.supplierCompany.rating);
+    changeCompanyRegistrationNumber(
+      props.user.supplierCompany.registrationNumber,
+    );
+    changeCompanyAddress(props.user.supplierCompany.address);
   } else if (supplier != null && supplier.verified == undefined) {
     log('Supplier Not Verified\n');
     changeCompanyType('supplier');
@@ -162,6 +212,18 @@ const AppNavigator = props => {
     changeVerified(true);
     changeCompanyID(props.user.farmerCompanyID);
     changeCompanyName(props.user.farmerCompany.name);
+    changeCompanyEmail(props.user.farmerCompany.contactDetails.email);
+    changeCompanyNumber(props.user.farmerCompany.contactDetails.phone);
+    changeCompanyBankDetails(
+      props.user.farmerCompany.bankAccount.accountNumber,
+    );
+    changeCompanyBankName(props.user.farmerCompany.bankAccount.bankName);
+    changeCompanyLogoFileName(props.user.farmerCompany.logo);
+    changeCompanyRatings(props.user.farmerCompany.rating);
+    changeCompanyRegistrationNumber(
+      props.user.farmerCompany.registrationNumber,
+    );
+    changeCompanyAddress(props.user.farmerCompany.address);
   } else if (farmer != null && farmer.verified == undefined) {
     log('Farmer Not Verified\n');
     changeCompanyType('farmer');

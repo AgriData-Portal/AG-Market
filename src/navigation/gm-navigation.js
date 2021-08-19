@@ -9,6 +9,11 @@ import {
   ChatRoom, //done but no modal
   BuyingOrders, //Done
   BuyerTask, //done
+  CompanyProfile,
+  EditCompany,
+  PersonalProfile,
+  EditPersonal,
+  HumanResource,
 } from '_scenes';
 
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -23,14 +28,7 @@ import {
   Platform,
 } from 'react-native';
 import {Typography} from '_styles';
-import {
-  MenuButton,
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
-} from '_components';
+import {MenuButton} from '_components';
 import Strings from '_utils';
 import {
   widthPercentageToDP as wp,
@@ -48,7 +46,6 @@ import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 import linking from '../linking';
-import {userStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();

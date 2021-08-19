@@ -25,7 +25,7 @@ import {
 } from '../../../graphql/queries';
 import Strings from '_utils';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const SellerTask = props => {
   const [sendTask, setSendTask] = useState([]);
@@ -34,8 +34,8 @@ export const SellerTask = props => {
   const [task, setTask] = useState('send');
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
 
   useEffect(() => {
     if (task == 'send' && sendTask.length == 0) {

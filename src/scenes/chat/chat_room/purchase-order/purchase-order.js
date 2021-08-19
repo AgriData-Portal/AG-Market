@@ -17,13 +17,12 @@ import {
 import Strings from '_utils';
 import {BlueButton} from '_components';
 import NewOrderQuotation from './new-quotation';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const PurchaseOrder = props => {
   const [orderQuotation, setOrderQuotation] = useState(false);
-  const companyType = userStore(state => state.companyType);
-
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
   return (
     <QuotationItemsProvider>
       <View

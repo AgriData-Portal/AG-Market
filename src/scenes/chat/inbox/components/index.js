@@ -16,7 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings, {log} from '_utils';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -51,8 +51,8 @@ export const Searchbar = props => {
 };
 
 export const ChatList = props => {
-  const companyType = userStore(state => state.companyType);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
   const Seperator = () => {
     return (
       <View

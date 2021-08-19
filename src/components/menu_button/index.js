@@ -22,20 +22,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
-import {CompanyProfile, EditCompany} from './company-profile';
-import {PersonalProfile, EditPersonal} from './personal-profile';
-import {HumanResource} from './human-resource';
 import {log} from '_utils';
 import SwitchToggle from 'react-native-switch-toggle';
 import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
-
-export {
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
-};
 
 export const MenuButton = props => {
   const [menuButtonModal, setMenuButtonModal] = useState(false);

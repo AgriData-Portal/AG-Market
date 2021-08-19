@@ -47,7 +47,7 @@ import {
 } from '../../../../../graphql/queries';
 
 import {log} from '_utils';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -189,9 +189,9 @@ const ProductPopUp = props => {
   const [addPO, setAddPO] = useState(false);
   const [productInquire, setProductInquire] = useState(false);
 
-  const companyName = userStore(state => state.companyName);
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyName = companyStore(state => state.companyName);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
 
   const userName = userStore(state => state.userName);
   const userID = userStore(state => state.userID);
@@ -570,9 +570,9 @@ const PurchaseOrder = props => {
   const [poUnsuccessfulModal, setpoUnsuccessfulModal] = useState(false);
   const [sendPOButton, setSendPOButton] = useState(false);
   const userName = userStore(state => state.userName);
-  const companyType = userStore(state => state.companyType);
-  const companyName = userStore(state => state.companyName);
-  const companyID = userStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
+  const companyName = companyStore(state => state.companyName);
+  const companyID = companyStore(state => state.companyID);
   const userID = userStore(state => state.userID);
 
   log('PO \n \n \n');

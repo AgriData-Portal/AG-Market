@@ -14,14 +14,14 @@ import {
 import Strings from '_utils';
 import {MenuButton} from '_components';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 export const SupplierStore = props => {
   const [productList, setProducts] = useState([]);
   const [trigger, setTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyType = companyStore(state => state.companyType);
 
   const fetchProducts = async () => {
     try {

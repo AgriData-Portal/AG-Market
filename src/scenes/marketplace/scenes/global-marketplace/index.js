@@ -26,7 +26,7 @@ import Modal from 'react-native-modal';
 
 import {log} from '_utils';
 import {CompanyProfile} from '_components';
-import {userStore} from '_store';
+import {userStore, companyStore} from '_store';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -36,8 +36,8 @@ export const Marketplace = props => {
   const [searchPressed, setSearchPressed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchable, setSearchable] = useState([]);
-  const companyType = userStore(state => state.companyType);
-  const companyFavouriteStores = userStore(
+  const companyType = companyStore(state => state.companyType);
+  const companyFavouriteStores = companyStore(
     state => state.companyFavouriteStores,
   );
 

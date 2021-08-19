@@ -13,6 +13,11 @@ import {
   SellerTask, //done
   BuyerTask, //done
   ShareStoreButton,
+  CompanyProfile,
+  EditCompany,
+  PersonalProfile,
+  EditPersonal,
+  HumanResource,
 } from '_scenes';
 import 'react-native-gesture-handler';
 import {DataAnalytics} from '_scenes/data_analytics/';
@@ -26,14 +31,7 @@ import {
   Image,
 } from 'react-native';
 import {Typography} from '_styles';
-import {
-  MenuButton,
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
-} from '_components';
+import {MenuButton} from '_components';
 import Strings from '_utils';
 import {
   widthPercentageToDP as wp,
@@ -47,7 +45,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
-import {userStore} from '_store';
+import {companyStore} from '_store';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -86,7 +84,7 @@ export {SupplierNavigation};
 const SupplierNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [sellerState, setSellerState] = useState(false);
-  const companyID = userStore(state => state.companyID);
+  const companyID = companyStore(state => state.companyID);
   return (
     <AppStack.Navigator
       screenOptions={{

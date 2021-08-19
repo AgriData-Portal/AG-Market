@@ -28,11 +28,15 @@ import Modal from 'react-native-modal';
 import {DismissKeyboardView, UnsuccessfulModal} from '_components';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {companyStore, userStore} from '_store';
 
 export {EditPersonal};
 
 export const PersonalProfile = props => {
   const [changePassword, setChangePassword] = useState(false);
+  const roleInCompany = userStore(state => state.roleInCompany);
+  const userEmail = userStore(state => state.userEmail);
+  const userPhoneNumber = userStore(state => state.userPhoneNumber);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
@@ -118,15 +122,10 @@ export const PersonalProfile = props => {
               <Text style={[Typography.placeholderSmall]}>
                 {Strings.companyRole}
               </Text>
-              {props.user.role == 'generalmanager' ? (
-                <View>
-                  <Text style={[Typography.normal]}>General Manager</Text>
-                </View>
-              ) : (
-                <View>
-                  <Text style={[Typography.normal]}>{props.user.role}</Text>
-                </View>
-              )}
+
+              <View>
+                <Text style={[Typography.normal]}>{roleInCompany}</Text>
+              </View>
             </View>
 
             <View
@@ -138,10 +137,10 @@ export const PersonalProfile = props => {
               }}>
               <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
               <View>
-                {props.user.email == null ? (
+                {userEmail == '' ? (
                   <Text style={[Typography.normal]}>Not Added Yet</Text>
                 ) : (
-                  <Text style={[Typography.normal]}>{props.user.email}</Text>
+                  <Text style={[Typography.normal]}>{userEmail}</Text>
                 )}
               </View>
             </View>
@@ -156,9 +155,7 @@ export const PersonalProfile = props => {
                 {Strings.contactNumber}
               </Text>
               <View>
-                <Text style={[Typography.normal]}>
-                  {props.user.contactNumber}
-                </Text>
+                <Text style={[Typography.normal]}>{userPhoneNumber}</Text>
               </View>
             </View>
             <BlueButton
