@@ -61,8 +61,8 @@ function getHeaderTitle(route, sellerState) {
       return Strings.inbox;
     case 'marketplace':
       return sellerState ? Strings.marketplace : Strings.myStore;
-    case 'orders': //TRANSLATION
-      return sellerState ? 'Purchase Invoice' : 'Sales Invoice';
+    case 'orders':
+      return sellerState ? Strings.purchaseInvoice : Strings.salesInvoice;
     case 'tasks':
       return Strings.tasks;
     case 'dataanalytics':
@@ -478,7 +478,7 @@ const TabbedNavigator = props => {
                       color: Colors.LIME_GREEN,
                     },
                   ]}>
-                  {Strings.myStore}
+                  {props.sellerState ? Strings.market : Strings.myStore}
                 </Text>
               </View>
             ) : (
@@ -505,7 +505,7 @@ const TabbedNavigator = props => {
                       color: 'black',
                     },
                   ]}>
-                  {Strings.myStore}
+                  {props.sellerState ? Strings.market : Strings.myStore}
                 </Text>
               </View>
             ),

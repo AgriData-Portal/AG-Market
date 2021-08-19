@@ -79,11 +79,8 @@ const ProductModal = props => {
       props.setProducts(products);
       log('test');
       setSuccessfulModal2(true);
-      if (props.trigger) {
-        props.setTrigger(false);
-      } else {
-        props.setTrigger(true);
-      }
+      props.setTrigger(!props.trigger);
+
       setLoading(false);
     } catch (e) {
       log(e);
@@ -92,8 +89,9 @@ const ProductModal = props => {
 
   const updateListing = async () => {
     try {
+      var updatedListing;
       if (companyType == 'supplier') {
-        const updatedListing = await API.graphql({
+        updatedListing = await API.graphql({
           query: updateSupplierListing,
           variables: {
             input: {
@@ -105,8 +103,9 @@ const ProductModal = props => {
             },
           },
         });
+        updatedListing = updatedListing.data.updateSupplierListing;
       } else {
-        const updatedListing = await API.graphql({
+        updatedListing = await API.graphql({
           query: updateFarmerListing,
           variables: {
             input: {
@@ -118,30 +117,20 @@ const ProductModal = props => {
             },
           },
         });
+        updatedListing = updatedListing.data.updateFarmerListing;
       }
       var products = props.productList;
-      log(products);
+      console.log(products);
       for (let [i, product] of products.entries()) {
         if (product.id == props.id) {
           products.splice(i, 1);
         }
       }
 
-      var item = {
-        id: props.id,
-        lowPrice: parseFloat(lowPrice),
-        highPrice: parseFloat(highPrice),
-        quantityAvailable: parseInt(available),
-        minimumQuantity: parseInt(moq),
-        productName: props.productName,
-        grade: props.grade,
-        variety: props.variety,
-        productPicture: props.productPicture,
-        siUnit: props.siUnit,
-      };
-      products.push(item);
-      log(products);
+      products.push(updatedListing);
+      console.log(products);
       props.setProducts(products);
+      props.setTrigger(!props.trigger);
       setSuccessfulModal(true);
       setEditMode(false);
     } catch (e) {

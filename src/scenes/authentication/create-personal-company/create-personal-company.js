@@ -161,7 +161,7 @@ export const Registration = props => {
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 keyboardType="default"
-                placeholder="+60109336377"
+                placeholder="0109336377"
                 underlineColorAndroid="transparent"
                 onChangeText={item => setPhone(item)}
                 value={phone}
