@@ -41,14 +41,14 @@ const NewOrderQuotation = props => {
   const [sum, setSum] = useState(0);
   const [deliveryValue, setDeliveryValue] = useState(true);
   const [deliveryMethod, setDeliveryMethod] = useState([
-    {label: 'No', value: false},
-    {label: 'Yes', value: true},
+    {label: Strings.no, value: false},
+    {label: Strings.yes, value: true},
   ]);
   const [openPayment, setOpenPayment] = useState(false);
   const [paymentValue, setPaymentValue] = useState('creditTerm');
   const [paymentMethod, setPaymentMethod] = useState([
-    {label: 'Cash', value: 'cashOnDelivery'},
-    {label: 'Credit Term', value: 'creditTerm'},
+    {label: Strings.Cash, value: 'cashOnDelivery'},
+    {label: Strings.creditTerm, value: 'creditTerm'},
   ]);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
   const companyType = userStore(state => state.companyType);
@@ -391,16 +391,14 @@ const NewOrderQuotation = props => {
           ]}>
           <SuccessfulModal
             setSuccessfulModal={setSuccessfulModal}
-            text={
-              'You have successfully sent the order quotation to the customer!'
-            }
+            text={Strings.sentOrderQuotation}
           />
         </Modal>
-        {/*TRANSLATION */}
+
         <Modal
           isVisible={unsuccessfulModal}
           onBackdropPress={() => setUnsuccessfulModal(false)}>
-          <UnsuccessfulModal text={'Please input the price for your items'} />
+          <UnsuccessfulModal text={Strings.inputItemPrice} />
         </Modal>
       </View>
     </View>
