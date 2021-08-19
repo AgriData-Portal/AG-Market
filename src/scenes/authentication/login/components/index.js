@@ -32,7 +32,7 @@ import {log} from '_utils';
 export const ForgetPassword = props => {
   const [changePassword, setChangePassword] = useState(false);
   const [phoneNumberModal, setPhoneNumberModal] = useState(false);
-  const [phone, setPhone] = useState('+60' + props.phone);
+  const [phone, setPhone] = useState('+6' + props.phone);
 
   const sendConfirmation = async props => {
     await Auth.forgotPassword(phone)

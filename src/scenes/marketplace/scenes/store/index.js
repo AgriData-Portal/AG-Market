@@ -44,12 +44,13 @@ export const Store = props => {
 
   log('purchase Order:' + purchaseOrder);
   const [isFavourite, setIsFavourite] = useState(false);
+
   useEffect(() => {
     log('Fetching Products from ' + itemId);
     fetchProducts();
     log('Fetching PO from ' + purchaseOrder);
     getPOList();
-  }, []);
+  }, [itemId]);
 
   const getPOList = async () => {
     log('gettingPO');

@@ -21,6 +21,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {versionStore} from '_store';
+import Strings from '_utils';
 
 export const UpdateAppModal = props => {
   const updateStatus = versionStore(state => state.updateStatus);
@@ -34,14 +35,13 @@ export const UpdateAppModal = props => {
         borderRadius: 10,
       }}>
       <View>
-        {/* TRANSLATION */}
         <View>
           <Text
             style={[
               Typography.normal,
               {textAlign: 'center', marginTop: hp('2%')},
             ]}>
-            Please Update The App to Continue Usage!!
+            {Strings.updateApp}
           </Text>
         </View>
         <View
@@ -72,7 +72,7 @@ export const UpdateAppModal = props => {
                 zIndex: 100,
               }}>
               <Text style={[Typography.normal, {textAlign: 'center'}]}>
-                Update Now
+                {Strings.updateNow}
               </Text>
             </TouchableOpacity>
           ) : (
@@ -97,7 +97,7 @@ export const UpdateAppModal = props => {
                   zIndex: 100,
                 }}>
                 <Text style={[Typography.normal, {textAlign: 'center'}]}>
-                  Update Now
+                  {Strings.updateNow}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -113,7 +113,7 @@ export const UpdateAppModal = props => {
                   zIndex: 100,
                 }}>
                 <Text style={[Typography.normal, {textAlign: 'center'}]}>
-                  Update Later
+                  {Strings.updateLater}
                 </Text>
               </TouchableOpacity>
             </View>

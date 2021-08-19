@@ -35,6 +35,7 @@ export const Landing = props => {
           }}
         />
       </View>
+      {/* <Text>test</Text> */}
       <BlueButton
         onPress={() => props.navigation.navigate('signup')}
         text={Strings.signUp}

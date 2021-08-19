@@ -62,7 +62,7 @@ export const EditCompany = props => {
     state => state.changeCompanyLogoFileName,
   );
 
-  if (number.includes('+60')) {
+  if (number.includes('+6')) {
     var temp = number.slice(3);
     setNumber(temp);
   }
@@ -124,7 +124,7 @@ export const EditCompany = props => {
             input: {
               id: companyID,
               logo: imageSource == null ? null : photo.fileName,
-              contactDetails: {email: email, phone: '+60' + number},
+              contactDetails: {email: email, phone: '+6' + number},
               bankAccount: {
                 bankName: bankName,
                 accountNumber: bankDetails,
@@ -159,7 +159,7 @@ export const EditCompany = props => {
             input: {
               id: companyID,
               logo: imageSource == null ? null : photo.fileName,
-              contactDetails: {email: email, phone: '+60' + number},
+              contactDetails: {email: email, phone: '+6' + number},
               bankAccount: {
                 bankName: bankName,
                 accountNumber: bankDetails,
@@ -195,7 +195,7 @@ export const EditCompany = props => {
             input: {
               id: companyID,
               logo: imageSource == null ? null : photo.fileName,
-              contactDetails: {email: email, phone: '+60' + number},
+              contactDetails: {email: email, phone: '+6' + number},
               bankAccount: {
                 bankName: bankName,
                 accountNumber: bankDetails,
@@ -308,7 +308,6 @@ export const EditCompany = props => {
                     alignItems: 'center',
                     height: hp('6%'),
                   }}>
-                  <Text>+60</Text>
                   <TextInput
                     underlineColorAndroid="transparent"
                     value={number}

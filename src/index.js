@@ -14,6 +14,7 @@ import {
 } from './graphql/mutations';
 import {StatusBar, Linking} from 'react-native';
 import {log} from '_utils';
+import RNBootSplash from 'react-native-bootsplash';
 import DeviceInfo from 'react-native-device-info';
 import {
   getApiLevel,
@@ -400,6 +401,11 @@ const App = () => {
   const [userAttributes, setUserAttributes] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [runAgain, setRunAgain] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      RNBootSplash.hide();
+    }, 1000);
+  });
 
   const {url: initialUrl, processing} = useInitialURL();
 

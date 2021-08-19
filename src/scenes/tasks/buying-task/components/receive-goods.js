@@ -886,9 +886,8 @@ export const RatingModal = props => {
             Typography.large,
             {textAlign: 'center', top: hp('5%'), marginHorizontal: wp('5%')},
           ]}>
-          Transaction completed. Please give the supplier a rating.
+          {Strings.ratingsTransactionDone}
         </Text>
-        {/* TRANSLATION ratingsmodal*/}
       </View>
       <View style={{top: hp('5%')}}>
         <Rating

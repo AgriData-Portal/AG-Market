@@ -838,15 +838,13 @@ const PurchaseOrder = props => {
             }),
             props.setPurchaseOrderModal(false),
           ]}
-          text="You have successfully sent your purchase order, wait for the supplier to get back"
+          text={Strings.sentPOwaitSupplier}
         />
-        {/*TRANSLATION successful */}
       </Modal>
       <Modal
         isVisible={poUnsuccessfulModal}
         onBackdropPress={() => setpoUnsuccessfulModal(false)}>
-        <UnsuccessfulModal text="One or more of your orders does not have a valid input. Please check and try again" />
-        {/*TRANSLATION unsunccessful */}
+        <UnsuccessfulModal text={Strings.noValidInput} />
       </Modal>
     </View>
   );

@@ -721,10 +721,10 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        Invoice
+        {Strings.invoice}
         <Text style={[Typography.placeholder, {fontStyle: 'italic'}]}>
           {' '}
-          for {props.trackingNum} {/*TRANSLATION */}
+          {Strings.for} {props.trackingNum}
         </Text>
       </Text>
       <Text
@@ -797,7 +797,7 @@ const InvoiceModal = props => {
                 textAlign: 'right',
               },
             ]}>
-            TOTAL: RM {sum}
+            {Strings.total}: RM {sum}
           </Text>
         </View>
       </View>
@@ -1148,9 +1148,8 @@ const RatingModal = props => {
               marginLeft: wp('5%'),
             },
           ]}>
-          Transaction completed. Please give the retailer a rating.
+          {Strings.ratingsTransactionDoneRetailer}
         </Text>
-        {/* TRANSLATION */}
       </View>
       <View style={{top: hp('4%')}}>
         <Rating

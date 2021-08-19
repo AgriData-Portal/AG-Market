@@ -111,14 +111,14 @@ export const AddEmployeeButtonModal = props => {
 
   const addUser = async () => {
     try {
-      log('+60' + phone);
+      log('+6' + phone);
       log(role);
       const user = await Auth.signUp({
-        username: '+60' + phone,
+        username: '+6' + phone,
         password: 'agridata2020',
         attributes: {
           email: email,
-          phone_number: '+60' + phone,
+          phone_number: '+6' + phone,
           'custom:role': role,
           'custom:companyName': props.company.name,
           'custom:companyType': 'AGRIDATA2020',
@@ -136,7 +136,7 @@ export const AddEmployeeButtonModal = props => {
               input: {
                 name: name,
                 retailerCompanyID: props.user.retailerCompanyID,
-                contactNumber: '+60' + phone,
+                contactNumber: '+6' + phone,
                 id: user.userSub,
                 role: role,
                 email: email,
@@ -155,7 +155,7 @@ export const AddEmployeeButtonModal = props => {
               input: {
                 name: name,
                 supplierCompanyID: props.user.supplierCompanyID,
-                contactNumber: '+60' + phone,
+                contactNumber: '+6' + phone,
                 id: user.userSub,
                 role: role,
                 email: email,
@@ -174,7 +174,7 @@ export const AddEmployeeButtonModal = props => {
               input: {
                 name: name,
                 farmerCompanyID: props.user.farmerCompanyID,
-                contactNumber: '+60' + phone,
+                contactNumber: '+6' + phone,
                 id: user.userSub,
                 role: role,
                 email: email,
@@ -290,7 +290,6 @@ export const AddEmployeeButtonModal = props => {
                 {Strings.contactNumber}
               </Text>
               <View style={{flexDirection: 'row'}}>
-                <Text style={[Typography.small, {top: hp('1%')}]}>+60</Text>
                 <TextInput
                   onChangeText={item => setPhone(item)}
                   value={phone}

@@ -27,6 +27,7 @@ import {BlueButton} from '_components';
 import {log} from '_utils';
 import {DetailsModal} from '_components';
 import {userStore, companyStore} from '_store';
+import Strings from '_utils';
 
 const RetailerList = props => {
   return (
@@ -267,14 +268,17 @@ const RetailerModal = props => {
         alignSelf: 'center',
         borderRadius: 10,
       }}>
-      {/* TRANSLATION */}
       <View
         style={{
           alignItems: 'center',
           justifyContent: 'center',
           marginTop: hp('2%'),
         }}>
-        <Text style={[Typography.large]}>Supermarkets</Text>
+        {companyType == 'supplier' ? (
+          <Text style={[Typography.large]}>{Strings.supermarkets}</Text>
+        ) : (
+          <Text style={[Typography.large]}>{Strings.suppliers}</Text>
+        )}
       </View>
       <View style={{height: hp('65%'), top: hp('3%')}}>
         <RetailerList
@@ -285,8 +289,9 @@ const RetailerModal = props => {
       </View>
       <BlueButton
         onPress={() => shareStore()}
-        top={hp('3%')}
+        top={hp('2%')}
         text={'Share to WhatsApp'}
+        borderRadius={10}
       />
     </View>
   );

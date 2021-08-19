@@ -39,11 +39,20 @@ export const SellerTask = props => {
 
   useEffect(() => {
     if (task == 'send' && sendTask.length == 0) {
-      getSendTask();
+      const unsubscribe = props.navigation.addListener('focus', () => {
+        log('Refreshed!');
+        getSendTask();
+      });
+      return unsubscribe;
     } else if (task == 'claim' && claimTask.length == 0) {
-      getClaimTask();
+      const unsubscribe = props.navigation.addListener('focus', () => {
+        log('Refreshed!');
+        getClaimTask();
+      });
+      return unsubscribe;
     }
-  }, [task]);
+  }, [task, props.navigation]);
+
   const getSendTask = async () => {
     setLoading(true);
     try {

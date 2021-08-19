@@ -71,6 +71,7 @@ function getHeaderTitle(route) {
 const GMNavigation = props => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
+  const [movement, setMovement] = useState(false);
   const updateFavourites = async (userDetails, itemId, store) => {
     try {
       log(userDetails, itemId, store);
@@ -161,10 +162,13 @@ const GMNavigation = props => {
           headerTitle: () => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('store', {
-                  itemId: route.params.itemID.slice(36, 72),
-                  storeName: route.params.chatName,
-                });
+                [
+                  navigation.navigate('store', {
+                    itemId: route.params.itemID.slice(36, 72),
+                    storeName: route.params.chatName,
+                  }),
+                  setMovement(true),
+                ];
               }}>
               <Text style={[Typography.large]}>{route.params.chatName}</Text>
             </TouchableOpacity>
@@ -191,7 +195,19 @@ const GMNavigation = props => {
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton
-              onPress={() => [navigation.goBack(), setIsFavourite(false)]}
+              onPress={() =>
+                movement
+                  ? [
+                      navigation.goBack(),
+                      setIsFavourite(false),
+                      setMovement(false),
+                    ]
+                  : [
+                      navigation.navigate('marketplace'),
+                      setIsFavourite(false),
+                      setMovement(false),
+                    ]
+              }
             />
           ),
           headerTitle: () => (

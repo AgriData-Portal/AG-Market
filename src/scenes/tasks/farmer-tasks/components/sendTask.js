@@ -1006,9 +1006,8 @@ const RatingModal = props => {
               marginLeft: wp('5%'),
             },
           ]}>
-          Transaction completed. Please give the supplier a rating.
+          {Strings.ratingsTransactionDone}
         </Text>
-        {/* TRANSLATION */}
       </View>
       <View style={{top: hp('4%')}}>
         <Rating
@@ -1042,7 +1041,7 @@ const RatingModal = props => {
           shadowOpacity: 0.22,
           shadowRadius: 2.22,
         }}>
-        <Text style={[Typography.normal, {}]}>Submit rating</Text>
+        <Text style={[Typography.normal, {}]}>{Strings.submitRating}</Text>
       </TouchableOpacity>
     </View>
   );
