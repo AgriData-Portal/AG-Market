@@ -38,7 +38,6 @@ import {log} from '_utils';
 //modal issues
 export const AddEmployeeButton = props => {
   const [addEmployeeButtonModal, setAddEmployeeButtonModal] = useState(false);
-  const [succesfulChangesModal, setSuccesfulChangesModal] = useState(false);
 
   return (
     <View>
@@ -63,7 +62,6 @@ export const AddEmployeeButton = props => {
           navigation={props.navigation}
           user={props.user}
           company={props.company}
-          setSuccesfulChangesModal={setSuccesfulChangesModal}
           setTeamList={props.setTeamList}
         />
       </Modal>

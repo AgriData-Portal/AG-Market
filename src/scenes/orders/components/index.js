@@ -316,12 +316,12 @@ const Order = props => {
 };
 
 const InvoiceModal = props => {
-  const companyID = userStore(state => state.companyID);
-  const companyType = userStore(state => state.companyType);
+  const companyType = companyStore(state => state.companyType);
   const rAddress = props.retailer.address;
   const sAddress = props.supplier.address;
   const [retailerUnit, retailerStreet, retailerCity] = rAddress.split(',');
   const [supplierUnit, supplierStreet, supplierCity] = sAddress.split(',');
+  const [pdfLoading, setpdfLoading] = useState(false);
   const buyerChopref = useRef();
   const sellerChopref = useRef();
   async function captureBuyerChop() {
@@ -683,18 +683,20 @@ const InvoiceModal = props => {
         position={'absolute'}
         borderRadius={10}
         text={'PDF'}
+        disabled={pdfLoading}
         font={Typography.normal}
         icon="cloud-download-outline"
         offsetCenter={wp('2%')}
         top={hp('70%')}
         left={wp('61%')}
+        onPressIn={() => setpdfLoading(true)}
         onPress={async () => {
           const buyerChop = await captureBuyerChop();
           const sellerChop = await captureSellerChop();
           if (companyType == 'supplier') {
             log('supplier');
             if (props.sellerState == false) {
-              createPDF(
+              await createPDF(
                 (id = props.trackingNum),
                 (buyer = props.retailer),
                 (seller = props.supplier),
@@ -706,7 +708,7 @@ const InvoiceModal = props => {
                 sellerChop,
               );
             } else {
-              createPDF(
+              await createPDF(
                 (id = props.trackingNum),
                 (buyer = props.supplier),
                 (seller = props.farmer),
@@ -719,7 +721,7 @@ const InvoiceModal = props => {
               );
             }
           } else if (companyType == 'retailer') {
-            createPDF(
+            await createPDF(
               (id = props.trackingNum),
               (buyer = props.retailer),
               (seller = props.supplier),
@@ -731,7 +733,7 @@ const InvoiceModal = props => {
               sellerChop,
             );
           } else {
-            createPDF(
+            await createPDF(
               (id = props.trackingNum),
               (buyer = props.supplier),
               (seller = props.farmer),
@@ -743,6 +745,7 @@ const InvoiceModal = props => {
               sellerChop,
             );
           }
+          setpdfLoading(false);
         }}
       />
       <BlueButton

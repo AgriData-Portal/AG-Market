@@ -111,7 +111,8 @@ export const createPDF = async (
       fontName: 'Poppins-Regular',
       fontSize: 40,
     })
-    .drawText(': COD', {
+    /* TODO add to API */
+    .drawText(': null', {
       x: 1900,
       y: 2351,
       fontName: 'Poppins-Regular',
@@ -574,7 +575,7 @@ export const createPDF = async (
         fontName: 'Poppins-SemiBold',
         fontSize: 45,
       })
-      .drawText('MYR 4,000.00', {
+      .drawText('RM ' + amount.toFixed(2).toString(), {
         x: 2050,
         y: positionY,
         fontName: 'Poppins-SemiBold',
@@ -682,4 +683,5 @@ export const createPDF = async (
     log('Error: ', error);
     RNFS.unlink(filePath);
   }
+  return null;
 };

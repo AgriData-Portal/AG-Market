@@ -136,7 +136,7 @@ export const Login = props => {
               <TextInput
                 keyboardType={'phone-pad'}
                 placeholderTextColor={Colors.GRAY_DARK}
-                placeholder="109125654"
+                placeholder="0109125654"
                 underlineColorAndroid="transparent"
                 onChangeText={item => setPhone(item)}
                 value={phone}

@@ -105,7 +105,7 @@ export const EditCompany = props => {
       console.log('Supplier');
       var photo;
       try {
-        if (imageSource) {
+        if (imageSource != props.route.params.logo) {
           photo = imageSource;
           log('here');
           log(photo);
@@ -142,7 +142,7 @@ export const EditCompany = props => {
       console.log('Retailer');
       var photo;
       try {
-        if (imageSource) {
+        if (imageSource != props.route.params.logo) {
           photo = imageSource;
           log(photo);
           const response = await fetch(photo.uri);
@@ -178,7 +178,7 @@ export const EditCompany = props => {
       console.log('Farm');
       var photo;
       try {
-        if (imageSource) {
+        if (imageSource != props.route.params.logo) {
           photo = imageSource;
           log(photo);
           const response = await fetch(photo.uri);
@@ -214,8 +214,8 @@ export const EditCompany = props => {
     changeCompanyBankDetails(bankDetails);
     changeCompanyBankName(bankName);
     changeCompanyEmail(email);
-    changeCompanyLogoFileName(imageSource);
-    changeCompanyNumber('+60' + number);
+
+    changeCompanyNumber(number);
   };
 
   return (
