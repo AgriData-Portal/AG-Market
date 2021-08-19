@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, View, Text} from 'react-native';
+import {TouchableOpacity, View, Text, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Typography} from '_styles';
 import {Mixins, Colors} from '_styles';
@@ -82,29 +82,35 @@ export const BlueButton = props => {
         right: props.right,
         left: props.left,
       }}>
-      <Text
-        style={[
-          props.font,
-          {color: props.textColor || 'black', alignSelf: 'center'},
-        ]}>
-        {props.text}
-      </Text>
-      {props.icon ? (
-        <View
-          style={{
-            alignSelf: 'center',
-            marginLeft:
-              props.flexDirection == 'row-reverse'
-                ? 0
-                : props.offsetCenter || wp('20%'),
-            marginRight:
-              props.flexDirection == 'row-reverse'
-                ? props.offsetCenter || wp('20%')
-                : 0,
-          }}>
-          <Icon name={props.icon} size={wp('6%')} />
+      {props.disabled ? (
+        <ActivityIndicator size="small" color="black" />
+      ) : (
+        <View style={{flexDirection: props.flexDirection || 'row'}}>
+          <Text
+            style={[
+              props.font,
+              {color: props.textColor || 'black', alignSelf: 'center'},
+            ]}>
+            {props.text}
+          </Text>
+          {props.icon ? (
+            <View
+              style={{
+                alignSelf: 'center',
+                marginLeft:
+                  props.flexDirection == 'row-reverse'
+                    ? 0
+                    : props.offsetCenter || wp('20%'),
+                marginRight:
+                  props.flexDirection == 'row-reverse'
+                    ? props.offsetCenter || wp('20%')
+                    : 0,
+              }}>
+              <Icon name={props.icon} size={wp('6%')} />
+            </View>
+          ) : null}
         </View>
-      ) : null}
+      )}
     </TouchableOpacity>
   );
 };

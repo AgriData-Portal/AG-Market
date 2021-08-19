@@ -51,6 +51,8 @@ const NewOrderQuotation = props => {
     {label: Strings.creditTerm, value: 'creditTerm'},
   ]);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const [sendQuoteButton, setSendQuoteButton] = useState(false);
+
   const companyType = companyStore(state => state.companyType);
 
   var productsWIndex = quotationItems;
@@ -222,6 +224,7 @@ const NewOrderQuotation = props => {
         log(e);
       }
     }
+    setSendQuoteButton(false);
   };
   return (
     <View
@@ -381,6 +384,8 @@ const NewOrderQuotation = props => {
           text={Strings.sendQuotation}
           borderRadius={10}
           font={Typography.normal}
+          disabled={sendQuoteButton}
+          onPressIn={() => setSendQuoteButton(true)}
         />
         <Modal
           isVisible={successfulModal}
