@@ -162,15 +162,21 @@ const AppNavigator = props => {
     changeVerified(true);
     changeCompanyID(props.user.retailerCompanyID);
     changeCompanyName(props.user.retailerCompany.name);
-    changeCompanyFavouriteStores(props.user.retailerCompany.favouriteStores);
-    changeCompanyEmail(props.user.retailerCompany.contactDetails.email);
-    changeCompanyNumber(props.user.retailerCompany.contactDetails.phone);
-    changeCompanyBankDetails(
-      props.user.retailerCompany.bankAccount.accountNumber,
+    changeCompanyFavouriteStores(
+      props.user.retailerCompany.favouriteStores || [],
     );
-    changeCompanyBankName(props.user.retailerCompany.bankAccount.bankName);
-    changeCompanyLogoFileName(props.user.retailerCompany.logo);
-    changeCompanyRatings(props.user.retailerCompany.rating);
+    changeCompanyEmail(props.user.retailerCompany.contactDetails.email || null);
+    changeCompanyNumber(
+      props.user.retailerCompany.contactDetails.phone || null,
+    );
+    changeCompanyBankDetails(
+      props.user.retailerCompany.bankAccount.accountNumber || null,
+    );
+    changeCompanyBankName(
+      props.user.retailerCompany.bankAccount.bankName || null,
+    );
+    changeCompanyLogoFileName(props.user.retailerCompany.logo || null);
+    changeCompanyRatings(props.user.retailerCompany.rating || null);
     changeCompanyRegistrationNumber(
       props.user.retailerCompany.registrationNumber,
     );
@@ -187,15 +193,21 @@ const AppNavigator = props => {
     changeVerified(true);
     changeCompanyID(props.user.supplierCompanyID);
     changeCompanyName(props.user.supplierCompany.name);
-    changeCompanyFavouriteStores(props.user.supplierCompany.favouriteStores);
-    changeCompanyEmail(props.user.supplierCompany.contactDetails.email);
-    changeCompanyNumber(props.user.supplierCompany.contactDetails.phone);
-    changeCompanyBankDetails(
-      props.user.supplierCompany.bankAccount.accountNumber,
+    changeCompanyFavouriteStores(
+      props.user.supplierCompany.favouriteStores || [],
     );
-    changeCompanyBankName(props.user.supplierCompany.bankAccount.bankName);
-    changeCompanyLogoFileName(props.user.supplierCompany.logo);
-    changeCompanyRatings(props.user.supplierCompany.rating);
+    changeCompanyEmail(props.user.supplierCompany.contactDetails.email || null);
+    changeCompanyNumber(
+      props.user.supplierCompany.contactDetails.phone || null,
+    );
+    changeCompanyBankDetails(
+      props.user.supplierCompany.bankAccount.accountNumber || null,
+    );
+    changeCompanyBankName(
+      props.user.supplierCompany.bankAccount.bankName || null,
+    );
+    changeCompanyLogoFileName(props.user.supplierCompany.logo || null);
+    changeCompanyRatings(props.user.supplierCompany.rating || null);
     changeCompanyRegistrationNumber(
       props.user.supplierCompany.registrationNumber,
     );
@@ -212,14 +224,16 @@ const AppNavigator = props => {
     changeVerified(true);
     changeCompanyID(props.user.farmerCompanyID);
     changeCompanyName(props.user.farmerCompany.name);
-    changeCompanyEmail(props.user.farmerCompany.contactDetails.email);
-    changeCompanyNumber(props.user.farmerCompany.contactDetails.phone);
+    changeCompanyEmail(props.user.farmerCompany.contactDetails.email || null);
+    changeCompanyNumber(props.user.farmerCompany.contactDetails.phone || null);
     changeCompanyBankDetails(
-      props.user.farmerCompany.bankAccount.accountNumber,
+      props.user.farmerCompany.bankAccount.accountNumber || null,
     );
-    changeCompanyBankName(props.user.farmerCompany.bankAccount.bankName);
-    changeCompanyLogoFileName(props.user.farmerCompany.logo);
-    changeCompanyRatings(props.user.farmerCompany.rating);
+    changeCompanyBankName(
+      props.user.farmerCompany.bankAccount.bankName || null,
+    );
+    changeCompanyLogoFileName(props.user.farmerCompany.logo || null);
+    changeCompanyRatings(props.user.farmerCompany.rating || null);
     changeCompanyRegistrationNumber(
       props.user.farmerCompany.registrationNumber,
     );
