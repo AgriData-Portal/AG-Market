@@ -29,6 +29,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -153,21 +154,18 @@ export const Registration = props => {
                 }}
               />
               <View style={{top: hp('3%')}}>
-                <Text
-                  style={[
-                    Typography.largestSize,
-                    {
-                      width: wp('90%'),
-                      left: wp('8%'),
-                      top: hp('3%'),
-                      lineHeight: hp('6%'),
-                    },
-                  ]}>
+                <Font.LargestSize
+                  style={{
+                    width: wp('90%'),
+                    left: wp('8%'),
+                    top: hp('3%'),
+                    lineHeight: hp('6%'),
+                  }}>
                   {Strings.createAccount}
-                </Text>
+                </Font.LargestSize>
               </View>
               <View style={{top: hp('5%'), left: wp('8%'), width: wp('70%')}}>
-                <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
+                <Font.Large>{Strings.beginJourney}</Font.Large>
               </View>
 
               <View
@@ -212,13 +210,12 @@ export const Registration = props => {
                     top: hp('6%'),
                     left: wp('8%'),
                   }}>
-                  <Text
-                    style={[
-                      Typography.placeholder,
-                      {color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK},
-                    ]}>
+                  <Font.Placeholder
+                    style={{
+                      color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK,
+                    }}>
                     {Strings.password}
-                  </Text>
+                  </Font.Placeholder>
                   <TextInput
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
@@ -273,9 +270,7 @@ export const Registration = props => {
                       : {top: hp('7%'), left: wp('7%')}
                   }>
                   <View>
-                    <Text style={[Typography.placeholder]}>
-                      {Strings.companyType}
-                    </Text>
+                    <Font.Placeholder>{Strings.companyType}</Font.Placeholder>
                   </View>
                   <View
                     style={
@@ -324,9 +319,9 @@ export const Registration = props => {
                         : {top: hp('8%')}
                     }>
                     <View style={{top: hp('0%'), left: wp('8%')}}>
-                      <Text style={[Typography.placeholder]}>
+                      <Font.Placeholder>
                         {Strings.roleInCompany}
-                      </Text>
+                      </Font.Placeholder>
                     </View>
                     <View
                       style={
@@ -472,30 +467,24 @@ const CreateAccountPopUp = props => {
             />
           </View>
         </View>
-        <Text
-          style={[
-            Typography.header,
-            {
-              width: wp('70%'),
-              alignSelf: 'center',
-              textAlign: 'center',
-              top: hp('5%'),
-            },
-          ]}>
+        <Font.header
+          style={{
+            width: wp('70%'),
+            alignSelf: 'center',
+            textAlign: 'center',
+            top: hp('5%'),
+          }}>
           {Strings.verification}
-        </Text>
+        </Font.header>
 
-        <Text
-          style={[
-            Typography.normal,
-            {
-              width: wp('70%'),
-              textAlign: 'center',
-              top: hp('7%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            width: wp('70%'),
+            textAlign: 'center',
+            top: hp('7%'),
+          }}>
           {Strings.thanksVerification}
-        </Text>
+        </Font.Normal>
       </View>
     </View>
   );
@@ -509,13 +498,10 @@ const Input = props => {
         left: wp('8%'),
         top: props.top,
       }}>
-      <Text
-        style={[
-          Typography.placeholder,
-          {color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK},
-        ]}>
+      <Font.Placeholder
+        style={{color: focus ? Colors.LIME_GREEN : Colors.GRAY_DARK}}>
         {props.name}
-      </Text>
+      </Font.Placeholder>
       <View
         style={{
           flexDirection: 'row',

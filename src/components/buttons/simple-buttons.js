@@ -7,6 +7,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {Font} from '_components';
 
 export const CloseButton = props => {
   return (
@@ -36,9 +37,9 @@ export const AddButton = props => {
       <View style={{left: Mixins.scaleWidth(5), bottom: Mixins.scaleHeight(1)}}>
         <Icon name="add-outline" size={Mixins.scaleWidth(20)}></Icon>
       </View>
-      <Text style={[Typography.normal, {left: Mixins.scaleWidth(10)}]}>
+      <Font.Normal style={{left: Mixins.scaleWidth(10)}}>
         {props.text}
-      </Text>
+      </Font.Normal>
     </TouchableOpacity>
   );
 };

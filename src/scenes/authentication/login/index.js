@@ -27,6 +27,7 @@ import Strings from '_utils';
 import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const Login = props => {
   const [secure, setSecure] = useState(true);
@@ -108,21 +109,18 @@ export const Login = props => {
         />
         <View style={{top: hp('5%')}}>
           <View>
-            <Text
-              style={[
-                Typography.largestSize,
-                {
-                  width: wp('50%'),
-                  left: wp('8%'),
-                  top: hp('4%'),
-                  lineHeight: hp('5.8%'),
-                },
-              ]}>
+            <Font.LargestSize
+              style={{
+                width: wp('50%'),
+                left: wp('8%'),
+                top: hp('4%'),
+                lineHeight: hp('5.8%'),
+              }}>
               {Strings.welcome}
-            </Text>
+            </Font.LargestSize>
           </View>
           <View style={{top: hp('4%'), left: wp('8%'), width: wp('70%')}}>
-            <Text style={[Typography.large]}>{Strings.logIntoAcc}</Text>
+            <Font.Large>{Strings.logIntoAcc}</Font.Large>
           </View>
         </View>
         <View>
@@ -131,7 +129,7 @@ export const Login = props => {
               top: hp('12%'),
               left: wp('8%'),
             }}>
-            <Text style={[Typography.placeholder]}>{Strings.phoneNumber}</Text>
+            <Font.Placeholder>{Strings.phoneNumber}</Font.Placeholder>
             <View style={{flexDirection: 'row'}}>
               <TextInput
                 keyboardType={'phone-pad'}
@@ -161,7 +159,7 @@ export const Login = props => {
               top: hp('14%'),
               left: wp('8%'),
             }}>
-            <Text style={[Typography.placeholder]}>{Strings.password}</Text>
+            <Font.Placeholder>{Strings.password}</Font.Placeholder>
             <TextInput
               placeholderTextColor={Colors.GRAY_DARK}
               placeholder={Strings.password}
@@ -202,16 +200,13 @@ export const Login = props => {
           <TouchableOpacity
             onPress={() => setForgetPassword(true)}
             style={{top: hp('15%'), left: wp('65%'), width: wp('30%')}}>
-            <Text
-              style={[
-                Typography.welcome,
-                {
-                  fontSize: 12,
-                  textAlign: 'right',
-                },
-              ]}>
+            <Font.Welcome
+              style={{
+                fontSize: 12,
+                textAlign: 'right',
+              }}>
               {Strings.forgotPassword}
-            </Text>
+            </Font.Welcome>
           </TouchableOpacity>
           <Modal isVisible={forgetPassword}>
             <ForgetPassword
@@ -291,9 +286,9 @@ export const Login = props => {
             bottom: hp('6%'),
             alignSelf: 'center',
           }}>
-          <Text style={[Typography.welcome, {fontSize: 12}]}>
+          <Font.Welcome style={{fontSize: 12}}>
             {Strings.havingTrouble}
-          </Text>
+          </Font.Welcome>
         </TouchableOpacity>
       </SafeAreaView>
       <Modal isVisible={verified}>
@@ -329,16 +324,14 @@ const VerificationModal = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Large
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           Your phone number has not been verified yet
-        </Text>
+        </Font.Large>
         <View style={{top: hp('2%'), justifyContent: 'center'}}>
           <Icon name="warning" color={'red'} size={wp('45%')} />
         </View>
+        {/* TRANSLATION */}
         <TouchableOpacity
           onPress={() => [
             props.setVerified(false),
@@ -354,7 +347,7 @@ const VerificationModal = props => {
             backgroundColor: Colors.LIGHT_BLUE,
             borderRadius: 10,
           }}>
-          <Text style={[Typography.large]}>Verify</Text>
+          <Font.Large>Verify</Font.Large>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

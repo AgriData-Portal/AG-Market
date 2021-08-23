@@ -57,17 +57,6 @@ const byWidth2 = num => {
   return wp(num);
 };
 // FONT STYLE
-export const Header = ({children, style}) => {
-  <Text
-    style={{
-      fontSize: byWidth(20), //RFPercentage(divide(20)),
-      fontFamily: 'Poppins-SemiBold',
-      color: 'black',
-      ...style,
-    }}>
-    {children}
-  </Text>;
-};
 
 export const header = {
   fontSize: byWidth(20), //RFPercentage(divide(20)),

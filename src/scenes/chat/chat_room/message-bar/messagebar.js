@@ -35,6 +35,7 @@ import {
 } from '../../../../graphql/queries';
 import {log} from '_utils';
 import {userStore} from '_store';
+import {Font} from '_components';
 
 var dayjs = require('dayjs');
 
@@ -510,9 +511,10 @@ const PreviewImageModal = props => {
                   justifyContent: 'center',
                   borderRadius: 20,
                 }}>
-                <Text style={[Typography.large]}>SEND IMAGE</Text>
+                <Font.Large>SEND IMAGE</Font.Large>
               </TouchableOpacity>
             </View>
+            {/* TRANSLATION */}
           </View>
         ) : (
           <View />

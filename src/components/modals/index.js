@@ -19,6 +19,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {Font} from '_components';
+
 import {UpdateAppModal} from './update-modal';
 export {UpdateAppModal};
 import DetailsModal from './details-modal';
@@ -44,17 +46,14 @@ export const SuccessfulModal = props => {
           }}
         />
       </View>
+      {/* TRANSLATION */}
       <View style={{top: hp('2%')}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
+        <Font.Header>SUCCESS!</Font.Header>
       </View>
       <View style={{width: wp('70%'), top: hp('4%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: wp('5%')},
-            Typography.normal,
-          ]}>
+        <Font.Normal style={{textAlign: 'center', lineHeight: wp('5%')}}>
           {props.text}
-        </Text>
+        </Font.Normal>
       </View>
     </View>
   );
@@ -82,16 +81,12 @@ export const SuccessNavigateChatModal = props => {
         />
       </View>
       <View style={{top: hp('2%')}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
+        <Font.Header>SUCCESS!</Font.Header>
       </View>
       <View style={{width: wp('70%'), top: hp('4%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: wp('5%')},
-            Typography.normal,
-          ]}>
+        <Font.Normal style={{textAlign: 'center', lineHeight: wp('5%')}}>
           {props.text}
-        </Text>
+        </Font.Normal>
       </View>
       <BlueButton
         onPress={props.onPress}
@@ -123,16 +118,12 @@ export const UnsuccessfulModal = props => {
         />
       </View>
       <View style={{top: hp('7%')}}>
-        <Text style={[Typography.header]}>OOPS!</Text>
+        <Font.Header>OOPS!</Font.Header>
       </View>
       <View style={{width: wp('50%'), top: hp('9%')}}>
-        <Text
-          style={[
-            {textAlign: 'center', lineHeight: hp('3%')},
-            Typography.normal,
-          ]}>
+        <Font.Normal style={{textAlign: 'center', lineHeight: hp('3%')}}>
           {props.text}
-        </Text>
+        </Font.Normal>
       </View>
     </View>
   );
@@ -160,16 +151,17 @@ export const SuccesfulChangesModal = props => {
         />
       </View>
       <View style={{top: hp('2%')}}>
-        <Text style={[Typography.header]}>SUCCESS!</Text>
+        <Font.Header>SUCCESS!</Font.Header>
       </View>
+      {/* TRANSLATION */}
       <View
         style={{
           width: wp('70%'),
           top: hp('4%'),
         }}>
-        <Text style={[Typography.normal, {textAlign: 'center'}]}>
+        <Font.Normal style={{textAlign: 'center'}}>
           All Changes have been saved successfuly!
-        </Text>
+        </Font.Normal>
       </View>
       <TouchableOpacity
         onPress={() => [
@@ -195,9 +187,7 @@ export const SuccesfulChangesModal = props => {
 
           elevation: 5,
         }}>
-        <Text style={[Typography.normal, {textAlign: 'center'}]}>
-          Back To Home
-        </Text>
+        <Font.Normal style={{textAlign: 'center'}}>Back To Home</Font.Normal>
         <Icon name="home-outline" size={wp('5.5%')} style={{left: wp('3%')}} />
       </TouchableOpacity>
     </View>

@@ -46,6 +46,7 @@ import {DetailsModal} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
 import linking from '../linking';
+import {Font} from '_components';
 
 var dayjs = require('dayjs');
 const TabStack = createBottomTabNavigator();
@@ -170,7 +171,7 @@ const GMNavigation = props => {
                   setMovement(true),
                 ];
               }}>
-              <Text style={[Typography.large]}>{route.params.chatName}</Text>
+              <Font.Large>{route.params.chatName}</Font.Large>
             </TouchableOpacity>
           ),
           headerTitleAlign: 'center',
@@ -213,7 +214,7 @@ const GMNavigation = props => {
           headerTitle: () => (
             <View>
               <TouchableOpacity onPress={() => setDetailsModal(true)}>
-                <Text style={[Typography.large]}>{route.params.storeName}</Text>
+                <Font.Large>{route.params.storeName}</Font.Large>
               </TouchableOpacity>
               <Modal
                 isVisible={detailsModal}
@@ -327,15 +328,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: Colors.LIME_GREEN,
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.chats}
-                </Text>
+                </Font.Small>
               </View>
             ) : (
               <View
@@ -352,15 +350,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: 'black',
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: 'black',
+                  }}>
                   {Strings.chats}
-                </Text>
+                </Font.Small>
               </View>
             ),
           tabBarLabel: () => {
@@ -393,15 +388,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: Colors.LIME_GREEN,
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.orders}
-                </Text>
+                </Font.Small>
               </View>
             ) : (
               <View
@@ -418,15 +410,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: 'black',
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: 'black',
+                  }}>
                   {Strings.orders}
-                </Text>
+                </Font.Small>
               </View>
             ),
           tabBarLabel: () => {
@@ -463,15 +452,12 @@ const TabbedNavigator = props => {
                     tintColor: Colors.LIME_GREEN,
                   }}
                 />
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.market}
-                </Text>
+                </Font.Small>
               </View>
             ) : (
               <View
@@ -491,15 +477,12 @@ const TabbedNavigator = props => {
                     tintColor: 'black',
                   }}
                 />
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: 'black',
+                  }}>
                   {Strings.market}
-                </Text>
+                </Font.Small>
               </View>
             ),
           tabBarLabel: () => {
@@ -533,15 +516,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: Colors.LIME_GREEN,
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.tasks}
-                </Text>
+                </Font.Small>
               </View>
             ) : (
               <View
@@ -558,15 +538,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: 'black',
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: 'black',
+                  }}>
                   {Strings.tasks}
-                </Text>
+                </Font.Small>
               </View>
             ),
           tabBarLabel: () => {
@@ -601,15 +578,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: Colors.LIME_GREEN,
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.analyticsSmall}
-                </Text>
+                </Font.Small>
               </View>
             ) : (
               <View
@@ -626,15 +600,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: 'black',
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: 'black',
+                  }}>
                   {Strings.analyticsSmall}
-                </Text>
+                </Font.Small>
               </View>
             ),
           tabBarLabel: () => {

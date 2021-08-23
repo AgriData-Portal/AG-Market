@@ -23,6 +23,7 @@ import {PurchaseOrder} from '../purchase-order/purchase-order';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {userStore} from '_store';
+import {Font} from '_components';
 
 var dayjs = require('dayjs');
 
@@ -97,26 +98,20 @@ const ChatBubble = props => {
             minWidth: wp('20%'),
             alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                alignSelf: 'flex-start',
-                maxWidth: wp('60%'),
-              },
-            ]}>
+          <Font.Normal
+            style={{
+              alignSelf: 'flex-start',
+              maxWidth: wp('60%'),
+            }}>
             {props.content}
-          </Text>
-          <Text
-            style={[
-              Typography.small,
-              {
-                alignSelf: 'flex-end',
-                marginLeft: wp('10%'),
-              },
-            ]}>
+          </Font.Normal>
+          <Font.Small
+            style={{
+              alignSelf: 'flex-end',
+              marginLeft: wp('10%'),
+            }}>
             {createdAt}
-          </Text>
+          </Font.Small>
         </View>
       </View>
     );
@@ -150,15 +145,12 @@ const ChatBubble = props => {
             minWidth: wp('20%'),
             alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                alignSelf: 'center',
-              },
-            ]}>
+          <Font.Normal
+            style={{
+              alignSelf: 'center',
+            }}>
             {content[0]}
-          </Text>
+          </Font.Normal>
           <View
             style={{
               backgroundColor: Colors.GRAY_LIGHT,
@@ -167,13 +159,11 @@ const ChatBubble = props => {
               alignItems: 'center',
               borderRadius: 10,
             }}>
-            <Text
-              style={[
-                Typography.small,
-                {
-                  maxWidth: wp('60%'),
-                },
-              ]}>
+            {/* TODO */}
+            <Font.Small
+              style={{
+                maxWidth: wp('60%'),
+              }}>
               {Strings.grade}: {content[3]}
               {'\n'}
               {Strings.variety}: {content[2]}
@@ -181,20 +171,17 @@ const ChatBubble = props => {
               {Strings.price}: <Text style={{color: 'red'}}> {content[1]}</Text>
               {'\n'}
               MOQ: 50
-            </Text>
+            </Font.Small>
           </View>
 
-          <Text
-            style={[
-              Typography.small,
-              {
-                alignSelf: 'flex-end',
-                marginLeft: wp('10%'),
-                top: hp('1%'),
-              },
-            ]}>
+          <Font.Small
+            style={{
+              alignSelf: 'flex-end',
+              marginLeft: wp('10%'),
+              top: hp('1%'),
+            }}>
             {createdAt}
-          </Text>
+          </Font.Small>
         </View>
       </View>
     );
@@ -225,8 +212,8 @@ const ChatBubble = props => {
             alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
             marginVertical: hp('1%'),
           }}>
-          <Text style={[Typography.large]}>{Strings.purchaseOrder}</Text>
-          <Text style={Typography.normal}>{props.contentType}</Text>
+          <Font.Large>{Strings.purchaseOrder}</Font.Large>
+          <Font.Normal>{props.contentType}</Font.Normal>
           <BlueButton
             onPress={() => setPurchaseOrderModal(true)}
             text={Strings.inspect}
@@ -235,16 +222,13 @@ const ChatBubble = props => {
             top={hp('0%')}
             borderRadius={10}
           />
-          <Text
-            style={[
-              Typography.small,
-              {
-                alignSelf: 'flex-end',
-                marginTop: hp('1%'),
-              },
-            ]}>
+          <Font.Small
+            style={{
+              alignSelf: 'flex-end',
+              marginTop: hp('1%'),
+            }}>
             {createdAt}
-          </Text>
+          </Font.Small>
         </View>
         <Modal isVisible={purchaseOrderModal}>
           <PurchaseOrder
@@ -302,11 +286,11 @@ const ChatBubble = props => {
             }}
           />
           <View style={{flexDirection: 'row'}}>
-            <Text style={[Typography.large]}>{Strings.orderQuotation}</Text>
+            <Font.Large>{Strings.orderQuotation}</Font.Large>
           </View>
 
           {/* DESIGN decide how to display the PO and Quotation chat bubble with the newly introduced id*/}
-          <Text style={Typography.normal}>{props.contentType}</Text>
+          <Font.Normal>{props.contentType}</Font.Normal>
           <BlueButton
             onPress={() => setOrderQuotationModal(true)}
             text={Strings.inspect}
@@ -314,16 +298,13 @@ const ChatBubble = props => {
             minWidth={wp('33%')}
             borderRadius={10}
           />
-          <Text
-            style={[
-              Typography.small,
-              {
-                alignSelf: 'flex-end',
-                marginTop: hp('1%'),
-              },
-            ]}>
+          <Font.Small
+            style={{
+              alignSelf: 'flex-end',
+              marginTop: hp('1%'),
+            }}>
             {createdAt}
-          </Text>
+          </Font.Small>
         </View>
         <Modal
           isVisible={orderQuotationModal}
@@ -402,16 +383,13 @@ const ChatBubble = props => {
               source={imageSource}
             />
           </TouchableOpacity>
-          <Text
-            style={[
-              Typography.small,
-              {
-                alignSelf: 'flex-end',
-                marginTop: wp('2%'),
-              },
-            ]}>
+          <Font.Small
+            style={{
+              alignSelf: 'flex-end',
+              marginTop: wp('2%'),
+            }}>
             {createdAt}
-          </Text>
+          </Font.Small>
         </View>
         <Modal
           isVisible={imageModal}
@@ -460,16 +438,13 @@ const ChatBubble = props => {
             justifyContent: 'space-evenly',
             alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
           }}>
-          <Text
-            style={[
-              Typography.small,
-              {
-                textAlign: 'center',
-                width: wp('40%'),
-              },
-            ]}>
+          <Font.Small
+            style={{
+              textAlign: 'center',
+              width: wp('40%'),
+            }}>
             Come and view my store by pressing the image!
-          </Text>
+          </Font.Small>
           {isMyMessage() ? (
             <View>
               <Image
@@ -504,16 +479,13 @@ const ChatBubble = props => {
             </TouchableOpacity>
           )}
 
-          <Text
-            style={[
-              Typography.small,
-              {
-                alignSelf: 'flex-end',
-                marginTop: hp('2.5%'),
-              },
-            ]}>
+          <Font.Small
+            style={{
+              alignSelf: 'flex-end',
+              marginTop: hp('2.5%'),
+            }}>
             {createdAt}
-          </Text>
+          </Font.Small>
         </View>
       </View>
     );

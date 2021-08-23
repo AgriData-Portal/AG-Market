@@ -25,6 +25,7 @@ import Strings from '_utils';
 import {DismissKeyboardView} from '_components';
 import Modal from 'react-native-modal';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -107,28 +108,25 @@ export const Registration = props => {
         />
         <View style={{top: hp('3%')}}>
           <View>
-            <Text
-              style={[
-                Typography.largestSize,
-                {
-                  width: wp('70%'),
-                  left: wp('8%'),
-                  top: hp('3%'),
-                  lineHeight: hp('5.5%'),
-                },
-              ]}>
+            <Font.LargestSize
+              style={{
+                width: wp('70%'),
+                left: wp('8%'),
+                top: hp('3%'),
+                lineHeight: hp('5.5%'),
+              }}>
               {Strings.createAccount}
-            </Text>
+            </Font.LargestSize>
           </View>
           <View style={{top: hp('2%'), left: wp('8%'), width: wp('70%')}}>
-            <Text style={[Typography.large]}>{Strings.beginJourney}</Text>
+            <Font.Large>{Strings.beginJourney}</Font.Large>
           </View>
           <View style={{top: hp('4%'), height: hp('65%')}}>
             <View
               style={{
                 left: wp('8%'),
               }}>
-              <Text style={[Typography.placeholder]}>{Strings.name}</Text>
+              <Font.Placeholder>{Strings.name}</Font.Placeholder>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 keyboardType="default"
@@ -155,9 +153,7 @@ export const Registration = props => {
                 top: hp('0.5%'),
                 left: wp('8%'),
               }}>
-              <Text style={[Typography.placeholder]}>
-                {Strings.contactNumber}
-              </Text>
+              <Font.Placeholder>{Strings.contactNumber}</Font.Placeholder>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 keyboardType="default"
@@ -184,7 +180,7 @@ export const Registration = props => {
                 top: hp('0.5%'),
                 left: wp('8%'),
               }}>
-              <Text style={[Typography.placeholder]}>{Strings.email}</Text>
+              <Font.Placeholder>{Strings.email}</Font.Placeholder>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 keyboardType="default"
@@ -211,7 +207,7 @@ export const Registration = props => {
                 top: hp('0.5%'),
                 left: wp('8%'),
               }}>
-              <Text style={[Typography.placeholder]}>{Strings.password}</Text>
+              <Font.Placeholder>{Strings.password}</Font.Placeholder>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 keyboardType="default"
@@ -397,13 +393,9 @@ export const Registration = props => {
               elevation: 3,
               zIndex: 2,
             }}>
-            <Text
-              style={[
-                Typography.large,
-                {position: 'absolute', left: wp('3%')},
-              ]}>
+            <Font.Large style={{position: 'absolute', left: wp('3%')}}>
               {Strings.next}
-            </Text>
+            </Font.Large>
 
             <Icon
               name="arrow-forward-outline"

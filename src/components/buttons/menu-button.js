@@ -24,7 +24,7 @@ import {
 import Strings from '_utils';
 import {log} from '_utils';
 import SwitchToggle from 'react-native-switch-toggle';
-import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import {Font} from '_components';
 
 export const MenuButton = props => {
   const [menuButtonModal, setMenuButtonModal] = useState(false);
@@ -127,9 +127,7 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>
-                  {Strings.companyProfile}
-                </Text>
+                <Font.Placeholder>{Strings.companyProfile}</Font.Placeholder>
               </View>
             </View>
           </TouchableOpacity>
@@ -153,9 +151,7 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>
-                  {Strings.personalProfile}
-                </Text>
+                <Font.Placeholder>{Strings.personalProfile}</Font.Placeholder>
               </View>
             </View>
           </TouchableOpacity>
@@ -178,9 +174,7 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>
-                  {Strings.humanResource}
-                </Text>
+                <Font.Placeholder>{Strings.humanResource}</Font.Placeholder>
               </View>
             </View>
           </TouchableOpacity>
@@ -201,7 +195,7 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>{Strings.logOut}</Text>
+                <Font.Placeholder>{Strings.logOut}</Font.Placeholder>
               </View>
             </View>
           </TouchableOpacity>
@@ -227,9 +221,7 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>
-                  {Strings.personalProfile}
-                </Text>
+                <Font.Placeholder>{Strings.personalProfile}</Font.Placeholder>
               </View>
             </View>
           </TouchableOpacity>
@@ -250,7 +242,7 @@ export const MenuButtonModal = props => {
                   justifyContent: 'center',
                   left: wp('3%'),
                 }}>
-                <Text style={[Typography.placeholder]}>{Strings.logOut}</Text>
+                <Font.Placeholder>{Strings.logOut}</Font.Placeholder>
               </View>
             </View>
           </TouchableOpacity>

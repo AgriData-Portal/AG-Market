@@ -16,6 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
+import {Font} from '_components';
 
 export const DataAnalytics = props => {
   return (
@@ -37,9 +38,9 @@ export const DataAnalytics = props => {
           alignItems: 'center',
           bottom: hp('15%'),
         }}>
-        <Text style={[Typography.large, {textAlign: 'center'}]}>
+        <Font.large style={{textAlign: 'center'}}>
           {Strings.thisFeature}
-        </Text>
+        </Font.large>
       </View>
       {/*<Text style={[Typography.header, {top: hp('3%'), right: wp('25%')}]}>
         {Strings.analytics}

@@ -29,6 +29,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const CreateCompany = props => {
   const [open, setOpen] = useState(false);
@@ -129,17 +130,14 @@ export const CreateCompany = props => {
           />
           <View style={{top: hp('8%')}}>
             <View>
-              <Text
-                style={[
-                  Typography.largestSize,
-                  {
-                    width: wp('60%'),
-                    left: wp('8%'),
-                    lineHeight: hp('5.5%'),
-                  },
-                ]}>
+              <Font.LargestSize
+                style={{
+                  width: wp('60%'),
+                  left: wp('8%'),
+                  lineHeight: hp('5.5%'),
+                }}>
                 {Strings.registerCompany}
-              </Text>
+              </Font.LargestSize>
             </View>
           </View>
 
@@ -148,7 +146,7 @@ export const CreateCompany = props => {
               top: hp('9%'),
               left: wp('8%'),
             }}>
-            <Text style={[Typography.placeholder]}>{Strings.companyName}</Text>
+            <Font.Placeholder>{Strings.companyName}</Font.Placeholder>
             <TextInput
               placeholderTextColor={Colors.GRAY_DARK}
               keyboardType="default"
@@ -176,9 +174,9 @@ export const CreateCompany = props => {
               top: hp('11%'),
               left: wp('8%'),
             }}>
-            <Text style={[Typography.placeholder]}>
+            <Font.Placeholder>
               {Strings.companyRegistrationNum}
-            </Text>
+            </Font.Placeholder>
             <TextInput
               placeholderTextColor={Colors.GRAY_DARK}
               keyboardType="default"
@@ -206,9 +204,7 @@ export const CreateCompany = props => {
               top: hp('13%'),
               left: wp('8%'),
             }}>
-            <Text style={[Typography.placeholder]}>
-              {Strings.companyAddress}
-            </Text>
+            <Font.Placeholder>{Strings.companyAddress}</Font.Placeholder>
             <TextInput
               placeholderTextColor={Colors.GRAY_DARK}
               keyboardType="default"
@@ -237,9 +233,9 @@ export const CreateCompany = props => {
               left: wp('8%'),
             }}>
             <View>
-              <Text style={[Typography.placeholder, {fontSize: 12}]}>
+              <Font.Placeholder style={{fontSize: 12}}>
                 {Strings.companyType}
-              </Text>
+              </Font.Placeholder>
             </View>
             <View
               style={{
@@ -306,7 +302,7 @@ export const CreateCompany = props => {
                 }
               }}>
               <View style={{alignSelf: 'center'}}>
-                <Text style={[Typography.large]}>{Strings.register}</Text>
+                <Font.Large>{Strings.register}</Font.Large>
               </View>
             </TouchableOpacity>
           </View>
@@ -351,30 +347,24 @@ const CreateAccountPopUp = props => {
             />
           </View>
         </View>
-        <Text
-          style={[
-            Typography.header,
-            {
-              width: wp('70%'),
-              alignSelf: 'center',
-              textAlign: 'center',
-              top: hp('5%'),
-            },
-          ]}>
+        <Font.Header
+          style={{
+            width: wp('70%'),
+            alignSelf: 'center',
+            textAlign: 'center',
+            top: hp('5%'),
+          }}>
           {Strings.verification}
-        </Text>
+        </Font.Header>
 
-        <Text
-          style={[
-            Typography.normal,
-            {
-              width: wp('70%'),
-              textAlign: 'center',
-              top: hp('7%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            width: wp('70%'),
+            textAlign: 'center',
+            top: hp('7%'),
+          }}>
           {Strings.thanksVerification}
-        </Text>
+        </Font.Normal>
       </View>
     </View>
   );
