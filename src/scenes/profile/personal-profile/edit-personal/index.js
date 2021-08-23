@@ -31,6 +31,7 @@ import {updateUser} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {userStore} from '_store';
+import {Font} from '_components';
 
 export const EditPersonal = props => {
   const userName = userStore(state => state.userName);
@@ -196,9 +197,7 @@ export const EditPersonal = props => {
                 width: wp('75%'),
                 height: hp('5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
-                {Strings.fullName}
-              </Text>
+              <Font.PlaceholderSmall>{Strings.fullName}</Font.PlaceholderSmall>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 placeholder="John Smith"
@@ -222,7 +221,7 @@ export const EditPersonal = props => {
                 width: wp('75%'),
                 height: hp('5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
+              <Font.PlaceholderSmall>{Strings.email}</Font.PlaceholderSmall>
               <TextInput
                 placeholderTextColor={Colors.GRAY_DARK}
                 underlineColorAndroid="transparent"

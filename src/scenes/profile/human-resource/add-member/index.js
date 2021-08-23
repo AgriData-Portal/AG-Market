@@ -35,6 +35,9 @@ import {
 import {createUser} from '../../../../graphql/mutations';
 import {BlueButton} from '_components';
 import {log} from '_utils';
+import {Font} from '_components';
+import {companyStore} from '_store';
+
 //modal issues
 export const AddEmployeeButton = props => {
   const [addEmployeeButtonModal, setAddEmployeeButtonModal] = useState(false);
@@ -60,7 +63,6 @@ export const AddEmployeeButton = props => {
         <AddEmployeeButtonModal
           setAddEmployeeButtonModal={setAddEmployeeButtonModal}
           navigation={props.navigation}
-          user={props.user}
           company={props.company}
           setTeamList={props.setTeamList}
         />
@@ -86,11 +88,13 @@ export const AddEmployeeButtonModal = props => {
   ]);
   const [role, setRole] = useState(items[0].value);
   const [unsuccessfulModal, setUnsuccessfulModal] = useState(false);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
 
   useEffect(() => {
     log('useEffect');
-    if (props.user.retailerCompanyID != null) {
-    } else if (props.user.supplierCompanyID != null) {
+    if (companyType == 'retailer') {
+    } else if (companyType == 'supplier') {
       setItems([
         {label: 'Sales Manager', value: 'Sales Manager'},
         {label: 'Delivery Man', value: 'Delivery Man'},
@@ -98,7 +102,7 @@ export const AddEmployeeButtonModal = props => {
         {label: 'Owner', value: 'Owner'},
       ]);
       setRole('Sales Manager');
-    } else if (props.user.farmerCompanyID != null) {
+    } else if (companyType == 'farmer') {
       setItems([
         {label: 'Accounts', value: 'Accounts'},
         {label: 'Owner', value: 'Owner'},
@@ -126,14 +130,14 @@ export const AddEmployeeButtonModal = props => {
         },
       });
       log(user);
-      if (props.user.retailerCompanyID != null) {
+      if (companyType == 'retailer') {
         try {
           const createdUser = await API.graphql({
             query: createUser,
             variables: {
               input: {
                 name: name,
-                retailerCompanyID: props.user.retailerCompanyID,
+                retailerCompanyID: companyID,
                 contactNumber: '+6' + phone,
                 id: user.userSub,
                 role: role,
@@ -145,14 +149,14 @@ export const AddEmployeeButtonModal = props => {
         } catch (e) {
           log(e);
         }
-      } else if (props.user.supplierCompanyID != null) {
+      } else if (companyType == 'supplier') {
         try {
           const createdUser = await API.graphql({
             query: createUser,
             variables: {
               input: {
                 name: name,
-                supplierCompanyID: props.user.supplierCompanyID,
+                supplierCompanyID: companyID,
                 contactNumber: '+6' + phone,
                 id: user.userSub,
                 role: role,
@@ -164,14 +168,14 @@ export const AddEmployeeButtonModal = props => {
         } catch (e) {
           log(e);
         }
-      } else if (props.user.farmerCompanyID != null) {
+      } else if (companyType == 'farmer') {
         try {
           const createdUser = await API.graphql({
             query: createUser,
             variables: {
               input: {
                 name: name,
-                farmerCompanyID: props.user.farmerCompanyID,
+                farmerCompanyID: companyID,
                 contactNumber: '+6' + phone,
                 id: user.userSub,
                 role: role,
@@ -215,7 +219,7 @@ export const AddEmployeeButtonModal = props => {
           <CloseButton setModal={props.setAddEmployeeButtonModal} />
         </View>
         <View style={{alignItems: 'center'}}>
-          <Text style={[Typography.header]}>{Strings.addNewMember}</Text>
+          <Font.Header>{Strings.addNewMember}</Font.Header>
         </View>
         <View
           style={{
@@ -234,7 +238,7 @@ export const AddEmployeeButtonModal = props => {
                 width: wp('70%'),
                 top: hp('2%'),
               }}>
-              <Text style={[Typography.placeholder]}>{Strings.fullName}</Text>
+              <Font.Placeholder>{Strings.fullName}</Font.Placeholder>
               <TextInput
                 placeholder={'eg. Hannah Wong'}
                 onChangeText={item => setName(item)}
@@ -259,7 +263,7 @@ export const AddEmployeeButtonModal = props => {
                 width: wp('70%'),
                 top: hp('4%'),
               }}>
-              <Text style={[Typography.placeholder]}>{Strings.email}</Text>
+              <Font.Placeholder>{Strings.email}</Font.Placeholder>
               <TextInput
                 onChangeText={item => setEmail(item)}
                 value={email}
@@ -284,9 +288,7 @@ export const AddEmployeeButtonModal = props => {
                 width: wp('70%'),
                 top: hp('6%'),
               }}>
-              <Text style={[Typography.placeholder]}>
-                {Strings.contactNumber}
-              </Text>
+              <Font.Placeholder>{Strings.contactNumber}</Font.Placeholder>
               <View style={{flexDirection: 'row'}}>
                 <TextInput
                   onChangeText={item => setPhone(item)}
