@@ -17,6 +17,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings, {log} from '_utils';
 import {userStore, companyStore} from '_store';
+import {chatRoom} from '_utils';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -108,19 +109,16 @@ export const ChatList = props => {
         </View>
       }
       renderItem={({item}) => {
-        var nameArray = item.name.split('+');
-        var chatName = null;
-        if (companyType == 'supplier') {
-          if (item.id.slice(0, 36) == companyID) {
-            chatName = nameArray[1];
-          } else {
-            chatName = nameArray[0];
-          }
-        } else if (companyType == 'retailer') {
-          chatName = nameArray[1];
-        } else if (companyType == 'farmer') {
-          chatName = nameArray[0];
-        }
+        var chatLongName = item.name.split('+');
+        var chatGroupID = item.id;
+        // getChatName returns the Chat Name that will be displayed for users to see
+        var chatName = chatRoom.getChatName(
+          companyType,
+          companyID,
+          chatLongName,
+          chatGroupID,
+        );
+
         var senderArray = item.mostRecentMessageSender.split(' ');
         var firstName = senderArray[0];
         return (
@@ -198,14 +196,6 @@ const ChatRoom = props => {
           alignItems: 'center',
         }}>
         <Text>{getInitials(props.chatName)}</Text>
-        {/* <Image
-          style={{
-            resizeMode: 'center',
-            width: wp('15%'),
-            height: wp('15%'),
-          }}
-          source={require('_assets/images/agridata.png')}
-        /> */}
       </View>
       {!lastUpdated.from(lastSeen).includes('ago') ? (
         <View

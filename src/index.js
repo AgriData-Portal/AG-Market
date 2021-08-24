@@ -93,13 +93,13 @@ const AppNavigator = props => {
       log('1: ', settings.data.getGlobalSettings.forceUpdate);
       changeUpdateStatus(status);
       log('DeviceInfo: ');
-      console.log('Version: ' + DeviceInfo.getVersion());
+      log('Version: ' + DeviceInfo.getVersion());
       log(
         'Latest Version: ',
         settings.data.getGlobalSettings.latestVersionNumber,
       );
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -154,7 +154,7 @@ const AppNavigator = props => {
   const supplier = props.user.supplierCompany;
   const farmer = props.user.farmerCompany;
 
-  console.log(props.user);
+  log(props.user);
   const company = {type: '', verified: '', role: ''};
   if (retailer != null && retailer.verified == true) {
     log('Retailer Verified\n');

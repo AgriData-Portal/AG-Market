@@ -90,7 +90,7 @@ export const EditCompany = props => {
   }
 
   const saveChanges = async () => {
-    console.log(
+    log(
       email,
       '  ',
       number,
@@ -102,7 +102,7 @@ export const EditCompany = props => {
       imageSource,
     );
     if (companyType == 'supplier') {
-      console.log('Supplier');
+      log('Supplier');
       var photo;
       try {
         if (imageSource != props.route.params.logo) {
@@ -139,7 +139,7 @@ export const EditCompany = props => {
         setUnsuccessfulModal(true);
       }
     } else if (companyType == 'retailer') {
-      console.log('Retailer');
+      log('Retailer');
       var photo;
       try {
         if (imageSource != props.route.params.logo) {
@@ -167,7 +167,7 @@ export const EditCompany = props => {
             },
           },
         });
-        console.log(companyProfile.data);
+        log(companyProfile.data);
 
         setSuccessfulModal(true);
       } catch (e) {
@@ -175,7 +175,7 @@ export const EditCompany = props => {
         setSuccessfulModal(true);
       }
     } else {
-      console.log('Farm');
+      log('Farm');
       var photo;
       try {
         if (imageSource != props.route.params.logo) {
@@ -203,7 +203,7 @@ export const EditCompany = props => {
             },
           },
         });
-        console.log(companyProfile.data);
+        log(companyProfile.data);
 
         setSuccessfulModal(true);
       } catch (e) {
