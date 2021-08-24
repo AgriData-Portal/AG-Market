@@ -60,7 +60,7 @@ const ChatBubble = props => {
         log(e);
       }
   };
-
+  // TODO
   useEffect(() => {
     mapColour();
   }, []);

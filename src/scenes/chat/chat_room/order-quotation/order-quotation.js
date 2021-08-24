@@ -1,18 +1,19 @@
+//library imports
 import React, {useState, useEffect} from 'react';
 import {View, FlatList, Text} from 'react-native';
-import {Typography, Colors} from '_styles';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Strings from '_utils';
+//styling imports
+import {Typography, Colors} from '_styles';
+//components
+import Strings, {chatRoom} from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
+import {CloseButton} from '_components';
 import {BlueButton} from '_components';
-
 import {userStore, companyStore} from '_store';
-import {chatRoom} from '_utils';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
