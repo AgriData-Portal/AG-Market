@@ -25,6 +25,7 @@ import {
 import Strings from '_utils';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 export const SellingOrders = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -145,9 +146,9 @@ export const SellingOrders = props => {
           top: hp('0%'),
           flexDirection: 'row',
         }}>
-        <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
+        <Font.Normal style={{textTransform: 'uppercase'}}>
           {Strings.results}
-        </Text>
+        </Font.Normal>
         {/* TODO code for sort modal */}
         {/* <TouchableOpacity
           onPress={() => setSortModal(true)}

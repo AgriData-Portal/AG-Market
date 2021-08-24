@@ -28,6 +28,7 @@ import {log} from '_utils';
 import {DetailsModal} from '_components';
 import {userStore, companyStore} from '_store';
 import Strings from '_utils';
+import {Font} from '_components';
 
 const RetailerList = props => {
   return (
@@ -152,7 +153,7 @@ const RetailerCard = props => {
           }}
         />
         <View style={{left: wp('10%'), justifyContent: 'center'}}>
-          <Text style={[Typography.normal]}>{props.name}</Text>
+          <Font.Normal>{props.name}</Font.Normal>
         </View>
       </View>
       <Modal
@@ -275,9 +276,9 @@ const RetailerModal = props => {
           marginTop: hp('2%'),
         }}>
         {companyType == 'supplier' ? (
-          <Text style={[Typography.large]}>{Strings.supermarkets}</Text>
+          <Font.Large>{Strings.supermarkets}</Font.Large>
         ) : (
-          <Text style={[Typography.large]}>{Strings.suppliers}</Text>
+          <Font.Large>{Strings.suppliers}</Font.Large>
         )}
       </View>
       <View style={{height: hp('65%'), top: hp('3%')}}>

@@ -31,6 +31,7 @@ import {goodsTaskForFarmerByDate} from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -167,55 +168,43 @@ const SendTask = props => {
             )}
           </View>
         </View>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              color: Colors.LIME_GREEN,
-              top: hp('3%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            color: Colors.LIME_GREEN,
+            top: hp('3%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {props.supplier.name}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('7%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        </Font.Normal>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('7%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {props.goods.length} {Strings.items}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('6%'),
-              right: hp('2%'),
-              position: 'absolute',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('6%'),
+            right: hp('2%'),
+            position: 'absolute',
+          }}>
           {Strings.dateCreated}:
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('8%'),
-              right: hp('2%'),
-              position: 'absolute',
-              fontStyle: 'italic',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('8%'),
+            right: hp('2%'),
+            position: 'absolute',
+            fontStyle: 'italic',
+          }}>
           {dayjs(props.createdAt).format('DD MMM YYYY')}
-        </Text>
+        </Font.Small>
       </View>
       <Modal isVisible={sendTaskModal}>
         <SendTaskModal
@@ -315,40 +304,31 @@ const SendTaskModal = props => {
           }}>
           <CloseButton setModal={props.setSendTaskModal} />
         </View>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('7%'),
-              left: wp('8%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            top: hp('7%'),
+            left: wp('8%'),
+          }}>
           {Strings.orderCreated}
-        </Text>
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              right: wp('7%'),
-              top: hp('7%'),
-              fontStyle: 'italic',
-            },
-          ]}>
+        </Font.Normal>
+        <Font.Placeholder
+          style={{
+            position: 'absolute',
+            right: wp('7%'),
+            top: hp('7%'),
+            fontStyle: 'italic',
+          }}>
           {Strings.order} #{props.trackingNum}
-        </Text>
-        <Text
-          style={[
-            Typography.header,
-            {
-              position: 'absolute',
-              top: hp('11%'),
-              left: wp('8%'),
-            },
-          ]}>
+        </Font.Placeholder>
+        <Font.Header
+          style={{
+            position: 'absolute',
+            top: hp('11%'),
+            left: wp('8%'),
+          }}>
           {dayjs(props.createdAt).add(8, 'hour').format('DD MMM YYYY')}
-        </Text>
+        </Font.Header>
         <View
           style={{
             borderBottomWidth: wp('1%'),
@@ -358,17 +338,14 @@ const SendTaskModal = props => {
             borderColor: Colors.GRAY_MEDIUM,
             position: 'absolute',
           }}></View>
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              top: hp('19%'),
-              left: wp('8%'),
-            },
-          ]}>
+        <Font.Placeholder
+          style={{
+            position: 'absolute',
+            top: hp('19%'),
+            left: wp('8%'),
+          }}>
           {Strings.items}: {props.goods.length}
-        </Text>
+        </Font.Placeholder>
         <View
           style={{
             position: 'absolute',
@@ -379,42 +356,33 @@ const SendTaskModal = props => {
           }}>
           <ProductList data={props.goods}></ProductList>
         </View>
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              top: hp('50%'),
-              left: wp('55%'),
-            },
-          ]}>
+        <Font.Placeholder
+          style={{
+            position: 'absolute',
+            top: hp('50%'),
+            left: wp('55%'),
+          }}>
           {Strings.total}: RM {sum}
-        </Text>
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              top: hp('55%'),
-              left: wp('8%'),
-            },
-          ]}>
+        </Font.Placeholder>
+        <Font.Placeholder
+          style={{
+            position: 'absolute',
+            top: hp('55%'),
+            left: wp('8%'),
+          }}>
           {Strings.deliveryDate}
-        </Text>
+        </Font.Placeholder>
         {deliverydate == null ? (
           <View>
-            <Text
-              style={[
-                Typography.small,
-                {
-                  position: 'absolute',
-                  top: hp('55%'),
-                  left: wp('35%'),
-                  width: wp('50%'),
-                },
-              ]}>
+            <Font.Small
+              style={{
+                position: 'absolute',
+                top: hp('55%'),
+                left: wp('35%'),
+                width: wp('50%'),
+              }}>
               {Strings.pleaseAddDeliveryDate}
-            </Text>
+            </Font.Small>
             <TouchableOpacity
               style={{
                 position: 'absolute',
@@ -486,17 +454,14 @@ const SendTaskModal = props => {
           </View>
         ) : (
           <View>
-            <Text
-              style={[
-                Typography.small,
-                {
-                  position: 'absolute',
-                  top: hp('55%'),
-                  left: wp('35%'),
-                },
-              ]}>
+            <Font.Small
+              style={{
+                position: 'absolute',
+                top: hp('55%'),
+                left: wp('35%'),
+              }}>
               {deliverydate}
-            </Text>
+            </Font.Small>
             <TouchableOpacity
               style={{
                 position: 'absolute',
@@ -509,28 +474,22 @@ const SendTaskModal = props => {
             </TouchableOpacity>
           </View>
         )}
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              top: hp('60%'),
-              left: wp('8%'),
-            },
-          ]}>
+        <Font.Placeholder
+          style={{
+            position: 'absolute',
+            top: hp('60%'),
+            left: wp('8%'),
+          }}>
           {Strings.buyer}:
-        </Text>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('60%'),
-              left: wp('35%'),
-            },
-          ]}>
+        </Font.Placeholder>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            top: hp('60%'),
+            left: wp('35%'),
+          }}>
           {props.supplier.name}
-        </Text>
+        </Font.Normal>
         <BlueButton
           onPress={() => {
             [setInvoiceModal(true)];
@@ -638,39 +597,30 @@ const InvoiceModal = props => {
         }}>
         <CloseButton setModal={props.setInvoiceModal} />
       </View>
-      <Text
-        style={[
-          Typography.header,
-          {
-            position: 'absolute',
-            top: hp('5%'),
-            left: wp('5%'),
-          },
-        ]}>
+      <Font.Header
+        style={{
+          position: 'absolute',
+          top: hp('5%'),
+          left: wp('5%'),
+        }}>
         Invoice {props.taskID.slice(0, 6)}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            right: wp('5%'),
-            top: hp('6%'),
-          },
-        ]}>
+      </Font.Header>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          right: wp('5%'),
+          top: hp('6%'),
+        }}>
         {dayjs().format('DD MMM YYYY')}
-      </Text>
-      <Text
-        style={
-          ([Typography.normal],
-          {
-            position: 'absolute',
-            top: hp('9%'),
-            left: wp('5%'),
-          })
-        }>
+      </Font.Placeholder>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('9%'),
+          left: wp('5%'),
+        }}>
         {props.supplier.name}
-      </Text>
+      </Font.Normal>
       <View
         style={{
           borderBottomWidth: 2,
@@ -710,17 +660,14 @@ const InvoiceModal = props => {
           />
         </View>
         <View style={{flexDirection: 'row', left: wp('45%')}}>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                fontFamily: 'Poppins-SemiBold',
-                left: wp('3%'),
-                textAlign: 'right',
-              },
-            ]}>
+          <Font.Normal
+            style={{
+              fontFamily: 'Poppins-SemiBold',
+              left: wp('3%'),
+              textAlign: 'right',
+            }}>
             TOTAL: RM {sum}
-          </Text>
+          </Font.Normal>
         </View>
       </View>
       <BlueButton
@@ -778,9 +725,9 @@ const InvoiceItem = props => {
         alignSelf: 'center',
         justifyContent: 'center',
       }}>
-      <Text style={[Typography.small, {position: 'absolute', left: wp('4%')}]}>
+      <Font.Small style={{position: 'absolute', left: wp('4%')}}>
         {props.name}
-      </Text>
+      </Font.Small>
       <TextInput
         style={[
           Typography.small,
@@ -790,22 +737,19 @@ const InvoiceItem = props => {
         value={quantity}
         keyboardType="numeric"
       />
-      <Text style={[Typography.small, {position: 'absolute', left: wp('40%')}]}>
+      <Font.Small style={{position: 'absolute', left: wp('40%')}}>
         kg
-      </Text>
-      <Text style={[Typography.small, {position: 'absolute', left: wp('45%')}]}>
+      </Font.Small>
+      <Font.Small style={{position: 'absolute', left: wp('45%')}}>
         @ RM {props.price}/{props.siUnit}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            position: 'absolute',
-            right: wp('4%'),
-          },
-        ]}>
+      </Font.Small>
+      <Font.Small
+        style={{
+          position: 'absolute',
+          right: wp('4%'),
+        }}>
         RM {parseFloat((props.price * parseFloat(quantity)).toFixed(2))}
-      </Text>
+      </Font.Small>
     </View>
   );
 };
@@ -854,72 +798,57 @@ const Product = props => {
         width: wp('75%'),
         justifyContent: 'center',
       }}>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            textAlign: 'left',
-            position: 'absolute',
-            bottom: hp('2.5%'),
-            left: wp('3%'),
-          },
-        ]}>
+      <Font.Normal
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          bottom: hp('2.5%'),
+          left: wp('3%'),
+        }}>
         {props.name}
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            textAlign: 'left',
-            position: 'absolute',
-            bottom: hp('2.5%'),
-            left: wp('25%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Normal
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          bottom: hp('2.5%'),
+          left: wp('25%'),
+        }}>
         {props.grade}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'left',
-            position: 'absolute',
-            top: hp('2.5%'),
-            left: wp('3%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Small
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          top: hp('2.5%'),
+          left: wp('3%'),
+        }}>
         {props.variety}
-      </Text>
+      </Font.Small>
 
-      <Text
-        style={[
-          Typography.small,
-          {
+      <Font.Small
+        style={{
+          textAlign: 'left',
+          left: wp('40%'),
+          position: 'absolute',
+          bottom: hp('2.5%'),
+        }}>
+        @ RM {props.price}/{props.siUnit}
+      </Font.Small>
+      <View style={{top: hp('3%'), left: wp('2%')}}>
+        <Font.Small
+          style={{
             textAlign: 'left',
-            left: wp('40%'),
+            left: wp('60%'),
             position: 'absolute',
             bottom: hp('2.5%'),
-          },
-        ]}>
-        @ RM {props.price}/{props.siUnit}
-      </Text>
-      <View style={{top: hp('3%'), left: wp('2%')}}>
-        <Text
-          style={[
-            Typography.small,
-            {
-              textAlign: 'left',
-              left: wp('60%'),
-              position: 'absolute',
-              bottom: hp('2.5%'),
-              right: wp('1%'),
+            right: wp('1%'),
 
-              width: wp('12%'),
-            },
-          ]}>
+            width: wp('12%'),
+          }}>
           | {props.quantity}
           {props.siUnit}
-        </Text>
+        </Font.Small>
       </View>
     </View>
   );
@@ -995,19 +924,16 @@ const RatingModal = props => {
         alignSelf: 'center',
       }}>
       <View>
-        <Text
-          style={[
-            Typography.large,
-            {
-              justifyContent: 'center',
-              alignSelf: 'center',
-              top: hp('5%'),
-              marginRight: wp('5%'),
-              marginLeft: wp('5%'),
-            },
-          ]}>
+        <Font.Large
+          style={{
+            justifyContent: 'center',
+            alignSelf: 'center',
+            top: hp('5%'),
+            marginRight: wp('5%'),
+            marginLeft: wp('5%'),
+          }}>
           {Strings.ratingsTransactionDone}
-        </Text>
+        </Font.Large>
       </View>
       <View style={{top: hp('4%')}}>
         <Rating
@@ -1041,7 +967,7 @@ const RatingModal = props => {
           shadowOpacity: 0.22,
           shadowRadius: 2.22,
         }}>
-        <Text style={[Typography.normal, {}]}>{Strings.submitRating}</Text>
+        <Font.Normal>{Strings.submitRating}</Font.Normal>
       </TouchableOpacity>
     </View>
   );

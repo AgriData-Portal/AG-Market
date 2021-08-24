@@ -21,6 +21,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {DismissKeyboard} from '_components';
+import {Font} from '_components';
 
 const now = () => {
   const now = dayjs().format('DD MMM YYYY');
@@ -37,21 +38,16 @@ export const SortModal = props => {
         backgroundColor: Colors.GRAY_MEDIUM,
         borderRadius: 5,
       }}>
-      <Text
-        style={[
-          Typography.normalBold,
-          {left: wp('5%'), marginBottom: hp('2%'), top: hp('1%')},
-        ]}>
+      <Font.NormalBold
+        style={{left: wp('5%'), marginBottom: hp('2%'), top: hp('1%')}}>
         Sort By
-      </Text>
+      </Font.NormalBold>
       <TouchableOpacity
         style={{
           width: wp('45%'),
           height: hp('4%'),
         }}>
-        <Text style={[Typography.normal, {left: wp('5%')}]}>
-          Newest to Oldest
-        </Text>
+        <Font.Normal style={{left: wp('5%')}}>Newest to Oldest</Font.Normal>
         {/*TRANSLATION*/}
       </TouchableOpacity>
       <TouchableOpacity
@@ -59,9 +55,7 @@ export const SortModal = props => {
           width: wp('45%'),
           height: hp('4%'),
         }}>
-        <Text style={[Typography.normal, {left: wp('5%')}]}>
-          Oldest to Newest
-        </Text>
+        <Font.Normal style={{left: wp('5%')}}>Oldest to Newest</Font.Normal>
       </TouchableOpacity>
     </View>
   );
