@@ -170,6 +170,7 @@ export const ChangePassword = props => {
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
 
+  //TODO
   const changePassword = async () => {
     try {
       await Auth.forgotPasswordSubmit(props.phone, code, password);

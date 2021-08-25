@@ -1,8 +1,9 @@
 import Strings from './language';
 import * as chatRoom from './chats';
+import * as marketPlace from './marketplace';
 
 export default Strings;
-export {chatRoom};
+export {chatRoom, marketPlace};
 
 const MODE = 'DEBUG';
 
