@@ -26,7 +26,7 @@ import {
 import Strings from '_utils';
 import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {log} from '_utils';
+import {log, authentication} from '_utils';
 
 export const Login = props => {
   const [secure, setSecure] = useState(true);
@@ -39,48 +39,48 @@ export const Login = props => {
   const [loading, setLoading] = useState(false);
 
   //TODO
-  const signIn = async () => {
-    try {
-      setLoading(true);
-      const user = await Auth.signIn('+6' + phone, password);
-      log(user);
-      log('Successful sign in');
-      props.updateUserID(user.username);
-      props.setUserAttributes(user.attributes);
+  // const signIn = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const user = await Auth.signIn('+6' + phone, password);
+  //     log(user);
+  //     log('Successful sign in');
+  //     props.updateUserID(user.username);
+  //     props.setUserAttributes(user.attributes);
 
-      //props.updateAuthState('loggedIn'); //fucking weird
-    } catch (error) {
-      setLoading(false);
-      setTimeout(() => {
-        if (error.code == 'UserNotConfirmedException') {
-          log('here');
-          setVerified(true);
-        } else if (error.code == 'UserNotFoundException') {
-          setUnsuccessfulModal(true);
-          setErrorText(
-            "Sorry you don't have an account associated with this number. Please register.",
-          );
-        } else if (error.code == 'NotAuthorizedException') {
-          setUnsuccessfulModal(true);
-          setErrorText(
-            'Sorry the password you entered is invalid. Please try again.',
-          );
-        } else if (error.code == 'NetworkError') {
-          setUnsuccessfulModal(true);
-          setErrorText(
-            'Sorry your network seems to be down. Please try again when internet connectivity has been restored.',
-          );
-        } else {
-          setUnsuccessfulModal(true);
-          setErrorText(
-            'Something has gone horribly wrong. Please contact us by clicking the prompt below after dismissing this modal',
-          );
-        }
-      }, 400);
+  //     //props.updateAuthState('loggedIn'); //fucking weird
+  //   } catch (error) {
+  //     setLoading(false);
+  //     setTimeout(() => {
+  //       if (error.code == 'UserNotConfirmedException') {
+  //         log('here');
+  //         setVerified(true);
+  //       } else if (error.code == 'UserNotFoundException') {
+  //         setUnsuccessfulModal(true);
+  //         setErrorText(
+  //           "Sorry you don't have an account associated with this number. Please register.",
+  //         );
+  //       } else if (error.code == 'NotAuthorizedException') {
+  //         setUnsuccessfulModal(true);
+  //         setErrorText(
+  //           'Sorry the password you entered is invalid. Please try again.',
+  //         );
+  //       } else if (error.code == 'NetworkError') {
+  //         setUnsuccessfulModal(true);
+  //         setErrorText(
+  //           'Sorry your network seems to be down. Please try again when internet connectivity has been restored.',
+  //         );
+  //       } else {
+  //         setUnsuccessfulModal(true);
+  //         setErrorText(
+  //           'Something has gone horribly wrong. Please contact us by clicking the prompt below after dismissing this modal',
+  //         );
+  //       }
+  //     }, 400);
 
-      log(error);
-    }
-  };
+  //     log(error);
+  //   }
+  // };
   var hasNumber = /\d/;
   return (
     <KeyboardAwareScrollView>
@@ -110,6 +110,7 @@ export const Login = props => {
         />
         <View style={{top: hp('5%')}}>
           <View>
+            {/* TODO change to FONT */}
             <Text
               style={[
                 Typography.largestSize,
@@ -124,6 +125,7 @@ export const Login = props => {
             </Text>
           </View>
           <View style={{top: hp('4%'), left: wp('8%'), width: wp('70%')}}>
+            {/* TODO change to FONT */}
             <Text style={[Typography.large]}>{Strings.logIntoAcc}</Text>
           </View>
         </View>
@@ -133,6 +135,7 @@ export const Login = props => {
               top: hp('12%'),
               left: wp('8%'),
             }}>
+            {/* TODO change to FONT */}
             <Text style={[Typography.placeholder]}>{Strings.phoneNumber}</Text>
             <View style={{flexDirection: 'row'}}>
               <TextInput
@@ -245,7 +248,27 @@ export const Login = props => {
                 'Sorry you have entered an invalid password. Password must contain at least 1 number.',
               );
             } else {
-              signIn();
+              // is returnng userID as user.userName right??
+              //TODO
+              setLoading(true);
+              authentication.signIn(phone, password).then(data => {
+                log(JSON.stringify(data), 'cyan');
+                if (data.success) {
+                  props.updateUserID(data.userID);
+                  props.setUserAttributes(data.userAttributes);
+                } else {
+                  setLoading(false);
+                  //TODO find a way to do without setTimeout
+                  setTimeout(() => {
+                    if (data.errorText == 'UserNotConfirmed') {
+                      setVerified(true);
+                    } else {
+                      setErrorText(data.errorText);
+                      setUnsuccessfulModal(true);
+                    }
+                  }, 400);
+                }
+              });
             }
           }}
           text={Strings.logIn}

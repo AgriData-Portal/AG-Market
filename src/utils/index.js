@@ -3,9 +3,10 @@ import * as chatRoom from './chats';
 import * as marketPlace from './marketplace';
 import * as orders from './orders';
 import * as tasks from './tasks';
+import * as authentication from './authentication';
 
 export default Strings;
-export {chatRoom, marketPlace, orders, tasks};
+export {chatRoom, marketPlace, orders, tasks, authentication};
 
 const MODE = 'DEBUG';
 

@@ -1,4 +1,4 @@
-import {API, graphqlOperation, Storage} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 
 import {
   getChatGroupsContainingRetailersByUpdatedAt,
@@ -6,7 +6,6 @@ import {
   getChatGroupsContainingFarmersByUpdatedAt,
   getSupplierCompany,
   getFarmerCompany,
-  messagesInChatByDate,
 } from '_graphql/queries';
 
 import {

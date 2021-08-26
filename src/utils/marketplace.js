@@ -1,4 +1,4 @@
-import {API, graphqlOperation, Storage} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 
 import {
   listSupplierListings,

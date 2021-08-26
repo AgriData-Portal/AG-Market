@@ -1,43 +1,21 @@
-import {API, graphqlOperation, Storage} from 'aws-amplify';
-import {Typography, Spacing, Colors, Mixins} from '_styles';
+import {API} from 'aws-amplify';
+import {Colors} from '_styles';
 import {Platform} from 'react-native';
 import Share from 'react-native-share';
-import PDFLib, {PDFDocument, PDFPage} from 'react-native-pdf-lib';
+import {PDFDocument, PDFPage} from 'react-native-pdf-lib';
 import * as RNFS from 'react-native-fs';
 
 import XLSX from 'xlsx';
 import agridataLogo from '_styles/image';
 import dayjs from 'dayjs';
 import {log} from '_utils';
-import {checkLocationAccuracy} from 'react-native-permissions';
 
 import {
-  listSupplierListings,
-  listFarmerListings,
-  supplierListingByNameStartingWithLowestPrice,
-  farmerListingByNameStartingWithLowestPrice,
-  getSupplierCompany,
-  getFarmerCompany,
-  listRetailerCompanys,
-  listSupplierCompanys,
   invoiceRetailerForSupplierByDate,
   invoiceForFarmerByDate,
   invoiceFarmerForSupplierByDate,
   invoiceForRetailerByDate,
 } from '_graphql/queries';
-
-import {
-  createMessage,
-  createChatGroup,
-  updateChatGroup,
-  createProductsInPurchaseOrder,
-  updateSupplierCompany,
-  updateFarmerCompany,
-  updateRetailerCompany,
-  updateProductsInPurchaseOrder,
-  createSupplierListing,
-  createFarmerListing,
-} from '_graphql/mutations';
 
 //selling orders
 
