@@ -23,7 +23,7 @@ import {
   invoiceFarmerForSupplierByDate,
 } from '../../graphql/queries';
 import Strings from '_utils';
-import {log} from '_utils';
+import {log, orders} from '_utils';
 import {companyStore} from '_store';
 
 export const SellingOrders = props => {
@@ -39,98 +39,27 @@ export const SellingOrders = props => {
 
   useEffect(() => {
     log('gettingInvoice');
-    getInvoice();
+    orders
+      .getInvoiceSellingOrder(companyType, companyID)
+      .then(data => [
+        setNextToken(data.nextToken),
+        setInvoiceList(data.items),
+        setLoading(false),
+      ]);
   }, [props.sellerState]);
 
   useEffect(() => {
     if (nextToken != null) {
-      getMoreInvoice();
+      orders
+        .getMoreInvoiceSellingOrder(companyType, companyID, nextToken)
+        .then(data => [
+          setNextToken(data.nextToken),
+          setInvoiceList(data.items),
+          setLoading(false),
+        ]);
     }
   }, [refresh]);
 
-  const getInvoice = async () => {
-    if (companyType == 'supplier') {
-      try {
-        const invoice1 = await API.graphql({
-          query: invoiceRetailerForSupplierByDate,
-          variables: {
-            supplierID: companyID,
-            sortDirection: 'DESC',
-            limit: 20,
-          },
-        });
-        log(invoice1.data.invoiceRetailerForSupplierByDate.items);
-        setNextToken(invoice1.data.invoiceRetailerForSupplierByDate.nextToken);
-        setInvoiceList(invoice1.data.invoiceRetailerForSupplierByDate.items);
-        log('supplierCompanyWithRetailerInvoices');
-
-        setLoading(false);
-      } catch (e) {
-        log(e);
-      }
-    } else {
-      try {
-        const invoice = await API.graphql({
-          query: invoiceForFarmerByDate,
-          variables: {
-            farmerID: companyID,
-            sortDirection: 'DESC',
-            limit: 20,
-          },
-        });
-        log(invoice.data.invoiceForFarmerByDate.items);
-        setInvoiceList(invoice.data.invoiceForFarmerByDate.items);
-        setNextToken(invoice.data.invoiceForFarmerByDate.nextToken);
-        setLoading(false);
-        log('farmerCompanyInvoices');
-      } catch (e) {
-        log(e);
-      }
-    }
-  };
-
-  const getMoreInvoice = async () => {
-    if (companyType == 'supplier') {
-      try {
-        const invoice = await API.graphql({
-          query: invoiceRetailerForSupplierByDate,
-          variables: {
-            supplierID: companyID,
-            sortDirection: 'DESC',
-            limit: 20,
-            nextToken: nextToken,
-          },
-        });
-        log(invoice.data.invoiceRetailerForSupplierByDate.items);
-        setNextToken(invoice.data.invoiceRetailerForSupplierByDate.nextToken);
-        setInvoiceList(invoice.data.invoiceRetailerForSupplierByDate.items);
-        setLoading(false);
-        log('supplierCompanyWithRetailerInvoices');
-      } catch (e) {
-        log(e);
-      }
-    } else {
-      try {
-        const invoice = await API.graphql({
-          query: invoiceForFarmerByDate,
-          variables: {
-            farmerID: companyID,
-            sortDirection: 'DESC',
-            limit: 20,
-            nextToken: nextToken,
-          },
-        });
-        log(invoice.data.invoiceForFarmerByDate.items);
-        setInvoiceList(invoice.data.invoiceForFarmerByDate.items);
-        setNextToken(invoice.data.invoiceForFarmerByDate.nextToken);
-        setLoading(false);
-        log('farmerCompanyInvoices');
-      } catch (e) {
-        log(e);
-      }
-    }
-    log('first run');
-  };
   return (
     <SafeAreaView
       style={{

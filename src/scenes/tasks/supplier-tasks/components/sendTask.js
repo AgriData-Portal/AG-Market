@@ -36,7 +36,7 @@ import {
 } from '../../../../graphql/queries';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import {BlueButton} from '_components';
-import {log} from '_utils';
+import {log, tasks} from '_utils';
 import {companyStore} from '_store';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
@@ -292,52 +292,52 @@ const SendTaskModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const companyType = companyStore(state => state.companyType);
 
-  const updateDeliveryDate = async () => {
-    try {
-      if (companyType == 'supplier') {
-        const response = await API.graphql({
-          query: updateGoodsTaskBetweenRandS,
-          variables: {
-            input: {
-              id: props.taskID,
-              deliveryDate: deliverydate,
-            },
-          },
-        });
-      } else {
-        const response = await API.graphql({
-          query: updateGoodsTaskBetweenSandF,
-          variables: {
-            input: {
-              id: props.taskID,
-              deliveryDate: deliverydate,
-            },
-          },
-        });
-      }
+  // const updateDeliveryDate = async () => {
+  //   try {
+  //     if (companyType == 'supplier') {
+  //       const response = await API.graphql({
+  //         query: updateGoodsTaskBetweenRandS,
+  //         variables: {
+  //           input: {
+  //             id: props.taskID,
+  //             deliveryDate: deliverydate,
+  //           },
+  //         },
+  //       });
+  //     } else {
+  //       const response = await API.graphql({
+  //         query: updateGoodsTaskBetweenSandF,
+  //         variables: {
+  //           input: {
+  //             id: props.taskID,
+  //             deliveryDate: deliverydate,
+  //           },
+  //         },
+  //       });
+  //     }
 
-      setDate(deliverydate);
-      setConfirmedDate(true);
-      if (props.trigger) {
-        props.setTrigger(false);
-      } else {
-        props.setTrigger(true);
-      }
+  //     setDate(deliverydate);
+  //     setConfirmedDate(true);
+  //     if (props.trigger) {
+  //       props.setTrigger(false);
+  //     } else {
+  //       props.setTrigger(true);
+  //     }
 
-      var tempList = props.sendTask;
+  //     var tempList = props.sendTask;
 
-      tempList.forEach((item, index, array) => {
-        if (item == props.taskID) {
-          item.deliveryDate = deliverydate;
-          array[index] = item;
-        }
-      });
+  //     tempList.forEach((item, index, array) => {
+  //       if (item == props.taskID) {
+  //         item.deliveryDate = deliverydate;
+  //         array[index] = item;
+  //       }
+  //     });
 
-      setSuccessfulModal(true);
-    } catch (e) {
-      log(e);
-    }
-  };
+  //     setSuccessfulModal(true);
+  //   } catch (e) {
+  //     log(e);
+  //   }
+  // };
 
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
@@ -528,7 +528,25 @@ const SendTaskModal = props => {
                 left: wp('78%'),
                 elevation: 5,
               }}
-              onPress={item => [updateDeliveryDate(), log(deliverydate)]}>
+              onPress={item => {
+                if (props.trigger) {
+                  props.setTrigger(false);
+                } else {
+                  props.setTrigger(true);
+                }
+                tasks
+                  .updateDeliveryDate(
+                    companyType,
+                    props.taskID,
+                    deliverydate,
+                    props.sendTask,
+                  )
+                  .then(data => [
+                    setDate(data),
+                    setConfirmedDate(true),
+                    setSuccessfulModal(true),
+                  ]);
+              }}>
               <Icon name="checkmark-outline" size={wp('5%')} />
             </TouchableOpacity>
           </View>

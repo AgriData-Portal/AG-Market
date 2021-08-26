@@ -1,9 +1,11 @@
 import Strings from './language';
 import * as chatRoom from './chats';
 import * as marketPlace from './marketplace';
+import * as orders from './orders';
+import * as tasks from './tasks';
 
 export default Strings;
-export {chatRoom, marketPlace};
+export {chatRoom, marketPlace, orders, tasks};
 
 const MODE = 'DEBUG';
 

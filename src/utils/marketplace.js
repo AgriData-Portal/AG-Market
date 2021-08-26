@@ -7,6 +7,8 @@ import {
   farmerListingByNameStartingWithLowestPrice,
   getSupplierCompany,
   getFarmerCompany,
+  listRetailerCompanys,
+  listSupplierCompanys,
 } from '_graphql/queries';
 
 import {
@@ -18,6 +20,8 @@ import {
   updateFarmerCompany,
   updateRetailerCompany,
   updateProductsInPurchaseOrder,
+  createSupplierListing,
+  createFarmerListing,
 } from '_graphql/mutations';
 import {log} from '_utils';
 
@@ -700,4 +704,199 @@ export const checkPOForInvalidInputs = POList => {
     }
   });
   return positiveQuantity;
+};
+
+//supplier store
+
+export const fetchSupplierStoreProducts = async (companyType, companyID) => {
+  try {
+    if (companyType == 'supplier') {
+      const products = await API.graphql({
+        query: listSupplierListings,
+        variables: {filter: {supplierID: {eq: companyID}}},
+      });
+
+      if (products.data.listSupplierListings) {
+        log('Products: \n');
+        log(products);
+        return products.data.listSupplierListings.items;
+      }
+    } else {
+      const products = await API.graphql({
+        query: listFarmerListings,
+        variables: {filter: {farmerID: {eq: companyID}}},
+      });
+
+      if (products.data.listFarmerListings) {
+        log('Products: \n');
+        log(products);
+        return products.data.listFarmerListings.items;
+      }
+    }
+  } catch (e) {
+    log(e);
+    log("there's a problem");
+  }
+};
+
+export const addListing = async (
+  imageSource,
+  productName,
+  variety,
+  companyName,
+  companyType,
+  companyID,
+
+  quantityAvailable,
+  minPrice,
+  maxPrice,
+  grade,
+  value2,
+  moq,
+) => {
+  try {
+    let photo = imageSource;
+    const response = await fetch(photo.uri);
+    const blob = await response.blob();
+    log('FileName: \n');
+    photo.fileName = productName + '_' + variety + '_' + companyName;
+    await Storage.put(photo.fileName, blob, {
+      contentType: 'image/jpeg',
+    });
+
+    if (companyType == 'supplier') {
+      var listing = {
+        supplierID: companyID,
+        productName: productName.toUpperCase(),
+        variety: variety,
+        quantityAvailable: parseInt(quantityAvailable),
+        lowPrice: parseFloat(minPrice),
+        highPrice: parseFloat(maxPrice),
+        minimumQuantity: parseInt(moq),
+        productPicture: photo.fileName,
+        grade: grade,
+        siUnit: value2,
+      };
+      const productListing = await API.graphql({
+        query: createSupplierListing,
+        variables: {input: listing},
+      });
+
+      listing.productPicture = {uri: photo.uri};
+
+      return productListing.data.createSupplierListing;
+    } else {
+      var listing = {
+        farmerID: companyID,
+        productName: productName.toUpperCase(),
+        variety: variety,
+        quantityAvailable: parseInt(quantityAvailable),
+        lowPrice: parseFloat(minPrice),
+        highPrice: parseFloat(maxPrice),
+        minimumQuantity: parseInt(moq),
+        productPicture: photo.fileName,
+        grade: grade,
+        siUnit: value2,
+      };
+      const productListing = await API.graphql({
+        query: createFarmerListing,
+        variables: {input: listing},
+      });
+
+      listing.productPicture = {uri: photo.uri};
+
+      return productListing.data.createFarmerListing;
+    }
+    log('Added product');
+  } catch (e) {
+    log(e);
+  }
+};
+
+export const sendStoreDetails = async (
+  companyID,
+  id,
+  userName,
+  name,
+  companyName,
+  userID,
+) => {
+  try {
+    log(id + companyID);
+    const updateChat = await API.graphql({
+      query: updateChatGroup,
+      variables: {
+        input: {
+          id: id + companyID,
+          mostRecentMessage: 'Store Catalog',
+          mostRecentMessageSender: userName,
+        },
+      },
+    });
+    log('chat group already exist');
+    log(name);
+  } catch (e) {
+    log(e);
+    if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
+      try {
+        const chatGroup = {
+          id: id + companyID,
+          name: name + '+' + companyName,
+          retailerID: id,
+          supplierID: companyID,
+          mostRecentMessage: 'Store Catalog',
+          mostRecentMessageSender: userName,
+        };
+        log(chatGroup);
+        const createdChatGroup = await API.graphql({
+          query: createChatGroup,
+          variables: {input: chatGroup},
+        });
+        log(createdChatGroup);
+      } catch (e) {
+        log(e.errors[0].errorType);
+      }
+    } else {
+      log(e.errors[0].errorType);
+    }
+  }
+
+  log('creating store ' + companyName);
+
+  const store = {
+    chatGroupID: id + companyID,
+    type: 'store',
+    content: companyID + '+' + companyName,
+    sender: userName,
+    senderID: userID,
+  };
+  try {
+    const message = await API.graphql({
+      query: createMessage,
+      variables: {input: store},
+    });
+    log(message.data.createMessage);
+  } catch {
+    e => log(e);
+  }
+};
+
+export const getAllSupermarkets = async companyType => {
+  try {
+    if (companyType == 'supplier') {
+      const listRetailer = await API.graphql({
+        query: listRetailerCompanys,
+      });
+
+      return listRetailer.data.listRetailerCompanys.items;
+    } else {
+      const listSupplier = await API.graphql({
+        query: listSupplierCompanys,
+      });
+
+      return listSupplier.data.listSupplierCompanys.items;
+    }
+  } catch (e) {
+    log(e);
+  }
 };

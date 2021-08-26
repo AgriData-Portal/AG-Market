@@ -13,7 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {MenuButton} from '_components';
-import {log} from '_utils';
+import {log, marketPlace} from '_utils';
 import {companyStore} from '_store';
 
 export const SupplierStore = props => {
@@ -23,40 +23,10 @@ export const SupplierStore = props => {
   const companyID = companyStore(state => state.companyID);
   const companyType = companyStore(state => state.companyType);
 
-  const fetchProducts = async () => {
-    try {
-      if (companyType == 'supplier') {
-        const products = await API.graphql({
-          query: listSupplierListings,
-          variables: {filter: {supplierID: {eq: companyID}}},
-        });
-
-        if (products.data.listSupplierListings) {
-          log('Products: \n');
-          log(products);
-          setProducts(products.data.listSupplierListings.items);
-        }
-      } else {
-        const products = await API.graphql({
-          query: listFarmerListings,
-          variables: {filter: {farmerID: {eq: companyID}}},
-        });
-
-        if (products.data.listFarmerListings) {
-          log('Products: \n');
-          log(products);
-          setProducts(products.data.listFarmerListings.items);
-        }
-      }
-      setLoading(false);
-    } catch (e) {
-      log(e);
-      log("there's a problem");
-    }
-  };
-
   useEffect(() => {
-    fetchProducts();
+    marketPlace
+      .fetchSupplierStoreProducts(companyType, companyID)
+      .then(data => [setProducts(data), setLoading(false)]);
     log('Refreshing...');
   }, []);
 

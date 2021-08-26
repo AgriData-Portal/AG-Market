@@ -1,3 +1,4 @@
+import {API, graphqlOperation, Storage} from 'aws-amplify';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {Platform} from 'react-native';
 import Share from 'react-native-share';
@@ -9,6 +10,191 @@ import agridataLogo from '_styles/image';
 import dayjs from 'dayjs';
 import {log} from '_utils';
 import {checkLocationAccuracy} from 'react-native-permissions';
+
+import {
+  listSupplierListings,
+  listFarmerListings,
+  supplierListingByNameStartingWithLowestPrice,
+  farmerListingByNameStartingWithLowestPrice,
+  getSupplierCompany,
+  getFarmerCompany,
+  listRetailerCompanys,
+  listSupplierCompanys,
+  invoiceRetailerForSupplierByDate,
+  invoiceForFarmerByDate,
+  invoiceFarmerForSupplierByDate,
+  invoiceForRetailerByDate,
+} from '_graphql/queries';
+
+import {
+  createMessage,
+  createChatGroup,
+  updateChatGroup,
+  createProductsInPurchaseOrder,
+  updateSupplierCompany,
+  updateFarmerCompany,
+  updateRetailerCompany,
+  updateProductsInPurchaseOrder,
+  createSupplierListing,
+  createFarmerListing,
+} from '_graphql/mutations';
+
+//selling orders
+
+export const getInvoiceSellingOrder = async (companyType, companyID) => {
+  log('hi', 'cyan');
+  if (companyType == 'supplier') {
+    try {
+      const invoice1 = await API.graphql({
+        query: invoiceRetailerForSupplierByDate,
+        variables: {
+          supplierID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+        },
+      });
+      log('supplierCompanyWithRetailerInvoices');
+      return invoice1.data.invoiceRetailerForSupplierByDate;
+    } catch (e) {
+      log(e);
+    }
+  } else {
+    try {
+      const invoice = await API.graphql({
+        query: invoiceForFarmerByDate,
+        variables: {
+          farmerID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+        },
+      });
+      log('farmerCompanyInvoices');
+      return invoice.data.invoiceForFarmerByDate;
+    } catch (e) {
+      log(e);
+    }
+  }
+};
+
+export const getMoreInvoiceSellingOrder = async (
+  companyType,
+  companyID,
+  nextToken,
+) => {
+  if (companyType == 'supplier') {
+    try {
+      const invoice = await API.graphql({
+        query: invoiceRetailerForSupplierByDate,
+        variables: {
+          supplierID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+          nextToken: nextToken,
+        },
+      });
+      log('supplierCompanyWithRetailerInvoices');
+      return invoice.data.invoiceRetailerForSupplierByDate;
+    } catch (e) {
+      log(e);
+    }
+  } else {
+    try {
+      const invoice = await API.graphql({
+        query: invoiceForFarmerByDate,
+        variables: {
+          farmerID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+          nextToken: nextToken,
+        },
+      });
+      log('farmerCompanyInvoices');
+      return invoice.data.invoiceForFarmerByDate;
+    } catch (e) {
+      log(e);
+    }
+  }
+  log('first run');
+};
+
+//buying orders
+
+export const getInvoiceBuyingOrder = async (companyType, companyID) => {
+  if (companyType == 'supplier') {
+    try {
+      const invoice = await API.graphql({
+        query: invoiceFarmerForSupplierByDate,
+        variables: {
+          supplierID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+        },
+      });
+      log('supplierCompanyWithFarmerInvoices');
+      return invoice.data.invoiceFarmerForSupplierByDate;
+    } catch (e) {
+      log(e);
+    }
+  } else if (companyType == 'retailer') {
+    try {
+      const invoice = await API.graphql({
+        query: invoiceForRetailerByDate,
+        variables: {
+          retailerID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+        },
+      });
+      log('retailerCompanyInvoices');
+      return invoice.data.invoiceForRetailerByDate;
+    } catch (e) {
+      log(e);
+    }
+  }
+};
+
+export const getMoreInvoiceBuyingOrder = async (
+  companyType,
+  companyID,
+  nextToken,
+) => {
+  if (companyType == 'supplier') {
+    try {
+      const invoice = await API.graphql({
+        query: invoiceFarmerForSupplierByDate,
+        variables: {
+          supplierID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+          nextToken: nextToken,
+        },
+      });
+      log('supplierCompanyWithFarmerInvoices');
+      return invoice.data.invoiceFarmerForSupplierByDate;
+    } catch (e) {
+      log(e);
+    }
+  } else if (companyType == 'retailer') {
+    try {
+      const invoice = await API.graphql({
+        query: invoiceForRetailerByDate,
+        variables: {
+          retailerID: companyID,
+          sortDirection: 'DESC',
+          limit: 20,
+          nextToken: nextToken,
+        },
+      });
+      log('retailerCompanyInvoices');
+      return invoice.data.invoiceForRetailerByDate;
+    } catch (e) {
+      log(e);
+    }
+  }
+  log('first run');
+};
+
+//generate document
 
 /*
 - Invoice ID
@@ -684,4 +870,42 @@ export const createPDF = async (
     RNFS.unlink(filePath);
   }
   return null;
+};
+
+export const createCSV = async (id, createdAt, items, amount, receivedBy) => {
+  var data = items;
+  var ws = XLSX.utils.json_to_sheet(data);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'AgriDataInvoice' + id.slice(0, 6));
+  const wbout = XLSX.write(wb, {
+    type: 'binary',
+    bookType: 'xlsx',
+  });
+  var file =
+    RNFS.DocumentDirectoryPath + '/AgriDataInvoice' + id.slice(0, 6) + '.xlsx';
+  RNFS.writeFile(file, wbout, 'ascii')
+    .then(r => {
+      log('CSV created at: ' + file);
+      //alert('CSV created');
+    })
+    .catch(e => {
+      //alert('CSV failed to create');
+    });
+  const shareOptions = {
+    message: 'Share CSV Test',
+    url:
+      Platform.OS == 'ios'
+        ? file
+        : 'file:///data/user/0/com.agridata_app/files/AgriDataInvoice' +
+          id.slice(0, 6) +
+          '.xlsx',
+  };
+  try {
+    const ShareResponse = await Share.open(shareOptions);
+    log(ShareResponse);
+    //RNFS.unlink(file);
+  } catch (error) {
+    log('Error1: ', error);
+    RNFS.unlink(file);
+  }
 };

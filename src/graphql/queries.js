@@ -3396,6 +3396,10 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }
@@ -3410,6 +3414,10 @@ export const goodsTaskForRetailerByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }
@@ -3461,6 +3469,10 @@ export const goodsTaskRetailerForSupplierByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }
@@ -3475,6 +3487,10 @@ export const goodsTaskRetailerForSupplierByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }
@@ -3529,6 +3545,10 @@ export const goodsTaskForFarmerByDate = /* GraphQL */ `
           mostRecentQuotationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }
@@ -3543,6 +3563,10 @@ export const goodsTaskForFarmerByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }
@@ -3597,6 +3621,10 @@ export const goodsTaskFarmerForSupplierByDate = /* GraphQL */ `
           mostRecentQuotationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }
@@ -3611,6 +3639,10 @@ export const goodsTaskFarmerForSupplierByDate = /* GraphQL */ `
           registrationNumber
           verified
           logo
+          rating {
+            currentRating
+            numberOfRatings
+          }
           updatedAt
           createdAt
         }

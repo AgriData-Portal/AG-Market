@@ -44,7 +44,7 @@ import {listRetailerCompanys} from '../../../../../graphql/queries';
 import {BlueButton} from '_components';
 import {listSupplierCompanys} from '../../../../../graphql/queries';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {log} from '_utils';
+import {log, marketPlace} from '_utils';
 import {DetailsModal} from '_components';
 import {companyStore} from '_store';
 
@@ -71,74 +71,6 @@ const AddItemModal = props => {
   const [focus, setFocus] = useState('');
   const [addProductButton, setAddProductButton] = useState(false);
   const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
-
-  async function addListing() {
-    try {
-      let photo = imageSource;
-      const response = await fetch(photo.uri);
-      const blob = await response.blob();
-      log('FileName: \n');
-      photo.fileName = productName + '_' + variety + '_' + companyName;
-      await Storage.put(photo.fileName, blob, {
-        contentType: 'image/jpeg',
-      });
-
-      if (companyType == 'supplier') {
-        var listing = {
-          supplierID: companyID,
-          productName: productName.toUpperCase(),
-          variety: variety,
-          quantityAvailable: parseInt(quantityAvailable),
-          lowPrice: parseFloat(minPrice),
-          highPrice: parseFloat(maxPrice),
-          minimumQuantity: parseInt(moq),
-          productPicture: photo.fileName,
-          grade: grade,
-          siUnit: value2,
-        };
-        const productListing = await API.graphql({
-          query: createSupplierListing,
-          variables: {input: listing},
-        });
-
-        listing.productPicture = {uri: photo.uri};
-
-        props.setProducts(products => [
-          productListing.data.createSupplierListing,
-          ...products,
-        ]);
-      } else {
-        var listing = {
-          farmerID: companyID,
-          productName: productName.toUpperCase(),
-          variety: variety,
-          quantityAvailable: parseInt(quantityAvailable),
-          lowPrice: parseFloat(minPrice),
-          highPrice: parseFloat(maxPrice),
-          minimumQuantity: parseInt(moq),
-          productPicture: photo.fileName,
-          grade: grade,
-          siUnit: value2,
-        };
-        const productListing = await API.graphql({
-          query: createFarmerListing,
-          variables: {input: listing},
-        });
-
-        listing.productPicture = {uri: photo.uri};
-
-        props.setProducts(products => [
-          productListing.data.createFarmerListing,
-          ...products,
-        ]);
-      }
-      log('Added product');
-      setSuccessfulModal(true);
-    } catch (e) {
-      log(e);
-    }
-    setAddProductButton(false);
-  }
 
   function selectImage() {
     let options = {
@@ -433,7 +365,27 @@ const AddItemModal = props => {
               setUnsuccessfulModal2(true);
             } else {
               try {
-                addListing();
+                marketPlace
+                  .addListing(
+                    imageSource,
+                    productName,
+                    variety,
+                    companyName,
+                    companyType,
+                    companyID,
+                    productName,
+                    quantityAvailable,
+                    minPrice,
+                    maxPrice,
+                    grade,
+                    value2,
+                    moq,
+                  )
+                  .then(data => [
+                    props.setProducts(products => [data, ...products]),
+                    setSuccessfulModal(true),
+                    setAddProductButton(false),
+                  ]);
               } catch {
                 e => log('error ' + e);
               }
