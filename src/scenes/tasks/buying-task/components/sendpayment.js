@@ -35,7 +35,7 @@ import {
   paymentsTaskFarmerForSupplierByDate,
 } from '../../../../graphql/queries';
 import {BlueButton} from '_components';
-import {log} from '_utils';
+import {log, tasks} from '_utils';
 import {companyStore} from '_store';
 import {Font} from '_components';
 
@@ -44,44 +44,7 @@ const UploadReceiptModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const companyType = companyStore(state => state.companyType);
   log(props.supplier);
-  const sendReceipt = async () => {
-    try {
-      if (companyType == 'retailer') {
-        const updated = await API.graphql({
-          query: updatePaymentTaskBetweenRandS,
-          variables: {input: {id: props.id, receipt: 'some receipt'}},
-        });
-        log(updated);
-        setSuccessfulModal(true);
-        var tempList = props.payTask;
-        tempList.forEach((item, index, arr) => {
-          if (item.id == props.id) {
-            arr[index] = updated.data.updatePaymentTaskBetweenRandS;
-          }
-        });
-      } else {
-        const updated = await API.graphql({
-          query: updatePaymentTaskBetweenSandF,
-          variables: {input: {id: props.id, receipt: 'some receipt'}},
-        });
-        log(updated);
-        setSuccessfulModal(true);
-        var tempList = props.payTask;
-        tempList.forEach((item, index, arr) => {
-          if (item.id == props.id) {
-            arr[index] = updated.data.updatePaymentTaskBetweenSandF;
-          }
-        });
-      }
-      if (props.trigger) {
-        props.setTrigger(false);
-      } else {
-        props.setTrigger(true);
-      }
-    } catch (e) {
-      log(e);
-    }
-  };
+
   return (
     <View
       style={{
@@ -257,7 +220,16 @@ const UploadReceiptModal = props => {
         9065 7756 8989
       </Text> */}
       <BlueButton
-        onPress={() => sendReceipt()}
+        onPress={() => {
+          if (props.trigger) {
+            props.setTrigger(false);
+          } else {
+            props.setTrigger(true);
+          }
+          tasks
+            .sendReceipt(companyType, props.id, props.payTask)
+            .then(setSuccessfulModal(true));
+        }}
         text={Strings.paid}
         font={Typography.normal}
         borderRadius={10}

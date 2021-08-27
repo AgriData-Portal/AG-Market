@@ -32,7 +32,7 @@ import {
   paymentsTaskForFarmerByDate,
 } from '../../../../graphql/queries';
 import {BlueButton} from '_components';
-import {log} from '_utils';
+import {log, tasks} from '_utils';
 import {companyStore} from '_store';
 import {Font} from '_components';
 
@@ -258,49 +258,6 @@ const ReceivePaymentModal = props => {
   const [successfulModal, setSuccessfulModal] = useState(false);
   const companyType = companyStore(state => state.companyType);
 
-  const receivedPayment = async () => {
-    try {
-      if (companyType == 'supplier') {
-        await API.graphql({
-          query: deletePaymentTaskBetweenRandS,
-          variables: {input: {id: props.id}},
-        });
-      } else {
-        await API.graphql({
-          query: deletePaymentTaskBetweenSandF,
-          variables: {input: {id: props.id}},
-        });
-      }
-
-      var tempList = props.claimTask;
-      for (let [i, temp] of tempList.entries()) {
-        if (temp.id == props.id) {
-          tempList.splice(i, 1);
-        }
-      }
-      props.setClaimTask(tempList);
-    } catch (e) {
-      log(e);
-    }
-    try {
-      if (companyType == 'supplier') {
-        await API.graphql({
-          query: updateInvoiceBetweenRandS,
-          variables: {input: {id: props.id, paid: true}},
-        });
-      } else {
-        await API.graphql({
-          query: updateInvoiceBetweenSandF,
-          variables: {input: {id: props.id, paid: true}},
-        });
-      }
-
-      setSuccessfulModal(true);
-    } catch (e) {
-      log(e);
-      log('fail to update');
-    }
-  };
   return (
     <View
       style={{
@@ -479,7 +436,11 @@ const ReceivePaymentModal = props => {
         9065 7756 8989
       </Text> */}
       <BlueButton
-        onPress={() => [receivedPayment()]}
+        onPress={() => [
+          tasks
+            .receivedPayment(companyType, props.id, props.claimTask)
+            .then(data => [props.setClaimTask(data), setSuccessfulModal(true)]),
+        ]}
         text={Strings.recieved}
         font={Typography.normal}
         borderRadius={10}

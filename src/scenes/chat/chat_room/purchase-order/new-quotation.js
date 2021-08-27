@@ -30,6 +30,7 @@ import {BlueButton} from '_components';
 import {log} from '_utils';
 import {UnsuccessfulModal} from '_components';
 import {userStore, companyStore} from '_store';
+import {chatRoom} from '_utils';
 import {Font} from '_components';
 
 const NewOrderQuotation = props => {
@@ -57,14 +58,18 @@ const NewOrderQuotation = props => {
   const companyType = companyStore(state => state.companyType);
 
   var productsWIndex = quotationItems;
+
   productsWIndex.forEach((item, index, arr) => {
     log('adding index to check back later');
     item['index'] = index;
     arr[index] = item;
   });
+
   setQuotationItems(productsWIndex);
   log('printing productsWIndex');
+
   var tempSum = 0;
+
   useEffect(() => {
     log('useEffect to calculate sum Triggered');
     quotationItems.forEach((item, index, arr) => {
@@ -77,156 +82,6 @@ const NewOrderQuotation = props => {
     log(tempSum);
   }, [trigger, quotationItems]);
 
-  const sendQuotation = async () => {
-    if (isNaN(sum)) {
-      setUnsuccessfulModal(true);
-      var valid = false;
-    } else {
-      var valid = true;
-    }
-
-    log(valid);
-    if (valid == true) {
-      var mostRecentQuotationNumber;
-      try {
-        if (companyType == 'supplier') {
-          const response = await API.graphql({
-            query: getSupplierCompany,
-            variables: {id: props.chatGroupID.slice(36, 72)},
-          });
-          mostRecentQuotationNumber =
-            response.data.getSupplierCompany.mostRecentQuotationNumber;
-          log('newnum: ' + mostRecentQuotationNumber);
-          if (mostRecentQuotationNumber) {
-            if (
-              dayjs().format('YYYY-MM') ==
-              mostRecentQuotationNumber.slice(4, 11)
-            ) {
-              var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
-              var numberString = (number + 1).toString().padStart(4, '0');
-              mostRecentQuotationNumber =
-                'QUO-' + dayjs().format('YYYY-MM-') + numberString;
-            } else {
-              mostRecentQuotationNumber =
-                'QUO-' + dayjs().format('YYYY-MM-') + '0001';
-            }
-          } else {
-            mostRecentQuotationNumber =
-              'QUO-' + dayjs().format('YYYY-MM-') + '0001';
-          }
-          log('updatednum: ' + mostRecentQuotationNumber);
-
-          log('creating purchase order');
-          const supplierCompanyUpdate = await API.graphql({
-            query: updateSupplierCompany,
-            variables: {
-              input: {
-                id: props.chatGroupID.slice(36, 72),
-                mostRecentQuotationNumber: mostRecentQuotationNumber,
-              },
-            },
-          });
-        } else if (companyType == 'farmer') {
-          const response = await API.graphql({
-            query: getFarmerCompany,
-            variables: {id: props.chatGroupID.slice(36, 72)},
-          });
-          mostRecentQuotationNumber =
-            response.data.getFarmerCompany.mostRecentQuotationNumber;
-          log('newnum: ' + mostRecentQuotationNumber);
-          if (mostRecentQuotationNumber) {
-            if (
-              dayjs().format('YYYY-MM') ==
-              mostRecentQuotationNumber.slice(4, 11)
-            ) {
-              var number = parseInt(mostRecentQuotationNumber.slice(12, 16));
-              var numberString = (number + 1).toString().padStart(4, '0');
-              mostRecentQuotationNumber =
-                'QUO-' + dayjs().format('YYYY-MM-') + numberString;
-            } else {
-              mostRecentQuotationNumber =
-                'QUO-' + dayjs().format('YYYY-MM-') + '0001';
-            }
-          } else {
-            mostRecentQuotationNumber =
-              'QUO-' + dayjs().format('YYYY-MM-') + '0001';
-          }
-          log('updatednum: ' + mostRecentQuotationNumber);
-
-          log('creating purchase order');
-          const farmerCompanyUpdate = await API.graphql({
-            query: updateFarmerCompany,
-            variables: {
-              input: {
-                id: props.chatGroupID.slice(36, 72),
-                mostRecentQuotationNumber: mostRecentQuotationNumber,
-              },
-            },
-          });
-        }
-      } catch (e) {
-        log(e);
-      }
-
-      var message = '';
-      var tempList = quotationItems;
-      tempList.forEach((item, index, array) => {
-        message = message + (item.id + '+');
-        message = message + (item.name + '+');
-        message = message + (item.quantity + '+');
-        message = message + (item.siUnit + '+');
-        message = message + (item.variety + '+');
-        message = message + (item.grade + '+');
-        message = message + (item.price + '+');
-        if (index < tempList.length - 1) {
-          message = message + '/';
-        }
-      });
-      message =
-        message +
-        ':' +
-        sum.toString() +
-        ':' +
-        deliveryValue +
-        ':' +
-        paymentValue;
-      log('removing key and value pairs like index for order quotation');
-      log(message);
-
-      try {
-        log('sending order quotation');
-        const createdMessage = await API.graphql({
-          query: createMessage,
-          variables: {
-            input: {
-              chatGroupID: props.chatGroupID,
-              type: mostRecentQuotationNumber,
-              content: message,
-              sender: userName,
-              senderID: userID,
-            },
-          },
-        });
-        log('message created');
-        const updatedChat = await API.graphql({
-          query: updateChatGroup,
-          variables: {
-            input: {
-              id: props.chatGroupID,
-              mostRecentMessage: 'Quotation',
-              mostRecentMessageSender: userName,
-            },
-          },
-        });
-        log('Updated chat');
-
-        setSuccessfulModal(true);
-      } catch (e) {
-        log(e);
-      }
-    }
-    setSendQuoteButton(false);
-  };
   return (
     <View
       style={{
@@ -374,7 +229,24 @@ const NewOrderQuotation = props => {
           top: hp('81%'),
         }}>
         <BlueButton
-          onPress={() => [sendQuotation()]}
+          onPress={() => {
+            if (!isNaN(sum)) {
+              chatRoom
+                .sendQuotation(
+                  props.chatGroupID,
+                  companyType,
+                  quotationItems,
+                  userName,
+                  userID,
+                  sum,
+                  deliveryValue,
+                  paymentValue,
+                )
+                .then([setSendQuoteButton(false), setSuccessfulModal(true)]);
+            } else {
+              setUnsuccessfulModal(true);
+            }
+          }}
           text={Strings.sendQuotation}
           borderRadius={10}
           font={Typography.normal}

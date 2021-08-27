@@ -21,7 +21,7 @@ import Strings from '_utils';
 import {OrderQuotationModal} from '../order-quotation/order-quotation';
 import {PurchaseOrder} from '../purchase-order/purchase-order';
 import {BlueButton} from '_components';
-import {log} from '_utils';
+import {log, chatRoom} from '_utils';
 import {userStore} from '_store';
 import {Font} from '_components';
 
@@ -34,37 +34,21 @@ const ChatBubble = props => {
   const [imageModal, setImageModal] = useState(false);
   const [nameColour, setNameColour] = useState('black');
 
-  const mapColour = () => {
-    var colourObject = props.colourID;
-    var counter = 0;
-
-    //get the user id
-    //check whether user id is a value in the JSON
-    //if yes, get the key of that value
-    //if no
-
-    if (props.senderID != userID)
-      try {
-        for (let i = 0; i < colourObject.length; i++) {
-          counter = counter + 1;
-          if (colourObject[i].id == props.senderID) {
-            setNameColour(colourObject[i].colour);
-            return false;
-          } else if (colourObject[i].id == '') {
-            setNameColour(colourObject[i].colour);
-            colourObject[i].id = props.senderID;
-            props.setColourID(colourObject);
-            return false;
-          }
-        }
-      } catch (e) {
-        log(e);
-      }
-  };
-
   useEffect(() => {
-    mapColour();
+    //Assigns colours to different senders
+    if (!isMyMessage()) {
+      const data = chatRoom.mapColour(props.colourID, props.senderID, userID);
+      if (data.existingUser) {
+        setNameColour(data.colour);
+      } else if (!data.existingUser) {
+        setNameColour(data.colour);
+        props.setColourID(data.colourObject);
+      } else {
+        log('failed', 'red');
+      }
+    }
   }, []);
+
   const createdAt = dayjs(props.createdAt).format('HH:mm D/M');
   const isMyMessage = () => {
     if (props.senderID == userID) return true;
@@ -494,7 +478,7 @@ const ChatBubble = props => {
 
 const ChatBubbleList = props => {
   //TODO build a store for containing all the messages
-  const [trigger, setTrigger] = useState(false);
+
   const [colourID, setColourID] = useState([
     {colour: '#D25BD2', id: ''},
     {colour: '#D25B7B', id: ''},

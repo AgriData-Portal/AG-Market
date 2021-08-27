@@ -25,6 +25,7 @@ import {
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {marketPlace} from '_utils';
 
 export const Store = props => {
   const {itemId} = props.route.params; //supplierid
@@ -40,14 +41,18 @@ export const Store = props => {
   );
 
   const purchaseOrder = companyID + itemId;
-  log('retailer id:' + companyID);
 
-  log('purchase Order:' + purchaseOrder);
   const [isFavourite, setIsFavourite] = useState(false);
 
   useEffect(() => {
     log('Fetching Products from ' + itemId);
-    fetchProducts();
+
+    marketPlace
+      .fetchStoreProducts(companyType, itemId)
+      .then(data => [
+        setProducts(data.listings.items),
+        setStoreName(data.name),
+      ]);
     log('Fetching PO from ' + purchaseOrder);
     getPOList();
   }, [itemId]);
@@ -63,127 +68,6 @@ export const Store = props => {
       setPOList(list.data.purchaseOrderItems.items);
     } catch {
       e => log(e);
-    }
-  };
-
-  const fetchProducts = async () => {
-    try {
-      if (companyType == 'retailer') {
-        const supplier = await API.graphql({
-          query: getSupplierCompany,
-          variables: {id: itemId},
-        });
-        log(supplier.data.getSupplierCompany.listings.items);
-        setProducts(supplier.data.getSupplierCompany.listings.items);
-        setStoreName(supplier.data.getSupplierCompany.name);
-      } else {
-        const supplier = await API.graphql({
-          query: getFarmerCompany,
-          variables: {id: itemId},
-        });
-        log(supplier.data.getFarmerCompany.listings.items);
-        setProducts(supplier.data.getFarmerCompany.listings.items);
-        setStoreName(supplier.data.getFarmerCompany.name);
-      }
-    } catch (e) {
-      log(e);
-    }
-  };
-
-  const updateFavourites = async () => {
-    try {
-      var currentFavList = companyFavouriteStores;
-      if (currentFavList != null) {
-        currentFavList.push({id: itemId, name: storeName});
-        if (companyType == 'retailer') {
-          var updated = await API.graphql({
-            query: updateRetailerCompany,
-            variables: {
-              input: {
-                id: companyID,
-                favouriteStores: currentFavList,
-              },
-            },
-          });
-        } else {
-          var updated = await API.graphql({
-            query: updateSupplierCompany,
-            variables: {
-              input: {
-                id: companyID,
-                favouriteStores: currentFavList,
-              },
-            },
-          });
-        }
-        setIsFavourite(true);
-        log('success');
-      } else {
-        if (companyType == 'retailer') {
-          var updated = await API.graphql({
-            query: updateRetailerCompany,
-            variables: {
-              input: {
-                id: companyID,
-                favouriteStores: [{id: itemId, name: storeName}],
-              },
-            },
-          });
-        } else {
-          var updated = await API.graphql({
-            query: updateSupplierCompany,
-            variables: {
-              input: {
-                id: companyID,
-                favouriteStores: [{id: itemId, name: storeName}],
-              },
-            },
-          });
-        }
-
-        setIsFavourite(true);
-        log('success');
-      }
-    } catch (e) {
-      log(e);
-    }
-  };
-
-  const unfavourite = async () => {
-    try {
-      var currentFavList = companyFavouriteStores;
-      log(currentFavList.length);
-      currentFavList.forEach((item, index, arr) => {
-        if (item.id == itemId) {
-          arr.splice(index, 1);
-        }
-      });
-      log(currentFavList.length);
-      if (companyType == 'retailer') {
-        var updated = await API.graphql({
-          query: updateRetailerCompany,
-          variables: {
-            input: {
-              id: props.user.retailerCompanyID,
-              favouriteStores: currentFavList,
-            },
-          },
-        });
-      } else {
-        var updated = await API.graphql({
-          query: updateSupplierCompany,
-          variables: {
-            input: {
-              id: companyID,
-              favouriteStores: currentFavList,
-            },
-          },
-        });
-      }
-      setIsFavourite(false);
-      log('success');
-    } catch (e) {
-      log(e);
     }
   };
 
@@ -232,7 +116,11 @@ export const Store = props => {
       </View>
       {isFavourite ? (
         <BlueButton
-          onPress={() => unfavourite()}
+          onPress={() =>
+            marketPlace
+              .unfavourite(companyFavouriteStores, itemId, companyID)
+              .then(setIsFavourite(false))
+          }
           text={'Favourited'}
           font={Typography.normal}
           backgroundColor={'gold'}
@@ -244,7 +132,17 @@ export const Store = props => {
         />
       ) : (
         <BlueButton
-          onPress={() => updateFavourites()}
+          onPress={() =>
+            marketPlace
+              .updateFavourites(
+                companyFavouriteStores,
+                itemId,
+                storeName,
+                companyID,
+                companyType,
+              )
+              .then(setIsFavourite(true))
+          }
           backgroundColor={Colors.GRAY_MEDIUM}
           text={'Add to Favourites'}
           top={Platform.OS === 'ios' ? hp('3%') : hp('1%')}

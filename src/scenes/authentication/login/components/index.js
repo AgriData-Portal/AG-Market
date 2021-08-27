@@ -3,9 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList,
-  Image,
-  RefreshControl,
   TextInput,
   KeyboardAvoidingView,
   Platform,
@@ -16,7 +13,7 @@ import {
   SuccessfulModal,
   DismissKeyboardView,
 } from '_components';
-import {Typography, Spacing, Colors, Mixins} from '_styles';
+import {Colors} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
@@ -27,7 +24,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Auth} from 'aws-amplify';
 import Strings from '_utils';
-import {log} from '_utils';
+import {log, authentication} from '_utils';
 import {Font} from '_components';
 
 export const ForgetPassword = props => {
@@ -35,18 +32,19 @@ export const ForgetPassword = props => {
   const [phoneNumberModal, setPhoneNumberModal] = useState(false);
   const [phone, setPhone] = useState('+6' + props.phone);
 
-  const sendConfirmation = async props => {
-    await Auth.forgotPassword(phone)
-      .then(data => {
-        log(data);
-        log(phone);
-      })
-      .catch(err => {
-        log(err);
-        log(phone);
-      });
-    setChangePassword(true);
-  };
+  //TODO not sure if working
+  // const sendConfirmation = async props => {
+  //   await Auth.forgotPassword(phone)
+  //     .then(data => {
+  //       log(data);
+  //       log(phone);
+  //     })
+  //     .catch(err => {
+  //       log(err);
+  //       log(phone);
+  //     });
+  //   setChangePassword(true);
+  // };
 
   return (
     <KeyboardAvoidingView
@@ -118,7 +116,11 @@ export const ForgetPassword = props => {
             </View>
             <TouchableOpacity
               onPress={() => [
-                phone == '' ? setPhoneNumberModal(true) : sendConfirmation(),
+                phone == ''
+                  ? setPhoneNumberModal(true)
+                  : authentication
+                      .sendConfirmation(phone)
+                      .then(setChangePassword(true)),
               ]}
               style={{
                 top: hp('7%'),
@@ -168,24 +170,25 @@ export const ChangePassword = props => {
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
 
-  const changePassword = async () => {
-    try {
-      await Auth.forgotPasswordSubmit(props.phone, code, password);
-      setResendCodeModal(true);
-    } catch (e) {
-      if (e.code == 'CodeMismatchException') {
-        setWrongAuthCode(true);
-        log('code error');
-      } else if (e.code == 'InvalidPasswordException') {
-        setPasswordFormat(true);
-        log('code error');
-      } else if (e.code == 'LimitExceededException') {
-        setLimitExceeded(true);
-        log('code error');
-      }
-      log(e);
-    }
-  };
+  //TODO not sure if working
+  // const changePassword = async () => {
+  //   try {
+  //     await Auth.forgotPasswordSubmit(props.phone, code, password);
+  //     setResendCodeModal(true);
+  //   } catch (e) {
+  //     if (e.code == 'CodeMismatchException') {
+  //       setWrongAuthCode(true);
+  //       log('code error');
+  //     } else if (e.code == 'InvalidPasswordException') {
+  //       setPasswordFormat(true);
+  //       log('code error');
+  //     } else if (e.code == 'LimitExceededException') {
+  //       setLimitExceeded(true);
+  //       log('code error');
+  //     }
+  //     log(e);
+  //   }
+  // };
 
   const sendConfirmation = async => {
     // await Auth.forgotPassword(props.phone)
@@ -302,7 +305,22 @@ export const ChangePassword = props => {
                 if (code == '' || password == '') {
                   setPasswordCodeModal(true);
                 } else {
-                  changePassword();
+                  authentication
+                    .changePassword(props.phone, code, password)
+                    .then(data => {
+                      if (data == true) {
+                        setResendCodeModal(true);
+                      } else if (data == 'CodeMismatchException') {
+                        setWrongAuthCode(true);
+                        log('code error');
+                      } else if (data == 'InvalidPasswordException') {
+                        setPasswordFormat(true);
+                        log('code error');
+                      } else if (data == 'LimitExceededException') {
+                        setLimitExceeded(true);
+                        log('code error');
+                      }
+                    });
                 }
               }}
               style={{top: hp('10%')}}>

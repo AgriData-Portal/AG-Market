@@ -574,6 +574,7 @@ const TabbedNavigator = props => {
               {...screenProps}
               updateAuthState={props.updateAuthState}
               user={props.user}
+              sellerState={props.sellerState}
             />
           )
         }

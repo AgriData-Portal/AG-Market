@@ -33,7 +33,6 @@ import {
   AccountsNavigation,
   SupplierNavigation,
   VerificationNavigation,
-  CreateCompanyNavigation,
   AuthenticationNavigator,
   FarmerNavigation,
 } from './navigation';
@@ -93,13 +92,13 @@ const AppNavigator = props => {
       log('1: ', settings.data.getGlobalSettings.forceUpdate);
       changeUpdateStatus(status);
       log('DeviceInfo: ');
-      console.log('Version: ' + DeviceInfo.getVersion());
+      log('Version: ' + DeviceInfo.getVersion());
       log(
         'Latest Version: ',
         settings.data.getGlobalSettings.latestVersionNumber,
       );
     } catch (e) {
-      console.log(e);
+      log(e);
     }
   };
 
@@ -154,7 +153,7 @@ const AppNavigator = props => {
   const supplier = props.user.supplierCompany;
   const farmer = props.user.farmerCompany;
 
-  console.log(props.user);
+  log(props.user);
   const company = {type: '', verified: '', role: ''};
   if (retailer != null && retailer.verified == true) {
     log('Retailer Verified\n');
@@ -445,6 +444,9 @@ const App = () => {
               name: user.attributes['custom:companyName'],
               address: user.attributes['custom:companyAddress'],
               registrationNumber: user.attributes['custom:companyRegNum'],
+              contactDetails: {phone: null, email: null},
+              rating: {currentRating: null, numberOfRatings: null},
+              bankAccount: {accountNumber: null, bankName: null},
             },
           },
         });
@@ -458,6 +460,10 @@ const App = () => {
               name: user.attributes['custom:companyName'],
               address: user.attributes['custom:companyAddress'],
               registrationNumber: user.attributes['custom:companyRegNum'],
+              contactDetails: {phone: null, email: null},
+              rating: {currentRating: null, numberOfRatings: null},
+              favouriteStores: [],
+              bankAccount: {accountNumber: null, bankName: null},
             },
           },
         });
@@ -472,6 +478,10 @@ const App = () => {
               name: user.attributes['custom:companyName'],
               address: user.attributes['custom:companyAddress'],
               registrationNumber: user.attributes['custom:companyRegNum'],
+              contactDetails: {phone: null, email: null},
+              rating: {currentRating: null, numberOfRatings: null},
+              favouriteStores: [],
+              bankAccount: {accountNumber: null, bankName: null},
             },
           },
         });

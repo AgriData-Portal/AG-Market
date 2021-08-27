@@ -25,10 +25,10 @@ import {
 import Strings from '_utils';
 import {API} from 'aws-amplify';
 import dayjs from 'dayjs';
-import {createPDF} from './create-pdf';
-import {createCSV} from './create-csv';
+import {createPDF} from './deprecated-create-pdf';
+import {createCSV} from './deprecated-create-csv';
 import {BlueButton} from '_components';
-import {log} from '_utils';
+import {log, orders} from '_utils';
 import {companyStore} from '_store';
 import {Font} from '_components';
 
@@ -297,8 +297,29 @@ const Order = props => {
 
 const InvoiceModal = props => {
   const companyType = companyStore(state => state.companyType);
-  const rAddress = props.retailer.address;
-  const sAddress = props.supplier.address;
+  if (
+    companyType == 'retailer' ||
+    (companyType == 'supplier' && !props.sellerState)
+  ) {
+    var rAddress = props.retailer.address;
+    var sAddress = props.supplier.address;
+    var buyerName = props.retailer.name;
+    var sellerName = props.supplier.name;
+    var buyerRegistration = props.retailer.registrationNumber;
+    var sellerRegistration = props.supplier.registrationNumber;
+  } else if (
+    companyType == 'farmer' ||
+    (companyType == 'supplier' && props.sellerState)
+  ) {
+    var rAddress = props.supplier.address;
+    var sAddress = props.farmer.address;
+    var buyerName = props.supplier.name;
+    var sellerName = props.farmer.name;
+    var buyerRegistration = props.supplier.registrationNumber;
+    var sellerRegistration = props.farmer.registrationNumber;
+  }
+  // const rAddress = props.retailer.address;
+  // const sAddress = props.supplier.address;
   const [retailerUnit, retailerStreet, retailerCity] = rAddress.split(',');
   const [supplierUnit, supplierStreet, supplierCity] = sAddress.split(',');
   const [pdfLoading, setpdfLoading] = useState(false);
@@ -490,7 +511,7 @@ const InvoiceModal = props => {
                 justifyContent: 'center',
                 textAlign: 'center',
               }}>
-              {props.retailer.name}
+              {buyerName}
             </Text>
             <View
               style={{
@@ -539,7 +560,7 @@ const InvoiceModal = props => {
                   color: '#0C5E99',
                   fontSize: 8,
                 }}>
-                {props.retailer.registrationNumber}
+                {buyerRegistration}
               </Text>
             </View>
           </View>
@@ -575,7 +596,7 @@ const InvoiceModal = props => {
                 justifyContent: 'center',
                 textAlign: 'center',
               }}>
-              {props.supplier.name}
+              {sellerName}
             </Text>
             <View
               style={{
@@ -608,6 +629,7 @@ const InvoiceModal = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
+              {/* TRANSLATION */}
               <Text
                 style={{
                   fontFamily: 'Poppins-Bold',
@@ -622,7 +644,7 @@ const InvoiceModal = props => {
                   color: '#0C5E99',
                   fontSize: 8,
                 }}>
-                {props.supplier.registrationNumber}
+                {sellerRegistration}
               </Text>
             </View>
           </View>
@@ -654,7 +676,7 @@ const InvoiceModal = props => {
           if (companyType == 'supplier') {
             log('supplier');
             if (props.sellerState == false) {
-              await createPDF(
+              await orders.createPDF(
                 (id = props.trackingNum),
                 (buyer = props.retailer),
                 (seller = props.supplier),
@@ -666,7 +688,7 @@ const InvoiceModal = props => {
                 sellerChop,
               );
             } else {
-              await createPDF(
+              await orders.createPDF(
                 (id = props.trackingNum),
                 (buyer = props.supplier),
                 (seller = props.farmer),
@@ -679,7 +701,7 @@ const InvoiceModal = props => {
               );
             }
           } else if (companyType == 'retailer') {
-            await createPDF(
+            await orders.createPDF(
               (id = props.trackingNum),
               (buyer = props.retailer),
               (seller = props.supplier),
@@ -691,7 +713,7 @@ const InvoiceModal = props => {
               sellerChop,
             );
           } else {
-            await createPDF(
+            await orders.createPDF(
               (id = props.trackingNum),
               (buyer = props.supplier),
               (seller = props.farmer),
@@ -716,9 +738,8 @@ const InvoiceModal = props => {
         offsetCenter={wp('2%')}
         top={hp('70%')}
         onPress={() =>
-          createCSV(
+          orders.createCSV(
             (id = props.trackingNum),
-            (company = props.company),
             (createdAt = props.createdAt),
             (items = props.goods),
             (amount = props.amount),

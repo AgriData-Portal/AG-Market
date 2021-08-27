@@ -23,13 +23,14 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Strings from '_utils';
-import {log} from '_utils';
+import Strings, {log, marketPlace} from '_utils';
+
 import {userStore, companyStore} from '_store';
 import {Font} from '_components';
 
 export const ProductCard = props => {
   const [imageSource, setImageSource] = useState(null);
+
   const getImage = async () => {
     try {
       const imageURL = await Storage.get(props.productPicture);
@@ -90,7 +91,7 @@ export const ProductCard = props => {
           minimumQuantity={props.minimumQuantity}
           sellerID={props.sellerID}
           siUnit={props.siUnit}
-          supplier={props.supplier}
+          seller={props.seller}
           user={props.user}></ProductPopUp>
       </Modal>
     </TouchableOpacity>
@@ -99,6 +100,7 @@ export const ProductCard = props => {
 
 export const MarketplaceList = props => {
   const companyType = companyStore(state => state.companyType);
+
   const OpenWhatsapp = () => {
     let url =
       'https://wa.me/601165691998?text=Hi%20I%20am%20interested%20to%20purchase%20' +
@@ -164,6 +166,7 @@ export const MarketplaceList = props => {
         </View>
       }
       renderItem={({item}) => {
+        log(item.supplier, 'green');
         return (
           <ProductCard
             navigation={props.navigation}
@@ -180,7 +183,7 @@ export const MarketplaceList = props => {
             sellerID={
               companyType == 'retailer' ? item.supplierID : item.farmerID
             }
-            supplier={companyType == 'retailer' ? item.supplier : item.farmer}
+            seller={companyType == 'retailer' ? item.supplier : item.farmer}
           />
         );
       }}
@@ -191,106 +194,11 @@ export const MarketplaceList = props => {
 export const ProductPopUp = props => {
   const userName = userStore(state => state.userName);
   const companyID = companyStore(state => state.companyID);
+  const companyName = companyStore(state => state.companyName);
   const companyType = companyStore(state => state.companyType);
   const userID = userStore(state => state.userID);
   const [successfulModal, setSuccessfulModal] = useState(false);
-  const sendProductInquiry = async () => {
-    try {
-      if (companyType == 'retailer') {
-        const updateChat = await API.graphql({
-          query: updateChatGroup,
-          variables: {
-            input: {
-              id: companyID + props.sellerID,
-              mostRecentMessage: 'Product Inquiry',
-              mostRecentMessageSender: userName,
-            },
-          },
-        });
-      } else {
-        const updateChat = await API.graphql({
-          query: updateChatGroup,
-          variables: {
-            input: {
-              id: props.sellerID + companyID,
-              mostRecentMessage: 'Product Inquiry',
-              mostRecentMessageSender: userName,
-            },
-          },
-        });
-      }
-      log('chat group already exist');
-    } catch (e) {
-      log(e);
-      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        try {
-          if (companytype == 'retailer') {
-            const chatGroup = {
-              id: companyID + props.sellerID,
-              name: userName + '+' + props.supplier.name,
-              retailerID: userID,
-              supplierID: props.sellerID,
-              mostRecentMessage: 'Product Inquiry',
-              mostRecentMessageSender: userName,
-            };
-            log(chatGroup);
-            const createdChatGroup = await API.graphql({
-              query: createChatGroup,
-              variables: {input: chatGroup},
-            });
-          } else {
-            const chatGroup = {
-              id: props.sellerID + companyID,
-              name: userName + '+' + props.supplier.name,
-              retailerID: userID,
-              supplierID: props.sellerID,
-              mostRecentMessage: 'Product Inquiry',
-              mostRecentMessageSender: userName,
-            };
-            log(chatGroup);
-            const createdChatGroup = await API.graphql({
-              query: createChatGroup,
-              variables: {input: chatGroup},
-            });
-          }
-          log(createdChatGroup);
-        } catch (e) {
-          log(e.errors[0].errorType);
-        }
-      } else {
-        log(e.errors[0].errorType);
-      }
-    }
 
-    log('creating product inquiry');
-
-    const inquiry = {
-      chatGroupID: props.user.retailerCompanyID + props.sellerID,
-      type: 'inquiry',
-      content:
-        props.productName +
-        '+' +
-        props.lowPrice +
-        '-' +
-        props.highPrice +
-        '+' +
-        props.variety +
-        '+' +
-        props.grade,
-      sender: props.user.name,
-      senderID: props.user.id,
-    };
-    try {
-      const message = await API.graphql({
-        query: createMessage,
-        variables: {input: inquiry},
-      });
-      log(message.data.createMessage);
-      setSuccessfulModal(true);
-    } catch {
-      e => log(e);
-    }
-  };
   return (
     <View
       style={{
@@ -331,7 +239,24 @@ export const ProductPopUp = props => {
             <Icon
               name="chatbox-outline"
               size={wp('8%')}
-              onPress={() => sendProductInquiry()}></Icon>
+              onPress={() => [
+                marketPlace
+                  .sendProductInquiry(
+                    companyType,
+                    companyName,
+                    companyID,
+                    props.sellerID,
+                    userName,
+                    userID,
+                    props.seller,
+                    props.productName,
+                    props.lowPrice,
+                    props.highPrice,
+                    props.variety,
+                    props.grade,
+                  )
+                  .then(setSuccessfulModal(true)),
+              ]}></Icon>
           </TouchableOpacity>
         </View>
         <Image
@@ -359,7 +284,7 @@ export const ProductPopUp = props => {
               onPress={() => [
                 props.navigation.navigate('store', {
                   itemId: props.sellerID,
-                  storeName: props.supplier.name,
+                  storeName: props.seller.name,
                 }),
                 props.setProductModal(false),
               ]}
@@ -456,7 +381,7 @@ export const ProductPopUp = props => {
           setSuccessfulModal(false),
           props.setProductModal(false),
         ]}>
-        <SuccessfulModal text="You have successfully sent an inquiry to the supplier. Go to chats to continue your conversation" />
+        <SuccessfulModal text="You have successfully sent an inquiry to the seller. Go to chats to continue your conversation" />
       </Modal>
     </View>
   );

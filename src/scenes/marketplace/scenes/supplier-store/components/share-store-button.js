@@ -24,7 +24,7 @@ import {
   listSupplierCompanys,
 } from '../../../../../graphql/queries';
 import {BlueButton} from '_components';
-import {log} from '_utils';
+import {log, marketPlace} from '_utils';
 import {DetailsModal} from '_components';
 import {userStore, companyStore} from '_store';
 import Strings from '_utils';
@@ -59,70 +59,6 @@ const RetailerCard = props => {
   const userID = userStore(state => state.userID);
   const companyName = companyStore(state => state.companyName);
 
-  const sendStoreDetails = async () => {
-    try {
-      log(props.id + companyID);
-      const updateChat = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.id + companyID,
-            mostRecentMessage: 'Store Catalog',
-            mostRecentMessageSender: userName,
-          },
-        },
-      });
-      log('chat group already exist');
-      log(props.name);
-    } catch (e) {
-      log(e);
-      if (e.errors[0].errorType == 'DynamoDB:ConditionalCheckFailedException') {
-        try {
-          const chatGroup = {
-            id: props.id + companyID,
-            name: props.name + '+' + companyName,
-            retailerID: props.id,
-            supplierID: companyID,
-            mostRecentMessage: 'Store Catalog',
-            mostRecentMessageSender: userName,
-          };
-          log(chatGroup);
-          const createdChatGroup = await API.graphql({
-            query: createChatGroup,
-            variables: {input: chatGroup},
-          });
-          log(createdChatGroup);
-        } catch (e) {
-          log(e.errors[0].errorType);
-        }
-      } else {
-        log(e.errors[0].errorType);
-      }
-    }
-
-    log('creating store ' + companyName);
-
-    const store = {
-      chatGroupID: props.id + companyID,
-      type: 'store',
-      content: companyID + '+' + companyName,
-      sender: userName,
-      senderID: userID,
-    };
-    try {
-      const message = await API.graphql({
-        query: createMessage,
-        variables: {input: store},
-      });
-      log(message.data.createMessage);
-    } catch {
-      e => log(e);
-    }
-
-    setSuccessModal(true);
-    //setSuccessModal(true);
-    setSupermarketButton(false);
-  };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -165,7 +101,18 @@ const RetailerCard = props => {
           id={props.id}
           name={props.name}>
           <BlueButton
-            onPress={() => [sendStoreDetails()]}
+            onPress={() => [
+              marketPlace
+                .sendStoreDetails(
+                  companyID,
+                  props.id,
+                  userName,
+                  props.name,
+                  companyName,
+                  userID,
+                )
+                .then([setSuccessModal(true), setSupermarketButton(false)]),
+            ]}
             onPressIn={() => setSupermarketButton(true)}
             disabled={supermarketButton}
             top={hp('5%')}
@@ -221,29 +168,12 @@ const RetailerModal = props => {
   const companyName = companyStore(state => state.companyName);
   const companyID = companyStore(state => state.companyID);
 
-  const getAllSupermarkets = async () => {
-    try {
-      if (companyType == 'supplier') {
-        const listRetailer = await API.graphql({
-          query: listRetailerCompanys,
-        });
-
-        setSupermarkets(listRetailer.data.listRetailerCompanys.items);
-      } else {
-        const listSupplier = await API.graphql({
-          query: listSupplierCompanys,
-        });
-
-        setSupermarkets(listSupplier.data.listSupplierCompanys.items);
-      }
-    } catch (e) {
-      log(e);
-    }
-  };
-
   useEffect(() => {
-    getAllSupermarkets();
+    marketPlace
+      .getAllSupermarkets(companyType)
+      .then(data => setSupermarkets(data));
   }, []);
+
   const shareStore = async () => {
     const shareOptions = {
       message: 'Check out ' + companyName + '\n',
@@ -260,6 +190,7 @@ const RetailerModal = props => {
       log(e);
     }
   };
+
   return (
     <View
       style={{

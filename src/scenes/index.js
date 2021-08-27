@@ -8,15 +8,13 @@ import {
 } from './marketplace';
 import {Inbox, ChatRoom} from './chat';
 import {BuyingOrders, SellingOrders} from './orders';
-import {SellerTask, BuyerTask, FarmerTasks} from './tasks';
+import {SellerTask, BuyerTask} from './tasks';
 import {DataAnalytics} from './data-analytics';
 import {
   Registration,
   Login,
-  CreateCompany,
   Verification,
   Landing,
-  CreateAccountPopUp,
   ConfirmSignUp,
 } from './authentication';
 import {
@@ -40,13 +38,11 @@ export {
   DataAnalytics,
   Registration,
   Login,
-  CreateCompany,
   Landing,
   Verification,
   ConfirmSignUp,
   ShareStoreButton,
   FarmerStore,
-  FarmerTasks,
   SupplierModalButton,
   CompanyProfile,
   EditCompany,

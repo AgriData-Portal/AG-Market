@@ -1,3 +1,4 @@
+//library imports
 import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
@@ -8,27 +9,30 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
+import Modal from 'react-native-modal';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {API, graphqlOperation} from 'aws-amplify';
+import BackgroundTimer from 'react-native-background-timer';
+
+//components imports
 import {LoadingModal} from '_components';
 import ChatBubbleList from './chat-list/chat-bubbles';
 import MessageInput from './message-bar/messagebar';
-import BackgroundTimer from 'react-native-background-timer';
+import {log, chatRoom} from '_utils';
+import {userStore} from '_store';
+
+//queries & mutations
 import {messagesInChatByDate} from '../../../graphql/queries';
 import {onCreateMessage} from '../../../graphql/subscriptions';
 import {
   updateChatGroupUsers,
   createChatGroupUsers,
 } from '../../../graphql/mutations';
-import Modal from 'react-native-modal';
+
 var dayjs = require('dayjs');
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-
-import {log} from '_utils';
-import {userStore} from '_store';
-
-import {API, graphqlOperation} from 'aws-amplify';
 
 export const ChatRoom = props => {
   const userID = userStore(state => state.userID);
@@ -42,6 +46,8 @@ export const ChatRoom = props => {
   const handleAppStateChange = state => {
     setAppState(state);
   };
+
+  // TODO
   const fetchMessages = async () => {
     try {
       const message = await API.graphql({
@@ -56,16 +62,19 @@ export const ChatRoom = props => {
       setNextToken(message.data.messagesInChatByDate.nextToken);
       var tempMessage = message.data.messagesInChatByDate.items;
       setMessages(tempMessage);
+      log(message.data.messagesInChatByDate.items, 'cyan');
     } catch (e) {
       log(e);
       log("there's a problem");
     }
   };
+
   useEffect(() => {
     if (nextToken != null) {
       getMoreMessages();
     }
   }, [refresh]);
+
   useEffect(() => {
     fetchMessages();
     log('useEffect Triggered');
@@ -77,7 +86,6 @@ export const ChatRoom = props => {
     ).subscribe({
       next: data => {
         const newMessage = data.value.data.onCreateMessage;
-
         if (newMessage.chatGroupID != itemID) {
           log('Message is in another room!');
           return;
@@ -87,9 +95,9 @@ export const ChatRoom = props => {
         setMessages(messages => [newMessage, ...messages]);
       },
     });
-
     return () => subscription.unsubscribe();
   }, []);
+
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange);
     return () => {
@@ -130,7 +138,7 @@ export const ChatRoom = props => {
     if (Platform.OS === 'ios') {
       if (appState == 'inactive') {
         BackgroundTimer.runBackgroundTimer(() => {
-          log('3 seconds');
+          log('Updating last seen');
           updateLastSeen();
         }, 100);
         setTimeout(() => {
@@ -144,7 +152,7 @@ export const ChatRoom = props => {
         if (appState == 'background') {
           BackgroundTimer.runBackgroundTimer(() => {
             if (a == 0) {
-              log('3seconds');
+              log('Updating last seen');
               updateLastSeen();
             }
             a = 1;

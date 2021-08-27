@@ -1,36 +1,18 @@
-/*
-
-
-
-need to add farmer ability
-
-
-
-*/
-
-import React, {useState, useContext, useEffect} from 'react';
-import {View, TouchableOpacity, FlatList, Text} from 'react-native';
-import {Typography, Spacing, Colors, Mixins} from '_styles';
-
+//library imports
+import React, {useState, useEffect} from 'react';
+import {View, FlatList, Text} from 'react-native';
 import Modal from 'react-native-modal';
-import {CloseButton} from '_components';
-import {API} from 'aws-amplify';
-import {
-  createMessage,
-  updateChatGroup,
-  createGoodsTaskBetweenRandS,
-  updateMessage,
-  createGoodsTaskBetweenSandF,
-} from '../../../../graphql/mutations';
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Strings from '_utils';
+//styling imports
+import {Typography, Colors} from '_styles';
+//components
+import Strings, {chatRoom} from '_utils';
 import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
+import {CloseButton} from '_components';
 import {BlueButton} from '_components';
-import {log} from '_utils';
 import {userStore, companyStore} from '_store';
 import {Font} from '_components';
 
@@ -44,206 +26,11 @@ export const OrderQuotationModal = props => {
   const userID = userStore(state => state.userID);
   const companyID = companyStore(state => state.companyID);
   const userName = userStore(state => state.userName);
+
   useEffect(() => {
-    fetchQuotation();
+    setOrderDetails(chatRoom.fetchQuotation(props.content));
   }, []);
-  const fetchQuotation = () => {
-    log(props.content);
-    try {
-      var quotation = props.content.split(':');
-      var items = quotation[0].split('/');
-      items.forEach((item, index, arr) => {
-        var temp = item.split('+');
-        var itemObject = {};
-        itemObject['id'] = temp[0];
-        itemObject['name'] = temp[1];
-        itemObject['quantity'] = temp[2];
-        itemObject['siUnit'] = temp[3];
-        itemObject['variety'] = temp[4];
-        itemObject['grade'] = temp[5];
-        itemObject['price'] = temp[6];
-        arr[index] = itemObject;
-      });
-      var tempObject = {};
-      tempObject['items'] = items;
-      tempObject['sum'] = quotation[1];
-      tempObject['logisticsProvided'] = quotation[2] == 'true' ? true : false;
-      tempObject['paymentTerms'] = quotation[3];
-      {
-        quotation.length == 5
-          ? (tempObject['status'] = quotation[4])
-          : (tempObject['status'] = 'New');
-      }
-      setOrderDetails(tempObject);
-    } catch (e) {
-      log(e);
-    }
-  };
-  const reject = async () => {
-    try {
-      const rejectionMessage = await API.graphql({
-        query: createMessage,
-        variables: {
-          input: {
-            chatGroupID: props.chatGroupID,
-            type: 'text',
-            content: 'The quotation has been rejected. Please re-negotiate',
-            senderID: userID,
-            sender: userName,
-          },
-        },
-      });
-      const updatedMessage = await API.graphql({
-        query: updateMessage,
-        variables: {
-          input: {
-            id: props.id,
-            content: props.content + ':Declined',
-          },
-        },
-      });
-      log('message sent');
-    } catch (e) {
-      log(e);
-    }
-    try {
-      const updatedChatGroup = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            mostRecentMessage:
-              'The quotation has been rejected. Please re-negotiate',
-            mostRecentMessageSender: userName,
-          },
-        },
-      });
-      log('chat group update successful');
-    } catch (e) {
-      log(e);
-    }
-    var messages = props.messages;
-    log(messages);
-    messages.forEach((item, index, array) => {
-      if (item.id == props.id) {
-        log('found');
-        array[index] = {
-          id: props.id,
-          chatGroupID: props.chatGroupID,
-          type: props.contentType,
-          content: props.content + ':Declined',
-          sender: props.sender,
-          senderID: props.senderID,
-          createdAt: props.createdAt,
-        };
-      }
-    });
-    props.setMessages(messages);
-    setDeclineButton(false);
-  };
 
-  const accept = async () => {
-    try {
-      const acceptanceMessage = await API.graphql({
-        query: createMessage,
-        variables: {
-          input: {
-            chatGroupID: props.chatGroupID,
-            type: 'text',
-            content:
-              'The quotation has been accepted. Task has been added to to-do',
-            senderID: userID,
-            sender: userName,
-          },
-        },
-      });
-      const updatedMessage = await API.graphql({
-        query: updateMessage,
-        variables: {
-          input: {
-            id: props.id,
-            content: props.content + ':Accepted',
-          },
-        },
-      });
-      log('message sent');
-    } catch (e) {
-      log(e);
-    }
-    try {
-      const updatedChatGroup = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            mostRecentMessage:
-              'The quotation has been accepted. Task has been added to to-do',
-            mostRecentMessageSender: userName,
-          },
-        },
-      });
-      log('chat group update successful');
-    } catch (e) {
-      log(e);
-    }
-
-    try {
-      if (companyType == 'retailer') {
-        const goodsTask = await API.graphql({
-          query: createGoodsTaskBetweenRandS,
-          variables: {
-            input: {
-              id: props.id,
-              trackingNum: props.contentType,
-              items: orderDetails.items,
-              logisticsProvided: orderDetails.logisticsProvided,
-              paymentTerms: orderDetails.paymentTerms,
-              retailerID: props.chatGroupID.slice(0, 36),
-              supplierID: props.chatGroupID.slice(36, 72),
-            },
-          },
-        });
-      } else {
-        const goodsTask = await API.graphql({
-          query: createGoodsTaskBetweenSandF,
-          variables: {
-            input: {
-              id: props.id,
-              trackingNum: props.contentType,
-              items: orderDetails.items,
-              logisticsProvided: orderDetails.logisticsProvided,
-              paymentTerms: orderDetails.paymentTerms,
-              supplierID: props.chatGroupID.slice(0, 36),
-              farmerID: props.chatGroupID.slice(36, 72),
-            },
-          },
-        });
-      }
-      log('goods task created');
-      var messages = props.messages;
-      log(messages);
-      messages.forEach((item, index, array) => {
-        if (item.id == props.id) {
-          log('found');
-          array[index] = {
-            id: props.id,
-            chatGroupID: props.chatGroupID,
-            type: props.contentType,
-            content: props.content + ':Accepted',
-            sender: props.sender,
-            senderID: props.senderID,
-            createdAt: props.createdAt,
-          };
-        }
-      });
-      props.setMessages(messages);
-      setSuccesfulModal(true);
-    } catch (e) {
-      log(e);
-    }
-
-    setAcceptButton(false);
-  };
   return (
     <View>
       {orderDetails != null ? (
@@ -341,7 +128,28 @@ export const OrderQuotationModal = props => {
                 text={Strings.accept}
                 font={Typography.small}
                 borderRadius={10}
-                onPress={() => [accept()]}
+                onPress={() => [
+                  chatRoom
+                    .accept(
+                      props.chatGroupID,
+                      userID,
+                      userName,
+                      props.id,
+                      props.content,
+                      props.contentType,
+                      props.sender,
+                      props.senderID,
+                      props.createdAt,
+                      props.messages,
+                      companyType,
+                      orderDetails,
+                    )
+                    .then(data => [
+                      props.setMessages(data),
+                      setSuccesfulModal(true),
+                      setAcceptButton(false),
+                    ]),
+                ]}
                 minWidth={wp('25%')}
                 right={wp('5%')}
                 position={'absolute'}
@@ -352,7 +160,26 @@ export const OrderQuotationModal = props => {
                 text={Strings.decline}
                 font={Typography.small}
                 borderRadius={10}
-                onPress={() => [reject(), setUnsuccesfulModal(true)]}
+                onPress={() => [
+                  chatRoom
+                    .reject(
+                      props.chatGroupID,
+                      props.id,
+                      props.content,
+                      userName,
+                      userID,
+                      props.messages,
+                      props.contentType,
+                      props.sender,
+                      props.senderID,
+                      props.createdAt,
+                    )
+                    .then(data => [
+                      props.setMessages(data),
+                      setDeclineButton(false),
+                    ]),
+                  setUnsuccesfulModal(true),
+                ]}
                 minWidth={wp('25%')}
                 left={wp('5%')}
                 position={'absolute'}

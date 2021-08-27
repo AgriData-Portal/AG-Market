@@ -9,16 +9,16 @@ import {
   Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Typography, Spacing, Colors} from '_styles';
+import {Spacing, Colors} from '_styles';
 import {BackButton} from '_components';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
-import {Auth} from 'aws-amplify';
 import Strings from '_utils';
-import {log} from '_utils';
+import {log, authentication} from '_utils';
+
 import {Font} from '_components';
 
 export const ConfirmSignUp = props => {
@@ -31,33 +31,35 @@ export const ConfirmSignUp = props => {
   const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
   const [wrongCode, setWrongCode] = useState(false);
   log(phone);
-  async function confirmSignUp() {
-    try {
-      const user = await Auth.confirmSignUp(phone, authCode);
-      log('✅ Code confirmed' + phone);
-      setSuccessfulModal(true);
-      setTimeout(() => {
-        props.navigation.navigate('signin');
-      }, 3000);
-    } catch (error) {
-      setError(true);
-      setWrongCode(true);
-      log(
-        '❌ Verification code does not match. Please enter a valid verification code.',
-        error.code,
-      );
-    }
-  }
 
-  async function resendConfirmationCode() {
-    try {
-      await Auth.resendSignUp(phone);
-      log('code resent successfully');
-      setResendCode(true);
-    } catch (err) {
-      log('error resending code: ', err);
-    }
-  }
+  //TODO not sure if works
+  // async function confirmSignUp() {
+  //   try {
+  //     const user = await Auth.confirmSignUp(phone, authCode);
+  //     log('✅ Code confirmed' + phone);
+  //     setSuccessfulModal(true);
+  //     setTimeout(() => {
+  //       props.navigation.navigate('signin');
+  //     }, 3000);
+  //   } catch (error) {
+  //     setError(true);
+  //     setWrongCode(true);
+  //     log(
+  //       '❌ Verification code does not match. Please enter a valid verification code.',
+  //       error.code,
+  //     );
+  //   }
+  // }
+
+  // async function resendConfirmationCode() {
+  //   try {
+  //     await Auth.resendSignUp(phone);
+  //     log('code resent successfully');
+  //     setResendCode(true);
+  //   } catch (err) {
+  //     log('error resending code: ', err);
+  //   }
+  // }
 
   return (
     <SafeAreaView style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -141,7 +143,14 @@ export const ConfirmSignUp = props => {
               justifyContent: 'center',
             }}
             onPress={() => {
-              resendConfirmationCode();
+              authentication.resendConfirmationCode(phone).then(data => {
+                if (data == true) {
+                  log('code resent successfully');
+                  setResendCode(true);
+                } else if (data == false) {
+                  log('error resending code: ', err);
+                }
+              });
             }}>
             <Font.Small>{Strings.resendCode}</Font.Small>
           </TouchableOpacity>
@@ -165,11 +174,27 @@ export const ConfirmSignUp = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}
+            // TODO remove setTimeout
             onPress={() => {
               if (authCode == '') {
                 setUnsuccessfulModal(true);
               } else {
-                confirmSignUp();
+                authentication.confirmSignUp(phone, authCode).then(data => {
+                  if (data == true) {
+                    log('✅ Code confirmed' + phone);
+                    setSuccessfulModal(true);
+                    setTimeout(() => {
+                      props.navigation.navigate('signin');
+                    }, 3000);
+                  } else if (data == false) {
+                    setError(true);
+                    setWrongCode(true);
+                    log(
+                      '❌ Verification code does not match. Please enter a valid verification code.',
+                      error.code,
+                    );
+                  }
+                });
               }
             }}>
             <Font.Normal>{Strings.verify}</Font.Normal>

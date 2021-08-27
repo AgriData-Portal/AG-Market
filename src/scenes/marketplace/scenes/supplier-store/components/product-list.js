@@ -121,7 +121,7 @@ const ProductModal = props => {
         updatedListing = updatedListing.data.updateFarmerListing;
       }
       var products = props.productList;
-      console.log(products);
+      log(products);
       for (let [i, product] of products.entries()) {
         if (product.id == props.id) {
           products.splice(i, 1);
@@ -129,7 +129,7 @@ const ProductModal = props => {
       }
 
       products.push(updatedListing);
-      console.log(products);
+      log(products);
       props.setProducts(products);
       props.setTrigger(!props.trigger);
       setSuccessfulModal(true);

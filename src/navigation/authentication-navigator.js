@@ -5,11 +5,8 @@ import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 
 import {
   Registration, //done
-  SupplierDashboard, //done
   Login, //done
-  CreateCompany, //done
   Landing, //done
-  Verification, //done
   ConfirmSignUp, //done
 } from '_scenes';
 

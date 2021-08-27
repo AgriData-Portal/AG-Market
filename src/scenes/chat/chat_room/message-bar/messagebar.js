@@ -48,7 +48,7 @@ import Strings from '_utils';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {DismissKeyboardView} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
+import {chatRoom} from '_utils';
 // const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const MessageInput = props => {
@@ -155,37 +155,6 @@ const MessageInput = props => {
   //   audioRecorderPlayer.stopPlayer();
   //   audioRecorderPlayer.removePlayBackListener();
   // };
-  const createNewMessage = async () => {
-    log('creating new message');
-    try {
-      const newMessage = await API.graphql({
-        query: createMessage,
-        variables: {
-          input: {
-            senderID: userID,
-            chatGroupID: props.chatGroupID,
-            sender: userName,
-            type: 'text',
-            content: message,
-          },
-        },
-      });
-      const updateChat = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            mostRecentMessage: message,
-            mostRecentMessageSender: userName,
-          },
-        },
-      });
-    } catch (e) {
-      log(e);
-    }
-    setMessage('');
-    setSendButtonDisabled(false);
-  };
 
   return (
     <View
@@ -378,7 +347,9 @@ const MessageInput = props => {
       <TouchableOpacity
         onPress={() => {
           if (message.length > 0) {
-            createNewMessage();
+            chatRoom
+              .createNewMessage(userID, props.chatGroupID, userName, message)
+              .then([setMessage(''), setSendButtonDisabled(false)]);
           }
         }}
         onPressIn={() => {
@@ -424,46 +395,7 @@ const MessageInput = props => {
 const PreviewImageModal = props => {
   const userName = userStore(state => state.userName);
   const userID = userStore(state => state.userID);
-  const uploadImage = async () => {
-    try {
-      let photo = props.imageSource;
-      log(photo);
-      const response = await fetch(photo);
-      const blob = await response.blob();
-      log('FileName: \n');
-      var fileName = props.chatGroupID + dayjs().format('YYYYMMDDhhmmss');
-      await Storage.put(fileName, blob, {
-        contentType: 'image/jpeg',
-      });
-      log(userID, props.chatGroupID, userName, fileName);
-      const newMessage = await API.graphql({
-        query: createMessage,
-        variables: {
-          input: {
-            senderID: userID,
-            chatGroupID: props.chatGroupID,
-            sender: userName,
-            type: 'image',
-            content: fileName,
-          },
-        },
-      });
-      const updateChat = await API.graphql({
-        query: updateChatGroup,
-        variables: {
-          input: {
-            id: props.chatGroupID,
-            mostRecentMessage: 'Image',
-            mostRecentMessageSender: userName,
-          },
-        },
-      });
 
-      props.setImageModal(false);
-    } catch (e) {
-      log(e);
-    }
-  };
   return (
     <Modal isVisible={props.imageModal}>
       <View>
@@ -498,10 +430,18 @@ const PreviewImageModal = props => {
               }}
               source={{uri: props.imageSource}}
             />
+            {/* TRANSLATION */}
             <View style={{top: hp('28%'), left: wp('25%')}}>
               <TouchableOpacity
                 onPress={() => {
-                  uploadImage();
+                  chatRoom
+                    .uploadImage(
+                      props.imageSource,
+                      props.chatGroupID,
+                      userID,
+                      userName,
+                    )
+                    .then(props.setImageModal(false));
                 }}
                 style={{
                   backgroundColor: 'white',

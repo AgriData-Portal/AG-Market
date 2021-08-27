@@ -39,7 +39,7 @@ import {
   getFarmerCompany,
 } from '../../../../graphql/queries';
 import {Rating} from 'react-native-ratings';
-import {log} from '_utils';
+import {log, tasks} from '_utils';
 import {BlueButton} from '_components';
 import {userStore, companyStore} from '_store';
 import {Font} from '_components';
@@ -56,181 +56,7 @@ const ReceiveModal = props => {
     var product = item.price * item.quantity;
     sum = sum + product;
   });
-  const received = async () => {
-    var mostRecentInvoiceNum = null;
-    try {
-      if (companyType == 'retailer') {
-        const response = await API.graphql({
-          query: getSupplierCompany,
-          variables: {id: props.supplierID},
-        });
-        mostRecentInvoiceNum =
-          response.data.getSupplierCompany.mostRecentInvoiceNumber;
-      } else {
-        const response = await API.graphql({
-          query: getFarmerCompany,
-          variables: {id: props.farmerID},
-        });
-        mostRecentInvoiceNum =
-          response.data.getFarmerCompany.mostRecentInvoiceNumber;
-      }
-      log('newnum: ' + mostRecentInvoiceNum);
-      if (mostRecentInvoiceNum) {
-        if (dayjs().format('YYYY-MM') == mostRecentInvoiceNum.slice(4, 11)) {
-          var number = parseInt(mostRecentInvoiceNum.slice(12, 16));
-          var numberString = (number + 1).toString().padStart(4, '0');
-          mostRecentInvoiceNum =
-            'INV-' + dayjs().format('YYYY-MM-') + numberString;
-        } else {
-          mostRecentInvoiceNum = 'INV-' + dayjs().format('YYYY-MM-') + '0001';
-        }
-      } else {
-        mostRecentInvoiceNum = 'INV-' + dayjs().format('YYYY-MM-') + '0001';
-      }
-      log('updatednum: ' + mostRecentInvoiceNum);
-    } catch (e) {
-      log(e);
-    }
-    if (companyType == 'retailer') {
-      var input = {
-        id: props.taskID,
-        trackingNum: mostRecentInvoiceNum,
-        retailerID: props.retailerID,
-        supplierID: props.supplierID,
-        paid: false,
-        amount: sum,
-        payBefore: dayjs().add(30, 'day').format('DD-MM-YYYY'),
-        receipt: null,
-      };
-    } else {
-      var input = {
-        id: props.taskID,
-        trackingNum: mostRecentInvoiceNum,
-        supplierID: props.supplierID,
-        farmerID: props.farmerID,
-        paid: false,
-        amount: sum,
-        payBefore: dayjs().add(30, 'day').format('DD-MM-YYYY'),
-        receipt: null,
-      };
-    }
 
-    try {
-      if (companyType == 'retailer') {
-        const paymentTaskResponse = API.graphql({
-          query: createPaymentTaskBetweenRandS,
-          variables: {input: input},
-        });
-      } else {
-        const paymentTaskResponse = API.graphql({
-          query: createPaymentTaskBetweenSandF,
-          variables: {input: input},
-        });
-      }
-      log('payment success!');
-    } catch (e) {
-      log(e);
-    }
-
-    if (companyType == 'retailer') {
-      var input = {
-        id: props.taskID,
-        trackingNum: mostRecentInvoiceNum,
-        retailerID: props.retailerID,
-        supplierID: props.supplierID,
-        items: props.goods,
-        paid: false,
-        amount: sum,
-        receivedBy: userName,
-      };
-    } else {
-      var input = {
-        id: props.taskID,
-        trackingNum: mostRecentInvoiceNum,
-        farmerID: props.farmerID,
-        supplierID: props.supplierID,
-        items: props.goods,
-        paid: false,
-        amount: sum,
-        receivedBy: userName,
-      };
-    }
-
-    try {
-      if (companyType == 'retailer') {
-        const invoiceResponse = API.graphql({
-          query: createInvoiceBetweenRandS,
-          variables: {input: input},
-        });
-      } else {
-        const invoiceResponse = API.graphql({
-          query: createInvoiceBetweenSandF,
-          variables: {input: input},
-        });
-      }
-      log('success!');
-    } catch (e) {
-      log(e);
-    }
-
-    try {
-      if (companyType == 'retailer') {
-        const supplierCompanyUpdate = await API.graphql({
-          query: updateSupplierCompany,
-          variables: {
-            input: {
-              id: props.supplierID,
-              mostRecentInvoiceNumber: mostRecentInvoiceNum,
-            },
-          },
-        });
-      } else {
-        const farmerCompanyUpdate = await API.graphql({
-          query: updateFarmerCompany,
-          variables: {
-            input: {
-              id: props.farmerID,
-              mostRecentInvoiceNumber: mostRecentInvoiceNum,
-            },
-          },
-        });
-      }
-      log('update success');
-    } catch (e) {
-      log(e);
-    }
-
-    try {
-      if (companyType == 'retailer') {
-        const invoiceResponse = await API.graphql({
-          query: updateGoodsTaskBetweenRandS,
-          variables: {input: {id: props.taskID, status: 'received'}},
-        });
-        var tempList = props.receiveTask;
-        tempList.forEach((item, index, arr) => {
-          if (item.id == props.taskID) {
-            arr[index] = invoiceResponse.data.updateGoodsTaskBetweenRandS;
-          }
-        });
-      } else {
-        const invoiceResponse = await API.graphql({
-          query: updateGoodsTaskBetweenSandF,
-          variables: {input: {id: props.taskID, status: 'received'}},
-        });
-        var tempList = props.receiveTask;
-        tempList.forEach((item, index, arr) => {
-          if (item.id == props.taskID) {
-            arr[index] = invoiceResponse.data.updateGoodsTaskBetweenSandF;
-          }
-        });
-      }
-      props.setReceiveTask(tempList);
-      setRatingModal(true);
-      log('deleted!');
-    } catch (e) {
-      log(e);
-    }
-  };
   return (
     <View
       style={{
@@ -360,7 +186,19 @@ const ReceiveModal = props => {
             } else {
               props.setTrigger(true);
             }
-            received();
+            tasks
+              .received(
+                companyType,
+                props.supplierID,
+                props.farmerID,
+                props.taskID,
+                props.retailerID,
+                sum,
+                props.goods,
+                userName,
+                props.receiveTask,
+              )
+              .then(data => [props.setReceiveTask(data), setRatingModal(true)]);
           }}
           style={{
             backgroundColor: Colors.LIGHT_BLUE,
@@ -741,77 +579,7 @@ const Product = props => {
 export const RatingModal = props => {
   const [rating, setRating] = useState(2.5);
   const companyType = companyStore(state => state.companyType);
-  const updateRating = async () => {
-    try {
-      if (companyType == 'retailer') {
-        if (props.supplier.rating == null) {
-          var sendRating = {
-            numberOfRatings: 1,
-            currentRating: rating,
-          };
-        } else {
-          var newNumberOfRating = props.supplier.rating.numberOfRatings + 1;
-          var newRating =
-            (props.supplier.rating.currentRating *
-              props.supplier.rating.numberOfRatings +
-              rating) /
-            newNumberOfRating;
-          var sendRating = {
-            numberOfRatings: newNumberOfRating,
-            currentRating: newRating,
-          };
-        }
-        log(props.supplier, sendRating);
-        const update = await API.graphql({
-          query: updateSupplierCompany,
-          variables: {
-            input: {
-              id: props.supplier.id,
-              rating: sendRating,
-            },
-          },
-        });
-      } else {
-        if (props.farmer.rating == null) {
-          var sendRating = {
-            numberOfRatings: 1,
-            currentRating: rating,
-          };
-        } else {
-          var newNumberOfRating = props.farmer.rating.numberOfRatings + 1;
-          var newRating =
-            (props.farmer.rating.currentRating *
-              props.farmer.rating.numberOfRatings +
-              rating) /
-            newNumberOfRating;
-          var sendRating = {
-            numberOfRatings: newNumberOfRating,
-            currentRating: newRating,
-          };
-        }
-        log(props.farmer, sendRating);
-        const update = await API.graphql({
-          query: updateFarmerCompany,
-          variables: {
-            input: {
-              id: props.farmer.id,
-              rating: sendRating,
-            },
-          },
-        });
-      }
-      props.setRatingModal(false);
-      log(rating);
-      props.setSuccessfulModal(true);
-    } catch (e) {
-      log(e);
-    }
-    if (props.trigger) {
-      props.setTrigger(false);
-    } else {
-      props.setTrigger(true);
-    }
-  };
+
   return (
     <View
       style={{
@@ -843,7 +611,16 @@ export const RatingModal = props => {
         />
       </View>
       <BlueButton
-        onPress={() => updateRating()}
+        onPress={() => {
+          if (props.trigger) {
+            props.setTrigger(false);
+          } else {
+            props.setTrigger(true);
+          }
+          tasks
+            .updateRating(companyType, props.supplier, rating, props.farmer)
+            .then([props.setRatingModal]);
+        }}
         text={'Submit Rating'}
         font={Typography.normal}
         borderRadius={10}
