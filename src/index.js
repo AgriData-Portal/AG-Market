@@ -16,13 +16,6 @@ import {StatusBar, Linking} from 'react-native';
 import {log} from '_utils';
 import RNBootSplash from 'react-native-bootsplash';
 import DeviceInfo from 'react-native-device-info';
-import {
-  getApiLevel,
-  getBuildId,
-  getFontScale,
-  getModel,
-  getVersion,
-} from 'react-native-device-info';
 
 import {userStore, versionStore, companyStore} from './store';
 import {
@@ -37,6 +30,7 @@ import {
   FarmerNavigation,
 } from './navigation';
 import linking from './linking';
+import {authentication} from '_utils';
 
 Amplify.configure(config);
 
