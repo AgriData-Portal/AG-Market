@@ -13,10 +13,8 @@ import {DataAnalytics} from './data-analytics';
 import {
   Registration,
   Login,
-  CreateCompany,
   Verification,
   Landing,
-  CreateAccountPopUp,
   ConfirmSignUp,
 } from './authentication';
 import {
@@ -40,7 +38,6 @@ export {
   DataAnalytics,
   Registration,
   Login,
-  CreateCompany,
   Landing,
   Verification,
   ConfirmSignUp,

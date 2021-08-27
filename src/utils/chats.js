@@ -525,3 +525,30 @@ export const sendQuotation = async (
     log(e);
   }
 };
+
+//this checks for the current colour/userID object to match a colour or assign a new colour
+export const mapColour = (colourID, senderID, userID) => {
+  var colourObject = colourID;
+  if (senderID != userID)
+    try {
+      for (let i = 0; i < colourObject.length; i++) {
+        if (colourObject[i].id == senderID) {
+          log('found the user', 'cyan');
+          return {
+            existingUser: true,
+            colour: colourObject[i].colour,
+          };
+        } else if (colourObject[i].id == '') {
+          log('new user, new colour', 'red');
+          colourObject[i].id = senderID;
+          return {
+            existingUser: false,
+            colour: colourObject[i].colour,
+            colourObject: colourObject,
+          };
+        }
+      }
+    } catch (e) {
+      log(e);
+    }
+};

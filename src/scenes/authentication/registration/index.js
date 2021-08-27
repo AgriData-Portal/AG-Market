@@ -28,7 +28,7 @@ import Modal from 'react-native-modal';
 import {useIsFocused} from '@react-navigation/native';
 import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {log} from '_utils';
+import {log, authentication} from '_utils';
 
 export const Registration = props => {
   const [password, setPassword] = useState('');
@@ -73,39 +73,39 @@ export const Registration = props => {
       log(items2[1]);
     }
   }, [value2]);
-  const signUp = async () => {
-    try {
-      const user = await Auth.signUp({
-        username: '+6' + phone,
-        password: password,
-        attributes: {
-          email: email,
-          phone_number: '+6' + phone,
-          name: name,
-          'custom:role': value,
-          'custom:companyName': companyName,
-          'custom:companyType': value2,
-          'custom:companyRegNum': companyRegistrationNum,
-          'custom:companyAddress': companyAddress,
-        },
-      });
-      log(user.userSub);
-      props.navigation.navigate('confirmsignup', {phone: '+6' + phone});
-      return user.userSub;
-    } catch (error) {
-      if (error.message == 'Invalid phone number format.') {
-        setErrorText(Strings.invalidPhoneNum);
-        setUnsuccessfulModal(true);
-      } else if (
-        error.message ==
-        'An account with the given phone_number already exists.'
-      ) {
-        setErrorText(existingPhoneNum);
-        setUnsuccessfulModal(true);
-      }
-      log('❌ Error signing up...', error);
-    }
-  };
+
+  // const signUp = async () => {
+  //   try {
+  //     const user = await Auth.signUp({
+  //       username: '+6' + phone,
+  //       password: password,
+  //       attributes: {
+  //         email: email,
+  //         phone_number: '+6' + phone,
+  //         name: name,
+  //         'custom:role': value,
+  //         'custom:companyName': companyName,
+  //         'custom:companyType': value2,
+  //         'custom:companyRegNum': companyRegistrationNum,
+  //         'custom:companyAddress': companyAddress,
+  //       },
+  //     });
+
+  //     props.navigation.navigate('confirmsignup', {phone: '+6' + phone});
+  //   } catch (error) {
+  //     if (error.message == 'Invalid phone number format.') {
+  //       setErrorText(Strings.invalidPhoneNum);
+  //       setUnsuccessfulModal(true);
+  //     } else if (
+  //       error.message ==
+  //       'An account with the given phone_number already exists.'
+  //     ) {
+  //       setErrorText(existingPhoneNum);
+  //       setUnsuccessfulModal(true);
+  //     }
+  //     log('❌ Error signing up...', error);
+  //   }
+  // };
   var hasNumber = /\d/;
 
   return (
@@ -412,7 +412,38 @@ export const Registration = props => {
                       setErrorText(Strings.invalidPassword1);
                     } else {
                       log('succes');
-                      signUp();
+                      authentication
+                        .signUp(
+                          phone,
+                          password,
+                          email,
+                          name,
+                          value,
+                          companyName,
+                          value2,
+                          companyRegistrationNum,
+                          companyAddress,
+                        )
+                        .then(data => {
+                          if (data == 'success') {
+                            log('success', 'cyan');
+                            props.navigation.navigate('confirmsignup', {
+                              phone: '+6' + phone,
+                            });
+                          } else if (data == 'Invalid phone number format.') {
+                            setErrorText(Strings.invalidPhoneNum);
+                            setUnsuccessfulModal(true);
+                          } else if (
+                            data ==
+                            'An account with the given phone_number already exists.'
+                          ) {
+                            setErrorText(Strings.existingPhoneNum);
+                            setUnsuccessfulModal(true);
+                          } else {
+                            setErrorText(data);
+                            setUnsuccessfulModal(true);
+                          }
+                        });
                     }
                   }}
                   text={Strings.next}

@@ -27,6 +27,10 @@ export const log = (text, colour = 'white') => {
       : '\x1b[37m';
 
   if (MODE == 'DEBUG') {
-    console.log(colourASCII + text + '\x1b[0m');
+    if (typeof text == 'object') {
+      console.log(colourASCII + JSON.stringify(text) + '\x1b[0m');
+    } else {
+      console.log(colourASCII + text + '\x1b[0m');
+    }
   }
 };

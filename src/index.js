@@ -33,7 +33,6 @@ import {
   AccountsNavigation,
   SupplierNavigation,
   VerificationNavigation,
-  CreateCompanyNavigation,
   AuthenticationNavigator,
   FarmerNavigation,
 } from './navigation';
@@ -445,6 +444,9 @@ const App = () => {
               name: user.attributes['custom:companyName'],
               address: user.attributes['custom:companyAddress'],
               registrationNumber: user.attributes['custom:companyRegNum'],
+              contactDetails: {phone: null, email: null},
+              rating: {currentRating: null, numberOfRatings: null},
+              bankAccount: {accountNumber: null, bankName: null},
             },
           },
         });
@@ -458,6 +460,10 @@ const App = () => {
               name: user.attributes['custom:companyName'],
               address: user.attributes['custom:companyAddress'],
               registrationNumber: user.attributes['custom:companyRegNum'],
+              contactDetails: {phone: null, email: null},
+              rating: {currentRating: null, numberOfRatings: null},
+              favouriteStores: [],
+              bankAccount: {accountNumber: null, bankName: null},
             },
           },
         });
@@ -472,6 +478,10 @@ const App = () => {
               name: user.attributes['custom:companyName'],
               address: user.attributes['custom:companyAddress'],
               registrationNumber: user.attributes['custom:companyRegNum'],
+              contactDetails: {phone: null, email: null},
+              rating: {currentRating: null, numberOfRatings: null},
+              favouriteStores: [],
+              bankAccount: {accountNumber: null, bankName: null},
             },
           },
         });

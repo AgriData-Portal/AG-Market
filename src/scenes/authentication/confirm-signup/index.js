@@ -18,7 +18,7 @@ import {
 import Modal from 'react-native-modal';
 import {Auth} from 'aws-amplify';
 import Strings from '_utils';
-import {log} from '_utils';
+import {log, authentication} from '_utils';
 
 export const ConfirmSignUp = props => {
   const [phone, setPhone] = useState(props.route.params.phone);
@@ -30,33 +30,35 @@ export const ConfirmSignUp = props => {
   const [unsuccessfulModal2, setUnsuccessfulModal2] = useState(false);
   const [wrongCode, setWrongCode] = useState(false);
   log(phone);
-  async function confirmSignUp() {
-    try {
-      const user = await Auth.confirmSignUp(phone, authCode);
-      log('✅ Code confirmed' + phone);
-      setSuccessfulModal(true);
-      setTimeout(() => {
-        props.navigation.navigate('signin');
-      }, 3000);
-    } catch (error) {
-      setError(true);
-      setWrongCode(true);
-      log(
-        '❌ Verification code does not match. Please enter a valid verification code.',
-        error.code,
-      );
-    }
-  }
 
-  async function resendConfirmationCode() {
-    try {
-      await Auth.resendSignUp(phone);
-      log('code resent successfully');
-      setResendCode(true);
-    } catch (err) {
-      log('error resending code: ', err);
-    }
-  }
+  //TODO not sure if works
+  // async function confirmSignUp() {
+  //   try {
+  //     const user = await Auth.confirmSignUp(phone, authCode);
+  //     log('✅ Code confirmed' + phone);
+  //     setSuccessfulModal(true);
+  //     setTimeout(() => {
+  //       props.navigation.navigate('signin');
+  //     }, 3000);
+  //   } catch (error) {
+  //     setError(true);
+  //     setWrongCode(true);
+  //     log(
+  //       '❌ Verification code does not match. Please enter a valid verification code.',
+  //       error.code,
+  //     );
+  //   }
+  // }
+
+  // async function resendConfirmationCode() {
+  //   try {
+  //     await Auth.resendSignUp(phone);
+  //     log('code resent successfully');
+  //     setResendCode(true);
+  //   } catch (err) {
+  //     log('error resending code: ', err);
+  //   }
+  // }
 
   return (
     <SafeAreaView style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -146,7 +148,14 @@ export const ConfirmSignUp = props => {
               justifyContent: 'center',
             }}
             onPress={() => {
-              resendConfirmationCode();
+              authentication.resendConfirmationCode(phone).then(data => {
+                if (data == true) {
+                  log('code resent successfully');
+                  setResendCode(true);
+                } else if (data == false) {
+                  log('error resending code: ', err);
+                }
+              });
             }}>
             <Text style={[Typography.small]}>{Strings.resendCode}</Text>
           </TouchableOpacity>
@@ -170,11 +179,27 @@ export const ConfirmSignUp = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}
+            // TODO remove setTimeout
             onPress={() => {
               if (authCode == '') {
                 setUnsuccessfulModal(true);
               } else {
-                confirmSignUp();
+                authentication.confirmSignUp(phone, authCode).then(data => {
+                  if (data == true) {
+                    log('✅ Code confirmed' + phone);
+                    setSuccessfulModal(true);
+                    setTimeout(() => {
+                      props.navigation.navigate('signin');
+                    }, 3000);
+                  } else if (data == false) {
+                    setError(true);
+                    setWrongCode(true);
+                    log(
+                      '❌ Verification code does not match. Please enter a valid verification code.',
+                      error.code,
+                    );
+                  }
+                });
               }
             }}>
             <Text style={[Typography.normal]}>{Strings.verify}</Text>

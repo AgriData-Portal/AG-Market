@@ -345,6 +345,7 @@ const VerificationModal = props => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+      {/* TRANSLATION */}
       <View
         style={{
           height: hp('50%'),
