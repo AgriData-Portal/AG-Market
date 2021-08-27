@@ -37,6 +37,7 @@ import {
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 export const EditCompany = props => {
   const [imageSource, setImageSource] = useState(props.route.params.logo);
@@ -299,9 +300,9 @@ export const EditCompany = props => {
                   borderBottomWidth: 1,
                   justifyContent: 'center',
                 }}>
-                <Text style={[Typography.placeholderSmall]}>
+                <Font.PlaceholderSmall>
                   {Strings.contactNumber}
-                </Text>
+                </Font.PlaceholderSmall>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -331,9 +332,7 @@ export const EditCompany = props => {
                   borderBottomWidth: 1,
                   justifyContent: 'center',
                 }}>
-                <Text style={[Typography.placeholderSmall]}>
-                  {Strings.email}
-                </Text>
+                <Font.PlaceholderSmall>{Strings.email}</Font.PlaceholderSmall>
                 <TextInput
                   underlineColorAndroid="transparent"
                   value={email}
@@ -356,9 +355,9 @@ export const EditCompany = props => {
                   justifyContent: 'center',
                 }}>
                 {/* TRANSLATION */}
-                <Text style={[Typography.placeholderSmall]}>
+                <Font.PlaceholderSmall>
                   Bank Account Number {/*FIXME translation for bankDetails */}
-                </Text>
+                </Font.PlaceholderSmall>
                 <TextInput
                   underlineColorAndroid="transparent"
                   value={bankDetails}
@@ -380,9 +379,9 @@ export const EditCompany = props => {
                   borderBottomWidth: 1,
                   justifyContent: 'center',
                 }}>
-                <Text style={[Typography.placeholderSmall]}>
+                <Font.PlaceholderSmall>
                   {Strings.bankName}
-                </Text>
+                </Font.PlaceholderSmall>
                 <TextInput
                   underlineColorAndroid="transparent"
                   value={bankName}

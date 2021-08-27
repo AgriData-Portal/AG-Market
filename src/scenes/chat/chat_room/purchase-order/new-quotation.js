@@ -30,6 +30,7 @@ import {BlueButton} from '_components';
 import {log} from '_utils';
 import {UnsuccessfulModal} from '_components';
 import {userStore, companyStore} from '_store';
+import {Font} from '_components';
 
 const NewOrderQuotation = props => {
   const userID = userStore(state => state.userID);
@@ -242,15 +243,11 @@ const NewOrderQuotation = props => {
           top: hp('4%'),
           alignItems: 'center',
         }}>
-        <Text style={[Typography.large]}>{Strings.orderQuotationFrom}</Text>
+        <Font.Large>{Strings.orderQuotationFrom}</Font.Large>
 
-        <Text
-          style={[
-            Typography.header,
-            {color: Colors.LIME_GREEN, bottom: hp('1%')},
-          ]}>
+        <Font.Header style={{color: Colors.LIME_GREEN, bottom: hp('1%')}}>
           {props.chatName}
-        </Text>
+        </Font.Header>
 
         {/* <Text style={[Typography.small, {bottom: hp('1%')}]}>
             #{props.chatGroupID.slice(0, 8)}
@@ -274,15 +271,12 @@ const NewOrderQuotation = props => {
         <OrderList trigger={trigger} setTrigger={setTrigger}></OrderList>
       </View>
       <View style={{position: 'absolute', left: wp('50%'), top: hp('50%')}}>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              fontFamily: 'Poppins-SemiBold',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            fontFamily: 'Poppins-SemiBold',
+          }}>
           {Strings.totalCost}: RM {sum}
-        </Text>
+        </Font.Normal>
       </View>
       <View
         style={{
@@ -301,9 +295,9 @@ const NewOrderQuotation = props => {
             width: wp('70%'),
             top: hp('2%'),
           }}>
-          <Text style={[Typography.normal, {top: hp('0.5%'), right: wp('3%')}]}>
+          <Font.Normal style={{top: hp('0.5%'), right: wp('3%')}}>
             {Strings.logisticsProvided}:
-          </Text>
+          </Font.Normal>
           <DropDownPicker
             open={openDelivery}
             value={deliveryValue}
@@ -341,9 +335,9 @@ const NewOrderQuotation = props => {
             width: wp('70%'),
             top: hp('3%'),
           }}>
-          <Text style={[Typography.normal, {top: hp('0.5%'), right: wp('3%')}]}>
+          <Font.Normal style={{top: hp('0.5%'), right: wp('3%')}}>
             {Strings.paymentTerms}:
-          </Text>
+          </Font.Normal>
           <DropDownPicker
             open={openPayment}
             value={paymentValue}
@@ -502,12 +496,12 @@ const OrderCard = props => {
         flexDirection: 'row',
       }}>
       <View style={{left: wp('1%'), width: wp('22%')}}>
-        <Text style={[Typography.normal, {width: wp(200)}]}>{props.name} </Text>
-        <Text style={[Typography.small]}>
+        <Font.Normal style={{width: wp(200)}}>{props.name} </Font.Normal>
+        <Font.Small>
           {Strings.grade}: {props.grade}
-        </Text>
+        </Font.Small>
 
-        <Text style={[Typography.small]}>{props.variety}</Text>
+        <Font.Small>{props.variety}</Font.Small>
       </View>
       <View
         style={{
@@ -536,28 +530,22 @@ const OrderCard = props => {
             borderColor: Colors.LIME_GREEN,
             position: 'absolute',
           }}></View>
-        <Text
-          style={[
-            Typography.small,
-            {
-              top: hp('1%'),
-              left: wp('1%'),
-            },
-          ]}>
+        <Font.Small
+          style={{
+            top: hp('1%'),
+            left: wp('1%'),
+          }}>
           {props.siUnit}
-        </Text>
+        </Font.Small>
       </View>
       <View style={{flexDirection: 'row', left: wp('5%')}}>
-        <Text
-          style={[
-            Typography.small,
-            {
-              top: hp('1%'),
-              left: wp('1%'),
-            },
-          ]}>
+        <Font.Small
+          style={{
+            top: hp('1%'),
+            left: wp('1%'),
+          }}>
           RM
-        </Text>
+        </Font.Small>
         <TextInput
           value={price}
           underlineColorAndroid="transparent"
@@ -582,29 +570,23 @@ const OrderCard = props => {
             borderColor: Colors.LIME_GREEN,
             position: 'absolute',
           }}></View>
-        <Text
-          style={[
-            Typography.small,
-            {
-              top: hp('1%'),
-              left: wp('1%'),
-            },
-          ]}>
+        <Font.Small
+          style={{
+            top: hp('1%'),
+            left: wp('1%'),
+          }}>
           /{props.siUnit}
-        </Text>
+        </Font.Small>
       </View>
 
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'right',
-            right: wp('1%'),
-            position: 'absolute',
-          },
-        ]}>
+      <Font.Small
+        style={{
+          textAlign: 'right',
+          right: wp('1%'),
+          position: 'absolute',
+        }}>
         RM {parseFloat((price * quantity).toFixed(2))}
-      </Text>
+      </Font.Small>
     </View>
   );
 };

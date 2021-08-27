@@ -34,6 +34,7 @@ import {
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 export const ReceivePaymentTaskList = props => {
   const [refreshing, setRefreshing] = useState(false);
@@ -160,27 +161,21 @@ const ReceivePaymentTask = props => {
             <Icon name="cash-outline" size={wp('11%')} color="black" />
           </View>
         </View>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              color: Colors.LIME_GREEN,
-              top: hp('1%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            color: Colors.LIME_GREEN,
+            top: hp('1%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {companyType == 'supplier'
             ? props.retailer.name
             : props.supplier.name}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {left: wp('25%'), top: hp('3.5%'), position: 'absolute'},
-          ]}>
+        </Font.Normal>
+        <Font.Small
+          style={{left: wp('25%'), top: hp('3.5%'), position: 'absolute'}}>
           {props.trackingNum}
-        </Text>
+        </Font.Small>
         {/*} {props.paid ? (
           <Text
             style={[
@@ -208,43 +203,34 @@ const ReceivePaymentTask = props => {
             NOT PAID
           </Text>
           )} */}
-        <Text
-          style={[
-            Typography.normal,
-            {
-              color: 'black',
-              top: hp('5%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            color: 'black',
+            top: hp('5%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {Strings.amount}: {props.amount}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('7.5%'),
-              right: hp('2%'),
-              position: 'absolute',
-            },
-          ]}>
+        </Font.Normal>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('7.5%'),
+            right: hp('2%'),
+            position: 'absolute',
+          }}>
           {Strings.recieveBefore}:
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('9%'),
-              right: hp('2%'),
-              position: 'absolute',
-              fontStyle: 'italic',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('9%'),
+            right: hp('2%'),
+            position: 'absolute',
+            fontStyle: 'italic',
+          }}>
           {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMM YYYY')}
-        </Text>
+        </Font.Small>
       </View>
       <Modal isVisible={receiveTaskModal}>
         <ReceivePaymentModal
@@ -332,30 +318,24 @@ const ReceivePaymentModal = props => {
         <CloseButton setModal={props.setReceiveTaskModal} />
       </View>
 
-      <Text
-        style={[
-          Typography.header,
-          {
-            position: 'absolute',
-            fontFamily: 'Poppins-SemiBold',
-            top: hp('5%'),
-            left: wp('5%'),
-          },
-        ]}>
+      <Font.Header
+        style={{
+          position: 'absolute',
+          fontFamily: 'Poppins-SemiBold',
+          top: hp('5%'),
+          left: wp('5%'),
+        }}>
         {Strings.paymentAlert}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('11%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Header>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('11%'),
+          left: wp('5%'),
+        }}>
         {Strings.recieveBefore}:
         {dayjs(props.payBefore, 'DD-MM-YYYY').format('DD MMM YYYY')}
-      </Text>
+      </Font.Placeholder>
       <View
         style={{
           borderBottomWidth: 2,
@@ -365,151 +345,115 @@ const ReceivePaymentModal = props => {
           borderColor: Colors.GRAY_MEDIUM,
           position: 'absolute',
         }}></View>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('23%'),
-            left: wp('5%'),
-          },
-        ]}>
+      <Font.Small
+        style={{
+          position: 'absolute',
+          top: hp('23%'),
+          left: wp('5%'),
+        }}>
         {Strings.paymentFrom}:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('23%'),
-            left: wp('40%'),
-          },
-        ]}>
+      </Font.Small>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('23%'),
+          left: wp('40%'),
+        }}>
         {companyType == 'supplier' ? props.retailer.name : props.supplier.name}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('28%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Small
+        style={{
+          position: 'absolute',
+          top: hp('28%'),
+          left: wp('5%'),
+        }}>
         {Strings.order} #:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('28%'),
-            left: wp('40%'),
-          },
-        ]}>
+      </Font.Small>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('28%'),
+          left: wp('40%'),
+        }}>
         #{props.trackingNum}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('33%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('33%'),
+          left: wp('5%'),
+        }}>
         {Strings.orderedOn}:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('33%'),
-            left: wp('40%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('33%'),
+          left: wp('40%'),
+        }}>
         {dayjs(props.createdAt).format('DD MMM YYYY')}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('38%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('38%'),
+          left: wp('5%'),
+        }}>
         {Strings.bankName}:
-      </Text>
+      </Font.Placeholder>
 
       {(companyType == 'supplier' && props.supplier.bankAccount == null) ||
       (companyType == 'farmer' && props.farmer.bankAccount == null) ? (
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('38%'),
-              left: wp('40%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            top: hp('38%'),
+            left: wp('40%'),
+          }}>
           {Strings.notAddedYet}
-        </Text>
+        </Font.Normal>
       ) : (
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('38%'),
-              left: wp('40%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            top: hp('38%'),
+            left: wp('40%'),
+          }}>
           {companyType == 'supplier'
             ? props.supplier.bankAccount.bankName
             : props.farmer.bankAccount.bankName}
-        </Text>
+        </Font.Normal>
       )}
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('43%'),
-            left: wp('5%'),
-          },
-        ]}>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('43%'),
+          left: wp('5%'),
+        }}>
         {Strings.bankDetails}:
-      </Text>
-  
+      </Font.Placeholder>
+
       {(companyType == 'supplier' && props.supplier.bankAccount == null) ||
       (companyType == 'farmer' && props.farmer.bankAccount == null) ? (
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('43%'),
-              left: wp('40%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            top: hp('43%'),
+            left: wp('40%'),
+          }}>
           {Strings.notAddedYet}
-        </Text>
+        </Font.Normal>
       ) : (
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('43%'),
-              left: wp('40%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            top: hp('43%'),
+            left: wp('40%'),
+          }}>
           {companyType == 'supplier'
             ? props.supplier.bankAccount.accountNumber
             : props.farmer.bankAccount.accountNumber}
-        </Text>
+        </Font.Normal>
       )}
 
       {/* <Text

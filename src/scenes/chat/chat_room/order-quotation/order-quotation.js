@@ -32,6 +32,7 @@ import {SuccessfulModal, UnsuccessfulModal} from '_components/modals';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {userStore, companyStore} from '_store';
+import {Font} from '_components';
 
 export const OrderQuotationModal = props => {
   const [orderDetails, setOrderDetails] = useState(null);
@@ -262,15 +263,13 @@ export const OrderQuotationModal = props => {
               top: hp('4%'),
               alignItems: 'center',
             }}>
-            <Text style={[Typography.large, {}]}>
-              {Strings.orderQuotationFrom}
-            </Text>
-            <Text style={[Typography.header, {color: Colors.LIME_GREEN}]}>
+            <Font.Large>{Strings.orderQuotationFrom}</Font.Large>
+            <Font.Header style={{color: Colors.LIME_GREEN}}>
               {props.chatName}
-            </Text>
-            <Text style={[Typography.normal]}>
+            </Font.Header>
+            <Font.Normal>
               {props.contentType} #{orderDetails.status}
-            </Text>
+            </Font.Normal>
           </View>
           <View
             style={{
@@ -290,9 +289,10 @@ export const OrderQuotationModal = props => {
             }}>
             <QuotationList data={orderDetails.items}></QuotationList>
           </View>
-          <Text style={[Typography.large, {top: hp('48%'), left: wp('20%')}]}>
+          {/* TRANSLATION */}
+          <Font.Large style={{top: hp('48%'), left: wp('20%')}}>
             Total: RM {orderDetails.sum}
-          </Text>
+          </Font.Large>
           <View
             style={{
               top: hp('50%'),
@@ -304,6 +304,7 @@ export const OrderQuotationModal = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
+            {/* TRANSLATION */}
             <View
               style={{
                 flexDirection: 'row',
@@ -311,18 +312,18 @@ export const OrderQuotationModal = props => {
                 justifyContent: 'space-between',
               }}>
               <View>
-                <Text style={[Typography.normal]}>Logistics Provided:</Text>
-                <Text style={[Typography.normal]}>Payment Terms:</Text>
+                <Font.Normal>Logistics Provided:</Font.Normal>
+                <Font.Normal>Payment Terms:</Font.Normal>
               </View>
               <View style={{alignItems: 'flex-end'}}>
-                <Text style={[Typography.normal]}>
+                <Font.Normal>
                   {orderDetails.logisticsProvided ? 'Provided' : 'Not Provided'}
-                </Text>
-                <Text style={[Typography.normal]}>
+                </Font.Normal>
+                <Font.Normal>
                   {orderDetails.paymentTerms == 'cashOnDelivery'
                     ? 'Cash on Delivery'
                     : 'Credit Terms'}
-                </Text>
+                </Font.Normal>
               </View>
             </View>
           </View>
@@ -436,13 +437,15 @@ const QuotationCard = props => {
         flexDirection: 'row',
       }}>
       <View style={{left: wp('1%'), width: wp('47%')}}>
-        <Text style={[Typography.normal, {}]}>
+        <Font.Normal>
           {props.name}
           {'\t'}
-          <Text style={[Typography.small]}>Grade: {props.grade}</Text>
-        </Text>
+          <Font.Small>
+            {Strings.grade}: {props.grade}
+          </Font.Small>
+        </Font.Normal>
 
-        <Text style={[Typography.small]}>{props.variety}</Text>
+        <Font.Small>{props.variety}</Font.Small>
       </View>
       <View
         style={{
@@ -451,17 +454,14 @@ const QuotationCard = props => {
           position: 'absolute',
           bottom: hp('4.5%'),
         }}>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              top: hp('1%'),
-              left: wp('1%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            top: hp('1%'),
+            left: wp('1%'),
+          }}>
           {props.quantity}
           {props.siUnit}
-        </Text>
+        </Font.Normal>
       </View>
       <View
         style={{
@@ -470,41 +470,32 @@ const QuotationCard = props => {
           position: 'absolute',
           bottom: hp('1.5%'),
         }}>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              top: hp('1%'),
-              left: wp('1%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            top: hp('1%'),
+            left: wp('1%'),
+          }}>
           RM
-        </Text>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              top: hp('1%'),
-              left: wp('1%'),
-            },
-          ]}>
+        </Font.Normal>
+        <Font.Normal
+          style={{
+            top: hp('1%'),
+            left: wp('1%'),
+          }}>
           {props.price}/{props.siUnit}
-        </Text>
+        </Font.Normal>
       </View>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            textAlign: 'right',
-            bottom: hp('2.5%'),
-            left: wp('75%'),
-            position: 'absolute',
-          },
-        ]}>
+      <Font.Normal
+        style={{
+          textAlign: 'right',
+          bottom: hp('2.5%'),
+          left: wp('75%'),
+          position: 'absolute',
+        }}>
         RM
         {parseInt(parseInt(props.quantity) * parseFloat(props.price) * 100) /
           100}
-      </Text>
+      </Font.Normal>
     </View>
   );
 };

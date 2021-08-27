@@ -26,6 +26,7 @@ import {
 import Strings from '_utils';
 import {log} from '_utils';
 import {userStore, companyStore} from '_store';
+import {Font} from '_components';
 
 export const ProductCard = props => {
   const [imageSource, setImageSource] = useState(null);
@@ -65,20 +66,15 @@ export const ProductCard = props => {
           width: hp('8%'),
           borderRadius: 100,
         }}></Image>
-      <Text style={[Typography.normal, {top: hp('2%')}]}>
-        {props.productName}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {marginTop: hp('2%'), width: wp('39%'), alignSelf: 'center'},
-        ]}>
+      <Font.Small style={{top: hp('2%')}}>{props.productName}</Font.Small>
+      <Font.Small
+        style={{marginTop: hp('2%'), width: wp('39%'), alignSelf: 'center'}}>
         {Strings.variety}: {props.variety}
         {'\n'}
         {Strings.price}: {props.lowPrice} - {props.highPrice}
         {'\n'}
         {Strings.grade}: {props.grade}
-      </Text>
+      </Font.Small>
       <Modal isVisible={productModal}>
         <ProductPopUp
           setProductModal={setProductModal}
@@ -139,9 +135,9 @@ export const MarketplaceList = props => {
             <Icon name="warning-outline" size={wp('40%')} />
           </View>
           <View style={{width: wp('70%'), bottom: hp('8%')}}>
-            <Text style={[Typography.normal, {textAlign: 'center'}]}>
+            <Font.Normal style={{textAlign: 'center'}}>
               {Strings.sorryTheItem}
-            </Text>
+            </Font.Normal>
           </View>
           <View
             style={{
@@ -151,20 +147,19 @@ export const MarketplaceList = props => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Text style={[Typography.normal]}>{Strings.doesNotExist}</Text>
+            <Font.Normal>{Strings.doesNotExist}</Font.Normal>
             <TouchableOpacity
               style={{marginLeft: wp('1%')}}
               onPress={() => OpenWhatsapp()}>
-              <Text
-                style={[Typography.normal, {textDecorationLine: 'underline'}]}>
+              <Font.Normal style={{textDecorationLine: 'underline'}}>
                 {Strings.whatsappUs}
-              </Text>
+              </Font.Normal>
             </TouchableOpacity>
           </View>
           <View style={{width: wp('70%'), bottom: hp('8%')}}>
-            <Text style={[Typography.normal, {textAlign: 'center'}]}>
+            <Font.Normal style={{textAlign: 'center'}}>
               {Strings.soWeCanSource}
-            </Text>
+            </Font.Normal>
           </View>
         </View>
       }
@@ -330,7 +325,7 @@ export const ProductPopUp = props => {
             flexDirection: 'row',
             zIndex: 2,
           }}>
-          <Text style={[Typography.header]}>{props.productName}</Text>
+          <Font.Header>{props.productName}</Font.Header>
 
           <TouchableOpacity>
             <Icon
@@ -385,16 +380,13 @@ export const ProductPopUp = props => {
                 }}
                 source={require('_assets/images/online-store.png')}
               />
-              <Text
-                style={[
-                  Typography.normal,
-                  {
-                    fontFamily: 'Poppins-SemiBold',
-                    width: wp('30%'),
-                  },
-                ]}>
+              <Font.Normal
+                style={{
+                  fontFamily: 'Poppins-SemiBold',
+                  width: wp('30%'),
+                }}>
                 {Strings.visitStore}
-              </Text>
+              </Font.Normal>
             </TouchableOpacity>
           </View>
           <View
@@ -402,13 +394,9 @@ export const ProductPopUp = props => {
               width: wp('30%'),
               right: wp('-1%'),
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {top: hp('3%'), color: Colors.PALE_BLUE},
-              ]}>
+            <Font.Normal style={{top: hp('3%'), color: Colors.PALE_BLUE}}>
               RM {props.lowPrice}-{props.highPrice}/{props.siUnit}
-            </Text>
+            </Font.Normal>
           </View>
         </View>
         <View
@@ -427,8 +415,8 @@ export const ProductPopUp = props => {
               alignItems: 'center',
               width: wp('60%'),
             }}>
-            <Text style={[Typography.normalBold]}>{Strings.variety}:</Text>
-            <Text style={[Typography.normal]}>{props.variety}</Text>
+            <Font.NormalBold>{Strings.variety}:</Font.NormalBold>
+            <Font.Normal>{props.variety}</Font.Normal>
           </View>
           <View
             style={{
@@ -437,8 +425,8 @@ export const ProductPopUp = props => {
               alignItems: 'center',
               width: wp('60%'),
             }}>
-            <Text style={[Typography.normalBold]}>{Strings.grade}:</Text>
-            <Text style={[Typography.normal]}>{props.grade}</Text>
+            <Font.NormalBold>{Strings.grade}:</Font.NormalBold>
+            <Font.Normal>{props.grade}</Font.Normal>
           </View>
           <View
             style={{
@@ -447,8 +435,8 @@ export const ProductPopUp = props => {
               alignItems: 'center',
               width: wp('60%'),
             }}>
-            <Text style={[Typography.normalBold]}>{Strings.available}:</Text>
-            <Text style={[Typography.normal]}>{props.quantityAvailable}</Text>
+            <Font.NormalBold>{Strings.available}:</Font.NormalBold>
+            <Font.Normal>{props.quantityAvailable}</Font.Normal>
           </View>
           <View
             style={{
@@ -457,8 +445,8 @@ export const ProductPopUp = props => {
               alignItems: 'center',
               width: wp('60%'),
             }}>
-            <Text style={[Typography.normalBold]}>MOQ:</Text>
-            <Text style={[Typography.normal]}>{props.minimumQuantity}</Text>
+            <Font.NormalBold>MOQ:</Font.NormalBold>
+            <Font.Normal>{props.minimumQuantity}</Font.Normal>
           </View>
         </View>
       </View>
@@ -498,9 +486,9 @@ export const FavouritesList = props => {
             <Icon name="warning-outline" size={wp('40%')} />
           </View>
           <View style={{width: wp('70%'), bottom: hp('8%')}}>
-            <Text style={[Typography.normal, {textAlign: 'center'}]}>
+            <Font.Normal style={{textAlign: 'center'}}>
               {Strings.sorryYouHaveNot}
-            </Text>
+            </Font.Normal>
           </View>
         </View>
       }
@@ -567,9 +555,7 @@ const StoreCard = props => {
         )}
       </View>
       <View style={{paddingBottom: hp('3%')}}>
-        <Text style={[Typography.normal, {top: hp('1%')}]}>
-          {props.storeName}
-        </Text>
+        <Font.Normal style={{top: hp('1%')}}>{props.storeName}</Font.Normal>
       </View>
     </TouchableOpacity>
   );
@@ -643,7 +629,7 @@ export const ProductSearchBar = props => {
               log(props.searchValue);
             }
           }}>
-          <Text style={[Typography.normal]}>{Strings.search}</Text>
+          <Font.Normal>{Strings.search}</Font.Normal>
         </TouchableOpacity>
       </View>
       {focus == true ? (

@@ -30,6 +30,7 @@ import {createCSV} from './create-csv';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 import ViewShot from 'react-native-view-shot';
 
@@ -203,17 +204,14 @@ const Order = props => {
           }}>
           <Icon name="clipboard-outline" size={wp('11%')} />
         </View>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: Colors.LIME_GREEN,
-              top: hp('1%'),
-              left: wp('25%'),
-              position: 'absolute',
-              fontWeight: 'bold',
-            },
-          ]}>
+        <Font.Small
+          style={{
+            color: Colors.LIME_GREEN,
+            top: hp('1%'),
+            left: wp('25%'),
+            position: 'absolute',
+            fontWeight: 'bold',
+          }}>
           {companyType == 'retailer'
             ? props.supplier.name
             : companyType == 'supplier' && props.sellerState == true
@@ -221,77 +219,59 @@ const Order = props => {
             : companyType == 'supplier' && props.sellerState == false
             ? props.retailer.name
             : props.supplier.name}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {left: wp('25%'), top: hp('3%'), position: 'absolute'},
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{left: wp('25%'), top: hp('3%'), position: 'absolute'}}>
           {props.trackingNum}
-        </Text>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              color: 'grey',
-              top: hp('4.5%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Normal
+          style={{
+            color: 'grey',
+            top: hp('4.5%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {Strings.amount}: {props.amount}
-        </Text>
+        </Font.Normal>
         {props.paid ? (
-          <Text
-            style={[
-              Typography.small,
-              {
-                color: Colors.LIME_GREEN,
-                top: hp('2%'),
-                right: wp('5%'),
-                position: 'absolute',
-                fontStyle: 'italic',
-              },
-            ]}>
+          <Font.Small
+            style={{
+              color: Colors.LIME_GREEN,
+              top: hp('2%'),
+              right: wp('5%'),
+              position: 'absolute',
+              fontStyle: 'italic',
+            }}>
             {Strings.paid}
-          </Text>
+          </Font.Small>
         ) : (
-          <Text
-            style={[
-              Typography.small,
-              {
-                color: 'red',
-                top: hp('2%'),
-                right: wp('2%'),
-                position: 'absolute',
-                fontStyle: 'italic',
-              },
-            ]}>
+          <Font.Small
+            style={{
+              color: 'red',
+              top: hp('2%'),
+              right: wp('2%'),
+              position: 'absolute',
+              fontStyle: 'italic',
+            }}>
             {Strings.notPaid}
-          </Text>
+          </Font.Small>
         )}
         <View style={{flexDirection: 'row', top: hp('8%'), left: wp('-1%')}}>
-          <Text
-            style={[
-              Typography.placeholderSmall,
-              {
-                color: 'grey',
-                fontStyle: 'italic',
-              },
-            ]}>
+          <Font.PlaceholderSmall
+            style={{
+              color: 'grey',
+              fontStyle: 'italic',
+            }}>
             {Strings.invoiceDate}:
-          </Text>
-          <Text
-            style={[
-              Typography.placeholderSmall,
-              {
-                color: 'grey',
-                fontStyle: 'italic',
-                marginHorizontal: wp('1%'),
-              },
-            ]}>
+          </Font.PlaceholderSmall>
+          <Font.PlaceholderSmall
+            style={{
+              color: 'grey',
+              fontStyle: 'italic',
+              marginHorizontal: wp('1%'),
+            }}>
             {dayjs(props.createdAt).format('DD MMM YYYY')}
-          </Text>
+          </Font.PlaceholderSmall>
         </View>
       </View>
       <Modal isVisible={invoiceModal}>
@@ -379,37 +359,27 @@ const InvoiceModal = props => {
         }}>
         <CloseButton setModal={props.setInvoiceModal} />
       </View>
-      <Text
-        style={[
-          Typography.header,
-          {
-            position: 'absolute',
-            top: hp('4%'),
-            left: wp('5%'),
-          },
-        ]}>
-        {Strings.invoice}{' '}
-        <Text style={Typography.normal}>#{props.trackingNum}</Text>
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            right: wp('5%'),
-            top: hp('8%'),
-          },
-        ]}>
+      <Font.Header
+        style={{
+          position: 'absolute',
+          top: hp('4%'),
+          left: wp('5%'),
+        }}>
+        {Strings.invoice} <Font.Normal>#{props.trackingNum}</Font.Normal>
+      </Font.Header>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          right: wp('5%'),
+          top: hp('8%'),
+        }}>
         {dayjs(props.createdAt).format('hh:mm a DD MMMM YYYY')}
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            top: hp('8.5%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      <Font.Normal
+        style={{
+          top: hp('8.5%'),
+          left: wp('5%'),
+        }}>
         {companyType == 'retailer'
           ? props.supplier.name
           : companyType == 'supplier' && props.sellerState
@@ -417,35 +387,29 @@ const InvoiceModal = props => {
           : companyType == 'supplier' && !props.sellerState
           ? props.retailer.name
           : props.supplier.name}
-      </Text>
+      </Font.Normal>
       {props.paid ? (
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              textAlign: 'right',
-              top: hp('11%'),
-              right: wp('5%'),
-              color: Colors.LIME_GREEN,
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            textAlign: 'right',
+            top: hp('11%'),
+            right: wp('5%'),
+            color: Colors.LIME_GREEN,
+          }}>
           {Strings.paid}
-        </Text>
+        </Font.Normal>
       ) : (
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              textAlign: 'right',
-              top: hp('11%'),
-              right: wp('5%'),
-              color: 'red',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            position: 'absolute',
+            textAlign: 'right',
+            top: hp('11%'),
+            right: wp('5%'),
+            color: 'red',
+          }}>
           {Strings.notPaid}
-        </Text>
+        </Font.Normal>
       )}
       <View
         style={{
@@ -486,18 +450,15 @@ const InvoiceModal = props => {
             }}
           />
         </View>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              fontFamily: 'Poppins-SemiBold',
-              textAlign: 'right',
-              marginTop: hp('2%'),
-              right: wp('5%'),
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            fontFamily: 'Poppins-SemiBold',
+            textAlign: 'right',
+            marginTop: hp('2%'),
+            right: wp('5%'),
+          }}>
           {Strings.total}: RM {props.amount}
-        </Text>
+        </Font.Normal>
       </View>
       <ViewShot
         ref={buyerChopref}
@@ -667,18 +628,15 @@ const InvoiceModal = props => {
           </View>
         </View>
       </ViewShot>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            textAlign: 'right',
-            top: hp('65%'),
-            right: wp('5%'),
-          },
-        ]}>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          textAlign: 'right',
+          top: hp('65%'),
+          right: wp('5%'),
+        }}>
         {Strings.recievedBy}: {props.receivedBy}
-      </Text>
+      </Font.Normal>
       <BlueButton
         position={'absolute'}
         borderRadius={10}
@@ -781,26 +739,23 @@ const InvoiceItem = props => {
         alignSelf: 'center',
         justifyContent: 'center',
       }}>
-      <Text style={[Typography.small, {position: 'absolute', left: wp('3%')}]}>
+      <Font.Small style={{position: 'absolute', left: wp('3%')}}>
         {props.name}
-      </Text>
-      <Text style={[Typography.small, {position: 'absolute', left: wp('25%')}]}>
+      </Font.Small>
+      <Font.Small style={{position: 'absolute', left: wp('25%')}}>
         |{props.quantity}
         {props.siUnit}
-      </Text>
-      <Text style={[Typography.small, {position: 'absolute', left: wp('40%')}]}>
+      </Font.Small>
+      <Font.Small style={{position: 'absolute', left: wp('40%')}}>
         @ RM{props.price}/{props.siUnit}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            position: 'absolute',
-            right: wp('3%'),
-          },
-        ]}>
+      </Font.Small>
+      <Font.Small
+        style={{
+          position: 'absolute',
+          right: wp('3%'),
+        }}>
         RM {props.price * props.quantity}
-      </Text>
+      </Font.Small>
     </View>
   );
 };
@@ -815,21 +770,16 @@ export const SortModal = props => {
         backgroundColor: Colors.GRAY_MEDIUM,
         borderRadius: 5,
       }}>
-      <Text
-        style={[
-          Typography.normalBold,
-          {left: wp('5%'), marginBottom: hp('2%'), top: hp('1%')},
-        ]}>
+      <Font.NormalBold
+        style={{left: wp('5%'), marginBottom: hp('2%'), top: hp('1%')}}>
         Sort By
-      </Text>
+      </Font.NormalBold>
       <TouchableOpacity
         style={{
           width: wp('45%'),
           height: hp('4%'),
         }}>
-        <Text style={[Typography.normal, {left: wp('5%')}]}>
-          Newest to Oldest
-        </Text>
+        <Font.Normal style={{left: wp('5%')}}>Newest to Oldest</Font.Normal>
         {/*TRANSLATION*/}
       </TouchableOpacity>
       <TouchableOpacity
@@ -837,9 +787,7 @@ export const SortModal = props => {
           width: wp('45%'),
           height: hp('4%'),
         }}>
-        <Text style={[Typography.normal, {left: wp('5%')}]}>
-          Oldest to Newest
-        </Text>
+        <Font.Normal style={{left: wp('5%')}}>Oldest to Newest</Font.Normal>
       </TouchableOpacity>
     </View>
   );

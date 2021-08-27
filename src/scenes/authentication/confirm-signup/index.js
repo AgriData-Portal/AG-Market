@@ -19,6 +19,7 @@ import Modal from 'react-native-modal';
 import {Auth} from 'aws-amplify';
 import Strings from '_utils';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const ConfirmSignUp = props => {
   const [phone, setPhone] = useState(props.route.params.phone);
@@ -92,30 +93,24 @@ export const ConfirmSignUp = props => {
           backgroundColor: '#CDDCF3',
           alignItems: 'center',
         }}>
-        <Text
-          style={[
-            Typography.header,
-            {
-              top: hp('3%'),
-              color: '#444443',
-            },
-          ]}>
+        <Font.Header
+          style={{
+            top: hp('3%'),
+            color: '#444443',
+          }}>
           {Strings.verificationWord}
-        </Text>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              top: hp('5%'),
-              color: '#444443',
-              width: wp('80%'),
-              textAlign: 'center',
-            },
-          ]}>
+        </Font.Header>
+        <Font.Normal
+          style={{
+            top: hp('5%'),
+            color: '#444443',
+            width: wp('80%'),
+            textAlign: 'center',
+          }}>
           {Strings.sendCodeToPhone}
-        </Text>
+        </Font.Normal>
         <View style={{top: hp('12%')}}>
-          <Text style={[Typography.small]}>{Strings.authenticationCode}</Text>
+          <Font.Small>{Strings.authenticationCode}</Font.Small>
           <TextInput
             style={{
               width: wp('80%'),
@@ -148,7 +143,7 @@ export const ConfirmSignUp = props => {
             onPress={() => {
               resendConfirmationCode();
             }}>
-            <Text style={[Typography.small]}>{Strings.resendCode}</Text>
+            <Font.Small>{Strings.resendCode}</Font.Small>
           </TouchableOpacity>
         </View>
         <View>
@@ -177,10 +172,11 @@ export const ConfirmSignUp = props => {
                 confirmSignUp();
               }
             }}>
-            <Text style={[Typography.normal]}>{Strings.verify}</Text>
+            <Font.Normal>{Strings.verify}</Font.Normal>
           </TouchableOpacity>
         </View>
       </View>
+      {/* TRANSLATION */}
       <View style={{alignItems: 'center', top: hp('0%')}}>
         <TouchableOpacity
           onPress={() => {
@@ -194,9 +190,7 @@ export const ConfirmSignUp = props => {
                 alert('Make sure WhatsApp installed on your device'); //<---Error
               });
           }}>
-          <Text style={[Typography.small]}>
-            Having trouble receiving SMS verification?
-          </Text>
+          <Font.Small>Having trouble receiving SMS verification?</Font.Small>
         </TouchableOpacity>
       </View>
       <Modal
@@ -242,13 +236,10 @@ export const SuccessfulModal = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Large
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           Phone Successfully Verified
-        </Text>
+        </Font.Large>
 
         <View style={{top: hp('10%'), justifyContent: 'center'}}>
           <Icon name="checkmark-done" color={'green'} size={wp('40%')} />
@@ -257,7 +248,7 @@ export const SuccessfulModal = props => {
     </SafeAreaView>
   );
 };
-
+// TRANSLATION
 export const UnsuccessfulModal2 = props => {
   return (
     <SafeAreaView
@@ -274,13 +265,10 @@ export const UnsuccessfulModal2 = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Large
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           Please Enter Phone Number!
-        </Text>
+        </Font.Large>
 
         <View style={{top: hp('5%'), justifyContent: 'center'}}>
           <Icon name="warning" color={'red'} size={wp('40%')} />
@@ -306,13 +294,10 @@ export const UnsuccessfulModal = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Large
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           Please Enter Both Phone Number and Authentication Code!
-        </Text>
+        </Font.Large>
 
         <View style={{top: hp('5%'), justifyContent: 'center'}}>
           <Icon name="warning" color={'red'} size={wp('40%')} />
@@ -338,13 +323,10 @@ export const ResendCodeModal = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.header,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Header
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           Code Sent!
-        </Text>
+        </Font.Header>
         <View style={{top: hp('10%'), justifyContent: 'center'}}>
           <Icon name="checkmark-done" color={'green'} size={wp('40%')} />
         </View>
@@ -369,13 +351,10 @@ export const WrongCode = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Large
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           Wrong Authentication Code! Please Re-enter Code!
-        </Text>
+        </Font.Large>
 
         <View style={{top: hp('5%'), justifyContent: 'center'}}>
           <Icon name="warning" color={'red'} size={wp('40%')} />

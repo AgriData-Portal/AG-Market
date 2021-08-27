@@ -28,7 +28,8 @@ import Modal from 'react-native-modal';
 import {DismissKeyboardView, UnsuccessfulModal} from '_components';
 import {BlueButton} from '_components';
 import {log} from '_utils';
-import {companyStore, userStore} from '_store';
+import {userStore} from '_store';
+import {Font} from '_components';
 
 export {EditPersonal};
 
@@ -100,9 +101,9 @@ export const PersonalProfile = props => {
                 top: hp('5%'),
               }}
             />
-            <Text style={[Typography.header, {top: hp('5%'), zIndex: 10}]}>
+            <Font.Header style={{top: hp('5%'), zIndex: 10}}>
               {props.user.name}
-            </Text>
+            </Font.Header>
           </View>
           <View
             style={{
@@ -119,12 +120,12 @@ export const PersonalProfile = props => {
                 width: wp('73%'),
                 height: hp('5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
+              <Font.PlaceholderSmall>
                 {Strings.companyRole}
-              </Text>
+              </Font.PlaceholderSmall>
 
               <View>
-                <Text style={[Typography.normal]}>{roleInCompany}</Text>
+                <Font.Normal>{roleInCompany}</Font.Normal>
               </View>
             </View>
 
@@ -135,12 +136,12 @@ export const PersonalProfile = props => {
                 width: wp('73%'),
                 height: hp('5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
+              <Font.PlaceholderSmall>{Strings.email}</Font.PlaceholderSmall>
               <View>
                 {userEmail == '' ? (
-                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                  <Font.Normal>{Strings.notAddedYet}</Font.Normal>
                 ) : (
-                  <Text style={[Typography.normal]}>{userEmail}</Text>
+                  <Font.Normal>{userEmail}</Font.Normal>
                 )}
               </View>
             </View>
@@ -151,11 +152,11 @@ export const PersonalProfile = props => {
                 width: wp('73%'),
                 height: hp('5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
+              <Font.PlaceholderSmall>
                 {Strings.contactNumber}
-              </Text>
+              </Font.PlaceholderSmall>
               <View>
-                <Text style={[Typography.normal]}>{userPhoneNumber}</Text>
+                <Font.Normal>{userPhoneNumber}</Font.Normal>
               </View>
             </View>
             <BlueButton
@@ -242,17 +243,14 @@ export const ChangePassword = props => {
               alignItems: 'center',
               alignSelf: 'center',
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  textAlign: 'center',
-                  margin: wp('3%'),
-                  top: hp('4%'),
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                textAlign: 'center',
+                margin: wp('3%'),
+                top: hp('4%'),
+              }}>
               {Strings.resetPassword}
-            </Text>
+            </Font.Normal>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <View
                 style={{
@@ -347,10 +345,9 @@ export const ChangePassword = props => {
                 }
               }}
               style={{top: hp('11%')}}>
-              <Text
-                style={[Typography.small, {textDecorationLine: 'underline'}]}>
+              <Font.Small style={{textDecorationLine: 'underline'}}>
                 {Strings.changePass}
-              </Text>
+              </Font.Small>
             </TouchableOpacity>
           </View>
           <Modal
@@ -403,13 +400,10 @@ export const PasswordCodeModal = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.large,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Large
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           {Strings.enterEmptyField}
-        </Text>
+        </Font.Large>
         <View style={{top: hp('8%'), justifyContent: 'center'}}>
           <Icon name="warning" color={'red'} size={wp('45%')} />
         </View>
@@ -431,13 +425,10 @@ export const ResendCodeSuccessModal = props => {
             alignItems: 'center',
             alignSelf: 'center',
           }}>
-          <Text
-            style={[
-              Typography.header,
-              {top: hp('3%'), textAlign: 'center', width: wp('85%')},
-            ]}>
+          <Font.Header
+            style={{top: hp('3%'), textAlign: 'center', width: wp('85%')}}>
             {Strings.passwordSuccess}
-          </Text>
+          </Font.Header>
           <View style={{top: hp('4%'), justifyContent: 'center'}}>
             <Icon name="checkmark-done" color={'green'} size={wp('40%')} />
           </View>
@@ -463,13 +454,10 @@ export const PasswordDiffModal = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.header,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Header
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           {Strings.passwordsNotMatching}
-        </Text>
+        </Font.Header>
         <View style={{top: hp('7%'), justifyContent: 'center'}}>
           <Icon name="warning" color={'red'} size={wp('40%')} />
         </View>

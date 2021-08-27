@@ -21,6 +21,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {Font} from '_components';
 
 const TabStack = createBottomTabNavigator();
 const AppStack = createStackNavigator();
@@ -127,15 +128,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: Colors.LIME_GREEN,
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.tasks}
-                </Text>
+                </Font.Small>
               </View>
             ) : (
               <View
@@ -152,15 +150,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: 'black',
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: 'black',
+                  }}>
                   {Strings.tasks}
-                </Text>
+                </Font.Small>
               </View>
             ),
           tabBarLabel: () => {
@@ -194,15 +189,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: Colors.LIME_GREEN,
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.orders}
-                </Text>
+                </Font.Small>
               </View>
             ) : (
               <View
@@ -219,15 +211,12 @@ const TabbedNavigator = props => {
                   style={{
                     color: 'black',
                   }}></Icon>
-                <Text
-                  style={[
-                    Typography.small,
-                    {
-                      color: 'black',
-                    },
-                  ]}>
+                <Font.Small
+                  style={{
+                    color: 'black',
+                  }}>
                   {Strings.orders}
-                </Text>
+                </Font.Small>
               </View>
             ),
           tabBarLabel: () => {

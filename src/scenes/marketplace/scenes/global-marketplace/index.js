@@ -27,6 +27,7 @@ import Modal from 'react-native-modal';
 import {log} from '_utils';
 import {CompanyProfile} from '_components';
 import {userStore, companyStore} from '_store';
+import {Font} from '_components';
 
 export const Marketplace = props => {
   const [choice, setChoice] = useState('favourites');
@@ -200,17 +201,14 @@ export const Marketplace = props => {
               borderColor: Colors.GRAY_LIGHT,
               alignItems: 'center',
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: 'black',
-                  fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                color: 'black',
+                fontFamily: 'Poppins-Bold',
+                textDecorationLine: 'underline',
+              }}>
               {Strings.product}
-            </Text>
+            </Font.Normal>
           </View>
         ) : (
           <TouchableOpacity
@@ -225,9 +223,9 @@ export const Marketplace = props => {
               borderColor: Colors.GRAY_LIGHT,
               alignItems: 'center',
             }}>
-            <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
+            <Font.Normal style={{color: Colors.GRAY_DARK}}>
               {Strings.product}
-            </Text>
+            </Font.Normal>
           </TouchableOpacity>
         )}
 
@@ -239,17 +237,14 @@ export const Marketplace = props => {
               borderColor: Colors.GRAY_LIGHT,
               alignItems: 'center',
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: 'black',
-                  fontFamily: 'Poppins-Bold',
-                  textDecorationLine: 'underline',
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                color: 'black',
+                fontFamily: 'Poppins-Bold',
+                textDecorationLine: 'underline',
+              }}>
               {Strings.favourites}
-            </Text>
+            </Font.Normal>
           </View>
         ) : (
           <TouchableOpacity
@@ -260,9 +255,9 @@ export const Marketplace = props => {
               borderColor: Colors.GRAY_LIGHT,
               alignItems: 'center',
             }}>
-            <Text style={[Typography.normal, {color: Colors.GRAY_DARK}]}>
+            <Font.Normal style={{color: Colors.GRAY_DARK}}>
               {Strings.favourites}
-            </Text>
+            </Font.Normal>
           </TouchableOpacity>
         )}
       </View>

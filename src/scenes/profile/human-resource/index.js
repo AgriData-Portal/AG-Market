@@ -29,6 +29,8 @@ import {
   getFarmerCompany,
 } from '../../../graphql/queries';
 import {log} from '_utils';
+import {Font} from '_components';
+import {companyStore} from '_store';
 
 export const HumanResource = props => {
   const [teamList, setTeamList] = useState([]);
@@ -36,18 +38,22 @@ export const HumanResource = props => {
   const [trigger, setTrigger] = useState(false);
   const [company, setCompany] = useState('');
   const [imageSource, setImageSource] = useState(null);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
+  const companyName = companyStore(state => state.companyName);
+
   useEffect(() => {
     getCompanyProfile();
   }, []);
 
   const getCompanyProfile = async () => {
     var companyLogo = null;
-    if (props.user.supplierCompanyID != null) {
+    if (companyType == 'supplier') {
       try {
         var companyProfile = await API.graphql({
           query: getSupplierCompany,
           variables: {
-            id: props.user.supplierCompanyID,
+            id: companyID,
           },
         });
         setCompany(companyProfile.data.getSupplierCompany);
@@ -56,15 +62,15 @@ export const HumanResource = props => {
         log('Get suppplier company profile');
       } catch (e) {
         log('fail');
-        log(props.user.supplierCompanyID);
+        log(companyID);
         log(e);
       }
-    } else if (props.user.retailerCompanyID != null) {
+    } else if (companyType == 'retailer') {
       try {
         var companyProfile = await API.graphql({
           query: getRetailerCompany,
           variables: {
-            id: props.user.retailerCompanyID,
+            id: companyID,
           },
         });
         setCompany(companyProfile.data.getRetailerCompany);
@@ -79,7 +85,7 @@ export const HumanResource = props => {
         var companyProfile = await API.graphql({
           query: getFarmerCompany,
           variables: {
-            id: props.user.farmerCompanyID,
+            id: companyID,
           },
         });
         setCompany(companyProfile.data.getFarmerCompany);
@@ -167,7 +173,7 @@ export const HumanResource = props => {
             }}
           />
         )}
-        <Text style={[Typography.header, {top: hp('2%')}]}>{company.name}</Text>
+        <Font.Header style={{top: hp('2%')}}>{companyName}</Font.Header>
       </View>
       <View
         style={{
@@ -178,7 +184,7 @@ export const HumanResource = props => {
           alignSelf: 'center',
         }}>
         <View style={{top: hp('3%'), left: wp('5%')}}>
-          <Text style={[Typography.placeholderSmall]}>{Strings.team}</Text>
+          <Font.PlaceholderSmall>{Strings.team}</Font.PlaceholderSmall>
         </View>
         <View style={{height: hp('40%'), top: hp('3%')}}>
           <ParticipantList
@@ -223,14 +229,11 @@ const Participant = props => {
           alignSelf: 'flex-start',
           paddingVertical: hp('0.5%'),
         }}>
-        <Text style={[Typography.normal]}>{props.name}</Text>
-        <Text
-          style={[
-            Typography.placeholderSmall,
-            {bottom: Platform.OS == 'ios' ? hp('0%') : hp('1%')},
-          ]}>
+        <Font.Normal>{props.name}</Font.Normal>
+        <Font.PlaceholderSmall
+          style={{bottom: Platform.OS == 'ios' ? hp('0%') : hp('1%')}}>
           {props.role}
-        </Text>
+        </Font.PlaceholderSmall>
       </View>
       {props.role == 'General Manager' || props.role == 'Owner' ? (
         <View />
@@ -294,16 +297,12 @@ const ConfirmRemoveModal = props => {
         style={{
           top: hp('3%'),
         }}>
-        <Text style={[Typography.large, {textAlign: 'center'}]}>
+        <Font.Large style={{textAlign: 'center'}}>
           {Strings.removeMemberConfirm1}
-        </Text>
-        <Text
-          style={[
-            Typography.large,
-            {fontFamily: 'Poppins-Bold', textAlign: 'center'},
-          ]}>
+        </Font.Large>
+        <Font.Large style={{fontFamily: 'Poppins-Bold', textAlign: 'center'}}>
           {Strings.removeMemberConfirm2}
-        </Text>
+        </Font.Large>
       </View>
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
@@ -325,9 +324,9 @@ const ConfirmRemoveModal = props => {
             elevation: 5,
             right: wp('3%'),
           }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+          <Font.Normal style={{textAlign: 'center'}}>
             {Strings.cancel}
-          </Text>
+          </Font.Normal>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -347,9 +346,9 @@ const ConfirmRemoveModal = props => {
             elevation: 5,
             left: wp('3%'),
           }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+          <Font.Normal style={{textAlign: 'center'}}>
             {Strings.confirm}
-          </Text>
+          </Font.Normal>
         </TouchableOpacity>
       </View>
     </View>
@@ -359,6 +358,8 @@ const ConfirmRemoveModal = props => {
 const ParticipantList = props => {
   const [confirmRemoveModal, setConfirmRemoveModal] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const companyType = companyStore(state => state.companyType);
+  const companyID = companyStore(state => state.companyID);
   const Seperator = () => {
     return (
       <View
@@ -382,12 +383,12 @@ const ParticipantList = props => {
           refreshing={refreshing}
           onRefresh={async () => {
             setRefreshing(true);
-            if (props.user.retailerCompanyID == null) {
+            if (companyType == 'supplier') {
               log('supplier');
               try {
                 const members = await API.graphql({
                   query: getUsersBySupplierCompany,
-                  variables: {supplierCompanyID: props.user.supplierCompanyID},
+                  variables: {supplierCompanyID: companyID},
                 });
                 log(members.data.getUsersBySupplierCompany.items);
                 props.setTeamList(members.data.getUsersBySupplierCompany.items);
@@ -399,7 +400,7 @@ const ParticipantList = props => {
               try {
                 const members = await API.graphql({
                   query: getUsersByRetailerCompany,
-                  variables: {retailerCompanyID: props.user.retailerCompanyID},
+                  variables: {retailerCompanyID: companyID},
                 });
                 log(members.data.getUsersByRetailerCompany.items);
                 props.setTeamList(members.data.getUsersByRetailerCompany.items);
