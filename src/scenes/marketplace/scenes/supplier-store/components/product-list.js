@@ -35,6 +35,7 @@ import {BlueButton} from '_components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 const ProductModal = props => {
   const [lowPrice, setLowPrice] = useState(props.lowPrice.toString());
@@ -169,7 +170,7 @@ const ProductModal = props => {
           </View>
           <View
             style={{top: hp('5%'), alignSelf: 'flex-start', left: wp('5%')}}>
-            <Text style={[Typography.welcome]}>{props.productName}</Text>
+            <Font.Welcome>{props.productName}</Font.Welcome>
           </View>
           <View style={{top: hp('5%')}}>
             <Image
@@ -206,23 +207,21 @@ const ProductModal = props => {
                   justifyContent: 'center',
                   margin: wp('0.5%'),
                 }}>
-                <Text style={[Typography.large, {margin: wp('0.5%')}]}>
+                <Font.Large style={{margin: wp('0.5%')}}>
                   {Strings.editProductDetails}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
+                </Font.Large>
+                <Font.Normal style={{margin: wp('0.5%')}}>
                   {Strings.grade}: {props.grade}
-                </Text>
-                <Text style={[Typography.normal, {margin: wp('0.5%')}]}>
+                </Font.Normal>
+                <Font.Normal style={{margin: wp('0.5%')}}>
                   {Strings.variety}: {props.variety}
-                </Text>
+                </Font.Normal>
                 <View
                   style={{
                     margin: wp('1%'),
                     flexDirection: 'row',
                   }}>
-                  <Text style={[Typography.normal]}>
-                    {Strings.priceRange}: RM
-                  </Text>
+                  <Font.Normal>{Strings.priceRange}: RM</Font.Normal>
                   <View
                     style={{
                       backgroundColor: 'white',
@@ -273,10 +272,9 @@ const ProductModal = props => {
                     margin: wp('1%'),
                     flexDirection: 'row',
                   }}>
-                  <Text
-                    style={[Typography.normal, {marginHorizontal: wp('1%')}]}>
+                  <Font.Normal style={{marginHorizontal: wp('1%')}}>
                     {Strings.available}:
-                  </Text>
+                  </Font.Normal>
                   <View
                     style={{
                       backgroundColor: 'white',
@@ -313,10 +311,9 @@ const ProductModal = props => {
                     margin: wp('1%'),
                     flexDirection: 'row',
                   }}>
-                  <Text
-                    style={[Typography.normal, {marginHorizontal: wp('1%')}]}>
+                  <Font.Normal style={{marginHorizontal: wp('1%')}}>
                     MOQ:
-                  </Text>
+                  </Font.Normal>
                   <View
                     style={{
                       backgroundColor: 'white',
@@ -357,9 +354,9 @@ const ProductModal = props => {
                   top: hp('1%'),
                   marginVertical: hp('1%'),
                 }}>
-                <Text style={[Typography.large, {margin: wp('1%')}]}>
+                <Font.Large style={{margin: wp('1%')}}>
                   {Strings.productDetails}
-                </Text>
+                </Font.Large>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -367,12 +364,12 @@ const ProductModal = props => {
                     alignItems: 'center',
                     width: wp('60%'),
                   }}>
-                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                  <Font.NormalBold style={{margin: wp('1%')}}>
                     {Strings.grade}:
-                  </Text>
-                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                  </Font.NormalBold>
+                  <Font.Normal style={{margin: wp('1%')}}>
                     {props.grade}
-                  </Text>
+                  </Font.Normal>
                 </View>
                 <View
                   style={{
@@ -381,12 +378,12 @@ const ProductModal = props => {
                     alignItems: 'center',
                     width: wp('60%'),
                   }}>
-                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                  <Font.NormalBold style={{margin: wp('1%')}}>
                     {Strings.variety}:
-                  </Text>
-                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                  </Font.NormalBold>
+                  <Font.Normal style={{margin: wp('1%')}}>
                     {props.variety}
-                  </Text>
+                  </Font.Normal>
                 </View>
                 <View
                   style={{
@@ -395,12 +392,12 @@ const ProductModal = props => {
                     alignItems: 'center',
                     width: wp('60%'),
                   }}>
-                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                  <Font.NormalBold style={{margin: wp('1%')}}>
                     {Strings.priceRange}:
-                  </Text>
-                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                  </Font.NormalBold>
+                  <Font.Normal style={{margin: wp('1%')}}>
                     RM {lowPrice} - {highPrice}
-                  </Text>
+                  </Font.Normal>
                 </View>
                 <View
                   style={{
@@ -409,12 +406,12 @@ const ProductModal = props => {
                     alignItems: 'center',
                     width: wp('60%'),
                   }}>
-                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                  <Font.NormalBold style={{margin: wp('1%')}}>
                     {Strings.available}:
-                  </Text>
-                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                  </Font.NormalBold>
+                  <Font.Normal style={{margin: wp('1%')}}>
                     {available} {props.siUnit}
-                  </Text>
+                  </Font.Normal>
                 </View>
                 <View
                   style={{
@@ -423,13 +420,13 @@ const ProductModal = props => {
                     alignItems: 'center',
                     width: wp('60%'),
                   }}>
-                  <Text style={[Typography.normalBold, {margin: wp('1%')}]}>
+                  <Font.NormalBold style={{margin: wp('1%')}}>
                     MOQ:
-                  </Text>
+                  </Font.NormalBold>
 
-                  <Text style={[Typography.normal, {margin: wp('1%')}]}>
+                  <Font.Normal style={{margin: wp('1%')}}>
                     {moq} {props.siUnit}
-                  </Text>
+                  </Font.Normal>
                 </View>
               </View>
             )}
@@ -555,17 +552,15 @@ const ProductCard = props => {
           top: hp('2%'),
         }}
         source={imageSource}></Image>
-      <Text style={[Typography.normal, {top: hp('3%')}]}>
-        {props.productName}
-      </Text>
-      <Text style={[Typography.small, {top: hp('3%'), width: wp('30%')}]}>
+      <Font.Normal style={{top: hp('3%')}}>{props.productName}</Font.Normal>
+      <Font.Small style={{top: hp('3%'), width: wp('30%')}}>
         {Strings.price}: {props.lowPrice} - {props.highPrice}
         {'\n'}MOQ: {props.minimumQuantity}
         {'\n'}
         {Strings.grade}: {props.grade}
         {'\n'}
         {Strings.variety}: {props.variety}
-      </Text>
+      </Font.Small>
       <Modal isVisible={productModal}>
         <ProductModal
           setProductModal={setProductModal}
@@ -606,16 +601,13 @@ const SupplierplaceList = props => {
             justifyContent: 'center',
             backgroundColor: Colors.LIGHT_BLUE,
           }}>
-          <Text
-            style={[
-              Typography.large,
-              {
-                textAlign: 'center',
-                width: wp('70%'),
-              },
-            ]}>
+          <Font.Large
+            style={{
+              textAlign: 'center',
+              width: wp('70%'),
+            }}>
             {Strings.youHaveZeroItems}
-          </Text>
+          </Font.Large>
         </View>
       }
       renderItem={({item}) => {

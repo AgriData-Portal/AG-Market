@@ -22,6 +22,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const Verification = props => {
   const signOut = async () => {
@@ -33,6 +34,7 @@ export const Verification = props => {
       log('Error signing out: ', error);
     }
   };
+  // TODO
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'position'}
@@ -56,18 +58,15 @@ export const Verification = props => {
             zIndex: 20,
             height: hp('60%'),
           }}>
-          <Text
-            style={[
-              Typography.welcome,
-              {
-                fontSize: 25,
-                top: hp('7%'),
-                textAlign: 'center',
-                width: wp('70%'),
-              },
-            ]}>
+          <Font.Welcome
+            style={{
+              fontSize: 25,
+              top: hp('7%'),
+              textAlign: 'center',
+              width: wp('70%'),
+            }}>
             {Strings.verification}
-          </Text>
+          </Font.Welcome>
 
           <View
             style={{
@@ -75,16 +74,16 @@ export const Verification = props => {
               width: wp('75%'),
               height: hp('20%'),
             }}>
-            <Text style={[Typography.medium, {textAlign: 'center'}]}>
+            <Font.Medium style={{textAlign: 'center'}}>
               {Strings.hangInThere}
-            </Text>
+            </Font.Medium>
             <View
               style={{
                 top: hp('2%'),
               }}>
-              <Text style={[Typography.medium, {textAlign: 'center'}]}>
+              <Font.Medium style={{textAlign: 'center'}}>
                 {Strings.inTheMeantime}
-              </Text>
+              </Font.Medium>
             </View>
           </View>
           <TouchableOpacity
@@ -107,7 +106,7 @@ export const Verification = props => {
               zIndex: 22,
               elevation: 2,
             }}>
-            <Text style={[Typography.normal]}>{Strings.updateCompany}</Text>
+            <Font.Normal>{Strings.updateCompany}</Font.Normal>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => signOut()}
@@ -129,7 +128,7 @@ export const Verification = props => {
               elevation: 2,
               zIndex: 22,
             }}>
-            <Text style={[Typography.normal]}>{Strings.logOut}</Text>
+            <Font.Normal>{Strings.logOut}</Font.Normal>
           </TouchableOpacity>
         </View>
 

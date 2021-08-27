@@ -26,6 +26,7 @@ import {
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 export {EditCompany};
 
@@ -139,7 +140,7 @@ export const CompanyProfile = props => {
             }}
           />
         )}
-        <Text style={[Typography.header, {top: hp('2%')}]}>{companyName}</Text>
+        <Font.Header style={{top: hp('2%')}}>{companyName}</Font.Header>
       </View>
       <View
         style={{
@@ -168,13 +169,12 @@ export const CompanyProfile = props => {
                 width: wp('73%'),
                 marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
+              <Font.PlaceholderSmall>
                 {Strings.companyRegistrationNum}
-              </Text>
+              </Font.PlaceholderSmall>
+
               <View>
-                <Text style={[Typography.normal]}>
-                  {companyRegistrationNumber}
-                </Text>
+                <Font.Normal>{companyRegistrationNumber}</Font.Normal>
               </View>
             </View>
             <View
@@ -184,11 +184,12 @@ export const CompanyProfile = props => {
                 width: wp('73%'),
                 marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
+              <Font.PlaceholderSmall>
                 {Strings.companyAddress}
-              </Text>
+              </Font.PlaceholderSmall>
+
               <View>
-                <Text style={[Typography.normal]}>{companyAddress}</Text>
+                <Font.Normal>{companyAddress}</Font.Normal>
               </View>
             </View>
             <View
@@ -198,14 +199,14 @@ export const CompanyProfile = props => {
                 width: wp('73%'),
                 marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
+              <Font.PlaceholderSmall>
                 {Strings.contactNumber}
-              </Text>
+              </Font.PlaceholderSmall>
               <View>
                 {companyNumber != null ? (
-                  <Text style={[Typography.normal]}>{companyNumber}</Text>
+                  <Font.Normal>{companyNumber}</Font.Normal>
                 ) : (
-                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                  <Font.Normal>Not Added Yet</Font.Normal>
                 )}
               </View>
             </View>
@@ -216,13 +217,13 @@ export const CompanyProfile = props => {
                 width: wp('73%'),
                 marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>{Strings.email}</Text>
+              <Font.PlaceholderSmall>{Strings.email}</Font.PlaceholderSmall>
               {/* TRANSLATION */}
               <View>
                 {companyEmail != null ? (
-                  <Text style={[Typography.normal]}>{companyEmail}</Text>
+                  <Font.Normal>{companyEmail}</Font.Normal>
                 ) : (
-                  <Text style={[Typography.normal]}>Not Added Yet</Text>
+                  <Font.Normal>{Strings.notAddedYet}</Font.Normal>
                 )}
               </View>
             </View>
@@ -233,13 +234,13 @@ export const CompanyProfile = props => {
                 width: wp('73%'),
                 marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
+              <Font.PlaceholderSmall>
                 {Strings.bankDetails}
-              </Text>
+              </Font.PlaceholderSmall>
               {companyBankDetails != null ? (
-                <Text style={[Typography.normal]}>{companyBankDetails}</Text>
+                <Font.Normal>{companyBankDetails}</Font.Normal>
               ) : (
-                <Text style={[Typography.normal]}>Not Added Yet</Text>
+                <Font.Normal>{Strings.notAddedYet}</Font.Normal>
               )}
             </View>
             <View
@@ -249,13 +250,11 @@ export const CompanyProfile = props => {
                 width: wp('73%'),
                 marginBottom: Platform.OS == 'ios' ? hp('1%') : hp('0.5%'),
               }}>
-              <Text style={[Typography.placeholderSmall]}>
-                {Strings.bankName}
-              </Text>
+              <Font.PlaceholderSmall>{Strings.bankName}</Font.PlaceholderSmall>
               {companyBankName != null ? (
-                <Text style={[Typography.normal]}>{companyBankName}</Text>
+                <Font.Normal>{companyBankName}</Font.Normal>
               ) : (
-                <Text style={[Typography.normal]}>Not Added Yet</Text>
+                <Font.Normal>Not Added Yet</Font.Normal>
               )}
             </View>
           </ScrollView>

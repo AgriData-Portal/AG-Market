@@ -28,6 +28,7 @@ import {MenuButton} from '_components';
 import {log, tasks} from '_utils';
 import {RatingModal} from './components/receive-goods';
 import {userStore, companyStore} from '_store';
+import {Font} from '_components';
 
 export const BuyerTask = props => {
   const [sortModal, setSortModal] = useState(false);
@@ -63,16 +64,13 @@ export const BuyerTask = props => {
           style={{
             top: hp('0%'),
           }}>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                color: 'black',
-                fontFamily: 'Poppins-Bold',
-              },
-            ]}>
+          <Font.Normal
+            style={{
+              color: 'black',
+              fontFamily: 'Poppins-Bold',
+            }}>
             {Strings.toRecieve}
-          </Text>
+          </Font.Normal>
         </View>
       ) : (
         <View style={{flexDirection: 'row'}}>
@@ -82,16 +80,13 @@ export const BuyerTask = props => {
                 right: wp('15%'),
                 top: hp('0%'),
               }}>
-              <Text
-                style={[
-                  Typography.normal,
-                  {
-                    color: 'black',
-                    fontFamily: 'Poppins-Bold',
-                  },
-                ]}>
+              <Font.Normal
+                style={{
+                  color: 'black',
+                  fontFamily: 'Poppins-Bold',
+                }}>
                 {Strings.toRecieve}
-              </Text>
+              </Font.Normal>
             </View>
           ) : (
             <TouchableOpacity
@@ -100,9 +95,9 @@ export const BuyerTask = props => {
                 right: wp('15%'),
                 top: hp('0%'),
               }}>
-              <Text style={[Typography.normal, {color: 'grey'}]}>
+              <Font.Normal style={{color: 'grey'}}>
                 {Strings.toRecieve}
-              </Text>
+              </Font.Normal>
             </TouchableOpacity>
           )}
           {task == 'pay' ? (
@@ -111,16 +106,13 @@ export const BuyerTask = props => {
                 left: wp('15%'),
                 top: hp('0%'),
               }}>
-              <Text
-                style={[
-                  Typography.normal,
-                  {
-                    color: 'black',
-                    fontFamily: 'Poppins-Bold',
-                  },
-                ]}>
+              <Font.Normal
+                style={{
+                  color: 'black',
+                  fontFamily: 'Poppins-Bold',
+                }}>
                 {Strings.toPay}
-              </Text>
+              </Font.Normal>
             </View>
           ) : (
             <TouchableOpacity
@@ -129,9 +121,7 @@ export const BuyerTask = props => {
                 top: hp('0%'),
                 left: wp('15%'),
               }}>
-              <Text style={[Typography.normal, {color: 'grey'}]}>
-                {Strings.toPay}
-              </Text>
+              <Font.Normal style={{color: 'grey'}}>{Strings.toPay}</Font.Normal>
             </TouchableOpacity>
           )}
         </View>
@@ -151,9 +141,9 @@ export const BuyerTask = props => {
           top: hp('1%'),
           flexDirection: 'row',
         }}>
-        <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
+        <Font.Normal style={{textTransform: 'uppercase'}}>
           {Strings.allResults}
-        </Text>
+        </Font.Normal>
         {/* TODO sortmodal */}
         {/* <TouchableOpacity
           onPress={() => setSortModal(true)}

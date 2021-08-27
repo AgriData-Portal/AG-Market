@@ -42,6 +42,7 @@ import {Rating} from 'react-native-ratings';
 import {log, tasks} from '_utils';
 import {BlueButton} from '_components';
 import {userStore, companyStore} from '_store';
+import {Font} from '_components';
 
 //Retailer receive
 const ReceiveModal = props => {
@@ -73,39 +74,30 @@ const ReceiveModal = props => {
         <CloseButton setModal={props.setReceiveModal} />
       </View>
 
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('7%'),
-            left: wp('8%'),
-          },
-        ]}>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('7%'),
+          left: wp('8%'),
+        }}>
         {Strings.order}
 
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              fontStyle: 'italic',
-            },
-          ]}>
+        <Font.Placeholder
+          style={{
+            fontStyle: 'italic',
+          }}>
           {'  '}#{props.trackingNum}
-        </Text>
-      </Text>
+        </Font.Placeholder>
+      </Font.Normal>
 
-      <Text
-        style={[
-          Typography.header,
-          {
-            position: 'absolute',
-            top: hp('11%'),
-            left: wp('8%'),
-          },
-        ]}>
+      <Font.Header
+        style={{
+          position: 'absolute',
+          top: hp('11%'),
+          left: wp('8%'),
+        }}>
         {dayjs(props.createdAt).format('DD MMM YYYY')}
-      </Text>
+      </Font.Header>
       <View
         style={{
           borderBottomWidth: wp('1%'),
@@ -115,17 +107,14 @@ const ReceiveModal = props => {
           borderColor: Colors.GRAY_MEDIUM,
           position: 'absolute',
         }}></View>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('19%'),
-            left: wp('8%'),
-          },
-        ]}>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('19%'),
+          left: wp('8%'),
+        }}>
         {Strings.items}: {props.goods.length}
-      </Text>
+      </Font.Placeholder>
       <View
         style={{
           position: 'absolute',
@@ -136,77 +125,59 @@ const ReceiveModal = props => {
         }}>
         <ProductList data={props.goods}></ProductList>
       </View>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('50%'),
-            left: wp('50%'),
-          },
-        ]}>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('50%'),
+          left: wp('50%'),
+        }}>
         {Strings.total}: RM {sum}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
+      </Font.Placeholder>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('55%'),
+          left: wp('8%'),
+        }}>
+        {Strings.deliveryDate}:
+      </Font.Placeholder>
+      {props.deliverydate ? (
+        <Font.Small
+          style={{
             position: 'absolute',
             top: hp('55%'),
-            left: wp('8%'),
-          },
-        ]}>
-        {Strings.deliveryDate}:
-      </Text>
-      {props.deliverydate ? (
-        <Text
-          style={[
-            Typography.small,
-            {
-              position: 'absolute',
-              top: hp('55%'),
-              left: wp('40%'),
-            },
-          ]}>
+            left: wp('40%'),
+          }}>
           {props.deliverydate}
-        </Text>
+        </Font.Small>
       ) : (
-        <Text
-          style={[
-            Typography.small,
-            {
-              position: 'absolute',
-              top: hp('55%'),
-              left: wp('40%'),
-              width: wp('50%'),
-            },
-          ]}>
+        <Font.Small
+          style={{
+            position: 'absolute',
+            top: hp('55%'),
+            left: wp('40%'),
+            width: wp('50%'),
+          }}>
           {Strings.supplierHasNot}
-        </Text>
+        </Font.Small>
       )}
 
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('65%'),
-            left: wp('8%'),
-          },
-        ]}>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('65%'),
+          left: wp('8%'),
+        }}>
         {Strings.seller}:
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            position: 'absolute',
-            top: hp('65%'),
-            left: wp('40%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      <Font.Small
+        style={{
+          position: 'absolute',
+          top: hp('65%'),
+          left: wp('40%'),
+        }}>
         {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
-      </Text>
+      </Font.Small>
       {props.status == 'sent' ? (
         <TouchableOpacity
           onPress={() => {
@@ -250,10 +221,10 @@ const ReceiveModal = props => {
             elevation: 3,
             flexDirection: 'row',
           }}>
-          <Text style={[Typography.normal, {}]}>
+          <Font.Normal>
             {Strings.recieved}
             {'\t\t'}
-          </Text>
+          </Font.Normal>
           <Icon name="checkmark-circle-outline" size={wp('5%')}></Icon>
         </TouchableOpacity>
       ) : (
@@ -353,62 +324,47 @@ const Receive = props => {
             <Icon name="cube-outline" size={wp('11%')} color="black" />
           </View>
         </View>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              color: Colors.LIME_GREEN,
-              top: hp('1.5%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            color: Colors.LIME_GREEN,
+            top: hp('1.5%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {left: wp('25%'), top: hp('4%'), position: 'absolute'},
-          ]}>
+        </Font.Normal>
+        <Font.Small
+          style={{left: wp('25%'), top: hp('4%'), position: 'absolute'}}>
           {props.trackingNum}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('7%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('7%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {props.goods.length} {Strings.items}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('6%'),
-              right: hp('2%'),
-              position: 'absolute',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('6%'),
+            right: hp('2%'),
+            position: 'absolute',
+          }}>
           {Strings.dateCreated}:
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('8%'),
-              right: hp('2%'),
-              position: 'absolute',
-              fontStyle: 'italic',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('8%'),
+            right: hp('2%'),
+            position: 'absolute',
+            fontStyle: 'italic',
+          }}>
           {dayjs(props.createdAt).format('DD MMM YYYY')}
-        </Text>
+        </Font.Small>
       </View>
       <Modal isVisible={receiveModal}>
         <ReceiveModal
@@ -571,66 +527,51 @@ const Product = props => {
         width: wp('75%'),
         justifyContent: 'center',
       }}>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            textAlign: 'left',
-            position: 'absolute',
-            bottom: hp('2.5%'),
-            left: wp('3%'),
-          },
-        ]}>
+      <Font.Normal
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          bottom: hp('2.5%'),
+          left: wp('3%'),
+        }}>
         {props.name}
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            textAlign: 'left',
-            position: 'absolute',
-            bottom: hp('2.5%'),
-            left: wp('25%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Normal
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          bottom: hp('2.5%'),
+          left: wp('25%'),
+        }}>
         {props.grade}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'left',
-            position: 'absolute',
-            top: hp('2.5%'),
-            left: wp('3%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Small
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          top: hp('2.5%'),
+          left: wp('3%'),
+        }}>
         {props.variety}
-      </Text>
+      </Font.Small>
 
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'left',
-            left: wp('40%'),
-            position: 'absolute',
-          },
-        ]}>
+      <Font.Small
+        style={{
+          textAlign: 'left',
+          left: wp('40%'),
+          position: 'absolute',
+        }}>
         @ RM {props.price}/{props.siUnit}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            textAlign: 'left',
-            left: wp('60%'),
-            position: 'absolute',
-          },
-        ]}>
+      </Font.Small>
+      <Font.Small
+        style={{
+          textAlign: 'left',
+          left: wp('60%'),
+          position: 'absolute',
+        }}>
         | {props.quantity}
         {props.siUnit}
-      </Text>
+      </Font.Small>
     </View>
   );
 };
@@ -649,13 +590,14 @@ export const RatingModal = props => {
         alignSelf: 'center',
       }}>
       <View>
-        <Text
-          style={[
-            Typography.large,
-            {textAlign: 'center', top: hp('5%'), marginHorizontal: wp('5%')},
-          ]}>
+        <Font.Large
+          style={{
+            textAlign: 'center',
+            top: hp('5%'),
+            marginHorizontal: wp('5%'),
+          }}>
           {Strings.ratingsTransactionDone}
-        </Text>
+        </Font.Large>
       </View>
       <View style={{top: hp('5%')}}>
         <Rating

@@ -47,6 +47,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {log, marketPlace} from '_utils';
 import {DetailsModal} from '_components';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 const AddItemModal = props => {
   const companyID = companyStore(state => state.companyID);
@@ -138,13 +139,9 @@ const AddItemModal = props => {
                   style={{left: wp('1%'), bottom: hp('1%')}}>
                   <Icon name="add-outline" size={wp('35%')} />
                 </TouchableOpacity>
-                <Text
-                  style={[
-                    Typography.large,
-                    {width: wp('50%'), textAlign: 'center'},
-                  ]}>
+                <Font.Large style={{width: wp('50%'), textAlign: 'center'}}>
                   {Strings.addPhoto}
-                </Text>
+                </Font.Large>
               </View>
             ) : (
               <View>
@@ -213,17 +210,14 @@ const AddItemModal = props => {
             shadowRadius: 3,
             shadowColor: 'grey',
           }}>
-          <Text
-            style={[
-              Typography.large,
-              {
-                left: wp('6%'),
-                top: hp('1.5%'),
-                width: wp('70%'),
-              },
-            ]}>
+          <Font.Large
+            style={{
+              left: wp('6%'),
+              top: hp('1.5%'),
+              width: wp('70%'),
+            }}>
             {Strings.enterProductDetails}
-          </Text>
+          </Font.Large>
           <View
             style={{
               left: wp('5%'),
@@ -246,7 +240,7 @@ const AddItemModal = props => {
                 alignItems: 'center',
                 bottom: hp('2%'),
               }}>
-              <Text style={[Typography.large, {top: hp('3%')}]}>RM</Text>
+              <Font.Large style={{top: hp('3%')}}>RM</Font.Large>
               <View style={{left: wp('3%')}}>
                 <Input
                   keyboardType="numeric"

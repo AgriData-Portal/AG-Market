@@ -21,6 +21,7 @@ import {
 
 import {log} from '_utils';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 const DetailsModal = props => {
   const [companyDetails, setCompanyDetails] = useState([]);
@@ -99,7 +100,7 @@ const DetailsModal = props => {
         <CloseButton setModal={props.setDetailsModal} />
       </View>
       <View style={{alignItems: 'center', top: hp('3%')}}>
-        <Text style={[Typography.header, {top: hp('2%')}]}>{props.name}</Text>
+        <Font.Header style={{top: hp('2%')}}>{props.name}</Font.Header>
 
         <View
           style={{
@@ -128,17 +129,18 @@ const DetailsModal = props => {
             />
           )}
         </View>
+        {/* TRANSLATION */}
         {companyDetails.rating == null ? (
-          <Text style={[Typography.normal]}>No ratings yet</Text>
+          <Font.Normal>No ratings yet</Font.Normal>
         ) : (
           <View style={{flexDirection: 'row'}}>
             <Rating
               imageSize={wp('6%')}
               readonly={true}
               startingValue={companyDetails.rating.currentRating}></Rating>
-            <Text style={[Typography.normal, {left: wp('1%')}]}>
+            <Font.Normal style={{left: wp('1%')}}>
               ( {companyDetails.rating.numberOfRatings} )
-            </Text>
+            </Font.Normal>
           </View>
         )}
         <View
@@ -153,31 +155,23 @@ const DetailsModal = props => {
           <View
             style={{alignItems: 'flex-start', top: hp('2%'), left: wp('5%')}}>
             <View>
-              <Text style={[Typography.placeholder]}>
+              <Font.Placeholder>
                 {Strings.companyRegistrationNum}
-              </Text>
-              <Text style={[Typography.normal]}>
-                {companyDetails.registrationNumber}
-              </Text>
+              </Font.Placeholder>
+              <Font.Normal>{companyDetails.registrationNumber}</Font.Normal>
             </View>
             <View style={{top: hp('1%')}}>
-              <Text style={[Typography.placeholder]}>
-                {Strings.companyAddress}
-              </Text>
-              <Text style={[Typography.normal, {width: wp('70%')}]}>
+              <Font.Placeholder>{Strings.companyAddress}</Font.Placeholder>
+              <Font.Normal style={{width: wp('70%')}}>
                 {companyDetails.address}
-              </Text>
+              </Font.Normal>
             </View>
             <View style={{top: hp('2%')}}>
-              <Text style={[Typography.placeholder]}>
-                {Strings.contactNumber}
-              </Text>
+              <Font.Placeholder>{Strings.contactNumber}</Font.Placeholder>
               {companyDetails.contactDetails != null ? (
-                <Text style={[Typography.normal]}>
-                  {companyDetails.contactDetails.phone}
-                </Text>
+                <Font.Normal>{companyDetails.contactDetails.phone}</Font.Normal>
               ) : (
-                <Text style={[Typography.normal]}>Not Added Yet</Text>
+                <Font.Normal>Not Added Yet</Font.Normal>
               )}
             </View>
           </View>

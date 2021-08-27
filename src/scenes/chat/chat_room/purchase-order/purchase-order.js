@@ -18,6 +18,7 @@ import Strings from '_utils';
 import {BlueButton} from '_components';
 import NewOrderQuotation from './new-quotation';
 import {companyStore} from '_store';
+import {Font} from '_components';
 
 export const PurchaseOrder = props => {
   const [orderQuotation, setOrderQuotation] = useState(false);
@@ -34,36 +35,27 @@ export const PurchaseOrder = props => {
           alignItems: 'center',
         }}>
         <View style={{alignItems: 'center'}}>
-          <Text
-            style={[
-              Typography.large,
-              {
-                fontFamily: 'Poppins-SemiBold',
-                top: hp('3%'),
-              },
-            ]}>
+          <Font.Large
+            style={{
+              fontFamily: 'Poppins-SemiBold',
+              top: hp('3%'),
+            }}>
             {Strings.purchaseOrderFrom}
-          </Text>
-          <Text
-            style={[
-              Typography.header,
-              {
-                fontFamily: 'Poppins-Bold',
-                color: Colors.LIME_GREEN,
-                top: hp('3%'),
-              },
-            ]}>
+          </Font.Large>
+          <Font.Header
+            style={{
+              fontFamily: 'Poppins-Bold',
+              color: Colors.LIME_GREEN,
+              top: hp('3%'),
+            }}>
             {props.chatName}
-          </Text>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                top: hp('3%'),
-              },
-            ]}>
+          </Font.Header>
+          <Font.Normal
+            style={{
+              top: hp('3%'),
+            }}>
             {props.contentType}
-          </Text>
+          </Font.Normal>
         </View>
         <View
           style={{
@@ -185,24 +177,20 @@ const PurchaseOrderComponent = props => {
         width: wp('85%'),
       }}>
       <View style={{flexDirection: 'row', top: hp('1.5%')}}>
-        <Text
-          style={[Typography.small, {position: 'absolute', left: wp('2%')}]}>
+        <Font.Small style={{position: 'absolute', left: wp('2%')}}>
           {props.name}
-        </Text>
-        <Text
-          style={[Typography.small, {position: 'absolute', left: wp('45%')}]}>
+        </Font.Small>
+        <Font.Small style={{position: 'absolute', left: wp('45%')}}>
           {props.variety}
-        </Text>
-        <Text
-          style={[Typography.small, {position: 'absolute', left: wp('27%')}]}>
-          Grade: {props.grade}
-        </Text>
+        </Font.Small>
+        <Font.Small style={{position: 'absolute', left: wp('27%')}}>
+          {Strings.grade}: {props.grade}
+        </Font.Small>
 
-        <Text
-          style={[Typography.small, {position: 'absolute', right: wp('5%')}]}>
+        <Font.Small style={{position: 'absolute', right: wp('5%')}}>
           {props.quantity}
           {props.siUnit}
-        </Text>
+        </Font.Small>
       </View>
     </View>
   );

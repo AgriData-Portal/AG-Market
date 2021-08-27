@@ -18,6 +18,7 @@ import {
 import Strings, {log} from '_utils';
 import {userStore, companyStore} from '_store';
 import {chatRoom} from '_utils';
+import {Font} from '_components';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -102,9 +103,7 @@ export const ChatList = props => {
               borderRadius: 20,
               justifyContent: 'center',
             }}>
-            <Text style={Typography.normal}>
-              {Strings.youCurrentlyDontHave}
-            </Text>
+            <Font.Normal>{Strings.youCurrentlyDontHave}</Font.Normal>
           </View>
         </View>
       }
@@ -212,16 +211,16 @@ const ChatRoom = props => {
         <View></View>
       )}
       <View style={{left: wp('7%'), top: hp('1.5%'), width: wp('60%')}}>
-        <Text style={Typography.normal}>{props.chatName}</Text>
+        <Font.Normal>{props.chatName}</Font.Normal>
         {props.mostRecentMessage.length > 48 ? (
-          <Text style={Typography.small}>
+          <Font.Small>
             {props.mostRecentMessageSender} :
             {props.mostRecentMessage.slice(0, 48) + '...'}
-          </Text>
+          </Font.Small>
         ) : (
-          <Text style={Typography.small}>
+          <Font.Small>
             {props.mostRecentMessageSender} : {props.mostRecentMessage}
-          </Text>
+          </Font.Small>
         )}
       </View>
       <View
@@ -236,13 +235,13 @@ const ChatRoom = props => {
         lastUpdated.subtract(8, 'hour').fromNow().includes('months') ||
         lastUpdated.subtract(8, 'hour').fromNow().includes('year') ||
         lastUpdated.subtract(8, 'hour').fromNow().includes('years') ? (
-          <Text style={[Typography.small, {color: Colors.GRAY_DARK}]}>
+          <Font.Small style={{color: Colors.GRAY_DARK}}>
             {lastUpdated.format('DD-MM-YYYY')}
-          </Text>
+          </Font.Small>
         ) : (
-          <Text style={[Typography.small, {color: Colors.GRAY_DARK}]}>
+          <Font.Small style={{color: Colors.GRAY_DARK}}>
             {lastUpdated.subtract(8, 'hour').fromNow()}
-          </Text>
+          </Font.Small>
         )}
       </View>
     </TouchableOpacity>

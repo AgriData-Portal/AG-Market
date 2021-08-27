@@ -3,9 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList,
-  Image,
-  RefreshControl,
   TextInput,
   KeyboardAvoidingView,
   Platform,
@@ -16,7 +13,7 @@ import {
   SuccessfulModal,
   DismissKeyboardView,
 } from '_components';
-import {Typography, Spacing, Colors, Mixins} from '_styles';
+import {Colors} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
@@ -28,6 +25,7 @@ import {
 import {Auth} from 'aws-amplify';
 import Strings from '_utils';
 import {log, authentication} from '_utils';
+import {Font} from '_components';
 
 export const ForgetPassword = props => {
   const [changePassword, setChangePassword] = useState(false);
@@ -81,18 +79,15 @@ export const ForgetPassword = props => {
               alignItems: 'center',
               alignSelf: 'center',
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  textAlign: 'center',
-                  margin: wp('5%'),
-                  top: hp('1%'),
-                  width: wp('60%'),
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                textAlign: 'center',
+                margin: wp('5%'),
+                top: hp('1%'),
+                width: wp('60%'),
+              }}>
               {Strings.enterPhoneResetPass}
-            </Text>
+            </Font.Normal>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <View
                 style={{
@@ -241,17 +236,14 @@ export const ChangePassword = props => {
               alignItems: 'center',
               alignSelf: 'center',
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  textAlign: 'center',
-                  margin: wp('3%'),
-                  top: hp('4%'),
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                textAlign: 'center',
+                margin: wp('3%'),
+                top: hp('4%'),
+              }}>
               {Strings.resetPasswordByEntering}
-            </Text>
+            </Font.Normal>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <View
                 style={{
@@ -304,9 +296,9 @@ export const ChangePassword = props => {
             <TouchableOpacity
               onPress={() => sendConfirmation()}
               style={{top: hp('6%'), left: wp('10%')}}>
-              <Text style={[Typography.placeholderSmall]}>
+              <Font.PlaceholderSmall>
                 {Strings.resendCode}
-              </Text>
+              </Font.PlaceholderSmall>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -332,10 +324,9 @@ export const ChangePassword = props => {
                 }
               }}
               style={{top: hp('10%')}}>
-              <Text
-                style={[Typography.small, {textDecorationLine: 'underline'}]}>
+              <Font.Small style={{textDecorationLine: 'underline'}}>
                 {Strings.changePass}
-              </Text>
+              </Font.Small>
             </TouchableOpacity>
           </View>
           <Modal
@@ -401,13 +392,10 @@ export const ResendCodeModal = props => {
           alignItems: 'center',
           alignSelf: 'center',
         }}>
-        <Text
-          style={[
-            Typography.header,
-            {top: hp('4%'), width: wp('70%'), textAlign: 'center'},
-          ]}>
+        <Font.Header
+          style={{top: hp('4%'), width: wp('70%'), textAlign: 'center'}}>
           {Strings.codeSent}
-        </Text>
+        </Font.Header>
         <View style={{top: hp('10%'), justifyContent: 'center'}}>
           <Icon name="checkmark-done" color={'green'} size={wp('40%')} />
         </View>

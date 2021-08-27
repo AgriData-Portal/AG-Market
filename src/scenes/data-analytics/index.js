@@ -3,18 +3,16 @@ import {SafeAreaView, Text, View, Image, TouchableOpacity} from 'react-native';
 import {Typography, Spacing, Colors, Mixins} from '_styles';
 import {BarChart, Grid, YAxis} from 'react-native-svg-charts';
 import {ExpensesBar} from './bar-chart';
+import {Font} from '_components';
 
 export const DataAnalytics = props => {
   return (
     <SafeAreaView>
       <View>
-        <Text
-          style={[
-            Typography.header,
-            {left: Mixins.scaleWidth(20), top: Mixins.scaleHeight(20)},
-          ]}>
+        <Font.Header
+          style={{left: Mixins.scaleWidth(20), top: Mixins.scaleHeight(20)}}>
           Analytics
-        </Text>
+        </Font.Header>
         <ExpensesBar />
       </View>
     </SafeAreaView>

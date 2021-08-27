@@ -28,6 +28,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const ChatInfo = props => {
   const [chatInfoModal, setChatInfoModal] = useState(false);
@@ -126,9 +127,7 @@ const ChatInfoModal = props => {
         />
       </View>
 
-      <Text style={[Typography.normal, {alignSelf: 'center'}]}>
-        GINGER TEAM
-      </Text>
+      <Font.Normal style={{alignSelf: 'center'}}>GINGER TEAM</Font.Normal>
 
       <View
         style={{
@@ -137,9 +136,9 @@ const ChatInfoModal = props => {
           width: wp('70%'),
           alignItems: 'flex-start',
         }}>
-        <Text style={[Typography.placeholder, {top: hp('5%'), left: wp('5%')}]}>
+        <Font.Placeholder style={{top: hp('5%'), left: wp('5%')}}>
           {Strings.member}
-        </Text>
+        </Font.Placeholder>
       </View>
 
       <View
@@ -226,15 +225,12 @@ const ChatParticipantList = props => {
                   alignSelf: 'center',
                 }}>
                 <Icon name="add" size={wp('6%')} />
-                <Text
-                  style={[
-                    Typography.normal,
-                    {
-                      color: Colors.LIME_GREEN,
-                    },
-                  ]}>
+                <Font.Normal
+                  style={{
+                    color: Colors.LIME_GREEN,
+                  }}>
                   {Strings.addMembers}
-                </Text>
+                </Font.Normal>
               </TouchableOpacity>
               <Modal
                 isVisible={addPersonModal}
@@ -283,7 +279,7 @@ const ChatParticipantCard = props => {
           height: hp('6%'),
           justifyContent: 'center',
         }}>
-        <Text style={Typography.normal}>{props.user}Heyo</Text>
+        <Font.Normal>{props.user}</Font.Normal>
       </View>
 
       <TouchableOpacity
@@ -357,16 +353,12 @@ const RemovePersonModal = props => {
         style={{
           top: hp('3%'),
         }}>
-        <Text style={[Typography.large, {textAlign: 'center'}]}>
+        <Font.Large style={{textAlign: 'center'}}>
           {Strings.removeMemberConfirm1}
-        </Text>
-        <Text
-          style={[
-            Typography.large,
-            {fontFamily: 'Poppins-Bold', textAlign: 'center'},
-          ]}>
+        </Font.Large>
+        <Font.Large style={{fontFamily: 'Poppins-Bold', textAlign: 'center'}}>
           {Strings.removeMemberConfirm2}
-        </Text>
+        </Font.Large>
       </View>
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
@@ -387,9 +379,9 @@ const RemovePersonModal = props => {
             elevation: 5,
             right: wp('3%'),
           }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+          <Font.Normal style={{textAlign: 'center'}}>
             {Strings.cancel}
-          </Text>
+          </Font.Normal>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => removePerson}
@@ -410,9 +402,9 @@ const RemovePersonModal = props => {
             elevation: 5,
             left: wp('3%'),
           }}>
-          <Text style={[Typography.normal, {textAlign: 'center'}]}>
+          <Font.Normal style={{textAlign: 'center'}}>
             {Strings.confirm}
-          </Text>
+          </Font.Normal>
         </TouchableOpacity>
       </View>
     </View>
@@ -429,13 +421,9 @@ const AddPersonModal = props => {
         left: Mixins.scaleWidth(10),
         borderRadius: 20,
       }}>
-      <Text
-        style={[
-          Typography.large,
-          {alignSelf: 'center', top: Mixins.scaleHeight(20)},
-        ]}>
+      <Font.Large style={{alignSelf: 'center', top: Mixins.scaleHeight(20)}}>
         Who would you like to add?
-      </Text>
+      </Font.Large>
       <EmployeeList></EmployeeList>
       <View style={{top: Mixins.scaleHeight(50)}}></View>
     </View>
@@ -470,16 +458,13 @@ const AttachmentList = props => {
 const Attachment = props => {
   return (
     <TouchableOpacity>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            height: hp('5%'),
-            justifyContent: 'center',
-          },
-        ]}>
+      <Font.Normal
+        style={{
+          height: hp('5%'),
+          justifyContent: 'center',
+        }}>
         {Strings.invoices}
-      </Text>
+      </Font.Normal>
     </TouchableOpacity>
   );
 };

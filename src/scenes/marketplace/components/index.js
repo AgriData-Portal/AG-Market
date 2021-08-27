@@ -9,6 +9,7 @@ import {
 } from 'react-native-responsive-screen';
 import Strings from '_utils';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const Searchbar = props => {
   return (
@@ -51,7 +52,7 @@ export const Searchbar = props => {
             log(props.searchValue);
           }
         }}>
-        <Text style={[Typography.normal, {top: hp('0.2%')}]}>Search</Text>
+        <Font.Normal style={{top: hp('0.2%')}}>{Strings.search}</Font.Normal>
       </TouchableOpacity>
     </View>
   );

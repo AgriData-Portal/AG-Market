@@ -3,7 +3,7 @@ import {
   AddButton,
   BackButton,
   BlueButton,
-  ProductSearchBar,
+  MenuButton,
 } from './buttons';
 
 import {
@@ -15,14 +15,7 @@ import {
   DetailsModal,
 } from './modals';
 import {DismissKeyboardView} from './dismiss-keyboard';
-import {
-  MenuButton,
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
-} from './menu_button';
+import * as Font from './typography';
 
 export {
   UpdateAppModal,
@@ -34,12 +27,8 @@ export {
   DismissKeyboardView,
   LoadingModal,
   MenuButton,
-  CompanyProfile,
-  EditCompany,
-  HumanResource,
-  PersonalProfile,
-  EditPersonal,
   BlueButton,
   SuccessNavigateChatModal,
   DetailsModal,
+  Font,
 };

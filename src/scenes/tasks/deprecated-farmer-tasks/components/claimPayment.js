@@ -28,6 +28,7 @@ import {
 import Strings from '_utils';
 import {paymentsTaskForFarmerByDate} from '../../../../graphql/queries';
 import {log} from '_utils';
+import {Font} from '_components';
 
 const now = () => {
   const now = dayjs().format('DD MMM YYYY');
@@ -148,18 +149,15 @@ const ReceivePaymentTask = props => {
             </View>
           )}
         </View>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              color: Colors.LIME_GREEN,
-              top: hp('3%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            color: Colors.LIME_GREEN,
+            top: hp('3%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {props.retailer.name}
-        </Text>
+        </Font.Normal>
         {/*} {props.paid ? (
           <Text
             style={[
@@ -187,43 +185,34 @@ const ReceivePaymentTask = props => {
             NOT PAID
           </Text>
           )} */}
-        <Text
-          style={[
-            Typography.normal,
-            {
-              color: 'black',
-              top: hp('5%'),
-              left: wp('25%'),
-              position: 'absolute',
-            },
-          ]}>
+        <Font.Normal
+          style={{
+            color: 'black',
+            top: hp('5%'),
+            left: wp('25%'),
+            position: 'absolute',
+          }}>
           {Strings.amount}: {props.amount}
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('6%'),
-              right: hp('2%'),
-              position: 'absolute',
-            },
-          ]}>
+        </Font.Normal>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('6%'),
+            right: hp('2%'),
+            position: 'absolute',
+          }}>
           {Strings.recieveBefore}:
-        </Text>
-        <Text
-          style={[
-            Typography.small,
-            {
-              color: 'grey',
-              top: hp('8%'),
-              right: hp('2%'),
-              position: 'absolute',
-              fontStyle: 'italic',
-            },
-          ]}>
+        </Font.Small>
+        <Font.Small
+          style={{
+            color: 'grey',
+            top: hp('8%'),
+            right: hp('2%'),
+            position: 'absolute',
+            fontStyle: 'italic',
+          }}>
           {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
-        </Text>
+        </Font.Small>
       </View>
       <Modal isVisible={receiveTaskModal}>
         <ReceivePaymentModal
@@ -292,30 +281,24 @@ const ReceivePaymentModal = props => {
         <CloseButton setModal={props.setReceiveTaskModal} />
       </View>
 
-      <Text
-        style={[
-          Typography.header,
-          {
-            position: 'absolute',
-            fontFamily: 'Poppins-SemiBold',
-            top: hp('5%'),
-            left: wp('5%'),
-          },
-        ]}>
+      <Font.Header
+        style={{
+          position: 'absolute',
+          fontFamily: 'Poppins-SemiBold',
+          top: hp('5%'),
+          left: wp('5%'),
+        }}>
         {Strings.paymentAlert}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('11%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Header>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('11%'),
+          left: wp('5%'),
+        }}>
         {Strings.recieveBefore}:{' '}
         {dayjs(props.payBefore, 'DD MMM YYYY').format('DD MMM YYYY')}
-      </Text>
+      </Font.Placeholder>
       <View
         style={{
           borderBottomWidth: 2,
@@ -325,116 +308,87 @@ const ReceivePaymentModal = props => {
           borderColor: Colors.GRAY_MEDIUM,
           position: 'absolute',
         }}></View>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('23%'),
-            left: wp('5%'),
-          },
-        ]}>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('23%'),
+          left: wp('5%'),
+        }}>
         {Strings.paymentFrom}:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('23%'),
-            left: wp('45%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('23%'),
+          left: wp('45%'),
+        }}>
         {props.retailer.name}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('28%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('28%'),
+          left: wp('5%'),
+        }}>
         {Strings.order} #:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('28%'),
-            left: wp('45%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('28%'),
+          left: wp('45%'),
+        }}>
         #{props.id.slice(0, 6)}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('33%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('33%'),
+          left: wp('5%'),
+        }}>
         {Strings.orderedOn}:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('33%'),
-            left: wp('45%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('33%'),
+          left: wp('45%'),
+        }}>
         {dayjs(props.createdAt).format('DD MMM YYYY')}
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('38%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('38%'),
+          left: wp('5%'),
+        }}>
         {Strings.bank}:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('38%'),
-            left: wp('45%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('38%'),
+          left: wp('45%'),
+        }}>
         Bank
-      </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('43%'),
-            left: wp('5%'),
-          },
-        ]}>
+      </Font.Normal>
+      <Font.Placeholder
+        style={{
+          position: 'absolute',
+          top: hp('43%'),
+          left: wp('5%'),
+        }}>
         {Strings.reference} #:
-      </Text>
-      <Text
-        style={[
-          Typography.normal,
-          {
-            position: 'absolute',
-            top: hp('43%'),
-            left: wp('45%'),
-          },
-        ]}>
+      </Font.Placeholder>
+      {/* TODO */}
+      <Font.Normal
+        style={{
+          position: 'absolute',
+          top: hp('43%'),
+          left: wp('45%'),
+        }}>
         9065 7756 8989
-      </Text>
+      </Font.Normal>
       <BlueButton
         onPress={() => [receivedPayment()]}
         text={Strings.recieved}

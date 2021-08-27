@@ -25,6 +25,7 @@ import {
 import Strings from '_utils';
 import {companyStore} from '_store';
 import {log} from '_utils';
+import {Font} from '_components';
 
 export const FarmerTasks = props => {
   const [sendTask, setSendTask] = useState([]);
@@ -96,15 +97,12 @@ export const FarmerTasks = props => {
               right: wp('15%'),
               top: hp('0%'),
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  fontFamily: 'Poppins-Bold',
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                fontFamily: 'Poppins-Bold',
+              }}>
               {Strings.send}
-            </Text>
+            </Font.Normal>
           </View>
         ) : (
           <TouchableOpacity
@@ -113,15 +111,12 @@ export const FarmerTasks = props => {
               right: wp('15%'),
               top: hp('0%'),
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: Colors.GRAY_DARK,
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                color: Colors.GRAY_DARK,
+              }}>
               {Strings.send}
-            </Text>
+            </Font.Normal>
           </TouchableOpacity>
         )}
         {task == 'claim' ? (
@@ -130,15 +125,12 @@ export const FarmerTasks = props => {
               left: wp('15%'),
               top: hp('0%'),
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  color: 'black',
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                color: 'black',
+              }}>
               {Strings.claim}
-            </Text>
+            </Font.Normal>
           </View>
         ) : (
           <TouchableOpacity
@@ -147,16 +139,13 @@ export const FarmerTasks = props => {
               top: hp('0%'),
               left: wp('15%'),
             }}>
-            <Text
-              style={[
-                Typography.normal,
-                {
-                  fontFamily: 'Poppins-Bold',
-                  color: Colors.GRAY_DARK,
-                },
-              ]}>
+            <Font.Normal
+              style={{
+                fontFamily: 'Poppins-Bold',
+                color: Colors.GRAY_DARK,
+              }}>
               {Strings.claim}
-            </Text>
+            </Font.Normal>
           </TouchableOpacity>
         )}
       </View>
@@ -175,9 +164,9 @@ export const FarmerTasks = props => {
           top: hp('1%'),
           flexDirection: 'row',
         }}>
-        <Text style={[Typography.normal, {textTransform: 'uppercase'}]}>
+        <Font.Normal style={{textTransform: 'uppercase'}}>
           {Strings.allResults}
-        </Text>
+        </Font.Normal>
         {/* TODO sortmodal */}
         {/* <TouchableOpacity
           onPress={() => setSortModal(true)}

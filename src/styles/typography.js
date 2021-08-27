@@ -3,7 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {Dimensions, PixelRatio} from 'react-native';
+import {Dimensions, PixelRatio, Text} from 'react-native';
 
 // FONT FAMILY
 export const FONT_FAMILY_REGULAR = 'Poppins-Medium';
@@ -57,6 +57,7 @@ const byWidth2 = num => {
   return wp(num);
 };
 // FONT STYLE
+
 export const header = {
   fontSize: byWidth(20), //RFPercentage(divide(20)),
   fontFamily: 'Poppins-SemiBold',

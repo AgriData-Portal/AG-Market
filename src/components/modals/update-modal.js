@@ -22,6 +22,7 @@ import {
 } from 'react-native-responsive-screen';
 import {versionStore} from '_store';
 import Strings from '_utils';
+import {Font} from '_components';
 
 export const UpdateAppModal = props => {
   const updateStatus = versionStore(state => state.updateStatus);
@@ -36,13 +37,9 @@ export const UpdateAppModal = props => {
       }}>
       <View>
         <View>
-          <Text
-            style={[
-              Typography.normal,
-              {textAlign: 'center', marginTop: hp('2%')},
-            ]}>
+          <Font.Normal style={{textAlign: 'center', marginTop: hp('2%')}}>
             {Strings.updateApp}
-          </Text>
+          </Font.Normal>
         </View>
         <View
           style={{
@@ -71,9 +68,9 @@ export const UpdateAppModal = props => {
                 borderTopWidth: 1,
                 zIndex: 100,
               }}>
-              <Text style={[Typography.normal, {textAlign: 'center'}]}>
+              <Font.Normal style={{textAlign: 'center'}}>
                 {Strings.updateNow}
-              </Text>
+              </Font.Normal>
             </TouchableOpacity>
           ) : (
             <View style={{flexDirection: 'row'}}>
@@ -96,9 +93,9 @@ export const UpdateAppModal = props => {
                   borderTopWidth: 1,
                   zIndex: 100,
                 }}>
-                <Text style={[Typography.normal, {textAlign: 'center'}]}>
+                <Font.Normal style={{textAlign: 'center'}}>
                   {Strings.updateNow}
-                </Text>
+                </Font.Normal>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => props.setUpdateModal(false)}
@@ -112,9 +109,9 @@ export const UpdateAppModal = props => {
                   borderTopWidth: 1,
                   zIndex: 100,
                 }}>
-                <Text style={[Typography.normal, {textAlign: 'center'}]}>
+                <Font.Normal style={{textAlign: 'center'}}>
                   {Strings.updateLater}
-                </Text>
+                </Font.Normal>
               </TouchableOpacity>
             </View>
           )}

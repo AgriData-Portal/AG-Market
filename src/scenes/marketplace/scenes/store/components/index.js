@@ -48,6 +48,7 @@ import {
 
 import {log, marketPlace} from '_utils';
 import {userStore, companyStore} from '_store';
+import {Font} from '_components';
 
 const ProductCard = props => {
   const [productModal, setProductModal] = useState(false);
@@ -85,25 +86,20 @@ const ProductCard = props => {
           width: hp('10%'),
           borderRadius: 100,
         }}></Image>
-      <Text style={[Typography.normal, {top: hp('2%')}]}>
-        {props.productName}
-      </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            marginTop: hp('2%'),
-            width: wp('39%'),
-            alignSelf: 'center',
-          },
-        ]}>
+      <Font.Normal style={{top: hp('2%')}}>{props.productName}</Font.Normal>
+      <Font.Small
+        style={{
+          marginTop: hp('2%'),
+          width: wp('39%'),
+          alignSelf: 'center',
+        }}>
         {Strings.price}: {props.lowPrice} - {props.highPrice} /{props.siUnit}
         {'\n'}MOQ: {props.minimumQuantity} {props.siUnit}
         {'\n'}
         {Strings.grade}: {props.grade}
         {'\n'}
         {Strings.variety}: {props.variety}
-      </Text>
+      </Font.Small>
       <Modal isVisible={productModal}>
         <ProductPopUp
           navigation={props.navigation}
@@ -227,9 +223,9 @@ const ProductPopUp = props => {
             width: wp('77%'),
             flexDirection: 'row',
           }}>
-          <Text style={[Typography.header, {left: wp('5%')}]}>
+          <Font.Header style={{left: wp('5%')}}>
             {props.productName}
-          </Text>
+          </Font.Header>
 
           <TouchableOpacity
             onPress={() => [
@@ -278,9 +274,9 @@ const ProductPopUp = props => {
             imageSize={wp('6%')}
             readonly={true}
             startingValue={3.5}></Rating> */}
-          <Text style={[Typography.large, {color: Colors.PALE_BLUE}]}>
+          <Font.Large style={{color: Colors.PALE_BLUE}}>
             RM {props.lowPrice}-{props.highPrice}/{props.siUnit}
-          </Text>
+          </Font.Large>
         </View>
         <View
           style={{
@@ -291,31 +287,25 @@ const ProductPopUp = props => {
             alignItems: 'center',
             top: hp('3%'),
           }}>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                lineHeight: hp('3%'),
-                top: hp('3%'),
-                left: wp('5%'),
-                position: 'absolute',
-              },
-            ]}>
+          <Font.Normal
+            style={{
+              lineHeight: hp('3%'),
+              top: hp('3%'),
+              left: wp('5%'),
+              position: 'absolute',
+            }}>
             {Strings.grade}:{'\n'}
             {Strings.variety}: {'\n'}
             {Strings.available}: {'\n'}MOQ:
-          </Text>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                lineHeight: hp('3%'),
-                top: hp('3%'),
-                right: wp('5%'),
-                position: 'absolute',
-                textAlign: 'right',
-              },
-            ]}>
+          </Font.Normal>
+          <Font.Normal
+            style={{
+              lineHeight: hp('3%'),
+              top: hp('3%'),
+              right: wp('5%'),
+              position: 'absolute',
+              textAlign: 'right',
+            }}>
             {props.grade}
             {'\n'}
             {props.variety}
@@ -323,7 +313,7 @@ const ProductPopUp = props => {
             {props.quantityAvailable}
             {'\n'}
             {props.minimumQuantity}
-          </Text>
+          </Font.Normal>
         </View>
         <View
           style={{
@@ -338,7 +328,7 @@ const ProductPopUp = props => {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Text style={Typography.normal}>{Strings.quantityToBuy}:</Text>
+          <Font.Normal>{Strings.quantityToBuy}:</Font.Normal>
           <TextInput
             keyboardType="number-pad"
             value={desiredQuantity}
@@ -479,27 +469,21 @@ const PurchaseOrder = props => {
         alignItems: 'center',
       }}>
       <View style={{alignItems: 'center'}}>
-        <Text
-          style={[
-            Typography.large,
-            {
-              fontFamily: 'Poppins-SemiBold',
-              top: hp('2%'),
-            },
-          ]}>
+        <Font.Large
+          style={{
+            fontFamily: 'Poppins-SemiBold',
+            top: hp('2%'),
+          }}>
           {Strings.purchaseOrderFor}
-        </Text>
-        <Text
-          style={[
-            Typography.header,
-            {
-              fontFamily: 'Poppins-Bold',
-              color: Colors.LIME_GREEN,
-              top: hp('2%'),
-            },
-          ]}>
+        </Font.Large>
+        <Font.Header
+          style={{
+            fontFamily: 'Poppins-Bold',
+            color: Colors.LIME_GREEN,
+            top: hp('2%'),
+          }}>
           {props.storeName}
-        </Text>
+        </Font.Header>
       </View>
       <View
         style={{
@@ -675,29 +659,23 @@ const PurchaseOrderComponent = props => {
       }}>
       <View style={{flexDirection: 'row'}}>
         <View>
-          <Text
-            style={[
-              Typography.normal,
-              {
-                left: wp('5%'),
-                minWidth: wp('35%'),
-                height: hp('3%'),
-              },
-            ]}>
+          <Font.Normal
+            style={{
+              left: wp('5%'),
+              minWidth: wp('35%'),
+              height: hp('3%'),
+            }}>
             {props.name} ({props.grade})
-          </Text>
+          </Font.Normal>
           {/* TODO word length */}
-          <Text
-            style={[
-              Typography.normal,
-              {
-                left: wp('5%'),
-                minWidth: wp('35%'),
-                height: hp('3%'),
-              },
-            ]}>
+          <Font.Normal
+            style={{
+              left: wp('5%'),
+              minWidth: wp('35%'),
+              height: hp('3%'),
+            }}>
             {Strings.variety}: {props.variety}
-          </Text>
+          </Font.Normal>
           {edit ? (
             <View
               style={{
@@ -723,9 +701,9 @@ const PurchaseOrderComponent = props => {
                   value={number}
                   keyboardType="number-pad"
                 />
-                <Text style={[Typography.normal, {left: wp('50%')}]}>
+                <Font.Normal style={{left: wp('50%')}}>
                   {props.siUnit}
-                </Text>
+                </Font.Normal>
               </View>
               <TouchableOpacity
                 onPress={() => [setEdit(false), updateitemFromPO()]}
@@ -742,17 +720,14 @@ const PurchaseOrderComponent = props => {
             </View>
           ) : (
             <View style={{position: 'absolute', flexDirection: 'row'}}>
-              <Text
-                style={[
-                  Typography.normal,
-                  {
-                    position: 'absolute',
-                    right: wp('-68%'),
-                    top: hp('1.5%'),
-                  },
-                ]}>
+              <Font.Normal
+                style={{
+                  position: 'absolute',
+                  right: wp('-68%'),
+                  top: hp('1.5%'),
+                }}>
                 {number} {props.siUnit}
-              </Text>
+              </Font.Normal>
               <View
                 style={{
                   left: wp('88%'),
