@@ -388,7 +388,7 @@ const InvoiceModal = props => {
             left: wp('5%'),
           },
         ]}>
-        {Strings.invoice}{' '}
+        {Strings.invoice}
         <Text style={Typography.normal}>#{props.trackingNum}</Text>
       </Text>
       <Text

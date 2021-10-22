@@ -119,7 +119,6 @@ export const ConfirmSignUp = props => {
           <TextInput
             style={{
               width: wp('80%'),
-
               height: hp('7%'),
               color: 'black',
               borderBottomColor: 'transparent',
