@@ -252,7 +252,6 @@ export const Login = props => {
               //TODO
               setLoading(true);
               authentication.signIn(phone, password).then(data => {
-                log(JSON.stringify(data), 'cyan');
                 if (data.success) {
                   props.updateUserID(data.userID);
                   props.setUserAttributes(data.userAttributes);

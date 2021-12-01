@@ -433,6 +433,7 @@ const App = () => {
     } catch (e) {
       log(e);
     }
+    
     var type = user.attributes['custom:companyType'];
     //createing new company
     try {
@@ -508,12 +509,14 @@ const App = () => {
       } else if (type == 'supplier') {
         input['supplierCompanyID'] = companyID;
       }
+
       const newUserInfo = await API.graphql({
         query: createUser,
         variables: {
           input,
         },
       });
+
       log('newuser: ' + newUserInfo.data.createUser);
       setUserDetails(newUserInfo.data.createUser);
       setUserLoggedIn('loggedIn');
