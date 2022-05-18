@@ -13,7 +13,7 @@ import {Typography, Spacing, Colors, Mixins} from '_styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {CloseButton, SuccessfulModal} from '_components';
-
+import RNQRGenerator from 'rn-qr-generator';
 import dayjs from 'dayjs';
 import {
   widthPercentageToDP as wp,
@@ -49,6 +49,7 @@ const ReceiveModal = props => {
   const [ratingModal, setRatingModal] = useState(false);
   const userName = userStore(state => state.userName);
   const companyType = userStore(state => state.companyType);
+  const [qr, setQR] = useState(false);
 
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
@@ -237,6 +238,7 @@ const ReceiveModal = props => {
         height: hp('80%'),
         backgroundColor: Colors.GRAY_WHITE,
         borderRadius: 10,
+        padding: 20,
       }}>
       <View
         style={{
@@ -251,9 +253,7 @@ const ReceiveModal = props => {
         style={[
           Typography.normal,
           {
-            position: 'absolute',
-            top: hp('7%'),
-            left: wp('8%'),
+            marginTop: 10,
           },
         ]}>
         {Strings.order}
@@ -269,15 +269,7 @@ const ReceiveModal = props => {
         </Text>
       </Text>
 
-      <Text
-        style={[
-          Typography.header,
-          {
-            position: 'absolute',
-            top: hp('11%'),
-            left: wp('8%'),
-          },
-        ]}>
+      <Text style={[Typography.header]}>
         {dayjs(props.createdAt).format('DD MMM YYYY')}
       </Text>
       <View
@@ -285,102 +277,54 @@ const ReceiveModal = props => {
           borderBottomWidth: wp('1%'),
           width: wp('80%'),
           alignSelf: 'center',
-          top: hp('18%'),
           borderColor: Colors.GRAY_MEDIUM,
-          position: 'absolute',
         }}></View>
+      {qr && (
+        <View style={{height: 1000}}>
+          {/* <Text>{qr}</Text> */}
+          <Image style={{height: 300, width: 300}} source={{uri: qr}} />
+          <BlueButton
+            marginTop={20}
+            text="Close QR Code"
+            onPress={() => setQR(null)}
+          />
+        </View>
+      )}
       <Text
         style={[
           Typography.placeholder,
           {
-            position: 'absolute',
-            top: hp('19%'),
-            left: wp('8%'),
+            marginTop: 10,
           },
         ]}>
         {Strings.items}: {props.goods.length}
       </Text>
-      <View
-        style={{
-          position: 'absolute',
-          top: hp('23%'),
-          left: wp('8%'),
-          width: wp('75%'),
-          height: hp('24%'),
-        }}>
+      <View style={{height: hp('40%')}}>
         <ProductList data={props.goods}></ProductList>
       </View>
       <Text
         style={[
           Typography.placeholder,
           {
-            position: 'absolute',
-            top: hp('50%'),
+            marginTop: 10,
             left: wp('50%'),
           },
         ]}>
         {Strings.total}: RM {sum}
       </Text>
-      <Text
-        style={[
-          Typography.placeholder,
-          {
-            position: 'absolute',
-            top: hp('55%'),
-            left: wp('8%'),
-          },
-        ]}>
-        {Strings.deliveryDate}:
-      </Text>
-      {props.deliverydate ? (
-        <Text
-          style={[
-            Typography.small,
-            {
-              position: 'absolute',
-              top: hp('55%'),
-              left: wp('40%'),
-            },
-          ]}>
-          {props.deliverydate}
-        </Text>
-      ) : (
-        <Text
-          style={[
-            Typography.small,
-            {
-              position: 'absolute',
-              top: hp('55%'),
-              left: wp('40%'),
-              width: wp('50%'),
-            },
-          ]}>
-          {Strings.supplierHasNot}
-        </Text>
-      )}
 
       <Text
         style={[
           Typography.placeholder,
           {
-            position: 'absolute',
-            top: hp('65%'),
-            left: wp('8%'),
+            marginTop: 10,
           },
         ]}>
-        {Strings.seller}:
+        {Strings.seller}
+        {': '}
+        {companyType == 'retailer' ? props.supplier.name : props.farmer.name}:
       </Text>
-      <Text
-        style={[
-          Typography.small,
-          {
-            position: 'absolute',
-            top: hp('65%'),
-            left: wp('40%'),
-          },
-        ]}>
-        {companyType == 'retailer' ? props.supplier.name : props.farmer.name}
-      </Text>
+
       {props.status == 'sent' ? (
         <TouchableOpacity
           onPress={() => {
@@ -399,14 +343,13 @@ const ReceiveModal = props => {
             alignItems: 'center',
             justifyContent: 'center',
             elevation: 5,
-            position: 'absolute',
-            bottom: hp('5%'),
             borderRadius: 10,
             shadowColor: '#000',
             shadowOffset: {
               width: 0,
               height: 1,
             },
+            marginTop: 30,
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
             elevation: 3,
@@ -419,7 +362,21 @@ const ReceiveModal = props => {
           <Icon name="checkmark-circle-outline" size={wp('5%')}></Icon>
         </TouchableOpacity>
       ) : (
-        <View />
+        <BlueButton
+          marginTop={30}
+          text="Show QR Code"
+          onPress={() =>
+            RNQRGenerator.generate({
+              value: props.trackingNum,
+              height: 300,
+              width: 300,
+            })
+              .then(response => {
+                const {uri, width, height, base64} = response;
+                setQR(uri);
+              })
+              .catch(error => console.log('Cannot create QR code', error))
+          }></BlueButton>
       )}
       <TouchableOpacity
         onPress={() => {
@@ -775,7 +732,7 @@ const Product = props => {
           Typography.small,
           {
             textAlign: 'left',
-            left: wp('40%'),
+            left: wp('35%'),
             position: 'absolute',
           },
         ]}>
@@ -786,7 +743,7 @@ const Product = props => {
           Typography.small,
           {
             textAlign: 'left',
-            left: wp('60%'),
+            left: wp('65%'),
             position: 'absolute',
           },
         ]}>

@@ -8,6 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "2ios": "react-native run-ios --udid 9459FEA8-41FD-4890-898A-BD4195CC469C && react-native run-ios --udid 24E4CCA9-45DD-439D-B3BC-B6AC2AEB0D1B",
     "multiple-ios-mac-mini": "react-native run-ios --udid 0119210E-C743-4540-AFE1-B0F3C349DB02 && react-native run-ios --udid 28A7105B-2DD8-421C-AFA2-C2364596DA5D && react-native run-ios --udid 7EF25731-2B5E-4A1C-90FB-AB6E12A207C8 && react-native run-ios --udid 1138AB12-C0E6-4C96-8877-B97D3E54E803",
     "multiple-ios-mac-air": "react-native run-ios --udid 0799EE41-6591-490A-92F1-C4F9B1C03231 && react-native run-ios --udid EA9DA371-C2DE-40AF-8EAA-434803B38D22 555D0B25-348E-4AEE-960B-FED53232418A",
     "chrisiphone-ios": "react-native run-ios --udid 00008030-00016D4E0E82802E && react-native run-ios --udid 291ECD41-D4F5-4D9F-A058-9E14AEA6CCD0",
@@ -60,6 +61,7 @@
     "react-native-switch-toggle": "^2.2.1",
     "react-native-vector-icons": "^8.1.0",
     "rn-fetch-blob": "^0.12.0",
+    "rn-qr-generator": "^1.2.0",
     "xlsx": "^0.17.0",
     "zustand": "^3.5.7"
   },

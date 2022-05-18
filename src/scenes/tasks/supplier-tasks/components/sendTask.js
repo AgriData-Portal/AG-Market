@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {DismissKeyboard} from '_components';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import Strings from '_utils';
 import {API} from 'aws-amplify';
 import {
@@ -289,8 +289,15 @@ const SendTaskModal = props => {
   const [deliverydate, setDate] = useState(props.deliverydate);
   const [confirmedDate, setConfirmedDate] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
+  const [qrScannerModal, setQrScannerModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
   const companyType = userStore(state => state.companyType);
+  const [value, setValue] = useState('');
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    if (value === props.trackingNum) setInvoiceModal(true);
+    if (value && value !== props.trackingNum) setError(true);
+  }, [value]);
 
   const updateDeliveryDate = async () => {
     try {
@@ -355,6 +362,8 @@ const SendTaskModal = props => {
           top: hp('10%'),
           backgroundColor: Colors.GRAY_WHITE,
           borderRadius: 10,
+          paddingVertical: 10,
+          paddingHorizontal: 20,
         }}>
         <View
           style={{
@@ -368,9 +377,7 @@ const SendTaskModal = props => {
           style={[
             Typography.normal,
             {
-              position: 'absolute',
-              top: hp('7%'),
-              left: wp('8%'),
+              marginTop: hp('4%'),
             },
           ]}>
           {Strings.order}
@@ -386,15 +393,7 @@ const SendTaskModal = props => {
           </Text>
         </Text>
 
-        <Text
-          style={[
-            Typography.header,
-            {
-              position: 'absolute',
-              top: hp('11%'),
-              left: wp('8%'),
-            },
-          ]}>
+        <Text style={[Typography.header]}>
           {dayjs(props.createdAt).format('DD MMM YYYY')}
         </Text>
         <View
@@ -402,28 +401,49 @@ const SendTaskModal = props => {
             borderBottomWidth: wp('1%'),
             width: wp('80%'),
             alignSelf: 'center',
-            top: hp('18%'),
+            marginTop: 5,
             borderColor: Colors.GRAY_MEDIUM,
-            position: 'absolute',
           }}></View>
+        {qrScannerModal ? (
+          <View
+            style={{
+              height: hp('45%'),
+              borderRadius: 10,
+              padding: 2,
+              marginBottom: 400,
+            }}>
+            <Text>{props.trackingNum + props.taskID}</Text>
+            <View style={{height: hp('45%')}}>
+              <QRCodeScanner
+                cameraStyle={{width: wp('80%')}}
+                onRead={qr => setValue(qr.data)}
+              />
+            </View>
+            {error ? (
+              <Text>
+                The QR Code you are scanning is not for this task, please close
+                the scanner and try again
+              </Text>
+            ) : null}
+            <BlueButton
+              onPress={() => setQrScannerModal(false)}
+              marginTop={20}
+              text="Close QR Code Scanner"></BlueButton>
+          </View>
+        ) : null}
         <Text
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
-              top: hp('19%'),
-              left: wp('8%'),
+              marginTop: 5,
             },
           ]}>
           {Strings.items}: {props.goods.length}
         </Text>
         <View
           style={{
-            position: 'absolute',
-            top: hp('23%'),
-            left: wp('8%'),
-            width: wp('75%'),
-            height: hp('24%'),
+            marginTop: 5,
+            height: hp('45%'),
           }}>
           <ProductList data={props.goods}></ProductList>
         </View>
@@ -431,25 +451,23 @@ const SendTaskModal = props => {
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
-              top: hp('50%'),
-              left: wp('55%'),
+              marginTop: 10,
+              left: wp('45%'),
             },
           ]}>
           {Strings.total}: RM {sum}
         </Text>
-        <Text
+        {/* <Text
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
               top: hp('55%'),
               left: wp('8%'),
             },
           ]}>
           {Strings.deliveryDate}
-        </Text>
-        {deliverydate == null ? (
+        </Text> */}
+        {/* {deliverydate == null ? (
           <View>
             <Text
               style={[
@@ -556,19 +574,20 @@ const SendTaskModal = props => {
               <Icon name="pencil-outline" size={wp('5%')} />
             </TouchableOpacity>
           </View>
-        )}
+        )} */}
         <Text
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
-              top: hp('60%'),
-              left: wp('8%'),
+              marginTop: 5,
             },
           ]}>
-          {Strings.buyer}:
+          {Strings.buyer}:{' '}
+          {companyType == 'supplier'
+            ? props.retailer.name
+            : props.supplier.name}
         </Text>
-        <Text
+        {/* <Text
           style={[
             Typography.normal,
             {
@@ -580,16 +599,15 @@ const SendTaskModal = props => {
           {companyType == 'supplier'
             ? props.retailer.name
             : props.supplier.name}
-        </Text>
+        </Text> */}
         <BlueButton
           onPress={() => {
-            [setInvoiceModal(true)];
+            [setQrScannerModal(true)];
           }}
-          text={Strings.createInvoice}
+          text={'Scan QR Code'}
           font={Typography.normal}
           borderRadius={10}
-          top={hp('70%')}
-          position={'absolute'}
+          marginTop={10}
         />
       </View>
       <Modal
@@ -613,6 +631,15 @@ const SendTaskModal = props => {
           sendTask={props.sendTask}
           setSendTask={props.setSendTask}></InvoiceModal>
       </Modal>
+      {/* <Modal isVisible={qrScannerModal}>
+        <QRScannerModal
+          setInvoiceModal={setInvoiceModal}
+          taskID={props.taskID}
+          trackingNum={props.trackingNum}
+          sendTask={props.sendTask}
+          setQrScannerModal={setQrScannerModal}
+          setSendTask={props.setSendTask}></QRScannerModal>
+      </Modal> */}
     </SafeAreaView>
   );
 };
@@ -914,6 +941,34 @@ const InvoiceItem = props => {
   );
 };
 
+const QRScannerModal = props => {
+  const [value, setValue] = useState('');
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    if (value === props.taskID) props.setInvoiceModal(true);
+    if (value && value !== props.taskID) setError(true);
+  }, [value]);
+  return (
+    <View
+      style={{
+        width: wp('90%'),
+        height: hp('80%'),
+        backgroundColor: Colors.GRAY_WHITE,
+        borderRadius: 10,
+      }}>
+      <Text>{props.taskID}</Text>
+      <CloseButton setModal={props.setQrScannerModal} />
+      <QRCodeScanner onRead={qr => setValue(qr.data)}></QRCodeScanner>
+      {error ? (
+        <Text>
+          The QR Code you are scanning is not for this task, please close the
+          scanner and try again
+        </Text>
+      ) : null}
+    </View>
+  );
+};
+
 const ProductList = props => {
   const Seperator = () => {
     return (
@@ -955,7 +1010,6 @@ const Product = props => {
     <View
       style={{
         height: hp('6%'),
-        width: wp('75%'),
         justifyContent: 'center',
       }}>
       <Text
@@ -965,7 +1019,6 @@ const Product = props => {
             textAlign: 'left',
             position: 'absolute',
             bottom: hp('2.5%'),
-            left: wp('3%'),
           },
         ]}>
         {props.name}
@@ -1007,24 +1060,21 @@ const Product = props => {
         ]}>
         @ RM {props.price}/{props.siUnit}
       </Text>
-      <View style={{top: hp('3%'), left: wp('2%')}}>
-        <Text
-          style={[
-            Typography.small,
-            {
-              textAlign: 'left',
-              left: wp('60%'),
-              position: 'absolute',
-              bottom: hp('2.5%'),
-              right: wp('1%'),
+      <Text
+        style={[
+          Typography.small,
+          {
+            textAlign: 'left',
+            left: wp('70%'),
+            position: 'absolute',
+            bottom: hp('2.5%'),
 
-              width: wp('12%'),
-            },
-          ]}>
-          | {props.quantity}
-          {props.siUnit}
-        </Text>
-      </View>
+            width: wp('12%'),
+          },
+        ]}>
+        | {props.quantity}
+        {props.siUnit}
+      </Text>
     </View>
   );
 };

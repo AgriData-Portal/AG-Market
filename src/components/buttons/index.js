@@ -81,6 +81,7 @@ export const BlueButton = props => {
         alignSelf: 'center',
         right: props.right,
         left: props.left,
+        marginTop: props.marginTop || 0,
       }}>
       <Text
         style={[

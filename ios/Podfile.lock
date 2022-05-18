@@ -362,6 +362,9 @@ PODS:
     - React-Core
   - RNPermissions (3.0.5):
     - React-Core
+  - RNQrGenerator (1.2.0):
+    - React
+    - ZXingObjC
   - RNReactNativePdfLib (1.0.0):
     - React
   - RNReanimated (2.2.0):
@@ -406,6 +409,9 @@ PODS:
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
+  - ZXingObjC (3.6.5):
+    - ZXingObjC/All (= 3.6.5)
+  - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
   - CodePush (from `../node_modules/react-native-code-push`)
@@ -473,6 +479,7 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNReactNativePdfLib (from `../node_modules/react-native-pdf-lib/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -498,6 +505,7 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SSZipArchive
     - YogaKit
+    - ZXingObjC
 
 EXTERNAL SOURCES:
   CodePush:
@@ -588,6 +596,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
+  RNQrGenerator:
+    :path: "../node_modules/rn-qr-generator"
   RNReactNativePdfLib:
     :path: "../node_modules/react-native-pdf-lib/ios"
   RNReanimated:
@@ -661,6 +671,7 @@ SPEC CHECKSUMS:
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
+  RNQrGenerator: 34beaf1996de4a2f2122c7019dccd1717b22d8d7
   RNReactNativePdfLib: 8c349360ba24bdeb147cef0b1522a129f5a69b6a
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
@@ -670,6 +681,7 @@ SPEC CHECKSUMS:
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
+  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
 PODFILE CHECKSUM: 2df8afc0141385ef8b754fc87593bfa605353c33
 
