@@ -1,28 +1,10 @@
 # AG-Market
 
-## Connecting Supermarkets with Suppliers and Farms in Kota Kinabalu
+## Getting Started
+Follow the setup configurations here https://reactnative.dev/docs/0.64/getting-started, please make sure to follow it closely as we are using React Native 0.64
 
-15th Oct GOALS:
-Suppliers: (100 S, 40 M, 10 L)
-Supermarkets: (200 S, 40 M, 6 L)
-Farmers: (100)
+## Installing Dependencies
+After cloning the app, run npm install in the project root and then cd ios and run pod install
 
-15th Sept CHECK:
-Suppliers: (35 S, 15 M, 3 L)
-Supermarkets: (20 S, 6 M, 1 L )
-Farmers: (40)
-
-15th Aug CHECK:
-Suppliers: (10 S, 1 M, 1 L)
-Supermarkets: (1 S, 1 M)
-Farmers: ()
-- Tech -
-Farmer and dual supplier dash ready
-Data Analytics => Spent in App (spent per shop) (Generate Report Button) (Have tabs)
-Push Notifications
-
-
-NOW:
-Suppliers: (0 S, 1 M, 1 L)
-Supermarkets: (0 S, 1 M)
-Farmers: ()
+## Running the App
+Execute npm run android and npm run ios to get the app started
