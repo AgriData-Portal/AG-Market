@@ -11,7 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		19F3B18126A5B29400E597A3 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		19F3B18126A5B29400E597A3 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		1EA299D1BE904796BE538B4D /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B04297CCA3C46E396017C81 /* Poppins-BlackItalic.ttf */; };
 		25746A0241C29C3066D7E436 /* libPods-Market-MarketTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5ED946F48493911F9679DF /* libPods-Market-MarketTests.a */; };
 		28F7B5AC7B2440C7AE5B88CB /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBC38FE2E8104ED7A0181F1B /* Poppins-SemiBoldItalic.ttf */; };
@@ -19,7 +19,6 @@
 		4CEAB2431E4F49FD8E0ECD9D /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA8D02041FAB457E96ACDDDB /* Poppins-Bold.ttf */; };
 		6120A6C3263F4922945D6403 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0347006E6F5C4C32A8C975A9 /* Poppins-BoldItalic.ttf */; };
 		6226334F2C244CA8ABBE6366 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB763923E31B4F5BA3660724 /* Poppins-Thin.ttf */; };
-		669E5FB3D2C1B6C02836B6F2 /* libPods-Market.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 464F47CCD4925EC3F2F3BF37 /* libPods-Market.a */; };
 		7DF74B993B184ABCA780703D /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58BA1688611243B1965D774E /* Poppins-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		83690AFFE1654313AAF02ACD /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C5031973C0C439E9C6D1216 /* Poppins-ExtraBoldItalic.ttf */; };
@@ -96,7 +95,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				669E5FB3D2C1B6C02836B6F2 /* libPods-Market.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,7 +490,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				19F3B18126A5B29400E597A3 /* BuildFile in Sources */,
+				19F3B18126A5B29400E597A3 /* (null) in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,10 +567,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 40;
-				DEVELOPMENT_TEAM = 4N9BY5Y3KU;
+				DEVELOPMENT_TEAM = TFGYS4BNLJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Market/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
@@ -586,9 +584,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.agridata.pasar;
 				PRODUCT_NAME = Market;
-				PROVISIONING_PROFILE_SPECIFIER = "AgriData Portal Sdn Bhd";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -601,10 +599,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 40;
-				DEVELOPMENT_TEAM = 4N9BY5Y3KU;
+				DEVELOPMENT_TEAM = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Market/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
@@ -620,7 +618,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.agridataportal.pasar;
 				PRODUCT_NAME = Market;
-				PROVISIONING_PROFILE_SPECIFIER = "AgriData Portal Sdn Bhd";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
