@@ -53,8 +53,8 @@ const ReceiveModal = props => {
 
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
-    var product = item.price * item.quantity;
-    sum = sum + product;
+    var product = parseFloat((item.price * item.quantity).toFixed(2));
+    sum = parseFloat((sum + product).toFixed(2));
   });
   const received = async () => {
     var mostRecentInvoiceNum = null;

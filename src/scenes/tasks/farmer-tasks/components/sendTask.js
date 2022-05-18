@@ -253,47 +253,22 @@ const SendTask = props => {
 const SendTaskModal = props => {
   const [deliverydate, setDate] = useState(props.deliverydate);
   const [confirmedDate, setConfirmedDate] = useState(false);
+  const [qrScannerModal, setQrScannerModal] = useState(false);
   const [successfulModal, setSuccessfulModal] = useState(false);
-
-  const updateDeliveryDate = async () => {
-    try {
-      const response = await API.graphql({
-        query: updateGoodsTaskBetweenSandF,
-        variables: {
-          input: {
-            id: props.taskID,
-            deliveryDate: deliverydate,
-          },
-        },
-      });
-
-      setDate(deliverydate);
-      setConfirmedDate(true);
-      if (props.trigger) {
-        props.setTrigger(false);
-      } else {
-        props.setTrigger(true);
-      }
-
-      var tempList = props.sendTask;
-
-      tempList.forEach((item, index, array) => {
-        if (item == props.taskID) {
-          item.deliveryDate = deliverydate;
-          array[index] = item;
-        }
-      });
-
-      setSuccessfulModal(true);
-    } catch (e) {
-      log(e);
+  const [value, setValue] = useState('');
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    if (value === props.trackingNum) setInvoiceModal(true);
+    if (value && value !== props.trackingNum) {
+      setError(true);
+      setQrScannerModal(false);
     }
-  };
+  }, [value]);
 
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
-    var product = item.price * item.quantity;
-    sum = sum + product;
+    var product = parseFloat((item.price * item.quantity).toFixed(2));
+    sum = parseFloat((sum + product).toFixed(2));
   });
   log(sum);
 
@@ -319,9 +294,7 @@ const SendTaskModal = props => {
           style={[
             Typography.normal,
             {
-              position: 'absolute',
-              top: hp('7%'),
-              left: wp('8%'),
+              marginTop: hp('4%'),
             },
           ]}>
           {Strings.orderCreated}
@@ -330,23 +303,12 @@ const SendTaskModal = props => {
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
-              right: wp('7%'),
-              top: hp('7%'),
               fontStyle: 'italic',
             },
           ]}>
           {Strings.order} #{props.trackingNum}
         </Text>
-        <Text
-          style={[
-            Typography.header,
-            {
-              position: 'absolute',
-              top: hp('11%'),
-              left: wp('8%'),
-            },
-          ]}>
+        <Text style={[Typography.header]}>
           {dayjs(props.createdAt).add(8, 'hour').format('DD MMM YYYY')}
         </Text>
         <View
@@ -354,28 +316,55 @@ const SendTaskModal = props => {
             borderBottomWidth: wp('1%'),
             width: wp('80%'),
             alignSelf: 'center',
-            top: hp('18%'),
+            marginTop: 5,
             borderColor: Colors.GRAY_MEDIUM,
-            position: 'absolute',
           }}></View>
+        {qrScannerModal ? (
+          <View
+            style={{
+              height: hp('45%'),
+              borderRadius: 10,
+              padding: 2,
+              marginBottom: 400,
+            }}>
+            <View style={{height: hp('45%')}}>
+              <QRCodeScanner
+                cameraStyle={{width: wp('80%')}}
+                onRead={qr => setValue(qr.data)}
+              />
+            </View>
+
+            <BlueButton
+              onPress={() => setQrScannerModal(false)}
+              marginTop={20}
+              text="Close QR Code Scanner"></BlueButton>
+          </View>
+        ) : null}
+        {error ? (
+          <>
+            <Text>
+              The QR Code you are scanning is not for this task, please try
+              again
+            </Text>
+            <BlueButton
+              onPress={() => setQrScannerModal(true)}
+              marginTop={20}
+              text="Scan QR Code"></BlueButton>
+          </>
+        ) : null}
         <Text
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
-              top: hp('19%'),
-              left: wp('8%'),
+              marginTop: 5,
             },
           ]}>
           {Strings.items}: {props.goods.length}
         </Text>
         <View
           style={{
-            position: 'absolute',
-            top: hp('23%'),
-            left: wp('8%'),
-            width: wp('75%'),
-            height: hp('24%'),
+            marginTop: 5,
+            height: hp('45%'),
           }}>
           <ProductList data={props.goods}></ProductList>
         </View>
@@ -383,163 +372,31 @@ const SendTaskModal = props => {
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
-              top: hp('50%'),
-              left: wp('55%'),
+              marginTop: 10,
+              left: wp('45%'),
             },
           ]}>
           {Strings.total}: RM {sum}
         </Text>
+
         <Text
           style={[
             Typography.placeholder,
             {
-              position: 'absolute',
-              top: hp('55%'),
-              left: wp('8%'),
+              marginTop: 5,
             },
           ]}>
-          {Strings.deliveryDate}
+          {Strings.buyer}: {props.supplier.name}
         </Text>
-        {deliverydate == null ? (
-          <View>
-            <Text
-              style={[
-                Typography.small,
-                {
-                  position: 'absolute',
-                  top: hp('55%'),
-                  left: wp('35%'),
-                  width: wp('50%'),
-                },
-              ]}>
-              {Strings.pleaseAddDeliveryDate}
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: hp('55%'),
-                left: wp('80%'),
-                elevation: 5,
-              }}
-              onPress={() => setDate(dayjs().format('DD MMM YYYY'))}>
-              <Icon name="add-circle-outline" size={wp('5%')} />
-            </TouchableOpacity>
-          </View>
-        ) : !confirmedDate ? (
-          <View>
-            <DatePicker
-              style={{
-                backgroundColor: Colors.GRAY_WHITE,
-                borderColor: 'black',
-                borderRadius: 20,
-                width: wp('40%'),
-                height: hp('6%'),
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.22,
-                shadowRadius: 2.22,
-                elevation: 3,
-                position: 'absolute',
-                top: hp('53%'),
-                left: wp('35%'),
-                justifyContent: 'center',
-              }}
-              customStyles={{
-                dateInput: {
-                  position: 'absolute',
-                  right: wp('5%'),
-                  textAlignVertical: 'center',
-                  borderColor: 'transparent',
-                },
-                dateIcon: {
-                  position: 'absolute',
-                  left: wp('1%'),
-                  height: hp('5%'),
-                  width: wp('7%'),
-                },
-                dateText: {fontSize: hp('2%')},
-              }}
-              format="DD-MM-YYYY"
-              placeholderTextColor={Colors.GRAY_DARK}
-              placeholder="Pick a date"
-              showIcon={true}
-              minDate={now()}
-              date={deliverydate}
-              onDateChange={item => setDate(item)}
-              androidMode="spinner"
-              confirmBtnText={Strings.confirm}
-              cancelBtnText={Strings.cancel}></DatePicker>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: hp('55%'),
-                left: wp('78%'),
-                elevation: 5,
-              }}
-              onPress={item => [updateDeliveryDate(), log(deliverydate)]}>
-              <Icon name="checkmark-outline" size={wp('5%')} />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View>
-            <Text
-              style={[
-                Typography.small,
-                {
-                  position: 'absolute',
-                  top: hp('55%'),
-                  left: wp('35%'),
-                },
-              ]}>
-              {deliverydate}
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: hp('55%'),
-                left: wp('57%'),
-                elevation: 5,
-              }}
-              onPress={() => setConfirmedDate(false)}>
-              <Icon name="pencil-outline" size={wp('5%')} />
-            </TouchableOpacity>
-          </View>
-        )}
-        <Text
-          style={[
-            Typography.placeholder,
-            {
-              position: 'absolute',
-              top: hp('60%'),
-              left: wp('8%'),
-            },
-          ]}>
-          {Strings.buyer}:
-        </Text>
-        <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('60%'),
-              left: wp('35%'),
-            },
-          ]}>
-          {props.supplier.name}
-        </Text>
+
         <BlueButton
           onPress={() => {
-            [setInvoiceModal(true)];
+            [setQrScannerModal(true)];
           }}
-          text={Strings.createInvoice}
+          text={'Scan QR Code'}
           font={Typography.normal}
           borderRadius={10}
-          top={hp('70%')}
-          position={'absolute'}
+          marginTop={10}
         />
       </View>
       <Modal
@@ -575,7 +432,7 @@ const InvoiceModal = props => {
     log(itemList);
     var tempList = itemList.forEach((item, index, array) => {
       var product = parseFloat((item.price * item.quantity).toFixed(2));
-      tempSum = tempSum + product;
+      tempSum = parseFloat((tempSum + product).toFixed(2));
     });
     log(tempSum);
     setSum(tempSum);
