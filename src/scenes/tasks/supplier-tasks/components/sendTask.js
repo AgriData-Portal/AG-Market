@@ -112,7 +112,6 @@ export const SendTaskList = props => {
               trackingNum={item.trackingNum}
               deliverydate={item.deliveryDate}
               taskID={item.id}
-              trackingNum={item.trackingNum}
               trigger={props.trigger}
               setTrigger={props.setTrigger}
               sendTask={props.sendTask}
