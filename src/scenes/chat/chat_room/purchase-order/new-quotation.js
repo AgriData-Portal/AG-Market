@@ -65,10 +65,8 @@ const NewOrderQuotation = props => {
   useEffect(() => {
     log('useEffect to calculate sum Triggered');
     quotationItems.forEach((item, index, arr) => {
-      var product = parseFloat(
-        (parseFloat(item.price) * parseFloat(item.quantity)).toFixed(2),
-      );
-      tempSum = tempSum + product;
+      var product = parseFloat((item.price * item.quantity).toFixed(2));
+      tempSum = parseFloat((tempSum + product).toFixed(2));
     });
     setSum(tempSum);
     log(tempSum);

@@ -38,6 +38,7 @@ import {Rating, AirbnbRating} from 'react-native-ratings';
 import {BlueButton} from '_components';
 import {log} from '_utils';
 import {userStore} from '_store';
+import {PolyfillXMLHttpRequest} from 'rn-fetch-blob';
 
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
@@ -256,6 +257,7 @@ const SendTask = props => {
         <SendTaskModal
           taskID={props.taskID}
           goods={props.goods}
+          status={props.status}
           trackingNum={props.trackingNum}
           retailer={props.retailer}
           supplier={props.supplier}
@@ -295,60 +297,16 @@ const SendTaskModal = props => {
   const [error, setError] = useState(false);
   useEffect(() => {
     if (value === props.trackingNum) setInvoiceModal(true);
-    if (value && value !== props.trackingNum) setError(true);
-  }, [value]);
-
-  const updateDeliveryDate = async () => {
-    try {
-      if (companyType == 'supplier') {
-        const response = await API.graphql({
-          query: updateGoodsTaskBetweenRandS,
-          variables: {
-            input: {
-              id: props.taskID,
-              deliveryDate: deliverydate,
-            },
-          },
-        });
-      } else {
-        const response = await API.graphql({
-          query: updateGoodsTaskBetweenSandF,
-          variables: {
-            input: {
-              id: props.taskID,
-              deliveryDate: deliverydate,
-            },
-          },
-        });
-      }
-
-      setDate(deliverydate);
-      setConfirmedDate(true);
-      if (props.trigger) {
-        props.setTrigger(false);
-      } else {
-        props.setTrigger(true);
-      }
-
-      var tempList = props.sendTask;
-
-      tempList.forEach((item, index, array) => {
-        if (item == props.taskID) {
-          item.deliveryDate = deliverydate;
-          array[index] = item;
-        }
-      });
-
-      setSuccessfulModal(true);
-    } catch (e) {
-      log(e);
+    if (value && value !== props.trackingNum) {
+      setError(true);
+      setQrScannerModal(false);
     }
-  };
+  }, [value]);
 
   var sum = 0;
   var tempList = props.goods.forEach((item, index, array) => {
-    var product = item.price * item.quantity;
-    sum = sum + product;
+    var product = parseFloat((item.price * item.quantity).toFixed(2));
+    sum = parseFloat((sum + product).toFixed(2));
   });
   log(sum);
 
@@ -411,24 +369,30 @@ const SendTaskModal = props => {
               padding: 2,
               marginBottom: 400,
             }}>
-            <Text>{props.trackingNum + props.taskID}</Text>
             <View style={{height: hp('45%')}}>
               <QRCodeScanner
                 cameraStyle={{width: wp('80%')}}
                 onRead={qr => setValue(qr.data)}
               />
             </View>
-            {error ? (
-              <Text>
-                The QR Code you are scanning is not for this task, please close
-                the scanner and try again
-              </Text>
-            ) : null}
+
             <BlueButton
               onPress={() => setQrScannerModal(false)}
               marginTop={20}
               text="Close QR Code Scanner"></BlueButton>
           </View>
+        ) : null}
+        {error ? (
+          <>
+            <Text>
+              The QR Code you are scanning is not for this task, please try
+              again
+            </Text>
+            <BlueButton
+              onPress={() => setQrScannerModal(true)}
+              marginTop={20}
+              text="Scan QR Code"></BlueButton>
+          </>
         ) : null}
         <Text
           style={[
@@ -456,124 +420,7 @@ const SendTaskModal = props => {
           ]}>
           {Strings.total}: RM {sum}
         </Text>
-        {/* <Text
-          style={[
-            Typography.placeholder,
-            {
-              top: hp('55%'),
-              left: wp('8%'),
-            },
-          ]}>
-          {Strings.deliveryDate}
-        </Text> */}
-        {/* {deliverydate == null ? (
-          <View>
-            <Text
-              style={[
-                Typography.small,
-                {
-                  position: 'absolute',
-                  top: hp('55%'),
-                  left: wp('35%'),
-                  width: wp('50%'),
-                },
-              ]}>
-              {Strings.pleaseAddDeliveryDate}
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: hp('55%'),
-                left: wp('80%'),
-                elevation: 5,
-              }}
-              onPress={() => setDate(dayjs().format('DD MMM YYYY'))}>
-              <Icon name="add-circle-outline" size={wp('5%')} />
-            </TouchableOpacity>
-          </View>
-        ) : !confirmedDate ? (
-          <View>
-            <DatePicker
-              style={{
-                backgroundColor: Colors.GRAY_WHITE,
-                borderColor: 'black',
-                borderRadius: 20,
-                width: wp('40%'),
-                height: hp('6%'),
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.22,
-                shadowRadius: 2.22,
-                elevation: 3,
-                position: 'absolute',
-                top: hp('53%'),
-                left: wp('35%'),
-                justifyContent: 'center',
-              }}
-              customStyles={{
-                dateInput: {
-                  position: 'absolute',
-                  right: wp('5%'),
-                  textAlignVertical: 'center',
-                  borderColor: 'transparent',
-                },
-                dateIcon: {
-                  position: 'absolute',
-                  left: wp('1%'),
-                  height: hp('5%'),
-                  width: wp('7%'),
-                },
-                dateText: {fontSize: hp('2%')},
-              }}
-              format="DD-MM-YYYY"
-              placeholderTextColor={Colors.GRAY_DARK}
-              placeholder="Pick a date"
-              showIcon={true}
-              minDate={dayjs().format('DD MMM YYYY')}
-              date={deliverydate}
-              onDateChange={item => setDate(item)}
-              androidMode="spinner"
-              confirmBtnText={Strings.confirm}
-              cancelBtnText={Strings.cancel}></DatePicker>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: hp('55%'),
-                left: wp('78%'),
-                elevation: 5,
-              }}
-              onPress={item => [updateDeliveryDate(), log(deliverydate)]}>
-              <Icon name="checkmark-outline" size={wp('5%')} />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View>
-            <Text
-              style={[
-                Typography.small,
-                {
-                  position: 'absolute',
-                  top: hp('55%'),
-                  left: wp('35%'),
-                },
-              ]}>
-              {deliverydate}
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: hp('55%'),
-                left: wp('57%'),
-                elevation: 5,
-              }}
-              onPress={() => setConfirmedDate(false)}>
-              <Icon name="pencil-outline" size={wp('5%')} />
-            </TouchableOpacity>
-          </View>
-        )} */}
+
         <Text
           style={[
             Typography.placeholder,
@@ -586,19 +433,7 @@ const SendTaskModal = props => {
             ? props.retailer.name
             : props.supplier.name}
         </Text>
-        {/* <Text
-          style={[
-            Typography.normal,
-            {
-              position: 'absolute',
-              top: hp('60%'),
-              left: wp('35%'),
-            },
-          ]}>
-          {companyType == 'supplier'
-            ? props.retailer.name
-            : props.supplier.name}
-        </Text> */}
+
         <BlueButton
           onPress={() => {
             [setQrScannerModal(true)];
@@ -630,15 +465,6 @@ const SendTaskModal = props => {
           sendTask={props.sendTask}
           setSendTask={props.setSendTask}></InvoiceModal>
       </Modal>
-      {/* <Modal isVisible={qrScannerModal}>
-        <QRScannerModal
-          setInvoiceModal={setInvoiceModal}
-          taskID={props.taskID}
-          trackingNum={props.trackingNum}
-          sendTask={props.sendTask}
-          setQrScannerModal={setQrScannerModal}
-          setSendTask={props.setSendTask}></QRScannerModal>
-      </Modal> */}
     </SafeAreaView>
   );
 };
@@ -655,7 +481,7 @@ const InvoiceModal = props => {
     log(itemList);
     var tempList = itemList.forEach((item, index, array) => {
       var product = parseFloat((item.price * item.quantity).toFixed(2));
-      tempSum = tempSum + product;
+      tempSum = parseFloat((tempSum + product).toFixed(2));
     });
     log(tempSum);
     setSum(tempSum);
@@ -936,34 +762,6 @@ const InvoiceItem = props => {
         ]}>
         RM {parseFloat((props.price * parseFloat(quantity)).toFixed(2))}
       </Text>
-    </View>
-  );
-};
-
-const QRScannerModal = props => {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState(false);
-  useEffect(() => {
-    if (value === props.taskID) props.setInvoiceModal(true);
-    if (value && value !== props.taskID) setError(true);
-  }, [value]);
-  return (
-    <View
-      style={{
-        width: wp('90%'),
-        height: hp('80%'),
-        backgroundColor: Colors.GRAY_WHITE,
-        borderRadius: 10,
-      }}>
-      <Text>{props.taskID}</Text>
-      <CloseButton setModal={props.setQrScannerModal} />
-      <QRCodeScanner onRead={qr => setValue(qr.data)}></QRCodeScanner>
-      {error ? (
-        <Text>
-          The QR Code you are scanning is not for this task, please close the
-          scanner and try again
-        </Text>
-      ) : null}
     </View>
   );
 };
