@@ -141,7 +141,7 @@ android {
     // }
 
     defaultConfig {
-        applicationId "com.agridata_app"
+        applicationId "com.agmarket_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 25

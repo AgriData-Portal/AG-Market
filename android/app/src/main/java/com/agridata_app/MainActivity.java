@@ -1,4 +1,4 @@
-package com.agridata_app;
+package com.agmarket_app;
 
 import com.facebook.react.ReactActivity;
 

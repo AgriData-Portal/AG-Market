@@ -272,7 +272,7 @@ export const createPDF = async (
     url:
       Platform.OS == 'ios'
         ? filePath
-        : 'file:///data/user/0/com.agridata_app/files/AG-MarketInvoice' +
+        : 'file:///data/user/0/com.agmarket_app/files/AG-MarketInvoice' +
           id +
           '.pdf',
   };
@@ -316,7 +316,7 @@ export const createCSV = async (
     url:
       Platform.OS == 'ios'
         ? file
-        : 'file:///data/user/0/com.agridata_app/files/AgriDataInvoice' +
+        : 'file:///data/user/0/com.agmarket_app/files/AgriDataInvoice' +
           id.slice(0, 6) +
           '.xlsx',
   };

@@ -58,7 +58,7 @@ export const UpdateAppModal = props => {
                       'https://apps.apple.com/my/app/ag-market/id1577002466',
                     )
                   : Linking.openURL(
-                      'https://play.google.com/store/apps/details?id=com.agridata_app',
+                      'https://play.google.com/store/apps/details?id=com.agmarket_app',
                     )
               }
               style={{
@@ -84,7 +84,7 @@ export const UpdateAppModal = props => {
                         'https://apps.apple.com/my/app/ag-market/id1577002466',
                       )
                     : Linking.openURL(
-                        'https://play.google.com/store/apps/details?id=com.agridata_app',
+                        'https://play.google.com/store/apps/details?id=com.agmarket_app',
                       )
                 }
                 style={{
